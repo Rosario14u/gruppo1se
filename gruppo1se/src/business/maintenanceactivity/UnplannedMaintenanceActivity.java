@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author aless
  */
-public class UnplannedMaintenanceActivity extends MaintenanceActivity{
+public abstract class UnplannedMaintenanceActivity extends MaintenanceActivity{
     
     public UnplannedMaintenanceActivity(int activityId, Site site, String typology, String activityDescription, int estimatedInterventionTime, LocalDate date, MaintenanceProcedure maintenanceProcedure, List<String> materials, boolean interruptibleActivity) {
         super(activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity);
