@@ -12,6 +12,7 @@ import java.sql.*;
  */
 public class MaintenanceActivityDAO {
     private static final String SQL_INSERT = "INSERT INTO MaintenanceActivity (activityId, activityDescription, estimatedInterventionTime, dateActivity, interruptibleActivity, typologyOfActivity, typologyOfUnplannedActivity, typologyName, branchOffice, area) VALUES (?,?,?,?,?,?,?,?,?,?)";
+    private static final String SQL_DELETE = "DELETE FROM MAINTENANCEACTIVITY WHERE ACTIVITYID=?";
     
     public boolean addMaintenanceActivity(MaintenanceActivity activity, Connection conn){
         try {
@@ -57,5 +58,17 @@ public class MaintenanceActivityDAO {
         } catch (SQLException ex) {
             return false;
         }
+    }
+    
+    public boolean deleteMaintenanceActivity(MaintenanceActivity activity,Connection conn){
+        try {
+            PreparedStatement preparedStatement = conn.prepareStatement(SQL_DELETE);
+            preparedStatement.setInt(1,activity.getActivityId());
+            int row = preparedStatement.executeUpdate();
+            return true;
+        }
+        catch (SQLException ex) {
+            return false;
+        }   
     }
 }
