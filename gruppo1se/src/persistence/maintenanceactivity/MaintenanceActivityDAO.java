@@ -12,7 +12,6 @@ import java.sql.*;
  */
 public class MaintenanceActivityDAO {
     private static final String SQL_INSERT = "INSERT INTO MaintenanceActivity (activityId, activityDescription, estimatedInterventionTime, dateActivity, interruptibleActivity, typologyOfActivity, typologyOfUnplannedActivity, typologyName, branchOffice, area) VALUES (?,?,?,?,?,?,?,?,?,?)";
-    
     public boolean addMaintenanceActivity(MaintenanceActivity activity, Connection conn){
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(SQL_INSERT);
