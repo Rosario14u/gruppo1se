@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author rosar
  */
-public class MaintenanceActivityFactory {
+public abstract class MaintenanceActivityFactory {
     
     public enum Typology {PLANNED, EWO, EXTRA}
     
