@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author rosar
  */
-public class MaintenanceActivity {
+public abstract class MaintenanceActivity {
     private final int activityId;
     private Site site;
     private String typology;
