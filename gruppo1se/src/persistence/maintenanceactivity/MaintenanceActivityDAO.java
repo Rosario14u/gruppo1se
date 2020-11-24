@@ -77,35 +77,35 @@ public class MaintenanceActivityDAO {
         }   
     }
     
-    public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId) throws SQLException{
-        Connection conn = null;
+    public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId, Connection conn){
         try {
-            conn = DriverManager.getConnection(url, user, pwd);
             String query = "SELECT * FROM MaintenanceActivity WHERE activityId = ?";
             PreparedStatement pstm = conn.prepareStatement(query);
             pstm.setInt(1,activityId);
             ResultSet rs = pstm.executeQuery();
-            MaintenanceActivity ma = this.makeMaintenanceActivity(rs);
-            conn.close();
+            MaintenanceActivity ma = this.makeMaintenanceActivity(rs, conn);
             return ma;
         } catch (SQLException ex) {
-            throw ex;
+           return null;
         }       
     }
    
-    private MaintenanceActivity makeMaintenanceActivity(ResultSet rs) throws SQLException{
+    private MaintenanceActivity makeMaintenanceActivity(ResultSet rs, Connection conn) throws SQLException{
         try {
-            rs.next();
-            String typologyOfActivity = rs.getString("typologyOfActivity").toUpperCase();
-            String typologyOfUnplanned = rs.getString("typologyOfUnplannedActivity").toUpperCase();
-            Site site = new SiteDao().retrieveSiteDao(new Site(rs.getString("branchOffice"), rs.getString("area")));
-            // Selection of the type of the object to create 
-            MaintenanceActivityFactory.Typology type = typologyOfActivity.compareTo("PLANNED")==0 ? 
-                    MaintenanceActivityFactory.Typology.PLANNED : MaintenanceActivityFactory.Typology.valueOf(typologyOfUnplanned); 
-            return MaintenanceActivityFactory.make(type, rs.getInt("activityId"), site, 
-                        rs.getString("typologyName"), rs.getString("activityDescription"), 
-                        rs.getInt("estimatedInterventionTime"), LocalDate.parse(rs.getString("dateActivity")),
-                        null, null,rs.getBoolean("interruptibleActivity"));
+            while(rs.next()){
+                String typologyOfActivity = rs.getString("typologyOfActivity").toUpperCase();
+                String typologyOfUnplanned = rs.getString("typologyOfUnplannedActivity");
+                typologyOfUnplanned = typologyOfUnplanned == null ? null : typologyOfUnplanned.toUpperCase();
+                Site site = new SiteDao().retrieveSiteDao(new Site(rs.getString("branchOffice"), rs.getString("area")),conn);
+                // Selection of the type of the object to create 
+                MaintenanceActivityFactory.Typology type = typologyOfActivity.compareTo("PLANNED")==0 ? 
+                        MaintenanceActivityFactory.Typology.PLANNED : MaintenanceActivityFactory.Typology.valueOf(typologyOfUnplanned); 
+                return MaintenanceActivityFactory.make(type, rs.getInt("activityId"), site, 
+                            rs.getString("typologyName"), rs.getString("activityDescription"), 
+                            rs.getInt("estimatedInterventionTime"), LocalDate.parse(rs.getString("dateActivity")),
+                            null, null,rs.getBoolean("interruptibleActivity"));
+            }
+            return null;
         } catch (SQLException ex) {
             throw ex;
         }
