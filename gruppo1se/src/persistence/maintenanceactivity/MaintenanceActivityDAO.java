@@ -65,12 +65,13 @@ public class MaintenanceActivityDAO {
         }
     }
     
+    // Returns true if at least one row has been deleted
     public boolean deleteMaintenanceActivity(MaintenanceActivity activity,Connection conn){
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(SQL_DELETE);
             preparedStatement.setInt(1,activity.getActivityId());
             int row = preparedStatement.executeUpdate();
-            return true;
+            return row > 0;
         }
         catch (SQLException ex) {
             return false;
