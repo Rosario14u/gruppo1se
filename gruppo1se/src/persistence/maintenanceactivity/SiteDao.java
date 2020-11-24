@@ -22,7 +22,6 @@ public class SiteDao {
        String user = "gruppo1";
        String pwd = "123456"; 
        try {
-           Connection conn = DriverManager.getConnection(url, user, pwd);
            String query = "SELECT * FROM Site WHERE branchOffice = ? and area = ?";
            PreparedStatement pstm = conn.prepareStatement(query);
            pstm.setString(1,site.getBranchOffice());
@@ -33,6 +32,7 @@ public class SiteDao {
            return site;
 
        } catch (SQLException ex) {
+
            return null;
        }
     }
