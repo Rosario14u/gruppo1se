@@ -18,7 +18,7 @@ import java.sql.SQLException;
  */
 public class SiteDao {
     public Site retrieveSiteDao(Site site){
-        String url = "jdbc:postgresql://localhost/Gruppo1_SE";
+       String url = "jdbc:postgresql://localhost/Gruppo1_SE";
        String user = "gruppo1";
        String pwd = "123456"; 
        try {
