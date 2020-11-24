@@ -8,6 +8,7 @@ package business.user;
 import business.maintenanceactivity.MaintenanceActivity;
 import java.sql.Connection;
 import persistence.maintenanceactivity.MaintenanceActivityDAO;
+import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAO;
 
 /**
  *
