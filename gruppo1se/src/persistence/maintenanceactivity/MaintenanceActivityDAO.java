@@ -111,10 +111,9 @@ public class MaintenanceActivityDAO {
         }
     }
     
-    public boolean modifyMaintenaceActivity(int activityId, MaintenanceActivity newActivity) throws SQLException{
-        Connection conn = null;
+    public boolean modifyMaintenaceActivity(int activityId, MaintenanceActivity newActivity, Connection conn) {
         try {
-            conn = DriverManager.getConnection(url, user, pwd);
+            //conn = DriverManager.getConnection(url, user, pwd);
             String query = "UPDATE MaintenanceActivity SET activityDescription=?, "
                     + "estimatedInterventionTime=?, dateActivity=?, "
                     + "interruptibleActivity=?, branchOffice=?, area=?, "
@@ -124,13 +123,13 @@ public class MaintenanceActivityDAO {
             pstm.setString(1,newActivity.getActivityDescription());
             pstm.setInt(2,newActivity.getEstimatedInterventionTime());
             pstm.setDate(3,Date.valueOf(newActivity.getDate()));
-            pstm.setBoolean(4, newActivity.isInterruptibleActivity());
+            pstm.setBoolean(4,newActivity.isInterruptibleActivity());
             pstm.setString(5,newActivity.getSite().getBranchOffice());
             pstm.setString(6,newActivity.getSite().getArea());
             pstm.setString(7,newActivity.getTypology());  
             if(newActivity instanceof PlannedMaintenanceActivity){
                 pstm.setString(8,"Planned");
-                pstm.setString(9, "null");
+                pstm.setString(9, null);
             }
             else if (newActivity instanceof Ewo){
                 pstm.setString(8,"Unplanned");
@@ -142,7 +141,6 @@ public class MaintenanceActivityDAO {
             }
             pstm.setInt(10,activityId);
             pstm.executeUpdate();
-            conn.close();
             return true;
         } catch (SQLException ex) {
             return false;

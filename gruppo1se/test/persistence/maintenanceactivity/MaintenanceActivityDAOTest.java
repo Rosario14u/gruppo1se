@@ -9,12 +9,17 @@ import business.maintenanceactivity.Ewo;
 import business.maintenanceactivity.ExtraActivity;
 import business.maintenanceactivity.MaintenanceActivity;
 import business.maintenanceactivity.PlannedMaintenanceActivity;
+import business.maintenanceactivity.Site;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -210,5 +215,186 @@ public class MaintenanceActivityDAOTest {
             assertEquals("WorkSpaceNotes error", workSpaceNotes, activity.getSite().getWorkSpaceNotes());
     }
 
+//===================================================================================================================
+
+     /**
+     * Test of modifyMaintenaceActivity method, of class MaintenanceActivityDao.
+     */
+    @Test
+    public void testModifyPlannedToEwoMaintenaceActivity() {
+        try{
+            Statement stm = conn.createStatement();
+            MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
+        
+            deleteDafaultMaintenanceActivity(stm);
+            insertDefaultMaintenanceActivity("Planned", "null", stm);
+            MaintenanceActivity newActivity = new Ewo(1, new Site("ProvaBranchOfficeMod", "ProvaAreaMod"), "typologyNameMod", 
+                                    "ProvaDescrizioneMod", 400, LocalDate.parse("2050-12-12"), null, null, false);
+
+            boolean result = instance.modifyMaintenaceActivity(1, newActivity, conn);
+            assertEquals(true, result);
+            ResultSet res = selectDefaultMaintenanceActivity(stm);
+            
+            verify(res, "Unplanned", "EWO");
+            
+            conn.rollback();
+        }catch(SQLException ex){
+            Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);            
+        }        
+    }
+    
+    @Test
+    public void testModifyPlannedToExtraMaintenaceActivity(){
+        try{
+            Statement stm = conn.createStatement();
+            MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
+        
+            deleteDafaultMaintenanceActivity(stm);
+            insertDefaultMaintenanceActivity("Planned", "null", stm);
+            MaintenanceActivity newActivity = new ExtraActivity(1, new Site("ProvaBranchOfficeMod", "ProvaAreaMod"), "typologyNameMod", 
+                                    "ProvaDescrizioneMod", 400, LocalDate.parse("2050-12-12"), null, null, false);
+
+            boolean result = instance.modifyMaintenaceActivity(1, newActivity, conn);
+            assertEquals(true, result);
+            ResultSet res = selectDefaultMaintenanceActivity(stm);
+            
+            verify(res, "Unplanned", "Extra");
+            
+            conn.rollback();
+        }catch(SQLException ex){
+            Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);            
+        }   
+    }
+    
+    @Test
+    public void testModifyEwoToExtraMaintenaceActivity(){
+        try{
+            Statement stm = conn.createStatement();
+            MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
+        
+            deleteDafaultMaintenanceActivity(stm);
+            insertDefaultMaintenanceActivity("Planned", "null", stm);
+            MaintenanceActivity newActivity = new ExtraActivity(1, new Site("ProvaBranchOfficeMod", "ProvaAreaMod"), "typologyNameMod", 
+                                    "ProvaDescrizioneMod", 400, LocalDate.parse("2050-12-12"), null, null, false);
+
+            boolean result = instance.modifyMaintenaceActivity(1, newActivity, conn);
+            assertEquals(true, result);
+            ResultSet res = selectDefaultMaintenanceActivity(stm);
+            
+            verify(res, "Unplanned", "Extra");
+            
+            conn.rollback();
+        }catch(SQLException ex){
+            Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);            
+        }   
+    }
+    
+    @Test
+    public void testModifyEwoToPlannedMaintenaceActivity(){
+        try{
+            Statement stm = conn.createStatement();
+            MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
+        
+            deleteDafaultMaintenanceActivity(stm);
+            insertDefaultMaintenanceActivity("Planned", "null", stm);
+            MaintenanceActivity newActivity = new PlannedMaintenanceActivity(1, new Site("ProvaBranchOfficeMod", "ProvaAreaMod"), "typologyNameMod", 
+                                    "ProvaDescrizioneMod", 400, LocalDate.parse("2050-12-12"), null, null, false);
+
+            boolean result = instance.modifyMaintenaceActivity(1, newActivity, conn);
+            assertEquals(true, result);
+            ResultSet res = selectDefaultMaintenanceActivity(stm);
+            
+            verify(res, "Planned", null);
+            
+            conn.rollback();
+        }catch(SQLException ex){
+            Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);            
+        }   
+    }
+    
+    @Test
+    public void testModifyExtraToPlannedMaintenaceActivity(){
+        try{
+            Statement stm = conn.createStatement();
+            MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
+        
+            deleteDafaultMaintenanceActivity(stm);
+            insertDefaultMaintenanceActivity("Planned", "null", stm);
+            MaintenanceActivity newActivity = new PlannedMaintenanceActivity(1, new Site("ProvaBranchOfficeMod", "ProvaAreaMod"), "typologyNameMod", 
+                                    "ProvaDescrizioneMod", 400, LocalDate.parse("2050-12-12"), null, null, false);
+
+            boolean result = instance.modifyMaintenaceActivity(1, newActivity, conn);
+            assertEquals(true, result);
+            ResultSet res = selectDefaultMaintenanceActivity(stm);
+            
+            verify(res, "Planned", null);
+ 
+            conn.rollback();
+        }catch(SQLException ex){
+            Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);            
+        }   
+    }
+    
+    @Test
+    public void testModifyExtraToEwoMaintenaceActivity(){
+        try{
+            Statement stm = conn.createStatement();
+            MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
+        
+            deleteDafaultMaintenanceActivity(stm);
+            insertDefaultMaintenanceActivity("Planned", "null", stm);
+            MaintenanceActivity newActivity = new Ewo(1, new Site("ProvaBranchOfficeMod", "ProvaAreaMod"), "typologyNameMod", 
+                                    "ProvaDescrizioneMod", 400, LocalDate.parse("2050-12-12"), null, null, false);
+
+            boolean result = instance.modifyMaintenaceActivity(1, newActivity, conn);
+            assertEquals(true, result);
+            ResultSet res = selectDefaultMaintenanceActivity(stm);
+            
+            verify(res, "Unplanned", "EWO");
+            
+            conn.rollback();
+        }catch(SQLException ex){
+            Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);            
+        }   
+    }
+    
+    
+    
+    /*=======================================================================================================================================*/
+    
+    private void insertDefaultMaintenanceActivity(String typologyOfActivity, String typologyOfUnplannedActivity, Statement stm) throws SQLException {
+        String query = "INSERT INTO MaintenanceActivity (activityId, activityDescription, "
+                + "estimatedInterventionTime, dateActivity, interruptibleActivity, typologyOfActivity,"
+                + " typologyOfUnplannedActivity, typologyName, branchOffice, area) "
+                + "VALUES (1, 'ProvaDescrizione', 200, '2030-12-1', True, '"+ typologyOfActivity +"',"
+                + " "+ typologyOfUnplannedActivity +", 'typologyName', 'ProvaBranchOffice', 'ProvaArea')";
+        stm.executeUpdate(query);
+    }
+    
+    private void deleteDafaultMaintenanceActivity(Statement stm) throws SQLException {
+        String query = "DELETE FROM MaintenanceActivity WHERE activityId=1";
+        stm.executeUpdate(query);
+    }
+    
+    private ResultSet selectDefaultMaintenanceActivity(Statement stm) throws SQLException {
+        String query = "SELECT * FROM MaintenanceActivity WHERE activityId=1";
+        return stm.executeQuery(query);
+    }
+    
+    private void verify(ResultSet res, String typologyOfActivity, String typologyOfUnplannedActivity) throws SQLException{
+        assertNotNull(res);
+        while(res.next()){
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            assertEquals("ProvaDescrizioneMod", res.getString("activityDescription"));
+            assertEquals(400, res.getInt("estimatedInterventionTime"));
+            assertEquals("2050-12-12", df.format(res.getDate("dateActivity")));
+            assertEquals("ProvaBranchOfficeMod", res.getString("branchOffice"));
+            assertEquals("ProvaAreaMod", res.getString("area"));
+            assertEquals("typologyNameMod", res.getString("typologyName"));
+            assertEquals(false, res.getBoolean("interruptibleActivity"));
+            assertEquals(typologyOfActivity, res.getString("typologyOfActivity"));
+            assertEquals(typologyOfUnplannedActivity, res.getString("typologyOfUnplannedActivity"));
+        }   
+    }
     
 }
