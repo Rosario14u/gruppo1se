@@ -508,7 +508,8 @@ public class MaintenanceActivityDAOTest {
             MaintenanceProcedure proc = new MaintenanceProcedure("ProvaPDF");
             ArrayList<String> mat = new ArrayList<>();
             PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(123,site,"ProvaTypology","ProvaActivityDescription",30,LocalDate.of(2050,11,25),proc,mat,true);
-            boolean result = instance.deleteMaintenanceActivity(activity, conn);
+            instance.addMaintenanceActivity(activity, conn);
+            boolean result = instance.deleteMaintenanceActivity(activity.getActivityId(), conn);
             assertEquals(true, result);
             conn.rollback();
         } catch (SQLException ex) {
@@ -527,12 +528,13 @@ public class MaintenanceActivityDAOTest {
             MaintenanceProcedure proc = new MaintenanceProcedure("ProvaPDF");
             ArrayList<String> mat = new ArrayList<>();
             PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(123,site,"ProvaTypology","ProvaActivityDescription",30,LocalDate.of(2050,11,25),proc,mat,true);
-            boolean result = instance.deleteMaintenanceActivity(activity, conn);
+            instance.addMaintenanceActivity(activity, conn);
+            boolean result = instance.deleteMaintenanceActivity(124, conn);
             assertEquals(false, result);
             conn.rollback();
         } catch (SQLException ex) {
             System.out.println("Error on: connection rollback");
         }
       
-    }  
+    }
 }
