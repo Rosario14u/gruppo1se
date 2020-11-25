@@ -19,16 +19,31 @@ import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAO;
  * @author rosar
  */
 public class Planner extends User {
-    
+    /**
+     * Constructor of Planner
+     * @param username username of Planner 
+     * @param password password of Planner
+     */
     public Planner(String username, String password) {
         super(username, password);
     }
-    
+    /**
+     * This method returns Maintenance Activity with the passed activityId if exists,
+     * null otherwise
+     * @param activityId activity id of the Maintenance Activity to visualize
+     * @param conn
+     * @return {@code MaintenanceActivity} MaintenanceActivity
+     */
+    /*Method developed by Rosario Gaeta*/
     public MaintenanceActivity viewMaintenanceActivity(int activityId, Connection conn){
         MaintenanceActivityDAO activityDao = new MaintenanceActivityDAO();
+        /*this method uses MaintenanceActivityDAO and RequiredMaterialForMaintenanceDAO objects to
+        retrieve the required MaintenanceActivity object if exists*/
         MaintenanceActivity activity = activityDao.retrieveMaintenanceActivityDao(activityId, conn);
-        RequiredMaterialForMaintenanceDAO requiredMaterialsDao = new RequiredMaterialForMaintenanceDAO();
-        activity.setMaterials(requiredMaterialsDao.retrieveMaterialsByActivityId(activityId, conn));
+        if(activity != null){
+            RequiredMaterialForMaintenanceDAO requiredMaterialsDao = new RequiredMaterialForMaintenanceDAO();
+            activity.setMaterials(requiredMaterialsDao.retrieveMaterialsByActivityId(activityId, conn));
+        }
         return activity;
     }
     

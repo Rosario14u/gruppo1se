@@ -5,6 +5,7 @@
  */
 package persistence.maintenanceactivity;
 
+import business.maintenanceactivity.Material;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,16 +20,23 @@ import java.util.logging.Logger;
  * @author rosar
  */
 public class RequiredMaterialForMaintenanceDAO {
-    public List<String> retrieveMaterialsByActivityId(int activityId, Connection conn){
-        List<String> listMaterials = new ArrayList<>();
+    /**
+     * This method retrieve a list materials associated to the maintenance activity identified by the activityId.
+     * @param activityId of the MaintenanceActivity
+     * @param conn
+     * @return {@code List<String>} listMaterials, null otherwise
+     */
+    /*Method developed by Rosario Gaeta*/
+    public List<Material> retrieveMaterialsByActivityId(int activityId, Connection conn){
+        List<Material> listMaterials = new ArrayList<>();
         try {
-            String query = "SELECT * FROM RequiredMaterial WHERE activityId = ?";
+            String query = "SELECT * FROM RequiredMaterial WHERE activityId = ? order by materialName";
             PreparedStatement pstm = conn.prepareStatement(query);
             pstm.setInt(1,activityId);            
             ResultSet res = pstm.executeQuery(); 
             
             while(res.next()){
-                listMaterials.add(res.getString("materialName"));
+                listMaterials.add(new Material(res.getString("materialName")));
             }            
             return listMaterials;
         } catch (SQLException ex) {

@@ -17,7 +17,7 @@ public class PlannedActivityFactory extends MaintenanceActivityFactory{
     protected MaintenanceActivity selectMaintenanceActivity(MaintenanceActivityFactory.Typology type, int activityId,
             Site site, String typology, String activityDescription,int estimatedInterventionTime, 
             LocalDate date, MaintenanceProcedure maintenanceProcedure, 
-            List<String> materials, boolean interruptibleActivity) {
+            List<Material> materials, boolean interruptibleActivity) {
         return new PlannedMaintenanceActivity( activityId, site, typology, activityDescription,
             estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity);
     }

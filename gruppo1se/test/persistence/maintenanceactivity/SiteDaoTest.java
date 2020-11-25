@@ -62,7 +62,8 @@ public class SiteDaoTest {
     }
 
     /**
-     * Test of retrieveSiteDao method, of class SiteDao.
+     * This method asserts that retrieveSiteDao correctly returns a Site object<br>
+     * when there is in database a site with the required branchOffice and area.
      */
     @Test
     public void testRetrieveSiteDao() {
@@ -73,7 +74,7 @@ public class SiteDaoTest {
             pstm.setString(2, "ProvaArea");
             pstm.setString(3, "ProvaWorkSpaceNotes");
             pstm.executeUpdate();
-            Site site = new SiteDao().retrieveSiteDao(new Site("ProvaBranch", "ProvaArea"), conn);
+            Site site = new SiteDao().retrieveSiteDao("ProvaBranch", "ProvaArea", conn);
             assertEquals("branchOffice error", "ProvaBranch", site.getBranchOffice());
             assertEquals("area error", "ProvaArea", site.getArea());
             assertEquals("workspacenotes error", "ProvaWorkSpaceNotes",site.getWorkSpaceNotes());
@@ -82,12 +83,15 @@ public class SiteDaoTest {
             Logger.getLogger(SiteDaoTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+    /**
+     * This method asserts that retrieveSiteDao correctly returns null<br>
+     * when there is not the required site in database. 
+     */
     @Test
     public void testRetrieveSiteDaoNotDatabase() {
         try {
             deleteFromSite("ProvaBranch", "ProvaBranch");
-            Site site = new SiteDao().retrieveSiteDao(new Site("ProvaBranch", "ProvaArea"), conn);
+            Site site = new SiteDao().retrieveSiteDao("ProvaBranch", "ProvaArea", conn);
             assertNull("Site is not null", site);
             conn.rollback();
         } catch (SQLException ex) {

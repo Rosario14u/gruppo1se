@@ -17,15 +17,23 @@ import java.sql.SQLException;
  * @author rosar
  */
 public class SiteDao {
-    public Site retrieveSiteDao(Site site, Connection conn){ 
+    /**
+     * This method returns the site according to branchOffice and area attributes of the site object
+     * @param branchOffice branchoffice of the required site
+     * @param area area of the required site 
+     * @param conn
+     * @return {@code Site} site object if exists the corresponding site in the database, null otherwise
+     */
+    /*Method developed by Rosario Gaeta*/
+    public Site retrieveSiteDao(String branchOffice, String area, Connection conn){ 
        try {
            String query = "SELECT * FROM Site WHERE branchOffice = ? and area = ?";
            PreparedStatement pstm = conn.prepareStatement(query);
-           pstm.setString(1,site.getBranchOffice());
-           pstm.setString(2,site.getArea());
+           pstm.setString(1,branchOffice);
+           pstm.setString(2,area);
            ResultSet rs = pstm.executeQuery();
            rs.next();
-           site.setWorkSpaceNotes(rs.getString("workSpaceNotes"));
+           Site site = new Site(branchOffice, area, rs.getString("workspaceNotes"));
            return site;
 
        } catch (SQLException ex) {
