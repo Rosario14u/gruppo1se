@@ -49,6 +49,22 @@ public class Planner extends User {
         return activity;
     }
     
+    /**
+     * 
+     * @param activityId
+     * @param branchOffice
+     * @param area
+     * @param typology
+     * @param activityDescription
+     * @param estimatedInterventionTime
+     * @param date
+     * @param maintenanceProcedure
+     * @param interruptibleActivity
+     * @param typologyOfActivity
+     * @param typologyOfUnplannedActivity
+     * @param conn
+     * @return 
+     */
     public boolean modifyMaintenanceActivity(int activityId, String branchOffice, String area, String typology, String activityDescription, 
             int estimatedInterventionTime, LocalDate date, MaintenanceProcedure maintenanceProcedure, boolean interruptibleActivity, 
             String typologyOfActivity, String typologyOfUnplannedActivity, Connection conn){
@@ -62,7 +78,7 @@ public class Planner extends User {
                 estimatedInterventionTime, date, null, null, interruptibleActivity);
         
         MaintenanceActivityDAO maintenanceActivityDao = new MaintenanceActivityDAO();
-        return maintenanceActivityDao.modifyMaintenaceActivity(activityId, newActivity, conn);
+        return maintenanceActivityDao.modifyMaintenaceActivity(newActivity, conn);
     }
     
     public boolean removeMaintenanceActivity(int activityId, Connection conn){

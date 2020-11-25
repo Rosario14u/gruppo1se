@@ -231,8 +231,10 @@ public class MaintenanceActivityDAOTest {
 
 //===================================================================================================================
 
-     /**
-     * Test of modifyMaintenaceActivity method, of class MaintenanceActivityDao.
+    /**
+     * Test of modifyMaintenaceActivity method, of class MaintenanceActivityDao.<br>
+     * This method assert that modifyMaintenaceActivity method correctly updates Planned Maintenance activity
+     * to Unplanned EWO Maintenance actiity
      */
     @Test
     public void testModifyPlannedToEwoMaintenaceActivity() {
@@ -245,7 +247,7 @@ public class MaintenanceActivityDAOTest {
             MaintenanceActivity newActivity = new Ewo(1, new Site("ProvaBranchOfficeMod", "ProvaAreaMod"), "typologyNameMod", 
                                     "ProvaDescrizioneMod", 400, LocalDate.parse("2050-12-12"), null, null, false);
 
-            boolean result = instance.modifyMaintenaceActivity(1, newActivity, conn);
+            boolean result = instance.modifyMaintenaceActivity(newActivity, conn);
             assertEquals(true, result);
             ResultSet res = selectDefaultMaintenanceActivity(stm);
             
@@ -257,6 +259,11 @@ public class MaintenanceActivityDAOTest {
         }        
     }
     
+     /**
+     * Test of modifyMaintenaceActivity method, of class MaintenanceActivityDao.<br>
+     * This method assert that modifyMaintenaceActivity method correctly updates Planned Maintenance activity
+     * to Unplanned Extra Maintenance actiity
+     */
     @Test
     public void testModifyPlannedToExtraMaintenaceActivity(){
         try{
@@ -268,7 +275,7 @@ public class MaintenanceActivityDAOTest {
             MaintenanceActivity newActivity = new ExtraActivity(1, new Site("ProvaBranchOfficeMod", "ProvaAreaMod"), "typologyNameMod", 
                                     "ProvaDescrizioneMod", 400, LocalDate.parse("2050-12-12"), null, null, false);
 
-            boolean result = instance.modifyMaintenaceActivity(1, newActivity, conn);
+            boolean result = instance.modifyMaintenaceActivity(newActivity, conn);
             assertEquals(true, result);
             ResultSet res = selectDefaultMaintenanceActivity(stm);
             
@@ -280,6 +287,11 @@ public class MaintenanceActivityDAOTest {
         }   
     }
     
+     /**
+     * Test of modifyMaintenaceActivity method, of class MaintenanceActivityDao.<br>
+     * This method assert that modifyMaintenaceActivity method correctly updates Unplanned EWO Maintenance activity
+     * to Unplanned Extra Maintenance actiity
+     */
     @Test
     public void testModifyEwoToExtraMaintenaceActivity(){
         try{
@@ -291,7 +303,7 @@ public class MaintenanceActivityDAOTest {
             MaintenanceActivity newActivity = new ExtraActivity(1, new Site("ProvaBranchOfficeMod", "ProvaAreaMod"), "typologyNameMod", 
                                     "ProvaDescrizioneMod", 400, LocalDate.parse("2050-12-12"), null, null, false);
 
-            boolean result = instance.modifyMaintenaceActivity(1, newActivity, conn);
+            boolean result = instance.modifyMaintenaceActivity(newActivity, conn);
             assertEquals(true, result);
             ResultSet res = selectDefaultMaintenanceActivity(stm);
             
@@ -303,6 +315,11 @@ public class MaintenanceActivityDAOTest {
         }   
     }
     
+     /**
+     * Test of modifyMaintenaceActivity method, of class MaintenanceActivityDao.<br>
+     * This method assert that modifyMaintenaceActivity method correctly updates Unplanned EWO Maintenance activity
+     * to Planned Maintenance actiity
+     */
     @Test
     public void testModifyEwoToPlannedMaintenaceActivity(){
         try{
@@ -314,7 +331,7 @@ public class MaintenanceActivityDAOTest {
             MaintenanceActivity newActivity = new PlannedMaintenanceActivity(1, new Site("ProvaBranchOfficeMod", "ProvaAreaMod"), "typologyNameMod", 
                                     "ProvaDescrizioneMod", 400, LocalDate.parse("2050-12-12"), null, null, false);
 
-            boolean result = instance.modifyMaintenaceActivity(1, newActivity, conn);
+            boolean result = instance.modifyMaintenaceActivity(newActivity, conn);
             assertEquals(true, result);
             ResultSet res = selectDefaultMaintenanceActivity(stm);
             
@@ -326,6 +343,11 @@ public class MaintenanceActivityDAOTest {
         }   
     }
     
+     /**
+     * Test of modifyMaintenaceActivity method, of class MaintenanceActivityDao.<br>
+     * This method assert that modifyMaintenaceActivity method correctly updates Unplanned Extra Maintenance activity
+     * to Planned Maintenance actiity
+     */
     @Test
     public void testModifyExtraToPlannedMaintenaceActivity(){
         try{
@@ -337,7 +359,7 @@ public class MaintenanceActivityDAOTest {
             MaintenanceActivity newActivity = new PlannedMaintenanceActivity(1, new Site("ProvaBranchOfficeMod", "ProvaAreaMod"), "typologyNameMod", 
                                     "ProvaDescrizioneMod", 400, LocalDate.parse("2050-12-12"), null, null, false);
 
-            boolean result = instance.modifyMaintenaceActivity(1, newActivity, conn);
+            boolean result = instance.modifyMaintenaceActivity(newActivity, conn);
             assertEquals(true, result);
             ResultSet res = selectDefaultMaintenanceActivity(stm);
             
@@ -349,6 +371,11 @@ public class MaintenanceActivityDAOTest {
         }   
     }
     
+     /**
+     * Test of modifyMaintenaceActivity method, of class MaintenanceActivityDao.<br>
+     * This method assert that modifyMaintenaceActivity method correctly updates Unplanned Extra Maintenance activity
+     * to Unplanned EWO Maintenance actiity
+     */
     @Test
     public void testModifyExtraToEwoMaintenaceActivity(){
         try{
@@ -360,7 +387,7 @@ public class MaintenanceActivityDAOTest {
             MaintenanceActivity newActivity = new Ewo(1, new Site("ProvaBranchOfficeMod", "ProvaAreaMod"), "typologyNameMod", 
                                     "ProvaDescrizioneMod", 400, LocalDate.parse("2050-12-12"), null, null, false);
 
-            boolean result = instance.modifyMaintenaceActivity(1, newActivity, conn);
+            boolean result = instance.modifyMaintenaceActivity(newActivity, conn);
             assertEquals(true, result);
             ResultSet res = selectDefaultMaintenanceActivity(stm);
             
@@ -373,8 +400,7 @@ public class MaintenanceActivityDAOTest {
     }
     
     
-    
-    /*=======================================================================================================================================*/
+    /*=================== PRIVATE METHODS OF MODIFY ==============================================================================*/
     
     private void insertDefaultMaintenanceActivity(String typologyOfActivity, String typologyOfUnplannedActivity, Statement stm) throws SQLException {
         String query = "INSERT INTO MaintenanceActivity (activityId, activityDescription, "
@@ -409,7 +435,7 @@ public class MaintenanceActivityDAOTest {
             assertEquals(typologyOfActivity, res.getString("typologyOfActivity"));
             assertEquals(typologyOfUnplannedActivity, res.getString("typologyOfUnplannedActivity"));
         }   
-    }
+    }    
   /*=======================================================================================================================================*/
     /**
      * Test of addMaintenanceActivity method, of class MaintenanceActivityDAO.

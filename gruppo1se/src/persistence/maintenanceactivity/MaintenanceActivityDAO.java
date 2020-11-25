@@ -130,9 +130,15 @@ public class MaintenanceActivityDAO {
         }
     }
     
-    public boolean modifyMaintenaceActivity(int activityId, MaintenanceActivity newActivity, Connection conn) {
+        /**
+     * This method allows to modify an existent Maintenance activity into databse, acccording to actvityId parameter
+     * @param newActivity intance of Mintenance activity that contains the new fields to set
+     * @param conn
+     * @return {@code true} if the the change is successful, false otherwise
+     */
+    /*Developed by Antonio Gorrasi*/
+    public boolean modifyMaintenaceActivity(MaintenanceActivity newActivity, Connection conn) {
         try {
-            //conn = DriverManager.getConnection(url, user, pwd);
             String query = "UPDATE MaintenanceActivity SET activityDescription=?, "
                     + "estimatedInterventionTime=?, dateActivity=?, "
                     + "interruptibleActivity=?, branchOffice=?, area=?, "
@@ -158,8 +164,10 @@ public class MaintenanceActivityDAO {
                 pstm.setString(8,"Unplanned");
                 pstm.setString(9,"Extra");
             }
-            pstm.setInt(10,activityId);
-            pstm.executeUpdate();
+            pstm.setInt(10,newActivity.getActivityId());
+            if(pstm.executeUpdate()==0){
+                return false;
+            }
             return true;
         } catch (SQLException ex) {
             return false;
