@@ -8,9 +8,11 @@ package business.user;
 import business.maintenanceactivity.MaintenanceActivity;
 import business.maintenanceactivity.MaintenanceActivityFactory;
 import business.maintenanceactivity.MaintenanceProcedure;
+import business.maintenanceactivity.Material;
 import business.maintenanceactivity.Site;
 import java.sql.Connection;
 import java.time.LocalDate;
+import java.util.List;
 import persistence.maintenanceactivity.MaintenanceActivityDAO;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAO;
 
@@ -66,5 +68,22 @@ public class Planner extends User {
     public boolean removeMaintenanceActivity(int activityId, Connection conn){
         MaintenanceActivityDAO dao = new MaintenanceActivityDAO();
         return dao.deleteMaintenanceActivity(activityId, conn);
+    }
+    
+    public boolean makeMaintenanceActivity(int activityId, String branchOffice, String area, String workspaceNotes, String typology, String activityDescription, int estimatedInterventionTime, 
+            LocalDate date, MaintenanceProcedure maintenanceProcedure, List<Material> materials, boolean interruptibleActivity,
+            boolean plannedActivity, boolean extraActivity, boolean ewo, Connection conn){
+        Site site = new Site(branchOffice, area, workspaceNotes);
+        MaintenanceActivityFactory.Typology type = null;
+        if (plannedActivity)
+            type = MaintenanceActivityFactory.Typology.PLANNED;
+        else if(extraActivity)
+            type = MaintenanceActivityFactory.Typology.EXTRA;
+        else
+            type = MaintenanceActivityFactory.Typology.EWO;
+        MaintenanceActivity activity = MaintenanceActivityFactory.make(type, activityId, site, typology, activityDescription, estimatedInterventionTime,
+                date, maintenanceProcedure, materials, interruptibleActivity);
+        MaintenanceActivityDAO dao = new MaintenanceActivityDAO();
+        return dao.addMaintenanceActivity(activity, conn);
     }
 }
