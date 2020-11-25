@@ -518,8 +518,7 @@ public class MaintenanceActivityDAOTest {
         MaintenanceProcedure proc = new MaintenanceProcedure("ProvaPDF");
         ArrayList<String> mat = new ArrayList<>();
         PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(123,site,"ProvaTypology","ProvaActivityDescription",30,LocalDate.of(2050,11,25),proc,mat,true);
-        boolean check = instance.addMaintenanceActivity(activity, conn);
-        System.out.println(check);
+        instance.addMaintenanceActivity(activity, conn);
         boolean result = instance.deleteMaintenanceActivity(activity.getActivityId(), conn);
         assertEquals(true, result);
     }
