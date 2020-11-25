@@ -83,10 +83,11 @@ public class MaintenanceActivityDAOTest {
 
 
     /**
-     * Test of retrieveMaintenanceActivityDao method, of class MaintenanceActivityDAO.
+     * This method asserts that retrieveMaintenanceActivityDao correctly returns a PlannedMaintenanceActivity object<br>
+     * when there is in database a planned activity with the required activityId.
      */
     @Test
-    public void testRetrieveMaintenanceActivityDao() {
+    public void testRetrieveMaintenanceActivityDaoIsInDatabasePlanned() {
         try {
             deleteMaintenaceActivity(1);
             insertMaintenanceActivity(1,"ProvaDescrizione",120,"2050-11-23",true, 
@@ -102,7 +103,10 @@ public class MaintenanceActivityDAOTest {
 
         }
     }
-    
+    /**
+     * This method asserts that retrieveMaintenanceActivityDao correctly returns an Ewo object<br>
+     * when there is in database a Ewo activity with the required activityId.
+     */
     @Test
     public void testRetrieveMaintenanceActivityDaoIsInDatabaseEWO() {
         try {
@@ -120,6 +124,10 @@ public class MaintenanceActivityDAOTest {
 
         }
     }
+    /**
+     * This method asserts that retrieveMaintenanceActivityDao correctly returns an ExtraActivity object<br>
+     * when there is in database a extra activity with the required activityId.
+     */
     @Test
     public void testRetrieveMaintenanceActivityDaoIsInDatabaseExtra() {
         try {
@@ -137,7 +145,10 @@ public class MaintenanceActivityDAOTest {
 
         }
     }
-    
+    /**
+     * This method asserts that retrieveMaintenanceActivityDao correctly returns null when the required<br>
+     * maintenance activity is not in the database
+     */
     @Test
     public void testRetrieveMaintenanceActivityDaoIsNotInDatabase() {
         try {

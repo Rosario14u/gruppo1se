@@ -77,7 +77,15 @@ public class MaintenanceActivityDAO {
             return false;
         }   
     }
-    
+    /**
+     * 
+     * This method recover from a database the maintenance activity if exists, according to activityId parameter.
+     * @param activityId activity id of the maintenance activity to retrieve
+     * @param conn
+     * @return {@code MaintenanceActivity} MaintenanceActivity if exists a maintenance activity
+     * with corresponding id in database, null otherwise.
+     */
+    /*Method developed by Rosario Gaeta*/
     public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId, Connection conn){
         try {
             String query = "SELECT * FROM MaintenanceActivity WHERE activityId = ?";
@@ -90,17 +98,27 @@ public class MaintenanceActivityDAO {
            return null;
         }       
     }
-   
+   /**
+    * This method build and retrieve the correct MaintenanceActivity object according to ResultSet
+    * @param rs ResultSet from which to build maintenance activity object
+    * @param conn
+    * @return {@code MaintenaceActivity} MaintenanceActivity according to the content of resultSet,
+    * null if Result set is empty or there is an error
+    * @throws SQLException 
+    */
+    /*Method developed by Rosario Gaeta*/
     private MaintenanceActivity makeMaintenanceActivity(ResultSet rs, Connection conn) throws SQLException{
         try {
             while(rs.next()){
                 String typologyOfActivity = rs.getString("typologyOfActivity").toUpperCase();
                 String typologyOfUnplanned = rs.getString("typologyOfUnplannedActivity");
                 typologyOfUnplanned = typologyOfUnplanned == null ? null : typologyOfUnplanned.toUpperCase();
-                Site site = new SiteDao().retrieveSiteDao(new Site(rs.getString("branchOffice"), rs.getString("area")),conn);
+                Site site = new SiteDao().retrieveSiteDao(rs.getString("branchOffice"),
+                        rs.getString("area"),conn);
                 // Selection of the type of the object to create 
                 MaintenanceActivityFactory.Typology type = typologyOfActivity.compareTo("PLANNED")==0 ? 
-                        MaintenanceActivityFactory.Typology.PLANNED : MaintenanceActivityFactory.Typology.valueOf(typologyOfUnplanned); 
+                        MaintenanceActivityFactory.Typology.PLANNED : 
+                        MaintenanceActivityFactory.Typology.valueOf(typologyOfUnplanned); 
                 return MaintenanceActivityFactory.make(type, rs.getInt("activityId"), site, 
                             rs.getString("typologyName"), rs.getString("activityDescription"), 
                             rs.getInt("estimatedInterventionTime"), LocalDate.parse(rs.getString("dateActivity")),
