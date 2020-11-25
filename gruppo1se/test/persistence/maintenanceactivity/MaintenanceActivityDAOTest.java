@@ -501,40 +501,29 @@ public class MaintenanceActivityDAOTest {
      */
     @Test
     public void testDeleteMaintenanceActivity() {
-        try {
-            System.out.println("deleteMaintenanceActivity");
-            MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
-            Site site = new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes");
-            MaintenanceProcedure proc = new MaintenanceProcedure("ProvaPDF");
-            ArrayList<String> mat = new ArrayList<>();
-            PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(123,site,"ProvaTypology","ProvaActivityDescription",30,LocalDate.of(2050,11,25),proc,mat,true);
-            instance.addMaintenanceActivity(activity, conn);
-            boolean result = instance.deleteMaintenanceActivity(activity.getActivityId(), conn);
-            assertEquals(true, result);
-            conn.rollback();
-        } catch (SQLException ex) {
-            System.out.println("Error on: connection rollback");
-        }
-      
+        System.out.println("deleteMaintenanceActivity");
+        MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
+        Site site = new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes");
+        MaintenanceProcedure proc = new MaintenanceProcedure("ProvaPDF");
+        ArrayList<String> mat = new ArrayList<>();
+        PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(123,site,"ProvaTypology","ProvaActivityDescription",30,LocalDate.of(2050,11,25),proc,mat,true);
+        boolean check = instance.addMaintenanceActivity(activity, conn);
+        System.out.println(check);
+        boolean result = instance.deleteMaintenanceActivity(activity.getActivityId(), conn);
+        assertEquals(true, result);
     }
     
     
     @Test
     public void testDeleteMaintenanceActivityWithWrongId() {
-        try {
-            System.out.println("deleteMaintenanceActivity");
-            MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
-            Site site = new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes");
-            MaintenanceProcedure proc = new MaintenanceProcedure("ProvaPDF");
-            ArrayList<String> mat = new ArrayList<>();
-            PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(123,site,"ProvaTypology","ProvaActivityDescription",30,LocalDate.of(2050,11,25),proc,mat,true);
-            instance.addMaintenanceActivity(activity, conn);
-            boolean result = instance.deleteMaintenanceActivity(124, conn);
-            assertEquals(false, result);
-            conn.rollback();
-        } catch (SQLException ex) {
-            System.out.println("Error on: connection rollback");
-        }
-      
+        System.out.println("deleteMaintenanceActivity");
+        MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
+        Site site = new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes");
+        MaintenanceProcedure proc = new MaintenanceProcedure("ProvaPDF");
+        ArrayList<String> mat = new ArrayList<>();
+        PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(123,site,"ProvaTypology","ProvaActivityDescription",30,LocalDate.of(2050,11,25),proc,mat,true);
+        instance.addMaintenanceActivity(activity, conn);
+        boolean result = instance.deleteMaintenanceActivity(124, conn);
+        assertEquals(false, result); 
     }
 }
