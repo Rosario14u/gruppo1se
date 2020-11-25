@@ -63,5 +63,8 @@ public class Planner extends User {
         return maintenanceActivityDao.modifyMaintenaceActivity(activityId, newActivity, conn);
     }
     
-    
+    public boolean removeMaintenanceActivity(int activityId, Connection conn){
+        MaintenanceActivityDAO dao = new MaintenanceActivityDAO();
+        return dao.deleteMaintenanceActivity(activityId, conn);
+    }
 }
