@@ -8,6 +8,7 @@ package persistence.maintenanceactivity;
 import business.maintenanceactivity.Ewo;
 import business.maintenanceactivity.ExtraActivity;
 import business.maintenanceactivity.MaintenanceActivity;
+import business.maintenanceactivity.MaintenanceProcedure;
 import business.maintenanceactivity.PlannedMaintenanceActivity;
 import business.maintenanceactivity.Site;
 import java.sql.Connection;
@@ -21,6 +22,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
@@ -407,5 +409,132 @@ public class MaintenanceActivityDAOTest {
             assertEquals(typologyOfUnplannedActivity, res.getString("typologyOfUnplannedActivity"));
         }   
     }
+  /*=======================================================================================================================================*/
+    /**
+     * Test of addMaintenanceActivity method, of class MaintenanceActivityDAO.
+     */
+    @Test
+    public void testAddMaintenanceActivity() {
+        try {
+            System.out.println("addMaintenanceActivity");
+            Site site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
+            String activityDescription = "ProvaActivityDescription";
+            MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
+            ArrayList<String> materials = new ArrayList<>();
+            materials.add("ProvaMaterial1");
+            materials.add("ProvaMaterial2");
+            materials.add("ProvaMaterial3");
+            materials.add("ProvaMaterial4");
+            String typology = "ProvaTypology";
+            PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(1, site, typology, activityDescription, 300, LocalDate.of(2050, 11, 25), maintenanceProcedure, materials, false);
+            MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
+            boolean result = instance.addMaintenanceActivity(activity, conn);
+            assertEquals(result, true);
+            conn.rollback();
+        } catch (SQLException ex) {
+            System.out.println("Error on: connection rollback");
+        }
+    }
     
+    @Test
+    public void testAddMaintenanceActivityWrongDate() {
+        try {
+            System.out.println("addMaintenanceActivity");
+            Site site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
+            String activityDescription = "ProvaActivityDescription";
+            MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
+            ArrayList<String> materials = new ArrayList<>();
+            materials.add("ProvaMaterial1");
+            materials.add("ProvaMaterial2");
+            materials.add("ProvaMaterial3");
+            materials.add("ProvaMaterial4");
+            String typology = "ProvaTypology";
+            PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(1, site, typology, activityDescription, 300, LocalDate.now(), maintenanceProcedure, materials, false);
+            MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
+            boolean result = instance.addMaintenanceActivity(activity, conn);
+            assertEquals(result, false);
+            conn.rollback();
+        } catch (SQLException ex) {
+            System.out.println("Error on: connection rollback");
+        }
+    }
+    
+    @Test
+    public void testAddMaintenanceActivityWrongActivityId() {
+        try {
+            System.out.println("addMaintenanceActivity");
+            Site site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
+            String activityDescription = "ProvaActivityDescription";
+            MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
+            ArrayList<String> materials = new ArrayList<>();
+            materials.add("ProvaMaterial1");
+            materials.add("ProvaMaterial2");
+            materials.add("ProvaMaterial3");
+            materials.add("ProvaMaterial4");
+            String typology = "ProvaTypology";
+            PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(0, site, typology, activityDescription, 300, LocalDate.now(), maintenanceProcedure, materials, false);
+            MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
+            boolean result = instance.addMaintenanceActivity(activity, conn);
+            assertEquals(result, false);
+            conn.rollback();
+        } catch (SQLException ex) {
+            System.out.println("Error on connection rollback");
+        }
+    }
+    
+    @Test
+    public void testAddMaintenanceActivityUnplanned() {
+        try {
+            System.out.println("addMaintenanceActivity");
+            Site site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
+            String activityDescription = "ProvaActivityDescription";
+            MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
+            ArrayList<String> materials = new ArrayList<>();
+            materials.add("ProvaMaterial1");
+            materials.add("ProvaMaterial2");
+            materials.add("ProvaMaterial3");
+            materials.add("ProvaMaterial4");
+            String typology = "ProvaTypology";
+            Ewo activity = new Ewo(2, site, typology, activityDescription, 300, LocalDate.of(2050, 11, 25), maintenanceProcedure, materials, false);
+            MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
+            boolean result = instance.addMaintenanceActivity(activity, conn);
+            assertEquals(result, true);
+            conn.rollback();
+        } catch (SQLException ex) {
+            System.out.println("Error on connection rollback");
+        }
+    }
+    
+  /*=======================================================================================================================================*/
+   
+    /**
+     * Test of deleteMaintenanceActivity method, of class MaintenanceActivityDAO.
+     */
+    @Test
+    public void testDeleteMaintenanceActivity() {
+        System.out.println("deleteMaintenanceActivity");
+        MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
+        Site site = new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes");
+        MaintenanceProcedure proc = new MaintenanceProcedure("ProvaPDF");
+        ArrayList<String> mat = new ArrayList<>();
+        PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(123,site,"ProvaTypology","ProvaActivityDescription",30,LocalDate.of(2050,11,25),proc,mat,true);
+        boolean check = instance.addMaintenanceActivity(activity, conn);
+        System.out.println(check);
+        boolean result = instance.deleteMaintenanceActivity(activity.getActivityId(), conn);
+        assertEquals(true, result);
+    }
+    
+    
+    @Test
+    public void testDeleteMaintenanceActivityWithWrongId() {
+        System.out.println("deleteMaintenanceActivity");
+        MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
+        Site site = new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes");
+        MaintenanceProcedure proc = new MaintenanceProcedure("ProvaPDF");
+        ArrayList<String> mat = new ArrayList<>();
+        PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(123,site,"ProvaTypology","ProvaActivityDescription",30,LocalDate.of(2050,11,25),proc,mat,true);
+        instance.addMaintenanceActivity(activity, conn);
+        boolean result = instance.deleteMaintenanceActivity(124, conn);
+        assertEquals(false, result); 
+    }
 }
