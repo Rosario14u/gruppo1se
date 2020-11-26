@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
@@ -440,60 +441,83 @@ public class MaintenanceActivityDAOTest {
     /**
      * Test of addMaintenanceActivity method, of class MaintenanceActivityDAO.
      */
+    /**
+     * Test of addMaintenanceActivity method, of class MaintenanceActivityDAO.
+     */
     @Test
     public void testAddMaintenanceActivity() {
-        System.out.println("addMaintenanceActivity");
-        Site site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
-        String activityDescription = "ProvaActivityDescription";
-        MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
-        ArrayList<Material> materials = new ArrayList<>();
-        String typology = "ProvaTypology";
-        PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(1, site, typology, activityDescription, 300, LocalDate.of(2050, 11, 25), maintenanceProcedure, materials, false);
-        MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
-        boolean result = instance.addMaintenanceActivity(activity, conn);
-        assertEquals(result, true);
+        try {
+            System.out.println("addMaintenanceActivity");
+            Site site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
+            String activityDescription = "ProvaActivityDescription";
+            MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
+            LinkedList<Material> materials = new LinkedList<>();
+            String typology = "ProvaTypology";
+            PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(1, site, typology, activityDescription, 300, LocalDate.of(2050, 11, 25), maintenanceProcedure, materials, false);
+            MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
+            boolean result = instance.addMaintenanceActivity(activity, conn);
+            assertEquals(result, true);
+            conn.rollback();
+        } catch (SQLException ex) {
+            System.out.println("Error on: connection rollback");
+        }
     }
     
     @Test
     public void testAddMaintenanceActivityWrongDate() {
-        System.out.println("addMaintenanceActivity");
-        Site site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
-        String activityDescription = "ProvaActivityDescription";
-        MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
-        ArrayList<Material> materials = new ArrayList<>();
-        String typology = "ProvaTypology";
-        PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(1, site, typology, activityDescription, 300, LocalDate.now(), maintenanceProcedure, materials, false);
-        MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
-        boolean result = instance.addMaintenanceActivity(activity, conn);
-        assertEquals(result, false);
+        try {
+            System.out.println("addMaintenanceActivity");
+            Site site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
+            String activityDescription = "ProvaActivityDescription";
+            MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
+            LinkedList<Material> materials = new LinkedList<>();
+            String typology = "ProvaTypology";
+            PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(1, site, typology, activityDescription, 300, LocalDate.of(2020,11,24), maintenanceProcedure, materials, false);
+            MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
+            boolean result = instance.addMaintenanceActivity(activity, conn);
+            assertEquals(result, false);
+            conn.rollback();
+        } catch (SQLException ex) {
+            System.out.println("Error on: connection rollback");
+        }
     }
     
     @Test
     public void testAddMaintenanceActivityWrongActivityId() {
-        System.out.println("addMaintenanceActivity");
-        Site site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
-        String activityDescription = "ProvaActivityDescription";
-        MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
-        ArrayList<Material> materials = new ArrayList<>();
-        String typology = "ProvaTypology";
-        PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(0, site, typology, activityDescription, 300, LocalDate.now(), maintenanceProcedure, materials, false);
-        MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
-        boolean result = instance.addMaintenanceActivity(activity, conn);
-        assertEquals(result, false);
+        try {
+            System.out.println("addMaintenanceActivity");
+            Site site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
+            String activityDescription = "ProvaActivityDescription";
+            MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
+            LinkedList<Material> materials = new LinkedList<>();
+            String typology = "ProvaTypology";
+            PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(0, site, typology, activityDescription, 300, LocalDate.now(), maintenanceProcedure, materials, false);
+            MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
+            boolean result = instance.addMaintenanceActivity(activity, conn);
+            assertEquals(result, false);
+            conn.rollback();
+        } catch (SQLException ex) {
+            System.out.println("Error on: connection rollback");
+        }
     }
     
     @Test
     public void testAddMaintenanceActivityUnplanned() {
-        System.out.println("addMaintenanceActivity");
-        Site site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
-        String activityDescription = "ProvaActivityDescription";
-        MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
-        ArrayList<Material> materials = new ArrayList<>();
-        String typology = "ProvaTypology";
-        Ewo activity = new Ewo(2, site, typology, activityDescription, 300, LocalDate.of(2050, 11, 25), maintenanceProcedure, materials, false);
-        MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
-        boolean result = instance.addMaintenanceActivity(activity, conn);
-        assertEquals(result, true);
+        try {
+            System.out.println("addMaintenanceActivity");
+            Site site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
+            String activityDescription = "ProvaActivityDescription";
+            MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
+            LinkedList<Material> materials = new LinkedList<>();
+            String typology = "ProvaTypology";
+            Ewo activity = new Ewo(2, site, typology, activityDescription, 300, LocalDate.of(2050, 11, 25), maintenanceProcedure, materials, false);
+            MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
+            boolean result = instance.addMaintenanceActivity(activity, conn);
+            assertEquals(result, true);
+            conn.rollback();
+        } catch (SQLException ex) {
+            System.out.println("Error on: connection rollback");
+        }
     }
     
   /*=======================================================================================================================================*/

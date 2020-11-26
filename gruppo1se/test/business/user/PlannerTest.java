@@ -9,14 +9,15 @@ import business.maintenanceactivity.Ewo;
 import business.maintenanceactivity.ExtraActivity;
 import business.maintenanceactivity.MaintenanceActivity;
 import business.maintenanceactivity.MaintenanceProcedure;
+import business.maintenanceactivity.Material;
 import business.maintenanceactivity.PlannedMaintenanceActivity;
 import business.maintenanceactivity.Site;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
@@ -221,4 +222,141 @@ public class PlannerTest {
         stm.executeUpdate(query);
     }
     
+    
+    /**
+     * Test of makeMaintenanceActivity method, of class Planner.
+     */
+    @Test
+    public void testMakeMaintenanceActivity() {
+        try {
+            System.out.println("makeMaintenanceActivity");
+            int activityId = 1;
+            String branchOffice = "ProvaBranchOffice";
+            String area = "ProvaArea";
+            String workspaceNotes = "ProvaWorkspaceNotes";
+            String typology = "ProvaTypology";
+            String activityDescription = "ProvaActivityDescription";
+            int estimatedInterventionTime = 30;
+            LocalDate date = LocalDate.of(2050, 11, 25);
+            MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
+            ArrayList<Material> materials = new ArrayList<>();
+            boolean interruptibleActivity = false;
+            boolean plannedActivity = true;
+            boolean extraActivity = false;
+            boolean ewo = false;
+            Planner instance = new Planner("ProvaUsername","ProvaPassword");
+            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo, conn);
+            assertEquals(true, result);
+            conn.rollback();
+        } catch (SQLException ex) {
+            System.out.println("Error on: connection rollback");
+        }
+    }
+
+    @Test
+    public void testMakeMaintenanceActivityWrongActivityID(){
+        try {
+            System.out.println("makeMaintenanceActivityWrongActivityID");
+            int activityId = 0;
+            String branchOffice = "ProvaBranchOffice";
+            String area = "ProvaArea";
+            String workspaceNotes = "ProvaWorkspaceNotes";
+            String typology = "ProvaTypology";
+            String activityDescription = "ProvaActivityDescription";
+            int estimatedInterventionTime = 30;
+            LocalDate date = LocalDate.of(2050, 11, 25);
+            MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
+            ArrayList<Material> materials = new ArrayList<>();
+            boolean interruptibleActivity = false;
+            boolean plannedActivity = true;
+            boolean extraActivity = false;
+            boolean ewo = false;
+            Planner instance = new Planner("ProvaUsername","ProvaPassword");
+            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo, conn);
+            assertEquals(false, result);
+            conn.rollback();
+        } catch (SQLException ex) {
+            System.out.println("Error on: connection rollback");
+        }
+    }
+    @Test
+    public void testMakeMaintenanceActivityWrongDate(){
+        try {
+            System.out.println("makeMaintenanceActivityWrongDate");
+            int activityId = 1;
+            String branchOffice = "ProvaBranchOffice";
+            String area = "ProvaArea";
+            String workspaceNotes = "ProvaWorkspaceNotes";
+            String typology = "ProvaTypology";
+            String activityDescription = "ProvaActivityDescription";
+            int estimatedInterventionTime = 30;
+            LocalDate date = LocalDate.of(2010, 11, 25);
+            MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
+            ArrayList<Material> materials = new ArrayList<>();
+            boolean interruptibleActivity = false;
+            boolean plannedActivity = true;
+            boolean extraActivity = false;
+            boolean ewo = false;
+            Planner instance = new Planner("ProvaUsername","ProvaPassword");
+            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo, conn);
+            assertEquals(false, result);
+            conn.rollback();
+        } catch (SQLException ex) {
+            System.out.println("Error on: connection rollback");
+        }
+    }
+    
+    @Test
+    public void testMakeMaintenanceActivityExtra(){
+        try {
+            System.out.println("makeMaintenanceActivityExtra");
+            int activityId = 1;
+            String branchOffice = "ProvaBranchOffice";
+            String area = "ProvaArea";
+            String workspaceNotes = "ProvaWorkspaceNotes";
+            String typology = "ProvaTypology";
+            String activityDescription = "ProvaActivityDescription";
+            int estimatedInterventionTime = 30;
+            LocalDate date = LocalDate.of(2050, 11, 25);
+            MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
+            ArrayList<Material> materials = new ArrayList<>();
+            boolean interruptibleActivity = false;
+            boolean plannedActivity = false;
+            boolean extraActivity = true;
+            boolean ewo = false;
+            Planner instance = new Planner("ProvaUsername","ProvaPassword");
+            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo, conn);
+            assertEquals(true, result);
+            conn.rollback();
+        } catch (SQLException ex) {
+            System.out.println("Error on: connection rollback");
+        }
+    }
+    
+    @Test
+    public void testMakeMaintenanceActivityEwo(){
+        try {
+            System.out.println("makeMaintenanceActivityEwo");
+            int activityId = 1;
+            String branchOffice = "ProvaBranchOffice";
+            String area = "ProvaArea";
+            String workspaceNotes = "ProvaWorkspaceNotes";
+            String typology = "ProvaTypology";
+            String activityDescription = "ProvaActivityDescription";
+            int estimatedInterventionTime = 30;
+            LocalDate date = LocalDate.of(2050, 11, 25);
+            MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
+            ArrayList<Material> materials = new ArrayList<>();
+            boolean interruptibleActivity = false;
+            boolean plannedActivity = false;
+            boolean extraActivity = false;
+            boolean ewo = true;
+            Planner instance = new Planner("ProvaUsername","ProvaPassword");
+            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo, conn);
+            assertEquals(true, result);
+            conn.rollback();
+        } catch (SQLException ex) {
+            System.out.println("Error on: connection rollback");
+        }
+    }
 }
