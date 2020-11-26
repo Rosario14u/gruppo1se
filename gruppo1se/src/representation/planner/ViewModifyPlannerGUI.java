@@ -5,17 +5,45 @@
  */
 package representation.planner;
 
+import business.maintenanceactivity.MaintenanceActivity;
+import business.maintenanceactivity.Material;
+import business.user.Planner;
+import java.awt.Color;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.temporal.WeekFields;
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author gorra
  */
 public class ViewModifyPlannerGUI extends javax.swing.JFrame {
-
+    private final DefaultListModel<Material> listModel;
+    private Planner planner;
+    private static final String URL = "jdbc:postgresql://localhost/Gruppo1_SE";
+    private static final  String USER = "gruppo1";
+    private static final  String PWD = "123456";
+    private Connection conn;
     /**
      * Creates new form ViewModifyPlannerGUI1
      */
     public ViewModifyPlannerGUI() {
+        listModel = new DefaultListModel<>();
+        planner = new Planner("admin","admin");
         initComponents();
+        initializeField(false);
+        try {    
+            conn = DriverManager.getConnection(URL, USER, PWD);
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewModifyPlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -27,7 +55,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        estimstedInterventionTimeLabel = new javax.swing.JLabel();
+        estimatedInterventionTimeLabel = new javax.swing.JLabel();
         weekLabel = new javax.swing.JLabel();
         activityDescriptionLabel = new javax.swing.JLabel();
         interruptibleActivityLabel = new javax.swing.JLabel();
@@ -37,13 +65,13 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         weekTextField = new javax.swing.JTextField();
         branchOfficeTextField = new javax.swing.JTextField();
         areaTextField = new javax.swing.JTextField();
-        estimstedInterventionTimeTextField = new javax.swing.JTextField();
+        estimatedInterventionTimeTextField = new javax.swing.JTextField();
         activityIdLabel = new javax.swing.JLabel();
         branchOfficeLabel = new javax.swing.JLabel();
         areaLabel = new javax.swing.JLabel();
         typologyLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        workspaceNoteTextArea = new javax.swing.JTextArea();
         interruptibleActivityCheckBox = new javax.swing.JCheckBox();
         jScrollPane2 = new javax.swing.JScrollPane();
         activityDescriptionTextArea = new javax.swing.JTextArea();
@@ -54,10 +82,11 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         deleteButton = new javax.swing.JButton();
         modifyButton = new javax.swing.JButton();
         viewButton = new javax.swing.JButton();
+        addMaterialTextField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        estimstedInterventionTimeLabel.setText("Estimated Intervention Time:");
+        estimatedInterventionTimeLabel.setText("Estimated Intervention Time:");
 
         weekLabel.setText("Week:");
 
@@ -87,9 +116,9 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
 
         typologyLabel.setText("Typology:");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        workspaceNoteTextArea.setColumns(20);
+        workspaceNoteTextArea.setRows(5);
+        jScrollPane1.setViewportView(workspaceNoteTextArea);
 
         interruptibleActivityCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -104,11 +133,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
 
         listOfMaterialsLabel.setText("List of Materials:");
 
-        listOfMaterialsJList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+        listOfMaterialsJList.setModel(listModel);
         jScrollPane3.setViewportView(listOfMaterialsJList);
 
         addButton.setText("Add");
@@ -140,9 +165,9 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(weekTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(66, 66, 66)
-                        .addComponent(estimstedInterventionTimeLabel)
+                        .addComponent(estimatedInterventionTimeLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(estimstedInterventionTimeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(estimatedInterventionTimeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(6, 6, 6))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 644, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -153,13 +178,10 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(interruptibleActivityCheckBox))
                         .addComponent(listOfMaterialsLabel))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 641, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(5, 5, 5)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(activityIdLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -167,26 +189,26 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
                                 .addGap(88, 88, 88)
                                 .addComponent(branchOfficeLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(branchOfficeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGap(109, 109, 109)
+                                .addComponent(branchOfficeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(areaLabel)
                         .addGap(18, 18, 18)
-                        .addComponent(areaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(areaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(viewButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(modifyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(228, 228, 228))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(23, 23, 23))))
+                        .addGap(210, 210, 210))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(addMaterialTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(5, 5, 5))
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 641, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -209,8 +231,8 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
                     .addComponent(typologyTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(weekLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(weekTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(estimstedInterventionTimeLabel)
-                    .addComponent(estimstedInterventionTimeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(estimatedInterventionTimeLabel)
+                    .addComponent(estimatedInterventionTimeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(activityDescriptionLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -226,8 +248,9 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addButton)
-                    .addComponent(deleteButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                    .addComponent(deleteButton)
+                    .addComponent(addMaterialTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(modifyButton)
                     .addComponent(viewButton))
@@ -246,7 +269,19 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_weekTextFieldActionPerformed
 
     private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
-        // TODO add your handling code here:
+        String activityId = activityIdTextField.getText().trim().replaceAll("  +", " ");
+        try{
+            int id = Integer.parseInt(activityId);
+            if (id >= 0){
+                MaintenanceActivity activity = planner.viewMaintenanceActivity(id, conn);
+                setField(activity);
+                initializeField(true);
+            }else{
+               errorMessage("ID must be a positive integer"); 
+            }
+        }catch(NumberFormatException ex){
+            errorMessage("ID must be an integer");
+        }  
     }//GEN-LAST:event_viewButtonActionPerformed
 
     private void activityIdTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_activityIdTextFieldActionPerformed
@@ -288,6 +323,45 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
             }
         });
     }
+    
+    private void initializeField(boolean enabled) {
+        activityDescriptionTextArea.setEnabled(enabled);
+        addButton.setEnabled(enabled);
+        addMaterialTextField.setEnabled(enabled);
+        areaTextField.setEnabled(enabled);
+        branchOfficeTextField.setEnabled(enabled);
+        deleteButton.setEnabled(enabled);
+        estimatedInterventionTimeTextField.setEnabled(enabled);
+        interruptibleActivityCheckBox.setEnabled(enabled);
+        listOfMaterialsJList.setEnabled(enabled);
+        modifyButton.setEnabled(enabled);
+        typologyTextField.setEnabled(enabled);
+        weekTextField.setEnabled(enabled);
+        workspaceNoteTextArea.setEnabled(enabled);     
+    }
+    
+    private void setField(MaintenanceActivity activity){
+        activityDescriptionTextArea.setText(activity.getActivityDescription());
+        areaTextField.setText(activity.getSite().getArea());
+        branchOfficeTextField.setText(activity.getSite().getBranchOffice());
+        estimatedInterventionTimeTextField.setText(String.valueOf(activity.getEstimatedInterventionTime()));
+        interruptibleActivityCheckBox.setSelected(activity.isInterruptibleActivity());
+        typologyTextField.setText(activity.getTypology());
+        weekTextField.setText(String.valueOf(getWeekNumber(activity.getDate())));
+        workspaceNoteTextArea.setText(activity.getSite().getWorkSpaceNotes());
+        listModel.addAll(0, activity.getMaterials());
+    }
+    
+    private int getWeekNumber(LocalDate date){
+        Locale userLocale = Locale.ITALY;
+        WeekFields weekNumbering = WeekFields.of(userLocale);
+        System.out.println("Week Numbering" + weekNumbering);
+        return date.get(weekNumbering.weekOfWeekBasedYear());
+    }
+    
+    private void errorMessage(String message){
+        JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.ERROR_MESSAGE);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel activityDescriptionLabel;
@@ -295,21 +369,21 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
     private javax.swing.JLabel activityIdLabel;
     private javax.swing.JTextField activityIdTextField;
     private javax.swing.JButton addButton;
+    private javax.swing.JTextField addMaterialTextField;
     private javax.swing.JLabel areaLabel;
     private javax.swing.JTextField areaTextField;
     private javax.swing.JLabel branchOfficeLabel;
     private javax.swing.JTextField branchOfficeTextField;
     private javax.swing.JButton deleteButton;
-    private javax.swing.JLabel estimstedInterventionTimeLabel;
-    private javax.swing.JTextField estimstedInterventionTimeTextField;
+    private javax.swing.JLabel estimatedInterventionTimeLabel;
+    private javax.swing.JTextField estimatedInterventionTimeTextField;
     private javax.swing.JCheckBox interruptibleActivityCheckBox;
     private javax.swing.JLabel interruptibleActivityLabel;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JList<String> listOfMaterialsJList;
+    private javax.swing.JList<Material> listOfMaterialsJList;
     private javax.swing.JLabel listOfMaterialsLabel;
     private javax.swing.JButton modifyButton;
     private javax.swing.JLabel typologyLabel;
@@ -317,5 +391,6 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
     private javax.swing.JButton viewButton;
     private javax.swing.JLabel weekLabel;
     private javax.swing.JTextField weekTextField;
+    private javax.swing.JTextArea workspaceNoteTextArea;
     // End of variables declaration//GEN-END:variables
 }

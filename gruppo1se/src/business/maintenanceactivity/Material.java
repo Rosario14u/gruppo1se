@@ -22,7 +22,7 @@ public class Material {
 
     @Override
     public String toString() {
-        return "Material{" + "name=" + name + '}';
+        return name;
     }
     
 }

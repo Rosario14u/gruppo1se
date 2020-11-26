@@ -35,9 +35,9 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="weekTextField" min="-2" pref="74" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="66" max="-2" attributes="0"/>
-                      <Component id="estimstedInterventionTimeLabel" min="-2" max="-2" attributes="0"/>
+                      <Component id="estimatedInterventionTimeLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="estimstedInterventionTimeTextField" min="-2" pref="74" max="-2" attributes="0"/>
+                      <Component id="estimatedInterventionTimeTextField" min="-2" pref="74" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jScrollPane1" alignment="1" min="-2" pref="644" max="-2" attributes="0"/>
@@ -51,14 +51,10 @@
                       </Group>
                       <Component id="listOfMaterialsLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jScrollPane3" alignment="1" min="-2" pref="641" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="jLabel11" min="-2" pref="116" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          </Group>
+                          <Component id="jLabel11" min="-2" pref="116" max="-2" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Component id="activityIdLabel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -67,33 +63,32 @@
                               <Component id="branchOfficeLabel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="branchOfficeTextField" min="-2" pref="74" max="-2" attributes="0"/>
-                              <EmptySpace min="14" max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="109" max="-2" attributes="0"/>
+                      <EmptySpace min="109" max="32767" attributes="0"/>
                       <Component id="areaLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="areaTextField" min="-2" pref="74" max="-2" attributes="0"/>
                   </Group>
-              </Group>
-              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="viewButton" min="-2" pref="77" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="modifyButton" min="-2" pref="77" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="228" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="210" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="addButton" min="-2" pref="77" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="deleteButton" min="-2" pref="77" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+                  <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="addMaterialTextField" min="-2" pref="149" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="addButton" min="-2" pref="77" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="deleteButton" min="-2" pref="77" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="jScrollPane3" alignment="1" min="-2" pref="641" max="-2" attributes="0"/>
                   </Group>
               </Group>
+              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -119,8 +114,8 @@
                   <Component id="typologyTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="weekLabel" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
                   <Component id="weekTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="estimstedInterventionTimeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="estimstedInterventionTimeTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="estimatedInterventionTimeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="estimatedInterventionTimeTextField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="activityDescriptionLabel" min="-2" max="-2" attributes="0"/>
@@ -139,8 +134,9 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="addButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="deleteButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="addMaterialTextField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="37" max="32767" attributes="0"/>
+              <EmptySpace pref="71" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="modifyButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="viewButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -151,7 +147,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JLabel" name="estimstedInterventionTimeLabel">
+    <Component class="javax.swing.JLabel" name="estimatedInterventionTimeLabel">
       <Properties>
         <Property name="text" type="java.lang.String" value="Estimated Intervention Time:"/>
       </Properties>
@@ -192,7 +188,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="areaTextField">
     </Component>
-    <Component class="javax.swing.JTextField" name="estimstedInterventionTimeTextField">
+    <Component class="javax.swing.JTextField" name="estimatedInterventionTimeTextField">
     </Component>
     <Component class="javax.swing.JLabel" name="activityIdLabel">
       <Properties>
@@ -221,7 +217,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTextArea" name="jTextArea1">
+        <Component class="javax.swing.JTextArea" name="workspaceNoteTextArea">
           <Properties>
             <Property name="columns" type="int" value="20"/>
             <Property name="rows" type="int" value="5"/>
@@ -266,18 +262,12 @@
       <SubComponents>
         <Component class="javax.swing.JList" name="listOfMaterialsJList">
           <Properties>
-            <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-              <StringArray count="5">
-                <StringItem index="0" value="Item 1"/>
-                <StringItem index="1" value="Item 2"/>
-                <StringItem index="2" value="Item 3"/>
-                <StringItem index="3" value="Item 4"/>
-                <StringItem index="4" value="Item 5"/>
-              </StringArray>
+            <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="listModel" type="code"/>
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Material&gt;"/>
           </AuxValues>
         </Component>
       </SubComponents>
@@ -304,6 +294,8 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="viewButtonActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="addMaterialTextField">
     </Component>
   </SubComponents>
 </Form>
