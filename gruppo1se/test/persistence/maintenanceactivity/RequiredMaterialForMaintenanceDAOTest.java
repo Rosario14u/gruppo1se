@@ -41,7 +41,7 @@ public class RequiredMaterialForMaintenanceDAOTest {
             conn = ConnectionDB.getInstanceConnection().getConnection();
             conn.setAutoCommit(false);
         } catch (SQLException ex) {
-            Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RequiredMaterialForMaintenanceDAOTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -51,7 +51,7 @@ public class RequiredMaterialForMaintenanceDAOTest {
             conn.setAutoCommit(true);
             conn.close();
         } catch (SQLException ex) {
-            Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RequiredMaterialForMaintenanceDAOTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

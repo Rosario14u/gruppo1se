@@ -38,7 +38,7 @@ public class SiteDaoTest {
             conn = ConnectionDB.getInstanceConnection().getConnection();
             conn.setAutoCommit(false);
         } catch (SQLException ex) {
-            Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SiteDaoTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -48,7 +48,7 @@ public class SiteDaoTest {
             conn.setAutoCommit(true);
             conn.close();
         } catch (SQLException ex) {
-            Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SiteDaoTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

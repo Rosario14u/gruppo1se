@@ -435,11 +435,8 @@ public class CreateActivity extends javax.swing.JFrame {
         String typology = jTypology.getText();
         String activityDescription = jActivityDescription.getText();
         int estimatedInterventionTime = Integer.parseInt(jEstimatedInterventionTime.getText());
-        String dateString = jDate.getText();
-        String[] yearMonthDay = dateString.split("-");
-        LocalDate date = LocalDate.of(Integer.parseInt(yearMonthDay[0]),Integer.parseInt(yearMonthDay[1]),Integer.parseInt(yearMonthDay[2]));
-        String maintenanceProcedureString = jMaintenanceProcedure.getText();
-        MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure(maintenanceProcedureString);
+        String date = jDate.getText();
+        String maintenanceProcedure = jMaintenanceProcedure.getText();
         LinkedList<Material> materials = new LinkedList<>();
         String materialString = jMaterials.getText();
         String[] materialStringList = materialString.split(",");

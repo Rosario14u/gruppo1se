@@ -46,7 +46,7 @@ public class PlannerTest {
             conn = ConnectionDB.getInstanceConnection().getConnection();
             conn.setAutoCommit(false);
         } catch (SQLException ex) {
-            Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PlannerTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -56,7 +56,7 @@ public class PlannerTest {
           conn.setAutoCommit(true);
           conn.close();
         } catch (SQLException ex) {
-          Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+          Logger.getLogger(PlannerTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -87,7 +87,7 @@ public class PlannerTest {
             
             conn.rollback();
         }catch(SQLException ex){
-            Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);            
+            Logger.getLogger(PlannerTest.class.getName()).log(Level.SEVERE, null, ex);            
         }   
     }
     
@@ -110,7 +110,7 @@ public class PlannerTest {
             
             conn.rollback();
         }catch(SQLException ex){
-            Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);            
+            Logger.getLogger(PlannerTest.class.getName()).log(Level.SEVERE, null, ex);            
         }   
     }
     
@@ -133,7 +133,7 @@ public class PlannerTest {
             
             conn.rollback();
         }catch(SQLException ex){
-            Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);            
+            Logger.getLogger(PlannerTest.class.getName()).log(Level.SEVERE, null, ex);            
         }   
     }
     
@@ -156,7 +156,7 @@ public class PlannerTest {
             
             conn.rollback();
         }catch(SQLException ex){
-            Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);            
+            Logger.getLogger(PlannerTest.class.getName()).log(Level.SEVERE, null, ex);            
         }   
     }
     
@@ -178,7 +178,7 @@ public class PlannerTest {
             
             conn.rollback();
         }catch(SQLException ex){
-            Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);            
+            Logger.getLogger(PlannerTest.class.getName()).log(Level.SEVERE, null, ex);            
         }   
     }
     
@@ -200,7 +200,7 @@ public class PlannerTest {
             
             conn.rollback();
         }catch(SQLException ex){
-            Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);            
+            Logger.getLogger(PlannerTest.class.getName()).log(Level.SEVERE, null, ex);            
         }   
     }
     
@@ -236,15 +236,15 @@ public class PlannerTest {
             String typology = "ProvaTypology";
             String activityDescription = "ProvaActivityDescription";
             int estimatedInterventionTime = 30;
-            LocalDate date = LocalDate.of(2050, 11, 25);
-            MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
+            String date = "2050-11-25";
+            String smp = "ProvaPDF";
             ArrayList<Material> materials = new ArrayList<>();
             boolean interruptibleActivity = false;
             boolean plannedActivity = true;
             boolean extraActivity = false;
             boolean ewo = false;
             Planner instance = new Planner("ProvaUsername","ProvaPassword");
-            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, smp, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
             assertEquals(true, result);
             conn.rollback();
         } catch (SQLException ex) {
@@ -263,15 +263,15 @@ public class PlannerTest {
             String typology = "ProvaTypology";
             String activityDescription = "ProvaActivityDescription";
             int estimatedInterventionTime = 30;
-            LocalDate date = LocalDate.of(2050, 11, 25);
-            MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
+            String date = "2050-11-25";
+            String smp = "ProvaPDF";
             ArrayList<Material> materials = new ArrayList<>();
             boolean interruptibleActivity = false;
             boolean plannedActivity = true;
             boolean extraActivity = false;
             boolean ewo = false;
             Planner instance = new Planner("ProvaUsername","ProvaPassword");
-            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, smp, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
             assertEquals(false, result);
             conn.rollback();
         } catch (SQLException ex) {
@@ -289,15 +289,15 @@ public class PlannerTest {
             String typology = "ProvaTypology";
             String activityDescription = "ProvaActivityDescription";
             int estimatedInterventionTime = 30;
-            LocalDate date = LocalDate.of(2010, 11, 25);
-            MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
+            String date = "2050-11-25";
+            String smp = "ProvaPDF";
             ArrayList<Material> materials = new ArrayList<>();
             boolean interruptibleActivity = false;
             boolean plannedActivity = true;
             boolean extraActivity = false;
             boolean ewo = false;
             Planner instance = new Planner("ProvaUsername","ProvaPassword");
-            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, smp, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
             assertEquals(false, result);
             conn.rollback();
         } catch (SQLException ex) {
@@ -316,15 +316,15 @@ public class PlannerTest {
             String typology = "ProvaTypology";
             String activityDescription = "ProvaActivityDescription";
             int estimatedInterventionTime = 30;
-            LocalDate date = LocalDate.of(2050, 11, 25);
-            MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
+            String date = "2050-11-25";
+            String smp = "ProvaPDF";
             ArrayList<Material> materials = new ArrayList<>();
             boolean interruptibleActivity = false;
             boolean plannedActivity = false;
             boolean extraActivity = true;
             boolean ewo = false;
             Planner instance = new Planner("ProvaUsername","ProvaPassword");
-            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, smp, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
             assertEquals(true, result);
             conn.rollback();
         } catch (SQLException ex) {
@@ -343,15 +343,15 @@ public class PlannerTest {
             String typology = "ProvaTypology";
             String activityDescription = "ProvaActivityDescription";
             int estimatedInterventionTime = 30;
-            LocalDate date = LocalDate.of(2050, 11, 25);
-            MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
+            String date = "2050-11-25";
+            String smp = "ProvaPDF";
             ArrayList<Material> materials = new ArrayList<>();
             boolean interruptibleActivity = false;
             boolean plannedActivity = false;
             boolean extraActivity = false;
             boolean ewo = true;
             Planner instance = new Planner("ProvaUsername","ProvaPassword");
-            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, smp, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
             assertEquals(true, result);
             conn.rollback();
         } catch (SQLException ex) {

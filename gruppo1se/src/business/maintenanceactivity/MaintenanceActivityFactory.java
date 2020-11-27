@@ -20,48 +20,54 @@ public abstract class MaintenanceActivityFactory {
      * Static method that creates and returns a Maintenance Activity object according to the value of parameter type
      * @param type typology of MaintenanceActivity  
      * @param activityId Id of MaintenanceActivity that needs to be instantiate
-     * @param site Site of MaintenanceActivity that needs to be instantiate
+     * @param branchOffice branchOffice of Site
+     * @param area area of Site
+     * @param workspaceNotes workspaceNotes of Site
      * @param typology typology of MaintenanceActivity that needs to be instantiate
      * @param activityDescription activity description of MaintenanceActivity that needs to be instantiate
      * @param estimatedInterventionTime estimated intervention time of MaintenanceActivity that needs to be instantiate
      * @param date date of maintenance activity that needs to be Instantiate
-     * @param maintenanceProcedure maintenance procedure of Maintenance Activity that needs to be Instantiate
+     * @param smp smp of MaintenanceProcedure
      * @param materials materials of Maintenance Activity that needs to be Instantiate
      * @param interruptibleActivity interruptible activity of Maintenance Activity that needs to be Instantiate
      * @return the required instance of maintenance activity
      */
-    public static MaintenanceActivity make(Typology type, int activityId, Site site, String typology,
-            String activityDescription, int estimatedInterventionTime, LocalDate date,
-            MaintenanceProcedure maintenanceProcedure, List<Material> materials, boolean interruptibleActivity){
+    public static MaintenanceActivity make(Typology type, int activityId, String branchOffice, String area,
+            String workspaceNotes,String typology, String activityDescription, int estimatedInterventionTime, String date,
+            String smp, List<Material> materials, boolean interruptibleActivity){
         MaintenanceActivityFactory factory = null;
         if (type == Typology.PLANNED){
             factory = new PlannedActivityFactory();
         }else{
             factory = new UnplannedActivityFactory();
         }
-        return factory.build(type,activityId, site, typology, activityDescription,
-                estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity);
+        return factory.build(type,activityId, branchOffice, area, workspaceNotes,typology, activityDescription,
+                estimatedInterventionTime, date, smp, materials, interruptibleActivity);
     }
     /**
     * ** This method build the correct maintenance activity based on typology parameter
-    * @param type typology of maintenance activity
-    * @param activityId ID of maintenance activity to instantiate
-    * @param site site of maintenance activity to instantiate
-    * @param typology typology of maintenance activity to instantiate
-    * @param activityDescription description of maintenance activity to instantiate
-    * @param estimatedInterventionTime estimatedIntervention time of maintenance activity to instantiate
-    * @param date date of maintenance activity to instantiate
-    * @param maintenanceProcedure procedure of maintenance activity to instantiate
-    * @param materials required materials for maintenance to instantiate
-    * @param interruptibleActivity indicates whether the activity is interruptible to instantiate
-    * @return the correct instance of maintenance activity 
+     * @param type typology of MaintenanceActivity  
+     * @param activityId Id of MaintenanceActivity that needs to be instantiate
+     * @param branchOffice branchOffice of Site
+     * @param area area of Site
+     * @param workspaceNotes workspaceNotes of Site
+     * @param typology typology of MaintenanceActivity that needs to be instantiate
+     * @param activityDescription activity description of MaintenanceActivity that needs to be instantiate
+     * @param estimatedInterventionTime estimated intervention time of MaintenanceActivity that needs to be instantiate
+     * @param date date of maintenance activity that needs to be Instantiate
+     * @param smp smp of MaintenanceProcedure
+     * @param materials materials of Maintenance Activity that needs to be Instantiate
+     * @param interruptibleActivity interruptible activity of Maintenance Activity that needs to be Instantiate
+     * @return the required instance of maintenance activity
      */
-    private MaintenanceActivity build(Typology type, int activityId, Site site, String typology,
-            String activityDescription,int estimatedInterventionTime, LocalDate date,
-            MaintenanceProcedure maintenanceProcedure,
-            List<Material> materials, boolean interruptibleActivity) {
+    private MaintenanceActivity build(Typology type, int activityId, String branchOffice, String area,
+            String workspaceNotes,String typology, String activityDescription, int estimatedInterventionTime, String date,
+            String smp, List<Material> materials, boolean interruptibleActivity) {
+        Site site = new Site(branchOffice, area, workspaceNotes);
+        LocalDate localDate = LocalDate.parse(date);
+        MaintenanceProcedure procedure = new MaintenanceProcedure(smp);
         return this.selectMaintenanceActivity(type, activityId, site, typology, activityDescription,
-                estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity);
+                estimatedInterventionTime, localDate, procedure, materials, interruptibleActivity);
     }
     /**
     ** This method returns the correct instance of maintenance activity based on factory class that extends
