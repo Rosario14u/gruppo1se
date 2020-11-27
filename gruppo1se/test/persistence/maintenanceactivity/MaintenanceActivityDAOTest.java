@@ -56,6 +56,8 @@ public class MaintenanceActivityDAOTest {
     private final MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
     private final LinkedList<Material> materials = new LinkedList<>();
     private final String typology = "ProvaTypology";
+    private final MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
+
     
     public MaintenanceActivityDAOTest() {
     }
@@ -513,14 +515,12 @@ public class MaintenanceActivityDAOTest {
     /**
      * Test of deleteMaintenanceActivity method, of class MaintenanceActivityDAO.
      */
+    
     @Test
     public void testDeleteMaintenanceActivity() {
         System.out.println("deleteMaintenanceActivity");
-        MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
-        Site site = new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes");
-        MaintenanceProcedure proc = new MaintenanceProcedure("ProvaPDF");
-        ArrayList<Material> mat = new ArrayList<>();
-        PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(123,site,"ProvaTypology","ProvaActivityDescription",30,LocalDate.of(2050,11,25),proc,mat,true);
+        PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(123,site,typology,activityDescription,30,LocalDate.of(2050,11,25),maintenanceProcedure,materials,true);
+        instance.deleteMaintenanceActivity(activity.getActivityId());
         instance.addMaintenanceActivity(activity);
         boolean result = instance.deleteMaintenanceActivity(activity.getActivityId());
         assertEquals(true, result);
@@ -530,11 +530,8 @@ public class MaintenanceActivityDAOTest {
     @Test
     public void testDeleteMaintenanceActivityWithWrongId() {
         System.out.println("deleteMaintenanceActivity");
-        MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
-        Site site = new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes");
-        MaintenanceProcedure proc = new MaintenanceProcedure("ProvaPDF");
-        ArrayList<Material> mat = new ArrayList<>();
-        PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(123,site,"ProvaTypology","ProvaActivityDescription",30,LocalDate.of(2050,11,25),proc,mat,true);
+        PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(123,site,typology,activityDescription,30,LocalDate.of(2050,11,25),maintenanceProcedure,materials,true);
+        instance.deleteMaintenanceActivity(activity.getActivityId());
         instance.addMaintenanceActivity(activity);
         boolean result = instance.deleteMaintenanceActivity(124);
         assertEquals(false, result); 
