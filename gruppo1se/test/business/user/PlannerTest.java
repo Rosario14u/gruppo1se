@@ -8,12 +8,10 @@ package business.user;
 import business.maintenanceactivity.Ewo;
 import business.maintenanceactivity.ExtraActivity;
 import business.maintenanceactivity.MaintenanceActivity;
-import business.maintenanceactivity.MaintenanceProcedure;
 import business.maintenanceactivity.Material;
 import business.maintenanceactivity.PlannedMaintenanceActivity;
 import business.maintenanceactivity.Site;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
@@ -28,7 +26,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import persistence.database.ConnectionDB;
 import persistence.maintenanceactivity.MaintenanceActivityDAO;
-import persistence.maintenanceactivity.MaintenanceActivityDAOTest;
 
 /**
  *
@@ -36,6 +33,20 @@ import persistence.maintenanceactivity.MaintenanceActivityDAOTest;
  */
 public class PlannerTest {
     private static Connection conn;
+    private int activityId = 1;
+    private final String branchOffice = "ProvaBranchOffice";
+    private final String area = "ProvaArea";
+    private final String workspaceNotes = "ProvaWorkspaceNotes";
+    private final String typology = "ProvaTypology";
+    private final String activityDescription = "ProvaActivityDescription";
+    private final int estimatedInterventionTime = 30;
+    private String date = "2050-11-25";
+    private final String maintenanceProcedure = "ProvaPDF";
+    private final ArrayList<Material> materials = new ArrayList<>();
+    private boolean interruptibleActivity = false;
+    private boolean plannedActivity = true;
+    private boolean extraActivity = false;
+    private boolean ewo = false;
     
     public PlannerTest() {
     }
@@ -229,22 +240,9 @@ public class PlannerTest {
     public void testMakeMaintenanceActivity() {
         try {
             System.out.println("makeMaintenanceActivity");
-            int activityId = 1;
-            String branchOffice = "ProvaBranchOffice";
-            String area = "ProvaArea";
-            String workspaceNotes = "ProvaWorkspaceNotes";
-            String typology = "ProvaTypology";
-            String activityDescription = "ProvaActivityDescription";
-            int estimatedInterventionTime = 30;
-            String date = "2050-11-25";
-            String smp = "ProvaPDF";
-            ArrayList<Material> materials = new ArrayList<>();
-            boolean interruptibleActivity = false;
-            boolean plannedActivity = true;
-            boolean extraActivity = false;
-            boolean ewo = false;
             Planner instance = new Planner("ProvaUsername","ProvaPassword");
-            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, smp, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            instance.removeMaintenanceActivity(activityId);
+            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
             assertEquals(true, result);
             conn.rollback();
         } catch (SQLException ex) {
@@ -256,22 +254,10 @@ public class PlannerTest {
     public void testMakeMaintenanceActivityWrongActivityID(){
         try {
             System.out.println("makeMaintenanceActivityWrongActivityID");
-            int activityId = 0;
-            String branchOffice = "ProvaBranchOffice";
-            String area = "ProvaArea";
-            String workspaceNotes = "ProvaWorkspaceNotes";
-            String typology = "ProvaTypology";
-            String activityDescription = "ProvaActivityDescription";
-            int estimatedInterventionTime = 30;
-            String date = "2050-11-25";
-            String smp = "ProvaPDF";
-            ArrayList<Material> materials = new ArrayList<>();
-            boolean interruptibleActivity = false;
-            boolean plannedActivity = true;
-            boolean extraActivity = false;
-            boolean ewo = false;
+            activityId = 0;
             Planner instance = new Planner("ProvaUsername","ProvaPassword");
-            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, smp, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            instance.removeMaintenanceActivity(activityId);
+            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
             assertEquals(false, result);
             conn.rollback();
         } catch (SQLException ex) {
@@ -282,22 +268,10 @@ public class PlannerTest {
     public void testMakeMaintenanceActivityWrongDate(){
         try {
             System.out.println("makeMaintenanceActivityWrongDate");
-            int activityId = 1;
-            String branchOffice = "ProvaBranchOffice";
-            String area = "ProvaArea";
-            String workspaceNotes = "ProvaWorkspaceNotes";
-            String typology = "ProvaTypology";
-            String activityDescription = "ProvaActivityDescription";
-            int estimatedInterventionTime = 30;
-            String date = "2050-11-25";
-            String smp = "ProvaPDF";
-            ArrayList<Material> materials = new ArrayList<>();
-            boolean interruptibleActivity = false;
-            boolean plannedActivity = true;
-            boolean extraActivity = false;
-            boolean ewo = false;
+            date = "2010-11-25";
             Planner instance = new Planner("ProvaUsername","ProvaPassword");
-            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, smp, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            instance.removeMaintenanceActivity(activityId);
+            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
             assertEquals(false, result);
             conn.rollback();
         } catch (SQLException ex) {
@@ -309,22 +283,11 @@ public class PlannerTest {
     public void testMakeMaintenanceActivityExtra(){
         try {
             System.out.println("makeMaintenanceActivityExtra");
-            int activityId = 1;
-            String branchOffice = "ProvaBranchOffice";
-            String area = "ProvaArea";
-            String workspaceNotes = "ProvaWorkspaceNotes";
-            String typology = "ProvaTypology";
-            String activityDescription = "ProvaActivityDescription";
-            int estimatedInterventionTime = 30;
-            String date = "2050-11-25";
-            String smp = "ProvaPDF";
-            ArrayList<Material> materials = new ArrayList<>();
-            boolean interruptibleActivity = false;
-            boolean plannedActivity = false;
-            boolean extraActivity = true;
-            boolean ewo = false;
+            plannedActivity = false;
+            extraActivity = true;
             Planner instance = new Planner("ProvaUsername","ProvaPassword");
-            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, smp, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            instance.removeMaintenanceActivity(activityId);
+            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
             assertEquals(true, result);
             conn.rollback();
         } catch (SQLException ex) {
@@ -336,22 +299,26 @@ public class PlannerTest {
     public void testMakeMaintenanceActivityEwo(){
         try {
             System.out.println("makeMaintenanceActivityEwo");
-            int activityId = 1;
-            String branchOffice = "ProvaBranchOffice";
-            String area = "ProvaArea";
-            String workspaceNotes = "ProvaWorkspaceNotes";
-            String typology = "ProvaTypology";
-            String activityDescription = "ProvaActivityDescription";
-            int estimatedInterventionTime = 30;
-            String date = "2050-11-25";
-            String smp = "ProvaPDF";
-            ArrayList<Material> materials = new ArrayList<>();
-            boolean interruptibleActivity = false;
-            boolean plannedActivity = false;
-            boolean extraActivity = false;
-            boolean ewo = true;
+            plannedActivity = false;
+            ewo = true;
             Planner instance = new Planner("ProvaUsername","ProvaPassword");
-            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, smp, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            instance.removeMaintenanceActivity(activityId);
+            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            assertEquals(true, result);
+            conn.rollback();
+        } catch (SQLException ex) {
+            System.out.println("Error on: connection rollback");
+        }
+    }
+    
+    @Test
+    public void testMakeMaintenanceActivityInterruptible() {
+        try {
+            System.out.println("makeMaintenanceActivity");
+            interruptibleActivity = true;
+            Planner instance = new Planner("ProvaUsername","ProvaPassword");
+            instance.removeMaintenanceActivity(activityId);
+            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
             assertEquals(true, result);
             conn.rollback();
         } catch (SQLException ex) {

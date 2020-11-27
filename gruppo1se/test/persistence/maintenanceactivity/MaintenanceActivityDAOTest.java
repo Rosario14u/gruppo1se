@@ -14,7 +14,6 @@ import business.maintenanceactivity.PlannedMaintenanceActivity;
 import business.maintenanceactivity.Site;
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -52,6 +51,12 @@ public class MaintenanceActivityDAOTest {
     private static final String INSERTSITE = 
             "INSERT INTO Site (branchOffice,area,workspaceNotes) "
             + "VALUES (?,?,?)";
+    private final Site site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
+    private final String activityDescription = "ProvaActivityDescription";
+    private final MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
+    private final LinkedList<Material> materials = new LinkedList<>();
+    private final String typology = "ProvaTypology";
+    
     public MaintenanceActivityDAOTest() {
     }
     
@@ -447,13 +452,9 @@ public class MaintenanceActivityDAOTest {
     public void testAddMaintenanceActivity() {
         try {
             System.out.println("addMaintenanceActivity");
-            Site site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
-            String activityDescription = "ProvaActivityDescription";
-            MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
-            LinkedList<Material> materials = new LinkedList<>();
-            String typology = "ProvaTypology";
             PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(1, site, typology, activityDescription, 300, LocalDate.of(2050, 11, 25), maintenanceProcedure, materials, false);
             MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
+            instance.deleteMaintenanceActivity(activity.getActivityId());
             boolean result = instance.addMaintenanceActivity(activity);
             assertEquals(result, true);
             conn.rollback();
@@ -466,13 +467,9 @@ public class MaintenanceActivityDAOTest {
     public void testAddMaintenanceActivityWrongDate() {
         try {
             System.out.println("addMaintenanceActivity");
-            Site site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
-            String activityDescription = "ProvaActivityDescription";
-            MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
-            LinkedList<Material> materials = new LinkedList<>();
-            String typology = "ProvaTypology";
             PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(1, site, typology, activityDescription, 300, LocalDate.of(2020,11,24), maintenanceProcedure, materials, false);
             MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
+            instance.deleteMaintenanceActivity(activity.getActivityId());
             boolean result = instance.addMaintenanceActivity(activity);
             assertEquals(result, false);
             conn.rollback();
@@ -485,13 +482,9 @@ public class MaintenanceActivityDAOTest {
     public void testAddMaintenanceActivityWrongActivityId() {
         try {
             System.out.println("addMaintenanceActivity");
-            Site site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
-            String activityDescription = "ProvaActivityDescription";
-            MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
-            LinkedList<Material> materials = new LinkedList<>();
-            String typology = "ProvaTypology";
             PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(0, site, typology, activityDescription, 300, LocalDate.now(), maintenanceProcedure, materials, false);
             MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
+            instance.deleteMaintenanceActivity(activity.getActivityId());
             boolean result = instance.addMaintenanceActivity(activity);
             assertEquals(result, false);
             conn.rollback();
@@ -504,13 +497,9 @@ public class MaintenanceActivityDAOTest {
     public void testAddMaintenanceActivityUnplanned() {
         try {
             System.out.println("addMaintenanceActivity");
-            Site site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
-            String activityDescription = "ProvaActivityDescription";
-            MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
-            LinkedList<Material> materials = new LinkedList<>();
-            String typology = "ProvaTypology";
             Ewo activity = new Ewo(2, site, typology, activityDescription, 300, LocalDate.of(2050, 11, 25), maintenanceProcedure, materials, false);
             MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
+            instance.deleteMaintenanceActivity(activity.getActivityId());
             boolean result = instance.addMaintenanceActivity(activity);
             assertEquals(result, true);
             conn.rollback();
