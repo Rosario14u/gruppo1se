@@ -7,7 +7,6 @@ package representation.planner;
 
 import business.maintenanceactivity.MaintenanceProcedure;
 import business.maintenanceactivity.Material;
-import java.sql.*;
 import business.user.Planner;
 import java.time.LocalDate;
 import java.util.LinkedList;
