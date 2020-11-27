@@ -20,15 +20,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import business.maintenanceactivity.Material;
 import static org.junit.Assert.*;
+import persistence.database.ConnectionDB;
 
 /**
  *
  * @author rosar
  */
 public class RequiredMaterialForMaintenanceDAOTest {
-    private static final String URL = "jdbc:postgresql://localhost/Gruppo1_SE";
-    private static final  String USER = "gruppo1";
-    private static final  String PWD = "123456";
     private static Connection conn;
     private static String DELETEASSOCIATIONMATERIALTOACTIVITY = "DELETE FROM RequiredMaterial where activityId = ?"
             + " or activityId = ?";
@@ -40,7 +38,7 @@ public class RequiredMaterialForMaintenanceDAOTest {
     @BeforeClass
     public static void setUpClass() {
         try {
-            conn = DriverManager.getConnection(URL, USER, PWD);
+            conn = ConnectionDB.getInstanceConnection().getConnection();
             conn.setAutoCommit(false);
         } catch (SQLException ex) {
             Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);
@@ -49,10 +47,11 @@ public class RequiredMaterialForMaintenanceDAOTest {
     
     @AfterClass
     public static void tearDownClass() {
-                try {
-          conn.close();
+        try {
+            conn.setAutoCommit(true);
+            conn.close();
         } catch (SQLException ex) {
-          Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -85,12 +84,12 @@ public class RequiredMaterialForMaintenanceDAOTest {
             pstm.setString(8, "Legno");
             pstm.executeUpdate();
             RequiredMaterialForMaintenanceDAO materialForMaintenanceDao = new RequiredMaterialForMaintenanceDAO();
-            List<Material> listMaterials= materialForMaintenanceDao.retrieveMaterialsByActivityId(1, conn);
+            List<Material> listMaterials= materialForMaintenanceDao.retrieveMaterialsByActivityId(1);
             assertEquals("listMaterials lenght error", 3,listMaterials.size());
             assertEquals("requiredMaterial error","Ferro",listMaterials.get(0).getName());
             assertEquals("requiredMaterial error","Legno",listMaterials.get(1).getName());
             assertEquals("requiredMaterial error","Rame",listMaterials.get(2).getName());
-            listMaterials = materialForMaintenanceDao.retrieveMaterialsByActivityId(2, conn);
+            listMaterials = materialForMaintenanceDao.retrieveMaterialsByActivityId(2);
             assertEquals("listMaterials lenght error", 1,listMaterials.size());
             assertEquals("requiredMaterial error","Acciaio",listMaterials.get(0).getName());
             conn.rollback();
@@ -113,7 +112,7 @@ public class RequiredMaterialForMaintenanceDAOTest {
             RequiredMaterialForMaintenanceDAO materialForMaintenanceDao = new RequiredMaterialForMaintenanceDAO();
             List<Material> listMaterials;
             for(int i = 1; i < 3; i++){
-                listMaterials= materialForMaintenanceDao.retrieveMaterialsByActivityId(i, conn);
+                listMaterials= materialForMaintenanceDao.retrieveMaterialsByActivityId(i);
                 assertTrue("requiredMaterial error", listMaterials.isEmpty());
             }
             conn.rollback();

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import persistence.database.ConnectionDB;
 
 /**
  *
@@ -23,13 +24,13 @@ public class RequiredMaterialForMaintenanceDAO {
     /**
      * This method retrieve a list materials associated to the maintenance activity identified by the activityId.
      * @param activityId of the MaintenanceActivity
-     * @param conn
      * @return {@code List<String>} listMaterials, null otherwise
      */
     /*Method developed by Rosario Gaeta*/
-    public List<Material> retrieveMaterialsByActivityId(int activityId, Connection conn){
+    public List<Material> retrieveMaterialsByActivityId(int activityId){
         List<Material> listMaterials = new ArrayList<>();
         try {
+            Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             String query = "SELECT * FROM RequiredMaterial WHERE activityId = ? order by materialName";
             PreparedStatement pstm = conn.prepareStatement(query);
             pstm.setInt(1,activityId);            

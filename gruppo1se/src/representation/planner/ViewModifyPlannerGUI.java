@@ -22,6 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import persistence.database.ConnectionDB;
 
 /**
  *
@@ -30,9 +31,6 @@ import javax.swing.JOptionPane;
 public class ViewModifyPlannerGUI extends javax.swing.JFrame {
     private final DefaultListModel<Material> listModel;
     private Planner planner;
-    private static final String URL = "jdbc:postgresql://localhost/Gruppo1_SE";
-    private static final  String USER = "gruppo1";
-    private static final  String PWD = "123456";
     private Connection conn;
     /**
      * Creates new form ViewModifyPlannerGUI1
@@ -43,7 +41,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         initComponents();
         initializeField(false);
         try {    
-            conn = DriverManager.getConnection(URL, USER, PWD);
+            conn = ConnectionDB.getInstanceConnection().getConnection();
         } catch (SQLException ex) {
             Logger.getLogger(ViewModifyPlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -152,6 +150,11 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         deleteButton.setText("Delete");
 
         modifyButton.setText("Modify");
+        modifyButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modifyButtonActionPerformed(evt);
+            }
+        });
 
         viewButton.setText("View");
         viewButton.addActionListener(new java.awt.event.ActionListener() {
@@ -237,23 +240,24 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel1)
                                 .addGap(44, 44, 44))))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(177, 177, 177)
-                .addComponent(jLabel2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(viewButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(modifyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(270, 270, 270))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(viewButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(modifyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(270, 270, 270))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(185, 185, 185))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(31, 31, 31)
+                .addGap(36, 36, 36)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(activityIdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(activityIdLabel)
@@ -289,12 +293,12 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
                 .addComponent(listOfMaterialsLabel)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addButton)
                     .addComponent(deleteButton)
                     .addComponent(addMaterialTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
+                .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(modifyButton)
                     .addComponent(viewButton))
@@ -317,7 +321,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         try{
             int id = Integer.parseInt(activityId);
             if (id >= 0){
-                MaintenanceActivity activity = planner.viewMaintenanceActivity(id, conn);
+                MaintenanceActivity activity = planner.viewMaintenanceActivity(id);
                 if(activity != null){
                     setField(activity);
                     initializeField(true);
@@ -335,6 +339,10 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
     private void activityIdTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_activityIdTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_activityIdTextFieldActionPerformed
+
+    private void modifyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyButtonActionPerformed
+
+    }//GEN-LAST:event_modifyButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -388,6 +396,18 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         workspaceNoteTextArea.setEnabled(enabled);        
         activityComboBox.setEnabled(enabled);
     }
+    
+    private void getField(){
+        activityDescriptionTextArea.getText();
+        areaTextField.getText();
+        branchOfficeTextField.getText();
+        estimatedInterventionTimeTextField.getText();
+        interruptibleActivityCheckBox.getText();
+        typologyTextField.getText();
+        weekTextField.getText();
+        workspaceNoteTextArea.getText();
+    }
+    
     
     private void setField(MaintenanceActivity activity){
         if (activity instanceof PlannedMaintenanceActivity){

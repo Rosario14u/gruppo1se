@@ -7,20 +7,19 @@ package persistence.maintenanceactivity;
 import business.maintenanceactivity.*;
 import java.sql.*;
 import java.time.LocalDate;
+import persistence.database.ConnectionDB;
 /**
  *
  * @author aless & vincy
  */
 public class MaintenanceActivityDAO {
-    private String url = "jdbc:postgresql://localhost/Gruppo1_SE";
-    private String user = "gruppo1";
-    private String pwd = "123456";
     private static final String SQL_INSERT = "INSERT INTO MaintenanceActivity (activityId, activityDescription, estimatedInterventionTime, dateActivity, interruptibleActivity, typologyOfActivity, typologyOfUnplannedActivity, typologyName, branchOffice, area) VALUES (?,?,?,?,?,?,?,?,?,?)";
     private static final String SQL_DELETE = "DELETE FROM MAINTENANCEACTIVITY WHERE ACTIVITYID=?";
     
     
-    public boolean addMaintenanceActivity(MaintenanceActivity activity, Connection conn){
+    public boolean addMaintenanceActivity(MaintenanceActivity activity){
         try {
+            Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             PreparedStatement preparedStatement = conn.prepareStatement(SQL_INSERT);
             if (PlannedMaintenanceActivity.class.isInstance(activity)){
                 preparedStatement.setInt(1, activity.getActivityId());
@@ -66,8 +65,9 @@ public class MaintenanceActivityDAO {
     }
     
     //Returns true if at least one row has been deleted
-    public boolean deleteMaintenanceActivity(int activityId,Connection conn){
+    public boolean deleteMaintenanceActivity(int activityId){
         try {
+            Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             PreparedStatement preparedStatement = conn.prepareStatement(SQL_DELETE);
             preparedStatement.setInt(1,activityId);
             int row = preparedStatement.executeUpdate();
@@ -86,13 +86,14 @@ public class MaintenanceActivityDAO {
      * with corresponding id in database, null otherwise.
      */
     /*Method developed by Rosario Gaeta*/
-    public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId, Connection conn){
+    public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId){
         try {
+            Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             String query = "SELECT * FROM MaintenanceActivity WHERE activityId = ?";
             PreparedStatement pstm = conn.prepareStatement(query);
             pstm.setInt(1,activityId);
             ResultSet rs = pstm.executeQuery();
-            MaintenanceActivity ma = this.makeMaintenanceActivity(rs, conn);
+            MaintenanceActivity ma = this.makeMaintenanceActivity(rs);
             return ma;
         } catch (SQLException ex) {
            return null;
@@ -107,14 +108,15 @@ public class MaintenanceActivityDAO {
     * @throws SQLException 
     */
     /*Method developed by Rosario Gaeta*/
-    private MaintenanceActivity makeMaintenanceActivity(ResultSet rs, Connection conn) throws SQLException{
+    private MaintenanceActivity makeMaintenanceActivity(ResultSet rs) throws SQLException{
         try {
+            Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             while(rs.next()){
                 String typologyOfActivity = rs.getString("typologyOfActivity").toUpperCase();
                 String typologyOfUnplanned = rs.getString("typologyOfUnplannedActivity");
                 typologyOfUnplanned = typologyOfUnplanned == null ? null : typologyOfUnplanned.toUpperCase();
                 Site site = new SiteDao().retrieveSiteDao(rs.getString("branchOffice"),
-                        rs.getString("area"),conn);
+                        rs.getString("area"));
                 // Selection of the type of the object to create 
                 MaintenanceActivityFactory.Typology type = typologyOfActivity.compareTo("PLANNED")==0 ? 
                         MaintenanceActivityFactory.Typology.PLANNED : 
@@ -137,8 +139,9 @@ public class MaintenanceActivityDAO {
      * @return {@code true} if the the change is successful, false otherwise
      */
     /*Developed by Antonio Gorrasi*/
-    public boolean modifyMaintenaceActivity(MaintenanceActivity newActivity, Connection conn) {
+    public boolean modifyMaintenaceActivity(MaintenanceActivity newActivity) {
         try {
+            Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             String query = "UPDATE MaintenanceActivity SET activityDescription=?, "
                     + "estimatedInterventionTime=?, dateActivity=?, "
                     + "interruptibleActivity=?, branchOffice=?, area=?, "

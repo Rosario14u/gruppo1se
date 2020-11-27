@@ -26,6 +26,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import persistence.database.ConnectionDB;
 import persistence.maintenanceactivity.MaintenanceActivityDAO;
 import persistence.maintenanceactivity.MaintenanceActivityDAOTest;
 
@@ -34,9 +35,6 @@ import persistence.maintenanceactivity.MaintenanceActivityDAOTest;
  * @author gorra
  */
 public class PlannerTest {
-    private static final String URL = "jdbc:postgresql://localhost/Gruppo1_SE";
-    private static final  String USER = "gruppo1";
-    private static final  String PWD = "123456";
     private static Connection conn;
     
     public PlannerTest() {
@@ -45,7 +43,7 @@ public class PlannerTest {
     @BeforeClass
     public static void setUpClass() {
         try {
-            conn = DriverManager.getConnection(URL, USER, PWD);
+            conn = ConnectionDB.getInstanceConnection().getConnection();
             conn.setAutoCommit(false);
         } catch (SQLException ex) {
             Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);
@@ -55,6 +53,7 @@ public class PlannerTest {
     @AfterClass
     public static void tearDownClass() {
         try {
+          conn.setAutoCommit(true);
           conn.close();
         } catch (SQLException ex) {
           Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);
@@ -83,7 +82,7 @@ public class PlannerTest {
             MaintenanceActivity newActivity = new PlannedMaintenanceActivity(1, new Site("ProvaBranchOfficeMod", "ProvaAreaMod"), "typologyNameMod", 
                                     "ProvaDescrizioneMod", 400, LocalDate.parse("2050-12-12"), null, null, false);
 
-            boolean result = instance.modifyMaintenaceActivity(newActivity, conn);
+            boolean result = instance.modifyMaintenaceActivity(newActivity);
             assertEquals(true, result);
             
             conn.rollback();
@@ -106,7 +105,7 @@ public class PlannerTest {
             MaintenanceActivity newActivity = new Ewo(1, new Site("ProvaBranchOfficeMod", "ProvaAreaMod"), "typologyNameMod", 
                                     "ProvaDescrizioneMod", 400, LocalDate.parse("2050-12-12"), null, null, false);
             
-            boolean result = instance.modifyMaintenaceActivity(newActivity, conn);
+            boolean result = instance.modifyMaintenaceActivity(newActivity);
             assertEquals(true, result);
             
             conn.rollback();
@@ -129,7 +128,7 @@ public class PlannerTest {
             MaintenanceActivity newActivity = new ExtraActivity(1, new Site("ProvaBranchOfficeMod", "ProvaAreaMod"), "typologyNameMod", 
                                     "ProvaDescrizioneMod", 400, LocalDate.parse("2050-12-12"), null, null, false);
             
-            boolean result = instance.modifyMaintenaceActivity(newActivity, conn);
+            boolean result = instance.modifyMaintenaceActivity(newActivity);
             assertEquals(true, result);
             
             conn.rollback();
@@ -152,7 +151,7 @@ public class PlannerTest {
             MaintenanceActivity newActivity = new PlannedMaintenanceActivity(1, new Site("ProvaBranchOfficeMod", "ProvaAreaMod"), "typologyNameMod", 
                                     "ProvaDescrizioneMod", 400, LocalDate.parse("2050-12-12"), null, null, false);
             
-            boolean result = instance.modifyMaintenaceActivity(newActivity, conn);
+            boolean result = instance.modifyMaintenaceActivity(newActivity);
             assertEquals(false, result);
             
             conn.rollback();
@@ -174,7 +173,7 @@ public class PlannerTest {
             MaintenanceActivity newActivity = new Ewo(1, new Site("ProvaBranchOfficeMod", "ProvaAreaMod"), "typologyNameMod", 
                                     "ProvaDescrizioneMod", 400, LocalDate.parse("2050-12-12"), null, null, false);
             
-            boolean result = instance.modifyMaintenaceActivity(newActivity, conn);
+            boolean result = instance.modifyMaintenaceActivity(newActivity);
             assertEquals(false, result);
             
             conn.rollback();
@@ -196,7 +195,7 @@ public class PlannerTest {
             MaintenanceActivity newActivity = new ExtraActivity(1, new Site("ProvaBranchOfficeMod", "ProvaAreaMod"), "typologyNameMod", 
                                     "ProvaDescrizioneMod", 400, LocalDate.parse("2050-12-12"), null, null, false);
             
-            boolean result = instance.modifyMaintenaceActivity(newActivity, conn);
+            boolean result = instance.modifyMaintenaceActivity(newActivity);
             assertEquals(false, result);
             
             conn.rollback();
@@ -245,7 +244,7 @@ public class PlannerTest {
             boolean extraActivity = false;
             boolean ewo = false;
             Planner instance = new Planner("ProvaUsername","ProvaPassword");
-            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo, conn);
+            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
             assertEquals(true, result);
             conn.rollback();
         } catch (SQLException ex) {
@@ -272,7 +271,7 @@ public class PlannerTest {
             boolean extraActivity = false;
             boolean ewo = false;
             Planner instance = new Planner("ProvaUsername","ProvaPassword");
-            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo, conn);
+            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
             assertEquals(false, result);
             conn.rollback();
         } catch (SQLException ex) {
@@ -298,7 +297,7 @@ public class PlannerTest {
             boolean extraActivity = false;
             boolean ewo = false;
             Planner instance = new Planner("ProvaUsername","ProvaPassword");
-            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo, conn);
+            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
             assertEquals(false, result);
             conn.rollback();
         } catch (SQLException ex) {
@@ -325,7 +324,7 @@ public class PlannerTest {
             boolean extraActivity = true;
             boolean ewo = false;
             Planner instance = new Planner("ProvaUsername","ProvaPassword");
-            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo, conn);
+            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
             assertEquals(true, result);
             conn.rollback();
         } catch (SQLException ex) {
@@ -352,7 +351,7 @@ public class PlannerTest {
             boolean extraActivity = false;
             boolean ewo = true;
             Planner instance = new Planner("ProvaUsername","ProvaPassword");
-            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo, conn);
+            boolean result = instance.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
             assertEquals(true, result);
             conn.rollback();
         } catch (SQLException ex) {

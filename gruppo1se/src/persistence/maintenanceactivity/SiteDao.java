@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import persistence.database.ConnectionDB;
 
 /**
  *
@@ -25,8 +26,9 @@ public class SiteDao {
      * @return {@code Site} site object if exists the corresponding site in the database, null otherwise
      */
     /*Method developed by Rosario Gaeta*/
-    public Site retrieveSiteDao(String branchOffice, String area, Connection conn){ 
+    public Site retrieveSiteDao(String branchOffice, String area){
        try {
+           Connection conn = ConnectionDB.getInstanceConnection().getConnection();
            String query = "SELECT * FROM Site WHERE branchOffice = ? and area = ?";
            PreparedStatement pstm = conn.prepareStatement(query);
            pstm.setString(1,branchOffice);

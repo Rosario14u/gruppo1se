@@ -33,18 +33,17 @@ public class Planner extends User {
      * This method returns Maintenance Activity with the passed activityId if exists,
      * null otherwise
      * @param activityId activity id of the Maintenance Activity to visualize
-     * @param conn
      * @return {@code MaintenanceActivity} MaintenanceActivity
      */
     /*Method developed by Rosario Gaeta*/
-    public MaintenanceActivity viewMaintenanceActivity(int activityId, Connection conn){
+    public MaintenanceActivity viewMaintenanceActivity(int activityId){
         MaintenanceActivityDAO activityDao = new MaintenanceActivityDAO();
         /*this method uses MaintenanceActivityDAO and RequiredMaterialForMaintenanceDAO objects to
         retrieve the required MaintenanceActivity object if exists*/
-        MaintenanceActivity activity = activityDao.retrieveMaintenanceActivityDao(activityId, conn);
+        MaintenanceActivity activity = activityDao.retrieveMaintenanceActivityDao(activityId);
         if(activity != null){
             RequiredMaterialForMaintenanceDAO requiredMaterialsDao = new RequiredMaterialForMaintenanceDAO();
-            activity.setMaterials(requiredMaterialsDao.retrieveMaterialsByActivityId(activityId, conn));
+            activity.setMaterials(requiredMaterialsDao.retrieveMaterialsByActivityId(activityId));
         }
         return activity;
     }
@@ -62,12 +61,11 @@ public class Planner extends User {
      * @param interruptibleActivity
      * @param typologyOfActivity
      * @param typologyOfUnplannedActivity
-     * @param conn
      * @return 
      */
     public boolean modifyMaintenanceActivity(int activityId, String branchOffice, String area, String typology, String activityDescription, 
             int estimatedInterventionTime, LocalDate date, MaintenanceProcedure maintenanceProcedure, boolean interruptibleActivity, 
-            String typologyOfActivity, String typologyOfUnplannedActivity, Connection conn){
+            String typologyOfActivity, String typologyOfUnplannedActivity){
         
         Site site = new Site(branchOffice, area);
         
@@ -78,17 +76,17 @@ public class Planner extends User {
                 estimatedInterventionTime, date, null, null, interruptibleActivity);
         
         MaintenanceActivityDAO maintenanceActivityDao = new MaintenanceActivityDAO();
-        return maintenanceActivityDao.modifyMaintenaceActivity(newActivity, conn);
+        return maintenanceActivityDao.modifyMaintenaceActivity(newActivity);
     }
     
-    public boolean removeMaintenanceActivity(int activityId, Connection conn){
+    public boolean removeMaintenanceActivity(int activityId){
         MaintenanceActivityDAO dao = new MaintenanceActivityDAO();
-        return dao.deleteMaintenanceActivity(activityId, conn);
+        return dao.deleteMaintenanceActivity(activityId);
     }
     
     public boolean makeMaintenanceActivity(int activityId, String branchOffice, String area, String workspaceNotes, String typology, String activityDescription, int estimatedInterventionTime, 
             LocalDate date, MaintenanceProcedure maintenanceProcedure, List<Material> materials, boolean interruptibleActivity,
-            boolean plannedActivity, boolean extraActivity, boolean ewo, Connection conn){
+            boolean plannedActivity, boolean extraActivity, boolean ewo){
         Site site = new Site(branchOffice, area, workspaceNotes);
         MaintenanceActivityFactory.Typology type = null;
         if (plannedActivity)
@@ -100,6 +98,6 @@ public class Planner extends User {
         MaintenanceActivity activity = MaintenanceActivityFactory.make(type, activityId, site, typology, activityDescription, estimatedInterventionTime,
                 date, maintenanceProcedure, materials, interruptibleActivity);
         MaintenanceActivityDAO dao = new MaintenanceActivityDAO();
-        return dao.addMaintenanceActivity(activity, conn);
+        return dao.addMaintenanceActivity(activity);
     }
 }

@@ -18,15 +18,13 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import persistence.database.ConnectionDB;
 
 /**
  *
  * @author rosar
  */
 public class SiteDaoTest {
-    private static  String URL = "jdbc:postgresql://localhost/Gruppo1_SE";
-    private static  String USER = "gruppo1";
-    private static  String PWD = "123456";
     private static Connection conn;
     private static final String DELETEFROMSITE = "DELETE FROM Site WHERE branchOffice = ? and area = ?";
     private static final String INSERTFROMSITE = "INSERT INTO Site (branchOffice,area,workspaceNotes) "
@@ -37,19 +35,20 @@ public class SiteDaoTest {
     @BeforeClass
     public static void setUpClass() {
         try {
-          conn = DriverManager.getConnection(URL, USER, PWD);
-          conn.setAutoCommit(false);
+            conn = ConnectionDB.getInstanceConnection().getConnection();
+            conn.setAutoCommit(false);
         } catch (SQLException ex) {
-          Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     @AfterClass
     public static void tearDownClass() {
         try {
-          conn.close();
+            conn.setAutoCommit(true);
+            conn.close();
         } catch (SQLException ex) {
-          Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -74,7 +73,7 @@ public class SiteDaoTest {
             pstm.setString(2, "ProvaArea");
             pstm.setString(3, "ProvaWorkSpaceNotes");
             pstm.executeUpdate();
-            Site site = new SiteDao().retrieveSiteDao("ProvaBranch", "ProvaArea", conn);
+            Site site = new SiteDao().retrieveSiteDao("ProvaBranch", "ProvaArea");
             assertEquals("branchOffice error", "ProvaBranch", site.getBranchOffice());
             assertEquals("area error", "ProvaArea", site.getArea());
             assertEquals("workspacenotes error", "ProvaWorkSpaceNotes",site.getWorkSpaceNotes());
@@ -91,7 +90,7 @@ public class SiteDaoTest {
     public void testRetrieveSiteDaoNotDatabase() {
         try {
             deleteFromSite("ProvaBranch", "ProvaBranch");
-            Site site = new SiteDao().retrieveSiteDao("ProvaBranch", "ProvaArea", conn);
+            Site site = new SiteDao().retrieveSiteDao("ProvaBranch", "ProvaArea");
             assertNull("Site is not null", site);
             conn.rollback();
         } catch (SQLException ex) {
