@@ -91,7 +91,7 @@ public class Planner extends User {
             type = MaintenanceActivityFactory.Typology.EWO;
         MaintenanceActivity activity = MaintenanceActivityFactory.make(type, activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime,
                 date, smp, materials, interruptibleActivity);
-        return maintenanceActivityDao.addMaintenanceActivity(activity);
+        return maintenanceActivityDao.addMaintenanceActivity(activity) && requiredMaterialsDao.addRequiredMaterial(activityId, materials);
     }
 
 
