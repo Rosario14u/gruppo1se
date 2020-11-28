@@ -26,7 +26,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import persistence.database.ConnectionDB;
-import persistence.maintenanceactivity.MaintenanceActivityDAO;
+import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
+import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
+import persistence.maintenanceactivity.SiteDAOImpl;
 
 /**
  *
@@ -48,8 +50,9 @@ public class PlannerTest {
     private boolean plannedActivity = true;
     private boolean extraActivity = false;
     private boolean ewo = false;
-    private MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
-    private final Planner planner = new Planner("ProvaUser","ProvaPassword");
+    private MaintenanceActivityDAOImpl instance = new MaintenanceActivityDAOImpl(new SiteDAOImpl());
+    private final Planner planner = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOImpl(new SiteDAOImpl()),
+                new RequiredMaterialForMaintenanceDAOImpl());
     private final Site site = new Site(branchOffice,area,workspaceNotes);
     private final MaintenanceProcedure mProc = new MaintenanceProcedure(maintenanceProcedure);
     
@@ -91,7 +94,7 @@ public class PlannerTest {
     public void testSuccessfulModifyPlannedMaintenanceActivity(){
         try{
             Statement stm = conn.createStatement();
-            MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
+
         
             deleteDafaultMaintenanceActivity(stm);
             insertDefaultMaintenanceActivity("Planned", "null", stm);
@@ -114,7 +117,7 @@ public class PlannerTest {
     public void testSuccessfulModifyEWOMaintenanceActivity(){
         try{
             Statement stm = conn.createStatement();
-            MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
+
         
             deleteDafaultMaintenanceActivity(stm);
             insertDefaultMaintenanceActivity("Planned", "null", stm);
@@ -137,7 +140,7 @@ public class PlannerTest {
     public void testSuccessfulModifyExtraMaintenanceActivity(){
         try{
             Statement stm = conn.createStatement();
-            MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
+
         
             deleteDafaultMaintenanceActivity(stm);
             insertDefaultMaintenanceActivity("Planned", "null", stm);
@@ -161,7 +164,7 @@ public class PlannerTest {
     public void testUnsuccessfulModifyPlannedMaintenanceActivity(){
         try{
             Statement stm = conn.createStatement();
-            MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
+
         
             deleteDafaultMaintenanceActivity(stm);
             MaintenanceActivity newActivity = new PlannedMaintenanceActivity(1, new Site("ProvaBranchOfficeMod", "ProvaAreaMod"), "typologyNameMod", 
@@ -183,7 +186,7 @@ public class PlannerTest {
     public void testUnsuccessfulModifyEWOMaintenanceActivity(){
         try{
             Statement stm = conn.createStatement();
-            MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
+
         
             deleteDafaultMaintenanceActivity(stm);
             MaintenanceActivity newActivity = new Ewo(1, new Site("ProvaBranchOfficeMod", "ProvaAreaMod"), "typologyNameMod", 
@@ -205,7 +208,7 @@ public class PlannerTest {
     public void testUnsuccessfulModifyExtraMaintenanceActivity(){
         try{
             Statement stm = conn.createStatement();
-            MaintenanceActivityDAO instance = new MaintenanceActivityDAO();
+
         
             deleteDafaultMaintenanceActivity(stm);
             MaintenanceActivity newActivity = new ExtraActivity(1, new Site("ProvaBranchOfficeMod", "ProvaAreaMod"), "typologyNameMod", 

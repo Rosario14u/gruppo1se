@@ -14,20 +14,28 @@ import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.List;
 import persistence.maintenanceactivity.MaintenanceActivityDAO;
+import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAO;
+import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
 
 /**
  *
  * @author rosar
  */
 public class Planner extends User {
+    private final MaintenanceActivityDAO maintenanceActivityDao;
+    private final RequiredMaterialForMaintenanceDAO requiredMaterialsDao;
     /**
      * Constructor of Planner
      * @param username username of Planner 
      * @param password password of Planner
+     * @param maintenanceActivityDao
+     * @param requiredMaterialsDao
      */
-    public Planner(String username, String password) {
+    public Planner(String username, String password, MaintenanceActivityDAO maintenanceActivityDao, RequiredMaterialForMaintenanceDAO requiredMaterialsDao) {
         super(username, password);
+        this.maintenanceActivityDao = maintenanceActivityDao;
+        this.requiredMaterialsDao = requiredMaterialsDao;
     }
     /**
      * This method returns Maintenance Activity with the passed activityId if exists,
@@ -37,12 +45,10 @@ public class Planner extends User {
      */
     /*Method developed by Rosario Gaeta*/
     public MaintenanceActivity viewMaintenanceActivity(int activityId){
-        MaintenanceActivityDAO activityDao = new MaintenanceActivityDAO();
-        /*this method uses MaintenanceActivityDAO and RequiredMaterialForMaintenanceDAO objects to
+        /*this method uses MaintenanceActivityDAOImpl and RequiredMaterialForMaintenanceDAOImpl objects to
         retrieve the required MaintenanceActivity object if exists*/
-        MaintenanceActivity activity = activityDao.retrieveMaintenanceActivityDao(activityId);
+        MaintenanceActivity activity = maintenanceActivityDao.retrieveMaintenanceActivityDao(activityId);
         if(activity != null){
-            RequiredMaterialForMaintenanceDAO requiredMaterialsDao = new RequiredMaterialForMaintenanceDAO();
             activity.setMaterials(requiredMaterialsDao.retrieveMaterialsByActivityId(activityId));
         }
         return activity;
@@ -72,14 +78,11 @@ public class Planner extends User {
         
         MaintenanceActivity newActivity = MaintenanceActivityFactory.make(type, activityId, branchOffice, area, null, typology, activityDescription, 
                 estimatedInterventionTime, date, null, null, interruptibleActivity);
-        
-        MaintenanceActivityDAO maintenanceActivityDao = new MaintenanceActivityDAO();
         return maintenanceActivityDao.modifyMaintenaceActivity(newActivity);
     }
     
     public boolean removeMaintenanceActivity(int activityId){
-        MaintenanceActivityDAO dao = new MaintenanceActivityDAO();
-        return dao.deleteMaintenanceActivity(activityId);
+        return maintenanceActivityDao.deleteMaintenanceActivity(activityId);
     }
     
     public boolean makeMaintenanceActivity(int activityId, String branchOffice, String area, String workspaceNotes, String typology, String activityDescription, int estimatedInterventionTime, 
@@ -94,7 +97,6 @@ public class Planner extends User {
             type = MaintenanceActivityFactory.Typology.EWO;
         MaintenanceActivity activity = MaintenanceActivityFactory.make(type, activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime,
                 date, smp, materials, interruptibleActivity);
-        MaintenanceActivityDAO dao = new MaintenanceActivityDAO();
-        return dao.addMaintenanceActivity(activity);
+        return maintenanceActivityDao.addMaintenanceActivity(activity);
     }
 }
