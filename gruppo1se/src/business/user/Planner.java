@@ -9,8 +9,8 @@ import business.maintenanceactivity.MaintenanceActivity;
 import business.maintenanceactivity.MaintenanceActivityFactory;
 import business.maintenanceactivity.Material;
 import java.util.List;
-import persistence.maintenanceactivity.MaintenanceActivityDAO;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAO;
+import persistence.maintenanceactivity.MaintenanceActivityDAO;
 
 /**
  *

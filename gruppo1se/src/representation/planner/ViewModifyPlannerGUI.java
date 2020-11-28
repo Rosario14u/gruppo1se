@@ -26,11 +26,11 @@ import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import persistence.database.ConnectionDB;
-import persistence.maintenanceactivity.MaintenanceActivityDAO;
 import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.SiteDao;
 import persistence.maintenanceactivity.SiteDaoImpl;
+import persistence.maintenanceactivity.MaintenanceActivityDAO;
 
 /**
  *
