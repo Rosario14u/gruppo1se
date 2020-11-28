@@ -13,6 +13,9 @@ import java.util.LinkedList;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
+import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
+import persistence.maintenanceactivity.SiteDaoImpl;
 
 /**
  *
@@ -435,11 +438,8 @@ public class CreateActivity extends javax.swing.JFrame {
         String typology = jTypology.getText();
         String activityDescription = jActivityDescription.getText();
         int estimatedInterventionTime = Integer.parseInt(jEstimatedInterventionTime.getText());
-        String dateString = jDate.getText();
-        String[] yearMonthDay = dateString.split("-");
-        LocalDate date = LocalDate.of(Integer.parseInt(yearMonthDay[0]),Integer.parseInt(yearMonthDay[1]),Integer.parseInt(yearMonthDay[2]));
-        String maintenanceProcedureString = jMaintenanceProcedure.getText();
-        MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure(maintenanceProcedureString);
+        String date = jDate.getText();
+        String maintenanceProcedure = jMaintenanceProcedure.getText();
         LinkedList<Material> materials = new LinkedList<>();
         String materialString = jMaterials.getText();
         String[] materialStringList = materialString.split(",");
@@ -541,7 +541,8 @@ public class CreateActivity extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        Planner planner = new Planner("User","pwd");
+        Planner planner = new Planner("admin","admin", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
+                new RequiredMaterialForMaintenanceDAOImpl());
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
             new CreateActivity(planner).setVisible(true);

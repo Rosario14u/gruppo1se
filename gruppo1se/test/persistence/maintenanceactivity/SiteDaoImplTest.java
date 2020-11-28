@@ -24,12 +24,12 @@ import persistence.database.ConnectionDB;
  *
  * @author rosar
  */
-public class SiteDaoTest {
+public class SiteDaoImplTest {
     private static Connection conn;
     private static final String DELETEFROMSITE = "DELETE FROM Site WHERE branchOffice = ? and area = ?";
     private static final String INSERTFROMSITE = "INSERT INTO Site (branchOffice,area,workspaceNotes) "
                     + "VALUES (?,?,?)";
-    public SiteDaoTest() {
+    public SiteDaoImplTest() {
     }
     
     @BeforeClass
@@ -38,7 +38,7 @@ public class SiteDaoTest {
             conn = ConnectionDB.getInstanceConnection().getConnection();
             conn.setAutoCommit(false);
         } catch (SQLException ex) {
-            Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SiteDaoImplTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -48,7 +48,7 @@ public class SiteDaoTest {
             conn.setAutoCommit(true);
             conn.close();
         } catch (SQLException ex) {
-            Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SiteDaoImplTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -73,13 +73,13 @@ public class SiteDaoTest {
             pstm.setString(2, "ProvaArea");
             pstm.setString(3, "ProvaWorkSpaceNotes");
             pstm.executeUpdate();
-            Site site = new SiteDao().retrieveSiteDao("ProvaBranch", "ProvaArea");
+            Site site = new SiteDaoImpl().retrieveSiteDao("ProvaBranch", "ProvaArea");
             assertEquals("branchOffice error", "ProvaBranch", site.getBranchOffice());
             assertEquals("area error", "ProvaArea", site.getArea());
             assertEquals("workspacenotes error", "ProvaWorkSpaceNotes",site.getWorkSpaceNotes());
             conn.rollback();
         } catch (SQLException ex) {
-            Logger.getLogger(SiteDaoTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SiteDaoImplTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     /**
@@ -90,11 +90,11 @@ public class SiteDaoTest {
     public void testRetrieveSiteDaoNotDatabase() {
         try {
             deleteFromSite("ProvaBranch", "ProvaBranch");
-            Site site = new SiteDao().retrieveSiteDao("ProvaBranch", "ProvaArea");
+            Site site = new SiteDaoImpl().retrieveSiteDao("ProvaBranch", "ProvaArea");
             assertNull("Site is not null", site);
             conn.rollback();
         } catch (SQLException ex) {
-            Logger.getLogger(SiteDaoTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SiteDaoImplTest.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

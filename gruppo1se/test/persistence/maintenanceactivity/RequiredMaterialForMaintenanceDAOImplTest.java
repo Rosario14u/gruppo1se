@@ -26,13 +26,13 @@ import persistence.database.ConnectionDB;
  *
  * @author rosar
  */
-public class RequiredMaterialForMaintenanceDAOTest {
+public class RequiredMaterialForMaintenanceDAOImplTest {
     private static Connection conn;
     private static String DELETEASSOCIATIONMATERIALTOACTIVITY = "DELETE FROM RequiredMaterial where activityId = ?"
             + " or activityId = ?";
     private static String ASSOCIATEMATERIALTOACTIVITY = "INSERT INTO RequiredMaterial values(?,?),(?,?),(?,?),(?,?)";
     
-    public RequiredMaterialForMaintenanceDAOTest() {
+    public RequiredMaterialForMaintenanceDAOImplTest() {
     }
     
     @BeforeClass
@@ -41,7 +41,7 @@ public class RequiredMaterialForMaintenanceDAOTest {
             conn = ConnectionDB.getInstanceConnection().getConnection();
             conn.setAutoCommit(false);
         } catch (SQLException ex) {
-            Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RequiredMaterialForMaintenanceDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -51,7 +51,7 @@ public class RequiredMaterialForMaintenanceDAOTest {
             conn.setAutoCommit(true);
             conn.close();
         } catch (SQLException ex) {
-            Logger.getLogger(MaintenanceActivityDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RequiredMaterialForMaintenanceDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -64,7 +64,7 @@ public class RequiredMaterialForMaintenanceDAOTest {
     }
 
     /**
-     * Test of retrieveMaterialsByActivityId method, of class RequiredMaterialForMaintenanceDAO.
+     * Test of retrieveMaterialsByActivityId method, of class RequiredMaterialForMaintenanceDAOImpl.
      */
     @Test
     public void testRetrieveMaterialsByActivityIdInDatabase() {
@@ -83,7 +83,7 @@ public class RequiredMaterialForMaintenanceDAOTest {
             pstm.setInt(7, 1);
             pstm.setString(8, "Legno");
             pstm.executeUpdate();
-            RequiredMaterialForMaintenanceDAO materialForMaintenanceDao = new RequiredMaterialForMaintenanceDAO();
+            RequiredMaterialForMaintenanceDAOImpl materialForMaintenanceDao = new RequiredMaterialForMaintenanceDAOImpl();
             List<Material> listMaterials= materialForMaintenanceDao.retrieveMaterialsByActivityId(1);
             assertEquals("listMaterials lenght error", 3,listMaterials.size());
             assertEquals("requiredMaterial error","Ferro",listMaterials.get(0).getName());
@@ -95,12 +95,12 @@ public class RequiredMaterialForMaintenanceDAOTest {
             conn.rollback();
         } catch (SQLException ex) {
             assertNull("SQLException", ex);
-            Logger.getLogger(RequiredMaterialForMaintenanceDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RequiredMaterialForMaintenanceDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
        /**
-     * Test of retrieveMaterialsByActivityId method, of class RequiredMaterialForMaintenanceDAO.
+     * Test of retrieveMaterialsByActivityId method, of class RequiredMaterialForMaintenanceDAOImpl.
      */
     @Test
     public void testRetrieveMaterialsByActivityIdNotInDatabase() {
@@ -109,7 +109,7 @@ public class RequiredMaterialForMaintenanceDAOTest {
             pstm.setInt(1, 1);
             pstm.setInt(2, 2);
             pstm.executeUpdate();
-            RequiredMaterialForMaintenanceDAO materialForMaintenanceDao = new RequiredMaterialForMaintenanceDAO();
+            RequiredMaterialForMaintenanceDAOImpl materialForMaintenanceDao = new RequiredMaterialForMaintenanceDAOImpl();
             List<Material> listMaterials;
             for(int i = 1; i < 3; i++){
                 listMaterials= materialForMaintenanceDao.retrieveMaterialsByActivityId(i);
@@ -118,7 +118,7 @@ public class RequiredMaterialForMaintenanceDAOTest {
             conn.rollback();
         } catch (SQLException ex) {
             assertNull("SQLException", ex);
-            Logger.getLogger(RequiredMaterialForMaintenanceDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RequiredMaterialForMaintenanceDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
