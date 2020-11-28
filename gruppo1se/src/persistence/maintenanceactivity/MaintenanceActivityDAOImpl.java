@@ -6,13 +6,12 @@
 package persistence.maintenanceactivity;
 import business.maintenanceactivity.*;
 import java.sql.*;
-import java.time.LocalDate;
 import persistence.database.ConnectionDB;
 /**
  *
  * @author aless & vincy
  */
-public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO{
+public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     private static final String SQL_INSERT = "INSERT INTO MaintenanceActivity (activityId, activityDescription, estimatedInterventionTime, dateActivity, interruptibleActivity, typologyOfActivity, typologyOfUnplannedActivity, typologyName, branchOffice, area) VALUES (?,?,?,?,?,?,?,?,?,?)";
     private static final String SQL_DELETE = "DELETE FROM MAINTENANCEACTIVITY WHERE ACTIVITYID=?";
     private final SiteDao siteDao;

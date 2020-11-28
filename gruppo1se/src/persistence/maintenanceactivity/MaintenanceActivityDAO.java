@@ -11,9 +11,12 @@ import business.maintenanceactivity.MaintenanceActivity;
  *
  * @author rosar
  */
-public interface MaintenanceActivityDAO {
+public interface MaintenanceActivityDAO{
     public boolean addMaintenanceActivity(MaintenanceActivity activity);
+    
     public boolean deleteMaintenanceActivity(int activityId);
+    
     public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId);
+    
     public boolean modifyMaintenaceActivity(MaintenanceActivity newActivity);
 }

@@ -36,6 +36,7 @@ import persistence.maintenanceactivity.SiteDaoImpl;
  *
  * @author gorra
  */
+
 public class ViewModifyPlannerGUI extends javax.swing.JFrame {
     private final DefaultListModel<Material> listModel;
     private Planner planner;
