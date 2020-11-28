@@ -13,18 +13,18 @@ import business.maintenanceactivity.Site;
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.List;
-import persistence.maintenanceactivity.MaintenanceActivityDAO;
-import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
-import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAO;
-import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
+import persistence.maintenanceactivity.MaintenanceActivityDaoImpl;
+import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDaoImpl;
+import persistence.maintenanceactivity.MaintenanceActivityDao;
+import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDao;
 
 /**
  *
  * @author rosar
  */
 public class Planner extends User {
-    private final MaintenanceActivityDAO maintenanceActivityDao;
-    private final RequiredMaterialForMaintenanceDAO requiredMaterialsDao;
+    private final MaintenanceActivityDao maintenanceActivityDao;
+    private final RequiredMaterialForMaintenanceDao requiredMaterialsDao;
     /**
      * Constructor of Planner
      * @param username username of Planner 
@@ -32,7 +32,7 @@ public class Planner extends User {
      * @param maintenanceActivityDao
      * @param requiredMaterialsDao
      */
-    public Planner(String username, String password, MaintenanceActivityDAO maintenanceActivityDao, RequiredMaterialForMaintenanceDAO requiredMaterialsDao) {
+    public Planner(String username, String password, MaintenanceActivityDao maintenanceActivityDao, RequiredMaterialForMaintenanceDao requiredMaterialsDao) {
         super(username, password);
         this.maintenanceActivityDao = maintenanceActivityDao;
         this.requiredMaterialsDao = requiredMaterialsDao;
@@ -45,7 +45,7 @@ public class Planner extends User {
      */
     /*Method developed by Rosario Gaeta*/
     public MaintenanceActivity viewMaintenanceActivity(int activityId){
-        /*this method uses MaintenanceActivityDAOImpl and RequiredMaterialForMaintenanceDAOImpl objects to
+        /*this method uses MaintenanceActivityDaoImpl and RequiredMaterialForMaintenanceDaoImpl objects to
         retrieve the required MaintenanceActivity object if exists*/
         MaintenanceActivity activity = maintenanceActivityDao.retrieveMaintenanceActivityDao(activityId);
         if(activity != null){

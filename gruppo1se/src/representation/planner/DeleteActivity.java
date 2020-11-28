@@ -9,9 +9,9 @@ import business.maintenanceactivity.*;
 import business.user.Planner;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
-import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
-import persistence.maintenanceactivity.SiteDAOImpl;
+import persistence.maintenanceactivity.MaintenanceActivityDaoImpl;
+import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDaoImpl;
+import persistence.maintenanceactivity.SiteDaoImpl;
 /**
  *
  * @author VincenzaCoppola <v.coppola38@studenti.unisa.it>
@@ -226,8 +226,8 @@ public class DeleteActivity extends javax.swing.JFrame {
    
     
     public static void main(String args[]) {
-        Planner planner = new Planner("User","pwd", new MaintenanceActivityDAOImpl(new SiteDAOImpl()),
-                new RequiredMaterialForMaintenanceDAOImpl());
+        Planner planner = new Planner("User","pwd", new MaintenanceActivityDaoImpl(new SiteDaoImpl()),
+                new RequiredMaterialForMaintenanceDaoImpl());
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {

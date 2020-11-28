@@ -13,9 +13,9 @@ import java.util.LinkedList;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
-import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
-import persistence.maintenanceactivity.SiteDAOImpl;
+import persistence.maintenanceactivity.MaintenanceActivityDaoImpl;
+import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDaoImpl;
+import persistence.maintenanceactivity.SiteDaoImpl;
 
 /**
  *
@@ -541,8 +541,8 @@ public class CreateActivity extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        Planner planner = new Planner("User","pwd", new MaintenanceActivityDAOImpl(new SiteDAOImpl()),
-                new RequiredMaterialForMaintenanceDAOImpl());
+        Planner planner = new Planner("User","pwd", new MaintenanceActivityDaoImpl(new SiteDaoImpl()),
+                new RequiredMaterialForMaintenanceDaoImpl());
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
             new CreateActivity(planner).setVisible(true);

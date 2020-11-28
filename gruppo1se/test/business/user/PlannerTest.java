@@ -26,9 +26,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import persistence.database.ConnectionDB;
-import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
-import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
-import persistence.maintenanceactivity.SiteDAOImpl;
+import persistence.maintenanceactivity.MaintenanceActivityDaoImpl;
+import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDaoImpl;
+import persistence.maintenanceactivity.SiteDaoImpl;
 
 /**
  *
@@ -50,9 +50,9 @@ public class PlannerTest {
     private boolean plannedActivity = true;
     private boolean extraActivity = false;
     private boolean ewo = false;
-    private MaintenanceActivityDAOImpl instance = new MaintenanceActivityDAOImpl(new SiteDAOImpl());
-    private final Planner planner = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOImpl(new SiteDAOImpl()),
-                new RequiredMaterialForMaintenanceDAOImpl());
+    private MaintenanceActivityDaoImpl instance = new MaintenanceActivityDaoImpl(new SiteDaoImpl());
+    private final Planner planner = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDaoImpl(new SiteDaoImpl()),
+                new RequiredMaterialForMaintenanceDaoImpl());
     private final Site site = new Site(branchOffice,area,workspaceNotes);
     private final MaintenanceProcedure mProc = new MaintenanceProcedure(maintenanceProcedure);
     
