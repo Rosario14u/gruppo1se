@@ -118,8 +118,11 @@ public class MaintenanceActivityDAO {
                 // Selection of the type of the object to create 
                 MaintenanceActivityFactory.Typology type = typologyOfActivity.compareTo("PLANNED")==0 ? 
                         MaintenanceActivityFactory.Typology.PLANNED : 
-                        MaintenanceActivityFactory.Typology.valueOf(typologyOfUnplanned); 
-                return MaintenanceActivityFactory.make(type, rs.getInt("activityId"), rs.getString("branchOffice"), rs.getString("area"),null, 
+                        MaintenanceActivityFactory.Typology.valueOf(typologyOfUnplanned);
+                String branchOffice = rs.getString("branchOffice");
+                String area = rs.getString("area");
+                Site site = new SiteDao().retrieveSiteDao(branchOffice, area);
+                return MaintenanceActivityFactory.make(type, rs.getInt("activityId"), rs.getString("branchOffice"), rs.getString("area"),site.getWorkSpaceNotes(), 
                             rs.getString("typologyName"), rs.getString("activityDescription"), 
                             rs.getInt("estimatedInterventionTime"), rs.getString("dateActivity"),
                             null, null,rs.getBoolean("interruptibleActivity"));
