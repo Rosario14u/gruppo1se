@@ -45,4 +45,39 @@ public class RequiredMaterialForMaintenanceDAO {
             return null;
         }        
     }
+    
+    
+    public boolean addRequiredMaterial(int activityId, List<Material> requiredMaterial){
+        try {
+            Connection conn = ConnectionDB.getInstanceConnection().getConnection();
+            for(Material material : requiredMaterial){
+                String query = "INSERT INTO requiredmaterial VALUES (?,?)";
+                PreparedStatement pstm = conn.prepareStatement(query);
+                pstm.setInt(1,activityId);            
+                pstm.setString(2,material.getName());            
+                pstm.executeUpdate();
+            }
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(RequiredMaterialForMaintenanceDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+    
+    public boolean removeRequiredMaterial(int activityId, List<Material> requiredMaterial){
+        try {
+            Connection conn = ConnectionDB.getInstanceConnection().getConnection();
+            for(Material material : requiredMaterial){
+                String query = "DELETE FROM requiredmaterial WHERE (activityid = ?) and (materialname = ?)";
+                PreparedStatement pstm = conn.prepareStatement(query);
+                pstm.setInt(1,activityId);            
+                pstm.setString(2,material.getName());            
+                pstm.executeUpdate();
+            }
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(RequiredMaterialForMaintenanceDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
 }

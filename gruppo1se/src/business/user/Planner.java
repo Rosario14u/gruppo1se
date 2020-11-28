@@ -70,7 +70,7 @@ public class Planner extends User {
         Site site = new Site(branchOffice, area);
         
         MaintenanceActivityFactory.Typology type = typologyOfActivity.compareTo("PLANNED")==0 ? 
-                    MaintenanceActivityFactory.Typology.PLANNED : MaintenanceActivityFactory.Typology.valueOf(typologyOfUnplannedActivity); 
+                    MaintenanceActivityFactory.Typology.PLANNED : MaintenanceActivityFactory.Typology.valueOf(typologyOfUnplannedActivity);
         
         MaintenanceActivity newActivity = MaintenanceActivityFactory.make(type, activityId, site, typology, activityDescription, 
                 estimatedInterventionTime, date, null, null, interruptibleActivity);
@@ -99,5 +99,16 @@ public class Planner extends User {
                 date, maintenanceProcedure, materials, interruptibleActivity);
         MaintenanceActivityDAO dao = new MaintenanceActivityDAO();
         return dao.addMaintenanceActivity(activity);
+    }
+
+
+    public boolean addRequiredMaterial(int activityId, List<Material> requiredMaterial){
+        RequiredMaterialForMaintenanceDAO requiredMaterialForMaintenanceDAO = new RequiredMaterialForMaintenanceDAO();
+        return requiredMaterialForMaintenanceDAO.addRequiredMaterial(activityId, requiredMaterial);
+    }
+    
+    public boolean removeRequiredMaterial(int activityId, List<Material> requiredMaterial){
+        RequiredMaterialForMaintenanceDAO requiredMaterialForMaintenanceDAO = new RequiredMaterialForMaintenanceDAO();
+        return requiredMaterialForMaintenanceDAO.removeRequiredMaterial(activityId, requiredMaterial);
     }
 }
