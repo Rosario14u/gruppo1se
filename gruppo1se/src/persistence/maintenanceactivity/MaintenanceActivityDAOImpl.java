@@ -5,6 +5,7 @@
  */
 package persistence.maintenanceactivity;
 import business.maintenanceactivity.*;
+import exception.MaintenanceActivityException;
 import java.sql.*;
 import persistence.database.ConnectionDB;
 /**
@@ -70,6 +71,7 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
         }
     }
     
+    
     //Returns true if at least one row has been deleted
     @Override
     public boolean deleteMaintenanceActivity(int activityId){
@@ -84,6 +86,8 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
             return false;
         }   
     }
+    
+    
     /**
      * 
      * This method recover from a database the maintenance activity if exists, according to activityId parameter.
@@ -107,6 +111,8 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
            return null;
         }       
     }
+    
+    
    /**
     * This method build and retrieve the correct MaintenanceActivity object according to ResultSet
     * @param rs ResultSet from which to build maintenance activity object
@@ -141,15 +147,17 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
         }
     }
     
-        /**
+    
+    /**
      * This method allows to modify an existent Maintenance activity into databse, acccording to actvityId parameter
      * @param newActivity intance of Mintenance activity that contains the new fields to set
      * @param conn
      * @return {@code true} if the the change is successful, false otherwise
+     * @throws exception.MaintenanceActivityException
      */
     /*Developed by Antonio Gorrasi*/
     @Override
-    public boolean modifyMaintenaceActivity(MaintenanceActivity newActivity) {
+    public boolean modifyMaintenaceActivity(MaintenanceActivity newActivity) throws MaintenanceActivityException{
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             String query = "UPDATE MaintenanceActivity SET activityDescription=?, "
@@ -183,7 +191,7 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
             }
             return true;
         } catch (SQLException ex) {
-            return false;
-        } 
+            throw new MaintenanceActivityException("Modifying maintenance activity failed");
+        }
     }
 }

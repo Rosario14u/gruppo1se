@@ -11,6 +11,8 @@ import business.maintenanceactivity.Material;
 import business.maintenanceactivity.PlannedMaintenanceActivity;
 import business.user.Planner;
 import com.toedter.calendar.JTextFieldDateEditor;
+import exception.MaintenanceActivityException;
+import exception.MaterialException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -101,14 +103,15 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         weekTextField = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         activityDescriptionTextArea = new javax.swing.JTextArea();
+        materialComboBox = new javax.swing.JComboBox<>();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane4.setViewportView(jTextArea1);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(210, 102, 70));
+        jPanel1.setBackground(new java.awt.Color(35, 160, 192));
 
         jLabel2.setBackground(new java.awt.Color(0, 0, 0));
         jLabel2.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
@@ -205,6 +208,8 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         activityDescriptionTextArea.setRows(5);
         jScrollPane2.setViewportView(activityDescriptionTextArea);
 
+        materialComboBox.setModel(new javax.swing.DefaultComboBoxModel<>());
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -213,23 +218,11 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
                 .addGap(187, 187, 187)
                 .addComponent(jLabel2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(viewButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(modifyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(265, 265, 265))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(addMaterialTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -264,8 +257,23 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 556, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addComponent(activityComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addContainerGap(18, Short.MAX_VALUE))
+                                        .addComponent(activityComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(addMaterialTextField)
+                                    .addComponent(materialComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(340, 340, 340)
+                                        .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(viewButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(modifyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(247, 247, 247)))))
+                        .addGap(18, 18, 18))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -327,11 +335,16 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
                     .addComponent(addMaterialTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(addButton)
                     .addComponent(deleteButton))
-                .addGap(29, 29, 29)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(modifyButton)
-                    .addComponent(viewButton))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(modifyButton)
+                            .addComponent(viewButton)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(materialComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -342,7 +355,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -358,6 +371,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
             int id = Integer.parseInt(activityId);
             if (id >= 0){
                 MaintenanceActivity activity = planner.viewMaintenanceActivity(id);
+                setAvaliableMaterialToAdd(id);
                 if(activity != null){
                     setField(activity);
                     initializeField(true);
@@ -376,34 +390,52 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_activityIdTextFieldActionPerformed
 
-    //============================================================================================================!!!!!!!!==========
     private void modifyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyButtonActionPerformed
         getField();
     }//GEN-LAST:event_modifyButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        Material material = new Material(addMaterialTextField.getText());
+        /*Material material = new Material(addMaterialTextField.getText());
         List<Material> listMaterialsToAdd = new ArrayList<>(Arrays.asList(material));
         int activityId = getCheckedNumberParameter(activityIdTextField.getText());
         if(planner.addRequiredMaterial(activityId, listMaterialsToAdd)){
             listModel.addElement(material);
             addMaterialTextField.setText("");
         }else
-            infoMessage("Material not added");
+            infoMessage("Material not added");*/
+       
+        int selectedIndex = materialComboBox.getSelectedIndex();
+        Material material = materialComboBox.getItemAt(selectedIndex);
+        materialComboBox.removeItemAt(selectedIndex);
+        List<Material> listMaterialsToAdd = new ArrayList<>(Arrays.asList(material));
+        int activityId = getCheckedNumberParameter(activityIdTextField.getText());
+        try{
+            planner.addRequiredMaterial(activityId, listMaterialsToAdd);
+            listModel.addElement(material);
+            addMaterialTextField.setText("");
+        }catch(MaterialException ex){
+            errorMessage(ex.getMessage());
+        }
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         List<Material> listMaterialsToDelete = new ArrayList<>();
         int[] selectedIndex =  listOfMaterialsJList.getSelectedIndices();
         for (int i = selectedIndex.length - 1; i >= 0; i--) {    
-            listMaterialsToDelete.add(listModel.getElementAt(selectedIndex[i]));
+            Material material = listModel.getElementAt(selectedIndex[i]);
+            listMaterialsToDelete.add(material);
             listModel.removeElementAt(selectedIndex[i]);
+            materialComboBox.addItem(material);
         }
         if(selectedIndex.length <= 0){
             infoMessage("Select Material to delete");
         }else{
-            int activityId = getCheckedNumberParameter(activityIdTextField.getText());
-            planner.removeRequiredMaterial(activityId, listMaterialsToDelete);
+            try {
+                int activityId = getCheckedNumberParameter(activityIdTextField.getText());
+                planner.removeRequiredMaterial(activityId, listMaterialsToDelete);
+            } catch (MaterialException ex) {
+                errorMessage(ex.getMessage());
+            }
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
@@ -424,9 +456,15 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         String date = jDateChooser1.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString();
         
         if(activityId >= 0 && estimatedInterventionTime >= 0)
-            planner.modifyMaintenanceActivity(activityId, branchOffice, area, typology, activityDescrioption, estimatedInterventionTime, 
-                    date, interruptibleActivity, typologyOfActivity, typologyOfUnplannedActivity);
+            try{
+                planner.modifyMaintenanceActivity(activityId, branchOffice, area, typology, activityDescrioption, estimatedInterventionTime, 
+                        date, interruptibleActivity, typologyOfActivity, typologyOfUnplannedActivity);
+            }catch(MaintenanceActivityException ex){
+                errorMessage(ex.getMessage());
+            }
     }
+        
+       
     
     
     //==================== VEDERE ================================  
@@ -444,7 +482,18 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         return -1;
     }
     
-    //===========================================================================================================!!!!!!!=============
+    private void setAvaliableMaterialToAdd(int id){
+        List<Material> list;
+        try {
+            materialComboBox.removeAllItems();
+            list = planner.retrieveAvaliableMaterialToAdd(id);
+            for(Material material:list)
+                materialComboBox.addItem(material);
+        } catch (MaterialException ex) {
+            errorMessage(ex.getMessage());
+        }
+    }
+    
     
     /**
      * @param args the command line arguments
@@ -526,6 +575,8 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         return date.get(weekNumbering.weekOfWeekBasedYear());
     }
     
+    //=============================== ERROR/INFO MESSAGES ===============================
+    
     private void errorMessage(String message){
         JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.ERROR_MESSAGE);
     }
@@ -563,6 +614,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JList<Material> listOfMaterialsJList;
     private javax.swing.JLabel listOfMaterialsLabel;
+    private javax.swing.JComboBox<Material> materialComboBox;
     private javax.swing.JButton modifyButton;
     private javax.swing.JLabel typologyLabel;
     private javax.swing.JTextField typologyTextField;

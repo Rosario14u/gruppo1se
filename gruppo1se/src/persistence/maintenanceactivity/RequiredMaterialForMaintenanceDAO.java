@@ -6,6 +6,7 @@
 package persistence.maintenanceactivity;
 
 import business.maintenanceactivity.Material;
+import exception.MaterialException;
 import java.util.List;
 
 /**
@@ -14,6 +15,7 @@ import java.util.List;
  */
 public interface RequiredMaterialForMaintenanceDAO {
     public List<Material> retrieveMaterialsByActivityId(int activityId);
-    public boolean addRequiredMaterial(int activityId, List<Material> requiredMaterial);
-    public boolean removeRequiredMaterial(int activityId, List<Material> requiredMaterial);
+    public boolean addRequiredMaterial(int activityId, List<Material> requiredMaterial) throws MaterialException;
+    public boolean removeRequiredMaterial(int activityId, List<Material> requiredMaterial) throws MaterialException;
+    public List<Material> retrieveAvaliableMaterialToAdd(int activityId) throws MaterialException;
 }

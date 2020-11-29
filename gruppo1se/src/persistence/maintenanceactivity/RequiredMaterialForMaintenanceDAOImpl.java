@@ -6,6 +6,7 @@
 package persistence.maintenanceactivity;
 
 import business.maintenanceactivity.Material;
+import exception.MaterialException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,26 +30,30 @@ public class RequiredMaterialForMaintenanceDAOImpl implements RequiredMaterialFo
     /*Method developed by Rosario Gaeta*/
     @Override
     public List<Material> retrieveMaterialsByActivityId(int activityId){
-        List<Material> listMaterials = new ArrayList<>();
+        List<Material> listMaterials = new ArrayList<>();        
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             String query = "SELECT * FROM RequiredMaterial WHERE activityId = ? order by materialName";
             PreparedStatement pstm = conn.prepareStatement(query);
             pstm.setInt(1,activityId);            
-            ResultSet res = pstm.executeQuery(); 
+            ResultSet res = pstm.executeQuery();
             
             while(res.next()){
                 listMaterials.add(new Material(res.getString("materialName")));
-            }            
+            }
             return listMaterials;
         } catch (SQLException ex) {
             Logger.getLogger(RequiredMaterialForMaintenanceDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }        
+            return null;     
+        }              
     }
     
+    
+    
+    //================================================================================================================================================
+    //Developed by Antonio Gorrasi
     @Override
-     public boolean addRequiredMaterial(int activityId, List<Material> requiredMaterial){
+     public boolean addRequiredMaterial(int activityId, List<Material> requiredMaterial) throws MaterialException{
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             for(Material material : requiredMaterial){
@@ -60,13 +65,13 @@ public class RequiredMaterialForMaintenanceDAOImpl implements RequiredMaterialFo
             }
             return true;
         } catch (SQLException ex) {
-            Logger.getLogger(RequiredMaterialForMaintenanceDAO.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
+            throw new MaterialException("Inserting material failed");
         }
     }
     
+    //Developed by Antonio Gorrasi
     @Override
-    public boolean removeRequiredMaterial(int activityId, List<Material> requiredMaterial){
+    public boolean removeRequiredMaterial(int activityId, List<Material> requiredMaterial) throws MaterialException{
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             for(Material material : requiredMaterial){
@@ -79,7 +84,30 @@ public class RequiredMaterialForMaintenanceDAOImpl implements RequiredMaterialFo
             return true;
         } catch (SQLException ex) {
             Logger.getLogger(RequiredMaterialForMaintenanceDAO.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
+            throw new MaterialException("Deleting material failed");
+        }
+    }
+    
+    //Developed by Antonio Gorrasi
+    @Override
+    public List<Material> retrieveAvaliableMaterialToAdd(int activityId) throws MaterialException{
+        List<Material> listMaterials = new ArrayList<>();
+        try {
+            Connection conn = ConnectionDB.getInstanceConnection().getConnection();
+            
+            String query = "SELECT * FROM material EXCEPT SELECT materialname FROM requiredmaterial WHERE activityid=?";
+            PreparedStatement pstm = conn.prepareStatement(query);
+            pstm.setInt(1,activityId);           
+            ResultSet res = pstm.executeQuery();
+            
+            while(res.next()){
+                listMaterials.add(new Material(res.getString("materialName")));
+            }
+            
+            return listMaterials;
+        } catch (SQLException ex) {
+            Logger.getLogger(RequiredMaterialForMaintenanceDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new MaterialException("Retrieving avaliable material to use in Maintenance Activity failed");
         }
     }
 }
