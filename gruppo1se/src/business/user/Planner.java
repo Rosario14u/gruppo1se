@@ -8,6 +8,8 @@ package business.user;
 import business.maintenanceactivity.MaintenanceActivity;
 import business.maintenanceactivity.MaintenanceActivityFactory;
 import business.maintenanceactivity.Material;
+import exception.MaintenanceActivityException;
+import exception.MaterialException;
 import java.util.List;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAO;
 import persistence.maintenanceactivity.MaintenanceActivityDAO;
@@ -63,9 +65,10 @@ public class Planner extends User {
      * @param typologyOfUnplannedActivity
      * @return 
      */
+    //Developed by Antonio Gorrasi
     public boolean modifyMaintenanceActivity(int activityId, String branchOffice, String area, String typology, String activityDescription, 
             int estimatedInterventionTime, String date, boolean interruptibleActivity, 
-            String typologyOfActivity, String typologyOfUnplannedActivity){
+            String typologyOfActivity, String typologyOfUnplannedActivity) throws MaintenanceActivityException{
         
         MaintenanceActivityFactory.Typology type = typologyOfActivity.compareTo("PLANNED")==0 ? 
                     MaintenanceActivityFactory.Typology.PLANNED : MaintenanceActivityFactory.Typology.valueOf(typologyOfUnplannedActivity);
@@ -95,11 +98,18 @@ public class Planner extends User {
     }
 
 
-    public boolean addRequiredMaterial(int activityId, List<Material> requiredMaterial){
+    //Developed by Antonio Gorrasi
+    public boolean addRequiredMaterial(int activityId, List<Material> requiredMaterial) throws MaterialException{
         return requiredMaterialsDao.addRequiredMaterial(activityId, requiredMaterial);
     }
     
-    public boolean removeRequiredMaterial(int activityId, List<Material> requiredMaterial){
+    //Developed by Antonio Gorrasi
+    public boolean removeRequiredMaterial(int activityId, List<Material> requiredMaterial) throws MaterialException{
         return requiredMaterialsDao.removeRequiredMaterial(activityId, requiredMaterial);
+    }
+    
+    //Developed by Antonio Gorrasi
+    public List<Material> retrieveAvaliableMaterialToAdd(int activityId) throws MaterialException{
+        return requiredMaterialsDao.retrieveAvaliableMaterialToAdd(activityId);
     }
 }
