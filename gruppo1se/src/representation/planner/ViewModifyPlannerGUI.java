@@ -53,6 +53,8 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
                 new RequiredMaterialForMaintenanceDAOImpl());
         initComponents();
         initializeField(false);
+        weekTextField.setEnabled(false);
+        workspaceNoteTextArea.setEnabled(false);
         try {    
             conn = ConnectionDB.getInstanceConnection().getConnection();
         } catch (SQLException ex) {
@@ -375,6 +377,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
                 if (activity != null){
                     setField(activity);
                     initializeField(true);
+                    setAvailableMaterialToAdd(id);
                 }else{
                     infoMessage("ID not found");
                 }
@@ -484,7 +487,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         return -1;
     }
     
-    private void setAvaliableMaterialToAdd(int id){
+    private void setAvailableMaterialToAdd(int id){
         List<Material> list;
         try {
             materialComboBox.removeAllItems();
@@ -544,9 +547,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         interruptibleActivityCheckBox.setEnabled(enabled);
         listOfMaterialsJList.setEnabled(enabled);
         modifyButton.setEnabled(enabled);
-        typologyTextField.setEnabled(enabled);
-        weekTextField.setEnabled(enabled);
-        workspaceNoteTextArea.setEnabled(enabled);        
+        typologyTextField.setEnabled(enabled);        
         activityComboBox.setEnabled(enabled);
     }
     
