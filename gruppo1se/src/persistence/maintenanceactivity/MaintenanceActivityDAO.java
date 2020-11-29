@@ -6,6 +6,8 @@
 package persistence.maintenanceactivity;
 
 import business.maintenanceactivity.MaintenanceActivity;
+import exception.MaintenanceActivityException;
+import exception.SiteException;
 
 /**
  *
@@ -16,7 +18,7 @@ public interface MaintenanceActivityDAO{
     
     public boolean deleteMaintenanceActivity(int activityId);
     
-    public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId);
+    public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId) throws SiteException ,MaintenanceActivityException;
     
     public boolean modifyMaintenaceActivity(MaintenanceActivity newActivity);
 }

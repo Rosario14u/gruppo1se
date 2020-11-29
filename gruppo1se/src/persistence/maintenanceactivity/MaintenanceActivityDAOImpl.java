@@ -5,6 +5,8 @@
  */
 package persistence.maintenanceactivity;
 import business.maintenanceactivity.*;
+import exception.MaintenanceActivityException;
+import exception.SiteException;
 import java.sql.*;
 import persistence.database.ConnectionDB;
 /**
@@ -91,10 +93,12 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
      * @param conn
      * @return {@code MaintenanceActivity} MaintenanceActivity if exists a maintenance activity
      * with corresponding id in database, null otherwise.
+     * @throws exception.SiteException
+     * @throws exception.MaintenanceActivityException
      */
     /*Method developed by Rosario Gaeta*/
     @Override
-    public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId){
+    public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId) throws SiteException, MaintenanceActivityException{
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             String query = "SELECT * FROM MaintenanceActivity WHERE activityId = ?";
@@ -104,7 +108,7 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
             MaintenanceActivity ma = this.makeMaintenanceActivity(rs);
             return ma;
         } catch (SQLException ex) {
-           return null;
+           throw new MaintenanceActivityException("Maintenance Activity retriving error");
         }       
     }
    /**
@@ -116,7 +120,7 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     * @throws SQLException 
     */
     /*Method developed by Rosario Gaeta*/
-    private MaintenanceActivity makeMaintenanceActivity(ResultSet rs) throws SQLException{
+    private MaintenanceActivity makeMaintenanceActivity(ResultSet rs) throws SQLException, SiteException{
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             while(rs.next()){
@@ -130,10 +134,13 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
                 String branchOffice = rs.getString("branchOffice");
                 String area = rs.getString("area");
                 Site site = siteDao.retrieveSiteDao(branchOffice, area);
-                return MaintenanceActivityFactory.make(type, rs.getInt("activityId"), rs.getString("branchOffice"), rs.getString("area"),site.getWorkSpaceNotes(), 
-                            rs.getString("typologyName"), rs.getString("activityDescription"), 
-                            rs.getInt("estimatedInterventionTime"), rs.getString("dateActivity"),
-                            null, null,rs.getBoolean("interruptibleActivity"));
+                if (site != null){
+                    return MaintenanceActivityFactory.make(type, rs.getInt("activityId"), site.getBranchOffice(), site.getArea(),site.getWorkSpaceNotes(), 
+                                rs.getString("typologyName"), rs.getString("activityDescription"), 
+                                rs.getInt("estimatedInterventionTime"), rs.getString("dateActivity"),
+                                null, null,rs.getBoolean("interruptibleActivity"));
+                }
+                throw new SiteException(); 
             }
             return null;
         } catch (SQLException ex) {

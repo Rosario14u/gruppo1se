@@ -11,6 +11,9 @@ import business.maintenanceactivity.Material;
 import business.maintenanceactivity.PlannedMaintenanceActivity;
 import business.user.Planner;
 import com.toedter.calendar.JTextFieldDateEditor;
+import exception.MaintenanceActivityException;
+import exception.MaterialException;
+import exception.SiteException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -358,17 +361,19 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
             int id = Integer.parseInt(activityId);
             if (id >= 0){
                 MaintenanceActivity activity = planner.viewMaintenanceActivity(id);
-                if(activity != null){
+                if (activity != null){
                     setField(activity);
                     initializeField(true);
                 }else{
-                    errorMessage("ID not present"); 
+                    infoMessage("ID not found");
                 }
             }else{
                errorMessage("ID must be a positive integer"); 
             }
         }catch(NumberFormatException ex){
             errorMessage("ID must be an integer");
+        } catch (SiteException | MaintenanceActivityException | MaterialException ex) {
+            errorMessage(ex.getMessage());
         }  
     }//GEN-LAST:event_viewButtonActionPerformed
 

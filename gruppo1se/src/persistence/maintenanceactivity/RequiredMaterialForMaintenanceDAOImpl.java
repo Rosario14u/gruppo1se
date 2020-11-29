@@ -6,6 +6,7 @@
 package persistence.maintenanceactivity;
 
 import business.maintenanceactivity.Material;
+import exception.MaterialException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,7 +29,7 @@ public class RequiredMaterialForMaintenanceDAOImpl implements RequiredMaterialFo
      */
     /*Method developed by Rosario Gaeta*/
     @Override
-    public List<Material> retrieveMaterialsByActivityId(int activityId){
+    public List<Material> retrieveMaterialsByActivityId(int activityId) throws MaterialException{
         List<Material> listMaterials = new ArrayList<>();
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
@@ -42,8 +43,7 @@ public class RequiredMaterialForMaintenanceDAOImpl implements RequiredMaterialFo
             }            
             return listMaterials;
         } catch (SQLException ex) {
-            Logger.getLogger(RequiredMaterialForMaintenanceDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
+            throw new MaterialException("Material retriving failed");
         }        
     }
     

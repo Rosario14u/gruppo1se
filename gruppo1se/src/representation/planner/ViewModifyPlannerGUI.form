@@ -225,9 +225,6 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Times New Roman" size="24" style="0"/>
             </Property>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="0" red="0" type="rgb"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="VIEW MODIFY ACTIVITY GUI"/>
           </Properties>
         </Component>
@@ -237,25 +234,16 @@
         </Component>
         <Component class="javax.swing.JLabel" name="activityIdLabel">
           <Properties>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="0" red="0" type="rgb"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="Activity ID:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="branchOfficeLabel">
           <Properties>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="0" red="0" type="rgb"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="Branch Office:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="areaLabel">
           <Properties>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="0" red="0" type="rgb"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="Area:"/>
           </Properties>
         </Component>
@@ -266,9 +254,6 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel11">
           <Properties>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="0" red="0" type="rgb"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="Workspace Notes:"/>
           </Properties>
         </Component>
@@ -300,9 +285,6 @@
         </Component>
         <Component class="javax.swing.JLabel" name="listOfMaterialsLabel">
           <Properties>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="0" red="0" type="rgb"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="List of Materials:"/>
           </Properties>
         </Component>
@@ -369,9 +351,6 @@
         </Component>
         <Component class="javax.swing.JLabel" name="typologyLabel">
           <Properties>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="0" red="0" type="rgb"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="Typology:"/>
           </Properties>
         </Component>
@@ -382,44 +361,27 @@
         </Component>
         <Component class="javax.swing.JLabel" name="estimatedInterventionTimeLabel">
           <Properties>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="0" red="0" type="rgb"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="Estimated Intervention Time:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="weekLabel">
           <Properties>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="0" red="0" type="rgb"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="Week:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="activityDescriptionLabel">
           <Properties>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="0" red="0" type="rgb"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="Activity Description:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="interruptibleActivityLabel">
           <Properties>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="0" red="0" type="rgb"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="Interruptible Activity:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="typologyTextField">
         </Component>
         <Component class="javax.swing.JTextField" name="weekTextField">
-          <Properties>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="0" red="0" type="rgb"/>
-            </Property>
-          </Properties>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane2">
           <AuxValues>

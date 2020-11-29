@@ -8,6 +8,9 @@ package business.user;
 import business.maintenanceactivity.MaintenanceActivity;
 import business.maintenanceactivity.MaintenanceActivityFactory;
 import business.maintenanceactivity.Material;
+import exception.MaintenanceActivityException;
+import exception.MaterialException;
+import exception.SiteException;
 import java.util.List;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAO;
 import persistence.maintenanceactivity.MaintenanceActivityDAO;
@@ -38,7 +41,7 @@ public class Planner extends User {
      * @return {@code MaintenanceActivity} MaintenanceActivity
      */
     /*Method developed by Rosario Gaeta*/
-    public MaintenanceActivity viewMaintenanceActivity(int activityId){
+    public MaintenanceActivity viewMaintenanceActivity(int activityId) throws SiteException, MaintenanceActivityException, MaterialException{
         /*this method uses MaintenanceActivityDaoImpl and RequiredMaterialForMaintenanceDaoImpl objects to
         retrieve the required MaintenanceActivity object if exists*/
         MaintenanceActivity activity = maintenanceActivityDao.retrieveMaintenanceActivityDao(activityId);
