@@ -10,6 +10,7 @@ import business.maintenanceactivity.MaintenanceActivityFactory;
 import business.maintenanceactivity.Material;
 import exception.MaintenanceActivityException;
 import exception.MaterialException;
+import exception.SiteException;
 import java.util.List;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAO;
 import persistence.maintenanceactivity.MaintenanceActivityDAO;
@@ -40,7 +41,7 @@ public class Planner extends User {
      * @return {@code MaintenanceActivity} MaintenanceActivity
      */
     /*Method developed by Rosario Gaeta*/
-    public MaintenanceActivity viewMaintenanceActivity(int activityId){
+    public MaintenanceActivity viewMaintenanceActivity(int activityId) throws SiteException, MaintenanceActivityException, MaterialException{
         /*this method uses MaintenanceActivityDaoImpl and RequiredMaterialForMaintenanceDaoImpl objects to
         retrieve the required MaintenanceActivity object if exists*/
         MaintenanceActivity activity = maintenanceActivityDao.retrieveMaintenanceActivityDao(activityId);
@@ -84,7 +85,7 @@ public class Planner extends User {
     
     public boolean makeMaintenanceActivity(int activityId, String branchOffice, String area, String workspaceNotes, String typology, String activityDescription, int estimatedInterventionTime, 
             String date, String smp, List<Material> materials, boolean interruptibleActivity,
-            boolean plannedActivity, boolean extraActivity, boolean ewo){
+            boolean plannedActivity, boolean extraActivity, boolean ewo) throws MaterialException{
         MaintenanceActivityFactory.Typology type = null;
         if (plannedActivity)
             type = MaintenanceActivityFactory.Typology.PLANNED;
@@ -94,7 +95,10 @@ public class Planner extends User {
             type = MaintenanceActivityFactory.Typology.EWO;
         MaintenanceActivity activity = MaintenanceActivityFactory.make(type, activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime,
                 date, smp, materials, interruptibleActivity);
-        return maintenanceActivityDao.addMaintenanceActivity(activity);
+        if (materials!=null)
+            return maintenanceActivityDao.addMaintenanceActivity(activity) && requiredMaterialsDao.addRequiredMaterial(activityId, materials);
+        else
+            return maintenanceActivityDao.addMaintenanceActivity(activity);
     }
 
 

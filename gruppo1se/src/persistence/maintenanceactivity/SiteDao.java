@@ -6,11 +6,12 @@
 package persistence.maintenanceactivity;
 
 import business.maintenanceactivity.Site;
+import exception.SiteException;
 
 /**
  *
  * @author rosar
  */
 public interface SiteDao {
-    public Site retrieveSiteDao(String branchOffice, String area);
+    public Site retrieveSiteDao(String branchOffice, String area) throws SiteException;
 }

@@ -13,6 +13,7 @@ import business.maintenanceactivity.Material;
 import business.maintenanceactivity.PlannedMaintenanceActivity;
 import business.maintenanceactivity.Site;
 import exception.MaintenanceActivityException;
+import exception.SiteException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -33,6 +34,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import persistence.database.ConnectionDB;
+import stub.SiteDaoStub;
 
 /**
  *
@@ -47,10 +49,6 @@ public class MaintenanceActivityDAOImplTest {
             + " estimatedInterventionTime, dateActivity, interruptibleActivity, "
             + "typologyOfActivity, typologyOfUnplannedActivity, typologyName, "
             + "branchOffice, area) VALUES (?,?,?,?,?,?,?,?,?,?)";
-    private static final String DELETESITE = "DELETE FROM Site WHERE branchOffice = ? and  area = ?";
-    private static final String INSERTSITE = 
-            "INSERT INTO Site (branchOffice,area,workspaceNotes) "
-            + "VALUES (?,?,?)";
     private final Site site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
     private final String activityDescription = "ProvaActivityDescription";
     private final MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
@@ -76,6 +74,7 @@ public class MaintenanceActivityDAOImplTest {
     @AfterClass
     public static void tearDownClass() {
         try {
+          
           conn.setAutoCommit(true);
           conn.close();
         } catch (SQLException ex) {
@@ -90,13 +89,13 @@ public class MaintenanceActivityDAOImplTest {
     @After
     public void tearDown() {
         try {
-            //System.out.println("Rollback");
             conn.rollback();
         } catch (SQLException ex) {
             Logger.getLogger(MaintenanceActivityDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    //=======================Test of retrieveMaintenanceActivityDao=========================================
 
     /**
      * This method asserts that retrieveMaintenanceActivityDao correctly returns a PlannedMaintenanceActivity object<br>
@@ -105,18 +104,19 @@ public class MaintenanceActivityDAOImplTest {
     @Test
     public void testRetrieveMaintenanceActivityDaoIsInDatabasePlanned() {
         try {
+            MaintenanceActivityDAO maintenanceActivityDAO = new MaintenanceActivityDAOImpl(new SiteDaoStub());
             deleteMaintenaceActivity(1);
-            insertMaintenanceActivity(1,"ProvaDescrizione",120,"2050-11-23",true, 
-                    "Planned",null,"ProvaTypologyName","ProvaBranch","ProvaArea");
-            deleteSite("ProvaBranch", "ProvaArea");
-            insertSite("ProvaBranch","ProvaArea","ProvaWorkSpaceNotes");
-            MaintenanceActivity activity = instance.retrieveMaintenanceActivityDao(1);
-            assertMaintenanceActivity(activity,1,"ProvaDescrizione",120,"2050-11-23",true, 
-                    "Planned",null,"ProvaTypologyName","ProvaBranch","ProvaArea", "ProvaWorkSpaceNotes");
-            conn.rollback();
+            insertMaintenanceActivity(1,"ProvaDescrizione1",121,"2050-11-21",true, 
+                    "Planned",null,"ProvaTypologyName1","ProvaBranch1","ProvaArea1");
+            MaintenanceActivity activity = maintenanceActivityDAO.retrieveMaintenanceActivityDao(1);
+            assertMaintenanceActivity(activity,1,"ProvaDescrizione1",121,"2050-11-21",true, 
+                    "Planned",null,"ProvaTypologyName1","ProvaBranch1","ProvaArea1", "ProvaWorkSpaceNotes1");
         } catch (SQLException ex) {
-            Logger.getLogger(MaintenanceActivityDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
-
+            fail("SQLException");
+        } catch (SiteException ex) {
+            fail("SiteException");
+        } catch (MaintenanceActivityException ex) {
+            fail("MaintenanceActivityException");
         }
     }
     /**
@@ -126,18 +126,19 @@ public class MaintenanceActivityDAOImplTest {
     @Test
     public void testRetrieveMaintenanceActivityDaoIsInDatabaseEWO() {
         try {
-            deleteMaintenaceActivity(1);
-            insertMaintenanceActivity(1,"ProvaDescrizione",120,"2050-11-23",true, 
-                    "Unplanned","EWO","ProvaTypologyName","ProvaBranch","ProvaArea");
-            deleteSite("ProvaBranch", "ProvaArea");
-            insertSite("ProvaBranch","ProvaArea","ProvaWorkSpaceNotes");
-            MaintenanceActivity activity = instance.retrieveMaintenanceActivityDao(1);
-            assertMaintenanceActivity(activity,1,"ProvaDescrizione",120,"2050-11-23",true, 
-                    "Unplanned","EWO","ProvaTypologyName","ProvaBranch","ProvaArea", "ProvaWorkSpaceNotes");
-            conn.rollback(); 
+            MaintenanceActivityDAO maintenanceActivityDAO = new MaintenanceActivityDAOImpl(new SiteDaoStub());
+            deleteMaintenaceActivity(2);
+            insertMaintenanceActivity(2,"ProvaDescrizione2",122,"2050-11-22",true, 
+                    "Unplanned","EWO","ProvaTypologyName2","ProvaBranch2","ProvaArea2");
+            MaintenanceActivity activity = maintenanceActivityDAO.retrieveMaintenanceActivityDao(2);
+            assertMaintenanceActivity(activity,2,"ProvaDescrizione2",122,"2050-11-22",true, 
+                    "Unplanned","EWO","ProvaTypologyName2","ProvaBranch2","ProvaArea2", "ProvaWorkSpaceNotes2");
         } catch (SQLException ex) {
-            Logger.getLogger(MaintenanceActivityDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
-
+            fail("SQLException");
+        } catch (SiteException ex) {
+            fail("SiteException");
+        } catch (MaintenanceActivityException ex) {
+            fail("MaintenanceActivityException");
         }
     }
     /**
@@ -147,37 +148,77 @@ public class MaintenanceActivityDAOImplTest {
     @Test
     public void testRetrieveMaintenanceActivityDaoIsInDatabaseExtra() {
         try {
-            deleteMaintenaceActivity(1);
-            insertMaintenanceActivity(1,"ProvaDescrizione",120,"2050-11-23",true, 
-                    "Unplanned","Extra","ProvaTypologyName","ProvaBranch","ProvaArea");
-            deleteSite("ProvaBranch", "ProvaArea");
-            insertSite("ProvaBranch","ProvaArea","ProvaWorkSpaceNotes");
-            MaintenanceActivity activity = instance.retrieveMaintenanceActivityDao(1);
-            assertMaintenanceActivity(activity,1,"ProvaDescrizione",120,"2050-11-23",true, 
-                    "Unplanned","Extra","ProvaTypologyName","ProvaBranch","ProvaArea", "ProvaWorkSpaceNotes");
-            conn.rollback();
+            MaintenanceActivityDAO maintenanceActivityDAO = new MaintenanceActivityDAOImpl(new SiteDaoStub());
+            deleteMaintenaceActivity(3);
+            insertMaintenanceActivity(3,"ProvaDescrizione3",123,"2050-11-23",false, 
+                    "Unplanned","Extra","ProvaTypologyName3","ProvaBranch3","ProvaArea3");
+            MaintenanceActivity activity = maintenanceActivityDAO.retrieveMaintenanceActivityDao(3);
+            assertMaintenanceActivity(activity,3,"ProvaDescrizione3",123,"2050-11-23",false, 
+                    "Unplanned","Extra","ProvaTypologyName3","ProvaBranch3","ProvaArea3", "ProvaWorkSpaceNotes3");
         } catch (SQLException ex) {
-            Logger.getLogger(MaintenanceActivityDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
-
+            fail("SQLException");
+        } catch (SiteException ex) {
+            fail("SiteException");
+        } catch (MaintenanceActivityException ex) {
+            fail("MaintenanceActivityException");
         }
     }
-    /**
+    
+   /**
      * This method asserts that retrieveMaintenanceActivityDao correctly returns null when the required<br>
      * maintenance activity is not in the database
      */
     @Test
-    public void testRetrieveMaintenanceActivityDaoIsNotInDatabase() {
+    public void testRetrieveMaintenanceActivityDaoNotInDatabase() {
         try {
-            String query = "DELETE FROM MAINTENANCEACTIVITY WHERE ACTIVITYID=1";
-            Statement stm = conn.createStatement();
-            stm.executeUpdate(query);
-            MaintenanceActivity activity = instance.retrieveMaintenanceActivityDao(1);
-            assertNull(activity);
-            conn.rollback();
+            MaintenanceActivityDAO maintenanceActivityDAO = new MaintenanceActivityDAOImpl(new SiteDaoStub());
+            deleteMaintenaceActivity(1);
+            MaintenanceActivity activity = maintenanceActivityDAO.retrieveMaintenanceActivityDao(1);
+            assertNull("MaintenanceActivityImpl error", activity);
         } catch (SQLException ex) {
-            Logger.getLogger(MaintenanceActivityDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
-        }     
+            fail("SQLException");
+        } catch (SiteException ex) {
+            fail("SiteException");
+        } catch (MaintenanceActivityException ex) {
+            fail("MaintenanceActivityException");
+        }    
     }
+    
+    /**
+     * This method asserts that retrieveMaintenanceActivityDao correctly raises a SiteException <br>
+     * when SiteDao return Null
+     */
+    @Test(expected = SiteException.class)
+    public void testRetrieveMaintenanceActivityDaoSiteExceptionCase1() throws  MaintenanceActivityException, SiteException {
+        try {
+            MaintenanceActivityDAO maintenanceActivityDAO = new MaintenanceActivityDAOImpl(new SiteDaoStub());
+            deleteMaintenaceActivity(4);
+            insertMaintenanceActivity(4,"ProvaDescrizione4",124,"2050-11-24",false, 
+                    "Unplanned","Extra","ProvaTypologyName4","ProvaBranch4","ProvaArea4");
+            MaintenanceActivity activity = maintenanceActivityDAO.retrieveMaintenanceActivityDao(4);
+        } catch (SQLException ex) {
+            fail("SQLException");
+        }
+    }
+    
+    /**
+     * This method asserts that retrieveMaintenanceActivityDao correctly raises a SiteException <br>
+     * when SiteDao raises an exception
+     */
+    @Test(expected = SiteException.class)
+    public void testRetrieveMaintenanceActivityDaoSiteExceptionCase2() throws  MaintenanceActivityException, SiteException {
+        try {
+            MaintenanceActivityDAO maintenanceActivityDAO = new MaintenanceActivityDAOImpl(new SiteDaoStub());
+            deleteMaintenaceActivity(5);
+            insertMaintenanceActivity(5,"ProvaDescrizione5",125,"2050-11-25",false, 
+                    "Unplanned","Extra","ProvaTypologyName5","ProvaBranch5","ProvaArea5");
+            MaintenanceActivity activity = maintenanceActivityDAO.retrieveMaintenanceActivityDao(5);
+        } catch (SQLException ex) {
+            fail("SQLException");
+        }
+    }
+    
+    
     
     private void deleteMaintenaceActivity(int activityId) throws SQLException{
         PreparedStatement pstm = conn.prepareStatement(DELETEMAINTENANCEACTIVITY);
@@ -199,20 +240,6 @@ public class MaintenanceActivityDAOImplTest {
         pstm.setString(8, typologyName);
         pstm.setString(9, branchOffice);
         pstm.setString(10, area);
-        pstm.executeUpdate();
-    }
-    private void deleteSite(String branchOffice, String area) throws SQLException{
-        PreparedStatement pstm = conn.prepareStatement(DELETESITE);
-        pstm.setString(1, branchOffice);
-        pstm.setString(2, area);
-        pstm.executeUpdate();
-    }
-    
-    private void insertSite(String branchOffice, String area, String workSpaceNotes) throws SQLException{
-        PreparedStatement pstm = conn.prepareStatement(INSERTSITE);
-        pstm.setString(1, branchOffice);
-        pstm.setString(2, area);
-        pstm.setString(3, workSpaceNotes);
         pstm.executeUpdate();
     }
     
@@ -538,6 +565,7 @@ public class MaintenanceActivityDAOImplTest {
         instance.addMaintenanceActivity(activity);
         boolean result = instance.deleteMaintenanceActivity(activity.getActivityId());
         assertEquals(true, result);
+        
     }
    
     

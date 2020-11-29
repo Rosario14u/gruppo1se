@@ -7,6 +7,12 @@ package representation.planner;
 
 import business.maintenanceactivity.*;
 import business.user.Planner;
+import exception.MaintenanceActivityException;
+import exception.MaterialException;
+import exception.SiteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
@@ -162,29 +168,33 @@ public class DeleteActivity extends javax.swing.JFrame {
     }//GEN-LAST:event_jActivityIDKeyPressed
 
     private void jSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSearchActionPerformed
-        int activityId = Integer.parseInt(jActivityID.getText());
-        MaintenanceActivity activity = planner.viewMaintenanceActivity(activityId);
-        StringBuilder builder = new StringBuilder(); 
-        if (activity!= null){
-            jDelete.setEnabled(true);
-            for(Material m : activity.getMaterials()){
-                builder.append(m.getName());
-                builder.append(",");
+        try {
+            int activityId = Integer.parseInt(jActivityID.getText());
+            MaintenanceActivity activity = planner.viewMaintenanceActivity(activityId);
+            StringBuilder builder = new StringBuilder();
+            if (activity!= null){
+                jDelete.setEnabled(true);
+                for(Material m : activity.getMaterials()){
+                    builder.append(m.getName());
+                    builder.append(",");
+                }
+                jMaintenanceActivity.setText("\n"+" ActivityID: "+ Integer.toString(activity.getActivityId())+"\n\n"+
+                        " Branch Office: "+ activity.getSite().getBranchOffice()+"\n\n"+
+                        " Area: "+ activity.getSite().getArea()+"\n\n"+
+                        " Workspace Notes: "+activity.getSite().getWorkSpaceNotes()+"\n\n"+
+                        " Typology: "+activity.getTypology()+"\n\n"+
+                        " Activity Description: "+activity.getActivityDescription()+"\n\n"+
+                        " Estimated Intervention Time: "+ Integer.toString(activity.getEstimatedInterventionTime())+"\n\n"+
+                        " Date: "+activity.getDate().toString()+"\n\n"+
+                        " Materials: "+builder.toString()+ "\n\n"+
+                        " Interruptible Activity: "+Boolean.toString(activity.isInterruptibleActivity())+"\n\n"+
+                        " Activity: "+activity.getClass().getSimpleName());
             }
-            jMaintenanceActivity.setText("\n"+" ActivityID: "+ Integer.toString(activity.getActivityId())+"\n\n"+
-                    " Branch Office: "+ activity.getSite().getBranchOffice()+"\n\n"+
-                    " Area: "+ activity.getSite().getArea()+"\n\n"+
-                    " Workspace Notes: "+activity.getSite().getWorkSpaceNotes()+"\n\n"+
-                    " Typology: "+activity.getTypology()+"\n\n"+
-                    " Activity Description: "+activity.getActivityDescription()+"\n\n"+
-                    " Estimated Intervention Time: "+ Integer.toString(activity.getEstimatedInterventionTime())+"\n\n"+
-                    " Date: "+activity.getDate().toString()+"\n\n"+
-                    " Materials: "+builder.toString()+ "\n\n"+
-                    " Interruptible Activity: "+Boolean.toString(activity.isInterruptibleActivity())+"\n\n"+
-                    " Activity: "+activity.getClass().getSimpleName());   
+            else
+                jMaintenanceActivity.setText("The activity with ActivityID: "+jActivityID.getText()+" isn't in the database!");
+        } catch (SiteException | MaintenanceActivityException | MaterialException ex) {
+            errorMessage(ex.getMessage());
         }
-        else
-            jMaintenanceActivity.setText("The activity with ActivityID: "+jActivityID.getText()+" isn't in the database!");
     }//GEN-LAST:event_jSearchActionPerformed
 
     private void jDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDeleteActionPerformed
@@ -224,6 +234,9 @@ public class DeleteActivity extends javax.swing.JFrame {
         }
     }    
    
+    private void errorMessage(String message){
+        JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.ERROR_MESSAGE);
+    }
     
     public static void main(String args[]) {
         Planner planner = new Planner("admin","admin", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),

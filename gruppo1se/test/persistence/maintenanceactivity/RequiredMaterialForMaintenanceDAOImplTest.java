@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import business.maintenanceactivity.Material;
+import exception.MaterialException;
 import static org.junit.Assert.*;
 import persistence.database.ConnectionDB;
 
@@ -26,9 +27,8 @@ import persistence.database.ConnectionDB;
  */
 public class RequiredMaterialForMaintenanceDAOImplTest {
     private static Connection conn;
-    private static String DELETEASSOCIATIONMATERIALTOACTIVITY = "DELETE FROM RequiredMaterial where activityId = ?"
-            + " or activityId = ?";
-    private static String ASSOCIATEMATERIALTOACTIVITY = "INSERT INTO RequiredMaterial values(?,?),(?,?),(?,?),(?,?)";
+    private static String DELETEASSOCIATIONMATERIALTOACTIVITY = "DELETE FROM RequiredMaterial where activityId = ?";
+    private static String ASSOCIATEMATERIALTOACTIVITY = "INSERT INTO RequiredMaterial values(?,?),(?,?),(?,?)";
     
     public RequiredMaterialForMaintenanceDAOImplTest() {
     }
@@ -59,27 +59,29 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
     
     @After
     public void tearDown() {
+        try {
+            conn.rollback();
+        } catch (SQLException ex) {
+            Logger.getLogger(RequiredMaterialForMaintenanceDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
-     * Test of retrieveMaterialsByActivityId method, of class RequiredMaterialForMaintenanceDAOImpl.
+     * This method assert that retrieveMaterialsByActivityIdInDatabase correctly return List of material
      */
     @Test
     public void testRetrieveMaterialsByActivityIdInDatabase() {
         try {
             PreparedStatement pstm = conn.prepareStatement(DELETEASSOCIATIONMATERIALTOACTIVITY);
             pstm.setInt(1, 1);
-            pstm.setInt(2, 2);
             pstm.executeUpdate();
             pstm = conn.prepareStatement(ASSOCIATEMATERIALTOACTIVITY);
             pstm.setInt(1, 1);
             pstm.setString(2, "Rame");
             pstm.setInt(3, 1);
             pstm.setString(4, "Ferro");
-            pstm.setInt(5, 2);
-            pstm.setString(6, "Acciaio");
-            pstm.setInt(7, 1);
-            pstm.setString(8, "Legno");
+            pstm.setInt(5, 1);
+            pstm.setString(6, "Legno");
             pstm.executeUpdate();
             RequiredMaterialForMaintenanceDAOImpl materialForMaintenanceDao = new RequiredMaterialForMaintenanceDAOImpl();
             List<Material> listMaterials= materialForMaintenanceDao.retrieveMaterialsByActivityId(1);
@@ -87,36 +89,32 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
             assertEquals("requiredMaterial error","Ferro",listMaterials.get(0).getName());
             assertEquals("requiredMaterial error","Legno",listMaterials.get(1).getName());
             assertEquals("requiredMaterial error","Rame",listMaterials.get(2).getName());
-            listMaterials = materialForMaintenanceDao.retrieveMaterialsByActivityId(2);
-            assertEquals("listMaterials lenght error", 1,listMaterials.size());
-            assertEquals("requiredMaterial error","Acciaio",listMaterials.get(0).getName());
-            conn.rollback();
         } catch (SQLException ex) {
-            assertNull("SQLException", ex);
-            Logger.getLogger(RequiredMaterialForMaintenanceDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
+            fail("SQLException");
+        } catch (MaterialException ex) {
+            fail("MaterialException");
         }
     }
     
-       /**
-     * Test of retrieveMaterialsByActivityId method, of class RequiredMaterialForMaintenanceDAOImpl.
+    /**
+     * This method assert that retrieveMaterialsByActivityIdInDatabase correctly return empty list when <br>
+     * there aren't material associated to activity
      */
     @Test
     public void testRetrieveMaterialsByActivityIdNotInDatabase() {
         try {
             PreparedStatement pstm = conn.prepareStatement(DELETEASSOCIATIONMATERIALTOACTIVITY);
             pstm.setInt(1, 1);
-            pstm.setInt(2, 2);
             pstm.executeUpdate();
             RequiredMaterialForMaintenanceDAOImpl materialForMaintenanceDao = new RequiredMaterialForMaintenanceDAOImpl();
             List<Material> listMaterials;
-            for(int i = 1; i < 3; i++){
-                listMaterials= materialForMaintenanceDao.retrieveMaterialsByActivityId(i);
-                assertTrue("requiredMaterial error", listMaterials.isEmpty());
-            }
-            conn.rollback();
+            listMaterials= materialForMaintenanceDao.retrieveMaterialsByActivityId(1);
+            assertTrue("requiredMaterial error", listMaterials.isEmpty());        
         } catch (SQLException ex) {
-            assertNull("SQLException", ex);
-            Logger.getLogger(RequiredMaterialForMaintenanceDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
+            fail("SQLException");
+        } catch (MaterialException ex) {
+            fail("MaterialException");
         }
     }
+    
 }

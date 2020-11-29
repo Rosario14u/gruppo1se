@@ -6,6 +6,7 @@
 package persistence.maintenanceactivity;
 
 import business.maintenanceactivity.Site;
+import exception.SiteException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -58,6 +59,11 @@ public class SiteDaoImplTest {
     
     @After
     public void tearDown() {
+        try {
+         conn.rollback();
+        } catch (SQLException ex) {
+         Logger.getLogger(RequiredMaterialForMaintenanceDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -77,9 +83,10 @@ public class SiteDaoImplTest {
             assertEquals("branchOffice error", "ProvaBranch", site.getBranchOffice());
             assertEquals("area error", "ProvaArea", site.getArea());
             assertEquals("workspacenotes error", "ProvaWorkSpaceNotes",site.getWorkSpaceNotes());
-            conn.rollback();
         } catch (SQLException ex) {
-            Logger.getLogger(SiteDaoImplTest.class.getName()).log(Level.SEVERE, null, ex);
+            fail("SQLException");
+        } catch (SiteException ex) {
+            fail("SiteException");
         }
     }
     /**
@@ -91,10 +98,11 @@ public class SiteDaoImplTest {
         try {
             deleteFromSite("ProvaBranch", "ProvaBranch");
             Site site = new SiteDaoImpl().retrieveSiteDao("ProvaBranch", "ProvaArea");
-            assertNull("Site is not null", site);
-            conn.rollback();
+            assertNull("Site Dao error", site);
         } catch (SQLException ex) {
-            Logger.getLogger(SiteDaoImplTest.class.getName()).log(Level.SEVERE, null, ex);
+            fail("SQLException");
+        } catch (SiteException ex) {
+            fail("SiteException");
         }
 
     }

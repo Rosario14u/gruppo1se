@@ -8,8 +8,11 @@ package representation.planner;
 import business.maintenanceactivity.MaintenanceProcedure;
 import business.maintenanceactivity.Material;
 import business.user.Planner;
+import exception.MaterialException;
 import java.time.LocalDate;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -431,44 +434,48 @@ public class CreateActivity extends javax.swing.JFrame {
     }//GEN-LAST:event_jEwoItemStateChanged
 
     private void jCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCreateActionPerformed
-        int activityId = Integer.parseInt(jActivityId.getText());
-        String branchOffice = jBranchOffice.getText();
-        String area = jArea.getText();
-        String workspaceNotes = jWorkspaceNotes.getText();
-        String typology = jTypology.getText();
-        String activityDescription = jActivityDescription.getText();
-        int estimatedInterventionTime = Integer.parseInt(jEstimatedInterventionTime.getText());
-        String date = jDate.getText();
-        String maintenanceProcedure = jMaintenanceProcedure.getText();
-        LinkedList<Material> materials = new LinkedList<>();
-        String materialString = jMaterials.getText();
-        String[] materialStringList = materialString.split(",");
-        for (String material : materialStringList)
-            materials.add(new Material(material));
-        boolean interruptibleActivity;
-        if (jInterruptibleTrue.isSelected())
-            interruptibleActivity = true;
-        else
-            interruptibleActivity = false;
-        boolean plannedActivity = jPlanned.isSelected();
-        boolean extraActivity = jExtra.isSelected();
-        boolean ewo = jEwo.isSelected();
-        boolean insert = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
-        if (!insert)
-            System.out.println("Errore nell'inserimento");
-        jActivityId.setText("");
-        jBranchOffice.setText("");
-        jArea.setText("");
-        jWorkspaceNotes.setText("");
-        jTypology.setText("");
-        jActivityDescription.setText("");
-        jEstimatedInterventionTime.setText("");
-        jDate.setText("");
-        jMaintenanceProcedure.setText("");
-        jMaterials.setText("");
-        buttonGroupInterruptible.clearSelection();
-        buttonGroupTypeOfActivity.clearSelection();
-        jCreate.setEnabled(false);
+        try {
+            int activityId = Integer.parseInt(jActivityId.getText());
+            String branchOffice = jBranchOffice.getText();
+            String area = jArea.getText();
+            String workspaceNotes = jWorkspaceNotes.getText();
+            String typology = jTypology.getText();
+            String activityDescription = jActivityDescription.getText();
+            int estimatedInterventionTime = Integer.parseInt(jEstimatedInterventionTime.getText());
+            String date = jDate.getText();
+            String maintenanceProcedure = jMaintenanceProcedure.getText();
+            LinkedList<Material> materials = new LinkedList<>();
+            String materialString = jMaterials.getText();
+            String[] materialStringList = materialString.split(",");
+            for (String material : materialStringList)
+                materials.add(new Material(material));
+            boolean interruptibleActivity;
+            if (jInterruptibleTrue.isSelected())
+                interruptibleActivity = true;
+            else
+                interruptibleActivity = false;
+            boolean plannedActivity = jPlanned.isSelected();
+            boolean extraActivity = jExtra.isSelected();
+            boolean ewo = jEwo.isSelected();
+            boolean insert = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            if (!insert)
+                System.out.println("Errore nell'inserimento");
+            jActivityId.setText("");
+            jBranchOffice.setText("");
+            jArea.setText("");
+            jWorkspaceNotes.setText("");
+            jTypology.setText("");
+            jActivityDescription.setText("");
+            jEstimatedInterventionTime.setText("");
+            jDate.setText("");
+            jMaintenanceProcedure.setText("");
+            jMaterials.setText("");
+            buttonGroupInterruptible.clearSelection();
+            buttonGroupTypeOfActivity.clearSelection();
+            jCreate.setEnabled(false);
+        } catch (MaterialException ex) {
+            Logger.getLogger(CreateActivity.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jCreateActionPerformed
 
     private void jActivityIdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jActivityIdKeyPressed

@@ -140,7 +140,7 @@ public class EwoTest {
         assertEquals(instance.getMaterials(), materialsAdd);
     }
     
-    @Test
+    @Test 
     public void isInstanceOfExtraActivity(){
         System.out.println("instance is an instance of Ewo");
         boolean result = Ewo.class.isInstance(this.instance);

@@ -14,7 +14,7 @@ import java.util.List;
  * @author rosar
  */
 public interface RequiredMaterialForMaintenanceDAO {
-    public List<Material> retrieveMaterialsByActivityId(int activityId);
+    public List<Material> retrieveMaterialsByActivityId(int activityId) throws MaterialException;
     public boolean addRequiredMaterial(int activityId, List<Material> requiredMaterial) throws MaterialException;
     public boolean removeRequiredMaterial(int activityId, List<Material> requiredMaterial) throws MaterialException;
     public List<Material> retrieveAvaliableMaterialToAdd(int activityId) throws MaterialException;

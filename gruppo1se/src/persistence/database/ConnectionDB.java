@@ -34,13 +34,13 @@ public class ConnectionDB {
 
     public synchronized static ConnectionDB getInstanceConnection() throws SQLException {
         if (instance == null) {
-            System.out.println("Sto creando una connessione al DB");
+            //System.out.println("Sto creando una connessione al DB");
             instance = new ConnectionDB();
         } else if (instance.getConnection().isClosed()) {
-            System.out.println("Connessione chiusa. Sto ricreando una connessione al DB");
+            //System.out.println("Connessione chiusa. Sto ricreando una connessione al DB");
             instance = new ConnectionDB();
         }else{
-            System.out.println("Sto riusando la connessione");
+            //System.out.println("Sto riusando la connessione");
         }
         return instance;
     }

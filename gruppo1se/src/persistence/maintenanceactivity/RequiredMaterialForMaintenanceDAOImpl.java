@@ -29,8 +29,8 @@ public class RequiredMaterialForMaintenanceDAOImpl implements RequiredMaterialFo
      */
     /*Method developed by Rosario Gaeta*/
     @Override
-    public List<Material> retrieveMaterialsByActivityId(int activityId){
-        List<Material> listMaterials = new ArrayList<>();        
+    public List<Material> retrieveMaterialsByActivityId(int activityId) throws MaterialException{
+        List<Material> listMaterials = new ArrayList<>();
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             String query = "SELECT * FROM RequiredMaterial WHERE activityId = ? order by materialName";
@@ -43,9 +43,8 @@ public class RequiredMaterialForMaintenanceDAOImpl implements RequiredMaterialFo
             }
             return listMaterials;
         } catch (SQLException ex) {
-            Logger.getLogger(RequiredMaterialForMaintenanceDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-            return null;     
-        }              
+            throw new MaterialException("Material retriving failed");
+        }        
     }
     
     
