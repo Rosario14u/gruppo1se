@@ -76,6 +76,7 @@ public class Planner extends User {
         
         MaintenanceActivity newActivity = MaintenanceActivityFactory.make(type, activityId, branchOffice, area, null, typology, activityDescription, 
                 estimatedInterventionTime, date, null, null, interruptibleActivity);
+        System.out.println(newActivity.toString());
         return maintenanceActivityDao.modifyMaintenaceActivity(newActivity);
     }
     

@@ -446,9 +446,9 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         String area =  areaTextField.getText();
         String branchOffice = branchOfficeTextField.getText();
         
-        String value = activityComboBox.getSelectedItem().toString();
-        String typologyOfActivity = value.compareTo("Planned") == 0 ? "Planned" : "Unplanned";
-        String typologyOfUnplannedActivity = typologyOfActivity.compareTo("Unplanned") == 0 ? value : null;
+        String value = activityComboBox.getSelectedItem().toString().toUpperCase();
+        String typologyOfActivity = value.compareTo("PLANNED") == 0 ? "PLANNED" : "UNPLANNED";
+        String typologyOfUnplannedActivity = typologyOfActivity.compareTo("UNPLANNED") == 0 ? value : null;
                        
         int estimatedInterventionTime = getCheckedNumberParameter(estimatedInterventionTimeTextField.getText());
         int activityId = getCheckedNumberParameter(activityIdTextField.getText());
