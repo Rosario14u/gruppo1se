@@ -21,6 +21,7 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -398,7 +399,8 @@ public class PlannerTest {
         }
     }
     
-    //========================Test of viewMaintenanceActivity================================================   
+    //========================Test of viewMaintenanceActivity================================================
+    /*Test methods of viewMaintenanceActivity developed by Rosario Gaeta*/
     /**
      * This test method assert that viewMaintenanceActivity correctly return a planned activity
      */
@@ -409,9 +411,9 @@ public class PlannerTest {
                 new RequiredMaterialForMaintenanceDAOStub());
             MaintenanceActivity activity = planner.viewMaintenanceActivity(1);
             List<Material> materials= new ArrayList<>(){{
-                    add(new Material("Materiale1"));
-                    add(new Material("Materiale2"));
-                    add(new Material("Materiale3"));
+                    add(new Material("Material1"));
+                    add(new Material("Material2"));
+                    add(new Material("Material3"));
                 }};
             assertViewMaintenanceActivity(activity, 1, "ProvaDescription1", 121, "2020-12-21", true, "Planned", null,
                     "ProvaTypology1", "ProvaBranchOffice1", "ProvaArea1", "ProvaWorkspaceNotes1",materials);
@@ -433,9 +435,9 @@ public class PlannerTest {
                 new RequiredMaterialForMaintenanceDAOStub());
             MaintenanceActivity activity = planner.viewMaintenanceActivity(2);
             List<Material> materials= new ArrayList<>(){{
-                    add(new Material("Materiale4"));
-                    add(new Material("Materiale5"));
-                    add(new Material("Materiale6"));
+                    add(new Material("Material4"));
+                    add(new Material("Material5"));
+                    add(new Material("Material6"));
                 }};
             assertViewMaintenanceActivity(activity, 2, "ProvaDescription2", 122, "2020-12-22", false, "Unplanned", "EWO",
                     "ProvaTypology2", "ProvaBranchOffice2", "ProvaArea2", "ProvaWorkspaceNotes2",materials);
@@ -457,9 +459,9 @@ public class PlannerTest {
                 new RequiredMaterialForMaintenanceDAOStub());
             MaintenanceActivity activity = planner.viewMaintenanceActivity(3);
             List<Material> materials= new ArrayList<>(){{
-                    add(new Material("Materiale7"));
-                    add(new Material("Materiale8"));
-                    add(new Material("Materiale9"));
+                    add(new Material("Material7"));
+                    add(new Material("Material8"));
+                    add(new Material("Material9"));
                 }};
             assertViewMaintenanceActivity(activity, 3, "ProvaDescription3", 123, "2020-12-23", false, "Unplanned", "Extra",
                     "ProvaTypology3", "ProvaBranchOffice3", "ProvaArea3", "ProvaWorkspaceNotes3",materials);
@@ -589,12 +591,9 @@ public class PlannerTest {
         return activityClass;
     }
     
-    private void assertMaterial(List<Material> material, List<Material> expectedMaterials){
-        if (material.size() == 0){
-            assertEquals("Material null error", expectedMaterials.size(), material.size());
-        }
-        for (int i = 0; i < material.size(); i++){
-            assertEquals("Material error", material.get(i).getName(), expectedMaterials.get(i).getName());
-        }
+    private void assertMaterial(List<Material> materials, List<Material> expectedMaterials){
+        Collections.sort(materials);
+        Collections.sort(expectedMaterials);
+        assertEquals("Material error", materials, expectedMaterials);
     }
 }

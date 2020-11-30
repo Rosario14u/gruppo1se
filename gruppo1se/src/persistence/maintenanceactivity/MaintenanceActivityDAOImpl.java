@@ -93,7 +93,6 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
      * 
      * This method recover from a database the maintenance activity if exists, according to activityId parameter.
      * @param activityId activity id of the maintenance activity to retrieve
-     * @param conn
      * @return {@code MaintenanceActivity} MaintenanceActivity if exists a maintenance activity
      * with corresponding id in database, null otherwise.
      * @throws exception.SiteException
@@ -119,10 +118,11 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
    /**
     * This method build and retrieve the correct MaintenanceActivity object according to ResultSet
     * @param rs ResultSet from which to build maintenance activity object
-    * @param conn
     * @return {@code MaintenaceActivity} MaintenanceActivity according to the content of resultSet,
     * null if Result set is empty or there is an error
-    * @throws SQLException 
+    * @throws SQLException
+    * @throws exception.SiteException
+    * @throws exception.MaintenanceActivityException
     */
     /*Method developed by Rosario Gaeta*/
     private MaintenanceActivity makeMaintenanceActivity(ResultSet rs) throws SQLException, SiteException{

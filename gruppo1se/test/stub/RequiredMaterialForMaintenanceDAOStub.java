@@ -29,48 +29,30 @@ public class RequiredMaterialForMaintenanceDAOStub implements RequiredMaterialFo
     public List<Material> retrieveMaterialsByActivityId(int activityId) throws MaterialException {
         switch (activityId) {
             case 1:
-                return new ArrayList<>(){{
-                    add(new Material("Materiale1"));
-                    add(new Material("Materiale2"));
-                    add(new Material("Materiale3"));
-                }};
-                
+                return retrieveArrayList("Material1","Material2","Material3");
             case 2:
-                return new ArrayList<>(){{
-                    add(new Material("Materiale4"));
-                    add(new Material("Materiale5"));
-                    add(new Material("Materiale6"));
-                }};
-                
+                return retrieveArrayList("Material4","Material5","Material6");
             case 3:
-                return new ArrayList<>(){{
-                    add(new Material("Materiale7"));
-                    add(new Material("Materiale8"));
-                    add(new Material("Materiale9"));
-                }};
+                return retrieveArrayList("Material7","Material8","Material9");
             case 4:
-                return new ArrayList<>(){{
-                    add(new Material("Materiale10"));
-                    add(new Material("Materiale11"));
-                    add(new Material("Materiale12"));
-                }};
+                return retrieveArrayList("Material10","Material11","Material12");
             case 5:
-                return new ArrayList<>(){{
-                    add(new Material("Materiale13"));
-                    add(new Material("Materiale14"));
-                    add(new Material("Materiale15"));
-                }};
+                return retrieveArrayList("Material13","Material14","Material5");
             case 6:
-                return new ArrayList<>(){{
-                    add(new Material("Materiale16"));
-                    add(new Material("Materiale17"));
-                    add(new Material("Materiale18"));
-                }};
+                return retrieveArrayList("Material16","Material17","Material8");
             case 7:
                 return new ArrayList<>();
             default:
                 throw new MaterialException();
         }
+    }
+    
+    private List<Material> retrieveArrayList(String material1,String material2, String material3){
+        return new ArrayList<>(){{
+                    add(new Material(material1));
+                    add(new Material(material2));
+                    add(new Material(material3));
+                }};
     }
 
     @Override

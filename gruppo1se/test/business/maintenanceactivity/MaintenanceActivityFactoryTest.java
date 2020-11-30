@@ -20,6 +20,7 @@ import static org.junit.Assert.*;
  *
  * @author rosar
  */
+/*Test class developed by Rosario Gaeta*/
 public class MaintenanceActivityFactoryTest {
     
     public MaintenanceActivityFactoryTest() {
@@ -91,16 +92,14 @@ public class MaintenanceActivityFactoryTest {
     
     private void assertMaintenanceActivity(MaintenanceActivity expectedActivity, MaintenanceActivity returnedActivity){
         assertEquals("activityId error", expectedActivity.getActivityId(), returnedActivity.getActivityId());
-        assertEquals("branchOffice error", expectedActivity.getSite().getBranchOffice(), returnedActivity.getSite().getBranchOffice());
-        assertEquals("area error", expectedActivity.getSite().getArea(), returnedActivity.getSite().getArea());
-        assertEquals("workspaceNotes error", expectedActivity.getSite().getWorkSpaceNotes(), returnedActivity.getSite().getWorkSpaceNotes());
+        assertEquals("site error", expectedActivity.getSite(), returnedActivity.getSite());
         assertEquals("typology error", expectedActivity.getTypology(), returnedActivity.getTypology());
         assertEquals("description error", expectedActivity.getActivityDescription(), returnedActivity.getActivityDescription());
         assertEquals("estimated error", expectedActivity.getEstimatedInterventionTime(), returnedActivity.getEstimatedInterventionTime());
         assertEquals("date error", expectedActivity.getDate(), returnedActivity.getDate());
         assertEquals("procedure error", expectedActivity.getMaintenanceProcedure().getSmp(), returnedActivity.getMaintenanceProcedure().getSmp());
         assertEquals("material error", expectedActivity.getMaterials(), returnedActivity.getMaterials());
-        assertEquals("material error", expectedActivity.isInterruptibleActivity(), returnedActivity.isInterruptibleActivity());
+        assertEquals("interruptible error", expectedActivity.isInterruptibleActivity(), returnedActivity.isInterruptibleActivity());
         assertEquals("instance error", expectedActivity.getClass(), returnedActivity.getClass());
     }
     

@@ -13,9 +13,10 @@ import org.junit.*;
  * @author aless
  */
 public class SiteTest{
-    private Site site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
+    private Site instance;
     
     public SiteTest() {
+        instance = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
     }
 
 
@@ -24,9 +25,8 @@ public class SiteTest{
      */
     @Test
     public void testGetBranchOffice() {
-        System.out.println("getBranchOffice");
         String expResult = "ProvaBranchOffice";
-        String result = site.getBranchOffice();
+        String result = instance.getBranchOffice();
         assertEquals(expResult, result);
     }
 
@@ -35,9 +35,8 @@ public class SiteTest{
      */
     @Test
     public void testGetArea() {
-        System.out.println("getArea");
         String expResult = "ProvaArea";
-        String result = site.getArea();
+        String result = instance.getArea();
         assertEquals(expResult, result);
     }
 
@@ -46,9 +45,8 @@ public class SiteTest{
      */
     @Test
     public void testGetWorkSpaceNotes() {
-        System.out.println("getWorkSpaceNotes");
         String expResult = "ProvaWorkspaceNotes";
-        String result = site.getWorkSpaceNotes();
+        String result = instance.getWorkSpaceNotes();
         assertEquals(expResult, result);
     }
 
@@ -57,10 +55,9 @@ public class SiteTest{
      */
     @Test
     public void testSetWorkSpaceNotes() {
-        System.out.println("setWorkSpaceNotes");
         String workSpaceNotes = "AggiornaWorkspaceNotes";
-        site.setWorkSpaceNotes(workSpaceNotes);
-        assertEquals(workSpaceNotes, site.getWorkSpaceNotes());
+        instance.setWorkSpaceNotes(workSpaceNotes);
+        assertEquals(workSpaceNotes, instance.getWorkSpaceNotes());
     }
     
 }

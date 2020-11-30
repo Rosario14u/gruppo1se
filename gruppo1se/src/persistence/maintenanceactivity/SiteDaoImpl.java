@@ -23,7 +23,6 @@ public class SiteDaoImpl implements SiteDao {
      * This method returns the site according to branchOffice and area attributes of the site object
      * @param branchOffice branchoffice of the required site
      * @param area area of the required site 
-     * @param conn
      * @return {@code Site} site object if exists the corresponding site in the database, null otherwise
      * @throws exception.SiteException
      */

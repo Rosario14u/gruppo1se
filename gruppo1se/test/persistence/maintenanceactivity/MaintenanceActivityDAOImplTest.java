@@ -74,7 +74,6 @@ public class MaintenanceActivityDAOImplTest {
     @AfterClass
     public static void tearDownClass() {
         try {
-          
           conn.setAutoCommit(true);
           conn.close();
         } catch (SQLException ex) {
@@ -96,7 +95,7 @@ public class MaintenanceActivityDAOImplTest {
     }
     
     //=======================Test of retrieveMaintenanceActivityDao=========================================
-
+    /*Test methods of retrieveMaintenanceActivityDao developed by Rosario Gaeta*/
     /**
      * This method asserts that retrieveMaintenanceActivityDao correctly returns a PlannedMaintenanceActivity object<br>
      * when there is in database a planned activity with the required activityId.
@@ -218,7 +217,7 @@ public class MaintenanceActivityDAOImplTest {
         }
     }
     
-    
+    //=======================Utilities to test retrieveMaintenanceActivityDao=========================================
     
     private void deleteMaintenaceActivity(int activityId) throws SQLException{
         PreparedStatement pstm = conn.prepareStatement(DELETEMAINTENANCEACTIVITY);

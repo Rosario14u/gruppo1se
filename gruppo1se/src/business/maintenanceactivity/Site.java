@@ -5,6 +5,8 @@
  */
 package business.maintenanceactivity;
 
+import java.util.Objects;
+
 /**
  *
  * @author gorra
@@ -62,6 +64,39 @@ public class Site {
      */
     public void setWorkSpaceNotes(String workSpaceNotes) {
         this.workSpaceNotes = workSpaceNotes;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 17 * hash + Objects.hashCode(this.branchOffice);
+        hash = 17 * hash + Objects.hashCode(this.area);
+        hash = 17 * hash + Objects.hashCode(this.workSpaceNotes);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Site other = (Site) obj;
+        if (!Objects.equals(this.branchOffice, other.branchOffice)) {
+            return false;
+        }
+        if (!Objects.equals(this.area, other.area)) {
+            return false;
+        }
+        if (!Objects.equals(this.workSpaceNotes, other.workSpaceNotes)) {
+            return false;
+        }
+        return true;
     }
 
     /**

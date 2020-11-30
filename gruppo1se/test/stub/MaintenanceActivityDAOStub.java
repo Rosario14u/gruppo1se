@@ -42,13 +42,16 @@ public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
         switch (activityId) {
             case 1:
                 return new PlannedMaintenanceActivity(activityId, new Site("ProvaBranchOffice1", "ProvaArea1", "ProvaWorkspaceNotes1"),
-                        "ProvaTypology1", "ProvaDescription1", 121, LocalDate.parse("2020-12-21"), new MaintenanceProcedure("ProvaSmp1"), null, true);
+                        "ProvaTypology1", "ProvaDescription1", 121, LocalDate.parse("2020-12-21"), 
+                        new MaintenanceProcedure("ProvaSmp1"), null, true);
             case 2:
                 return new Ewo(activityId, new Site("ProvaBranchOffice2", "ProvaArea2", "ProvaWorkspaceNotes2"),
-                        "ProvaTypology2", "ProvaDescription2", 122, LocalDate.parse("2020-12-22"), new MaintenanceProcedure("ProvaSmp2"), null, false);
+                        "ProvaTypology2", "ProvaDescription2", 122, LocalDate.parse("2020-12-22"), 
+                        new MaintenanceProcedure("ProvaSmp2"), null, false);
             case 3:
                 return new ExtraActivity(activityId, new Site("ProvaBranchOffice3", "ProvaArea3", "ProvaWorkspaceNotes3"),
-                        "ProvaTypology3", "ProvaDescription3", 123, LocalDate.parse("2020-12-23"), new MaintenanceProcedure("ProvaSmp3"), null, false);
+                        "ProvaTypology3", "ProvaDescription3", 123, LocalDate.parse("2020-12-23"),
+                        new MaintenanceProcedure("ProvaSmp3"), null, false);
             case 4:
                 return null;
             case 5:

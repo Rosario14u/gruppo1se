@@ -26,6 +26,7 @@ public class RequiredMaterialForMaintenanceDAOImpl implements RequiredMaterialFo
      * This method retrieve a list materials associated to the maintenance activity identified by the activityId.
      * @param activityId of the MaintenanceActivity
      * @return {@code List<String>} listMaterials, null otherwise
+     * @throws exception.MaterialException
      */
     /*Method developed by Rosario Gaeta*/
     @Override
@@ -37,7 +38,6 @@ public class RequiredMaterialForMaintenanceDAOImpl implements RequiredMaterialFo
             PreparedStatement pstm = conn.prepareStatement(query);
             pstm.setInt(1,activityId);            
             ResultSet res = pstm.executeQuery();
-            
             while(res.next()){
                 listMaterials.add(new Material(res.getString("materialName")));
             }

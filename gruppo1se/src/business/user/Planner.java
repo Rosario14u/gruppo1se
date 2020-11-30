@@ -26,8 +26,8 @@ public class Planner extends User {
      * Constructor of Planner
      * @param username username of Planner 
      * @param password password of Planner
-     * @param maintenanceActivityDao
-     * @param requiredMaterialsDao
+     * @param maintenanceActivityDao MaintenanceActivityDao object of Planner
+     * @param requiredMaterialsDao RequiredMaterialDao object of Planner
      */
     public Planner(String username, String password, MaintenanceActivityDAO maintenanceActivityDao, RequiredMaterialForMaintenanceDAO requiredMaterialsDao) {
         super(username, password);
@@ -39,6 +39,9 @@ public class Planner extends User {
      * null otherwise
      * @param activityId activity id of the Maintenance Activity to visualize
      * @return {@code MaintenanceActivity} MaintenanceActivity
+     * @throws exception.SiteException
+     * @throws exception.MaintenanceActivityException
+     * @throws exception.MaterialException
      */
     /*Method developed by Rosario Gaeta*/
     public MaintenanceActivity viewMaintenanceActivity(int activityId) throws SiteException, MaintenanceActivityException, MaterialException{

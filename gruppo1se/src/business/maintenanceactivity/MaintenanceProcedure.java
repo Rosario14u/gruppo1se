@@ -5,6 +5,8 @@
  */
 package business.maintenanceactivity;
 
+import java.util.Objects;
+
 /**
  *
  * @author gorra
@@ -36,6 +38,32 @@ public class MaintenanceProcedure {
     public void setSmp(String smp) {
         this.smp = smp;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 29 * hash + Objects.hashCode(this.smp);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final MaintenanceProcedure other = (MaintenanceProcedure) obj;
+        if (!Objects.equals(this.smp, other.smp)) {
+            return false;
+        }
+        return true;
+    }
+    
 
         /**
      * Return string representation of the MaintenanceProcedure object

@@ -30,7 +30,9 @@ public class SiteDaoImplTest {
     private static final String DELETEFROMSITE = "DELETE FROM Site WHERE branchOffice = ? and area = ?";
     private static final String INSERTFROMSITE = "INSERT INTO Site (branchOffice,area,workspaceNotes) "
                     + "VALUES (?,?,?)";
+    SiteDao siteDao;
     public SiteDaoImplTest() {
+        siteDao = new SiteDaoImpl();
     }
     
     @BeforeClass
@@ -70,6 +72,7 @@ public class SiteDaoImplTest {
      * This method asserts that retrieveSiteDao correctly returns a Site object<br>
      * when there is in database a site with the required branchOffice and area.
      */
+    /*Test method developed by Rosario Gaeta*/
     @Test
     public void testRetrieveSiteDao() {
         try {
@@ -77,12 +80,10 @@ public class SiteDaoImplTest {
             PreparedStatement pstm = conn.prepareStatement(INSERTFROMSITE);
             pstm.setString(1, "ProvaBranch");
             pstm.setString(2, "ProvaArea");
-            pstm.setString(3, "ProvaWorkSpaceNotes");
+            pstm.setString(3, "ProvaWorkspaceNotes");
             pstm.executeUpdate();
-            Site site = new SiteDaoImpl().retrieveSiteDao("ProvaBranch", "ProvaArea");
-            assertEquals("branchOffice error", "ProvaBranch", site.getBranchOffice());
-            assertEquals("area error", "ProvaArea", site.getArea());
-            assertEquals("workspacenotes error", "ProvaWorkSpaceNotes",site.getWorkSpaceNotes());
+            Site site = siteDao.retrieveSiteDao("ProvaBranch", "ProvaArea");
+            assertEquals("retrieveSiteDao", site, new Site("ProvaBranch", "ProvaArea", "ProvaWorkspaceNotes"));
         } catch (SQLException ex) {
             fail("SQLException");
         } catch (SiteException ex) {
@@ -93,12 +94,13 @@ public class SiteDaoImplTest {
      * This method asserts that retrieveSiteDao correctly returns null<br>
      * when there is not the required site in database. 
      */
+    /*Test method developed by Rosario Gaeta*/
     @Test
     public void testRetrieveSiteDaoNotDatabase() {
         try {
             deleteFromSite("ProvaBranch", "ProvaBranch");
             Site site = new SiteDaoImpl().retrieveSiteDao("ProvaBranch", "ProvaArea");
-            assertNull("Site Dao error", site);
+            assertNull("retrieveSiteDaoNotDatabase error", site);
         } catch (SQLException ex) {
             fail("SQLException");
         } catch (SiteException ex) {
@@ -106,7 +108,7 @@ public class SiteDaoImplTest {
         }
 
     }
-    
+    /*Utility method developed by Rosario Gaeta*/
     private void deleteFromSite(String officeBranch, String area) throws SQLException{
         try {
             PreparedStatement pstm = conn.prepareStatement(DELETEFROMSITE);

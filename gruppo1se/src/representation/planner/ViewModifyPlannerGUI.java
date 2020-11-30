@@ -118,16 +118,12 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
 
         jLabel2.setBackground(new java.awt.Color(0, 0, 0));
         jLabel2.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("VIEW MODIFY ACTIVITY GUI");
 
-        activityIdLabel.setForeground(new java.awt.Color(0, 0, 0));
         activityIdLabel.setText("Activity ID:");
 
-        branchOfficeLabel.setForeground(new java.awt.Color(0, 0, 0));
         branchOfficeLabel.setText("Branch Office:");
 
-        areaLabel.setForeground(new java.awt.Color(0, 0, 0));
         areaLabel.setText("Area:");
 
         activityIdTextField.addActionListener(new java.awt.event.ActionListener() {
@@ -136,7 +132,6 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
             }
         });
 
-        jLabel11.setForeground(new java.awt.Color(0, 0, 0));
         jLabel11.setText("Workspace Notes:");
 
         workspaceNoteTextArea.setColumns(20);
@@ -145,7 +140,6 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
 
         activityComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Planned", "EWO", "Extra"}));
 
-        listOfMaterialsLabel.setForeground(new java.awt.Color(0, 0, 0));
         listOfMaterialsLabel.setText("List of Materials:");
 
         listOfMaterialsJList.setModel(listModel);
@@ -184,7 +178,6 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         editor.setEditable(false);
         editor.setVisible(false);
 
-        typologyLabel.setForeground(new java.awt.Color(0, 0, 0));
         typologyLabel.setText("Typology:");
 
         interruptibleActivityCheckBox.addActionListener(new java.awt.event.ActionListener() {
@@ -193,19 +186,13 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
             }
         });
 
-        estimatedInterventionTimeLabel.setForeground(new java.awt.Color(0, 0, 0));
         estimatedInterventionTimeLabel.setText("Estimated Intervention Time:");
 
-        weekLabel.setForeground(new java.awt.Color(0, 0, 0));
         weekLabel.setText("Week:");
 
-        activityDescriptionLabel.setForeground(new java.awt.Color(0, 0, 0));
         activityDescriptionLabel.setText("Activity Description:");
 
-        interruptibleActivityLabel.setForeground(new java.awt.Color(0, 0, 0));
         interruptibleActivityLabel.setText("Interruptible Activity:");
-
-        weekTextField.setForeground(new java.awt.Color(0, 0, 0));
 
         activityDescriptionTextArea.setColumns(20);
         activityDescriptionTextArea.setRows(5);
@@ -549,6 +536,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         modifyButton.setEnabled(enabled);
         typologyTextField.setEnabled(enabled);        
         activityComboBox.setEnabled(enabled);
+        jDateChooser1.setEnabled(enabled);
     }
     
     
