@@ -8,6 +8,8 @@ package persistence.maintenanceactivity;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,6 +33,10 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
     private static Connection conn;
     private static String DELETEASSOCIATIONMATERIALTOACTIVITY = "DELETE FROM RequiredMaterial where activityId = ?";
     private static String ASSOCIATEMATERIALTOACTIVITY = "INSERT INTO RequiredMaterial values(?,?),(?,?),(?,?)";
+    private static String SELECT_MATERIAL_WITH_ACTIVITY_ID = "SELECT materialname FROM RequiredMaterial WHERE activityId = ? ORDER BY materialname";
+    private static String INSERT_MATERIAL_FOR_ACTIVITY = "INSERT INTO RequiredMaterial VALUES (?,?)";
+    private static String DELETE_MATERIAL = "DELETE FROM material";
+    private static String INSERT_MATERIAL = "INSERT INTO material VALUES (?)";
     private RequiredMaterialForMaintenanceDAOImpl materialForMaintenanceDao;
     public RequiredMaterialForMaintenanceDAOImplTest() {
         materialForMaintenanceDao= new RequiredMaterialForMaintenanceDAOImpl();
@@ -116,6 +122,152 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
             pstm.executeUpdate();
             List<Material> result = materialForMaintenanceDao.retrieveMaterialsByActivityId(1);
             assertTrue("requiredMaterial error", result.isEmpty());        
+        } catch (SQLException ex) {
+            fail("SQLException");
+        } catch (MaterialException ex) {
+            fail("MaterialException");
+        }
+    }
+    
+    //===============================================================================================================
+    
+    //===========================================================================================================================
+    
+    @Test
+    public void testAddRequiredMaterial(){
+        try {
+            PreparedStatement pstm = conn.prepareStatement(DELETEASSOCIATIONMATERIALTOACTIVITY);
+            pstm.setInt(1, 1);
+            pstm.executeUpdate();
+            List<Material> listMaterials = new ArrayList<>();
+            
+            for(int i='a';i<='z';i++){
+                listMaterials.add(new Material(String.valueOf(Character.toChars(i))));
+            }
+            
+            assertTrue(materialForMaintenanceDao.addRequiredMaterial(1, listMaterials));
+            
+            pstm = conn.prepareStatement(SELECT_MATERIAL_WITH_ACTIVITY_ID);
+            pstm.setInt(1, 1);
+            ResultSet res = pstm.executeQuery();
+            
+            for(int i=0;res.next();i++){
+                assertEquals(listMaterials.get(i).getName(), res.getString("materialName"));
+                if(res.isLast()){
+                    assertEquals(listMaterials.size(),res.getRow());
+                }
+            }  
+        } catch (SQLException ex) {
+            fail("SQLException");
+        } catch (MaterialException ex) {
+            fail("MaterialException");
+        }
+    }
+     
+    @Test
+    public void testRemoveRequiredMaterialInDatabase(){
+        try {
+            List<Material> listMaterials = new ArrayList<>();
+            PreparedStatement pstm = conn.prepareStatement(DELETEASSOCIATIONMATERIALTOACTIVITY);
+            pstm.setInt(1, 1);
+            pstm.executeUpdate();
+            
+            pstm = conn.prepareStatement(INSERT_MATERIAL_FOR_ACTIVITY);
+            for(int i='a';i<='z';i++){
+                pstm.setInt(1, 1);
+                pstm.setString(2, String.valueOf(Character.toChars(i)));
+                pstm.executeUpdate();
+                listMaterials.add(new Material(String.valueOf(Character.toChars(i))));
+            }
+            
+            assertTrue(materialForMaintenanceDao.removeRequiredMaterial(1, listMaterials));
+            
+            pstm = conn.prepareStatement(SELECT_MATERIAL_WITH_ACTIVITY_ID);
+            pstm.setInt(1, 1);
+            ResultSet res = pstm.executeQuery();
+            
+            //returns false if there are no more rows to return
+            assertFalse(res.next());
+        } catch (SQLException ex) {
+            fail("SQLException");
+        } catch (MaterialException ex) {
+            fail("MaterialException");
+        }
+    }
+    
+    @Test
+    public void testRemoveRequiredMaterialNotInDatabase(){
+        try {
+            List<Material> listMaterials = new ArrayList<>();
+            PreparedStatement pstm = conn.prepareStatement(DELETEASSOCIATIONMATERIALTOACTIVITY);
+            pstm.setInt(1, 1);
+            pstm.executeUpdate();
+            
+            for(int i='a';i<='z';i++){
+                listMaterials.add(new Material(String.valueOf(Character.toChars(i))));
+            }
+            
+            assertFalse(materialForMaintenanceDao.removeRequiredMaterial(1, listMaterials));
+            
+            pstm = conn.prepareStatement(SELECT_MATERIAL_WITH_ACTIVITY_ID);
+            pstm.setInt(1, 1);
+            ResultSet res = pstm.executeQuery();
+            
+            //returns false if there are no more rows to return
+            assertFalse(res.next());
+        } catch (SQLException ex) {
+            fail("SQLException");
+        } catch (MaterialException ex) {
+            fail("MaterialException");
+        } 
+    }
+    
+    @Test
+    public void testRetrieveAvaliableMaterialToAdd(){
+        try {
+            List<Material> expectedMaterialsList = new ArrayList<>();
+            List<Material> actualMaterialsList = new ArrayList<>();
+            PreparedStatement pstm = conn.prepareStatement(DELETEASSOCIATIONMATERIALTOACTIVITY);
+            pstm.setInt(1, 1);
+            pstm.executeUpdate();
+            
+            Statement stm = conn.createStatement();
+            stm.executeUpdate(DELETE_MATERIAL);
+            
+            pstm = conn.prepareStatement(INSERT_MATERIAL);
+            
+            for(int i='a';i<='z';i++){
+                pstm.setString(1, String.valueOf(Character.toChars(i)));
+                pstm.executeUpdate();
+                expectedMaterialsList.add(new Material(String.valueOf(Character.toChars(i))));
+            }
+            
+            actualMaterialsList = materialForMaintenanceDao.retrieveAvaliableMaterialToAdd(1);
+            
+            Collections.sort(actualMaterialsList);
+            assertEquals(expectedMaterialsList,actualMaterialsList);
+        } catch (SQLException ex) {
+            fail("SQLException");
+        } catch (MaterialException ex) {
+            fail("MaterialException");
+        }
+    }
+    
+    @Test
+    public void testRetrieveAvaliableMaterialToAddEmpty(){
+        try {
+            List<Material> expectedMaterialsList = new ArrayList<>();
+            List<Material> actualMaterialsList = new ArrayList<>();
+            PreparedStatement pstm = conn.prepareStatement(DELETEASSOCIATIONMATERIALTOACTIVITY);
+            pstm.setInt(1, 1);
+            pstm.executeUpdate();
+            
+            Statement stm = conn.createStatement();
+            stm.executeUpdate(DELETE_MATERIAL);
+            
+            actualMaterialsList = materialForMaintenanceDao.retrieveAvaliableMaterialToAdd(1);
+            
+            assertEquals(expectedMaterialsList,actualMaterialsList);
         } catch (SQLException ex) {
             fail("SQLException");
         } catch (MaterialException ex) {

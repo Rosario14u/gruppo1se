@@ -57,11 +57,5 @@ public class Material implements Comparable<Material> {
     @Override
     public int compareTo(Material o) {
         return this.getName().compareTo(o.getName());
-    }
-
-   
-    
-    
-    
-    
+    }    
 }

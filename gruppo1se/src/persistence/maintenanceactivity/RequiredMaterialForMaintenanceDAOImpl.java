@@ -73,16 +73,18 @@ public class RequiredMaterialForMaintenanceDAOImpl implements RequiredMaterialFo
     public boolean removeRequiredMaterial(int activityId, List<Material> requiredMaterial) throws MaterialException{
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
+            int notRemovedCounter = 0;
             for(Material material : requiredMaterial){
                 String query = "DELETE FROM requiredmaterial WHERE (activityid = ?) and (materialname = ?)";
                 PreparedStatement pstm = conn.prepareStatement(query);
                 pstm.setInt(1,activityId);            
-                pstm.setString(2,material.getName());            
-                pstm.executeUpdate();
+                pstm.setString(2,material.getName());
+                if(pstm.executeUpdate() == 0){
+                    notRemovedCounter++;
+                }
             }
-            return true;
+            return !(notRemovedCounter>0);
         } catch (SQLException ex) {
-            Logger.getLogger(RequiredMaterialForMaintenanceDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new MaterialException("Deleting material failed");
         }
     }
@@ -105,7 +107,6 @@ public class RequiredMaterialForMaintenanceDAOImpl implements RequiredMaterialFo
             
             return listMaterials;
         } catch (SQLException ex) {
-            Logger.getLogger(RequiredMaterialForMaintenanceDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new MaterialException("Retrieving avaliable material to use in Maintenance Activity failed");
         }
     }

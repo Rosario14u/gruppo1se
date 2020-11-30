@@ -192,10 +192,8 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
                 pstm.setString(9,"Extra");
             }
             pstm.setInt(10,newActivity.getActivityId());
-            if(pstm.executeUpdate()==0){
-                return false;
-            }
-            return true;
+            
+            return pstm.executeUpdate()!=0;
         } catch (SQLException ex) {
             throw new MaintenanceActivityException("Modifying maintenance activity failed");
         }

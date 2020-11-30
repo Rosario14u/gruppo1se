@@ -99,68 +99,12 @@ public class PlannerTest {
      * Test of modifyMaintenanceActivity method, of class Planner.
      */
     @Test
-    public void testSuccessfulModifyPlannedMaintenanceActivity() throws MaintenanceActivityException{
+    public void testSuccessfulModifyPlannedMaintenanceActivity(){
         try{
-            Statement stm = conn.createStatement();
-
-        
-            deleteDafaultMaintenanceActivity(stm);
-            insertDefaultMaintenanceActivity("Planned", "null", stm);
-            MaintenanceActivity newActivity = new PlannedMaintenanceActivity(1, new Site("ProvaBranchOfficeMod", "ProvaAreaMod"), "typologyNameMod", 
-                                    "ProvaDescrizioneMod", 400, LocalDate.parse("2050-12-12"), null, null, false);
-
-            boolean result = instance.modifyMaintenaceActivity(newActivity);
-            assertEquals(true, result);
-            
-            conn.rollback();
-        }catch(SQLException ex){
-            Logger.getLogger(PlannerTest.class.getName()).log(Level.SEVERE, null, ex);            
-        }   
-    }
-    
-    /**
-     * Test of modifyMaintenanceActivity method, of class Planner.
-     */
-    @Test
-    public void testSuccessfulModifyEWOMaintenanceActivity() throws MaintenanceActivityException {
-        try{
-            Statement stm = conn.createStatement();
-
-        
-            deleteDafaultMaintenanceActivity(stm);
-            insertDefaultMaintenanceActivity("Planned", "null", stm);
-            MaintenanceActivity newActivity = new Ewo(1, new Site("ProvaBranchOfficeMod", "ProvaAreaMod"), "typologyNameMod", 
-                                    "ProvaDescrizioneMod", 400, LocalDate.parse("2050-12-12"), null, null, false);
-            
-            boolean result = instance.modifyMaintenaceActivity(newActivity);
-            assertEquals(true, result);
-            
-            conn.rollback();
-        }catch(SQLException ex){
-            Logger.getLogger(PlannerTest.class.getName()).log(Level.SEVERE, null, ex);            
-        }   
-    }
-    
-    /**
-     * Test of modifyMaintenanceActivity method, of class Planner.
-     */
-    @Test
-    public void testSuccessfulModifyExtraMaintenanceActivity() throws MaintenanceActivityException{
-        try{
-            Statement stm = conn.createStatement();
-
-        
-            deleteDafaultMaintenanceActivity(stm);
-            insertDefaultMaintenanceActivity("Planned", "null", stm);
-            MaintenanceActivity newActivity = new ExtraActivity(1, new Site("ProvaBranchOfficeMod", "ProvaAreaMod"), "typologyNameMod", 
-                                    "ProvaDescrizioneMod", 400, LocalDate.parse("2050-12-12"), null, null, false);
-            
-            boolean result = instance.modifyMaintenaceActivity(newActivity);
-            assertEquals(true, result);
-            
-            conn.rollback();
-        }catch(SQLException ex){
-            Logger.getLogger(PlannerTest.class.getName()).log(Level.SEVERE, null, ex);            
+            Planner planner1 = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(), null);
+            assertTrue(planner1.modifyMaintenanceActivity(1, "branchOffice1", "area1", "typology1", "description1", 1, LocalDate.now().toString(), true, "PLANNED", null));
+        }catch(MaintenanceActivityException ex){
+            fail("MaintenanceActivityException");     
         }   
     }
     
@@ -169,84 +113,215 @@ public class PlannerTest {
      * Test of modifyMaintenanceActivity method, of class Planner.
      */
     @Test
-    public void testUnsuccessfulModifyPlannedMaintenanceActivity() throws MaintenanceActivityException{
+    public void testUnsuccessfulModifyPlannedMaintenanceActivity() {
         try{
-            Statement stm = conn.createStatement();
-
-        
-            deleteDafaultMaintenanceActivity(stm);
-            MaintenanceActivity newActivity = new PlannedMaintenanceActivity(1, new Site("ProvaBranchOfficeMod", "ProvaAreaMod"), "typologyNameMod", 
-                                    "ProvaDescrizioneMod", 400, LocalDate.parse("2050-12-12"), null, null, false);
-            
-            boolean result = instance.modifyMaintenaceActivity(newActivity);
-            assertEquals(false, result);
-            
-            conn.rollback();
-        }catch(SQLException ex){
-            Logger.getLogger(PlannerTest.class.getName()).log(Level.SEVERE, null, ex);            
+            Planner planner1 = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(), null);
+            assertFalse(planner1.modifyMaintenanceActivity(2, "branchOffice2", "area2", "typology2", "description2", 2, LocalDate.now().toString(), true, "PLANNED", null));
+        }catch(MaintenanceActivityException ex){
+            fail("MaintenanceActivityException");     
+        }
+    }
+    
+    
+    /**
+     * Test of modifyMaintenanceActivity method, of class Planner.
+     */
+    @Test(expected = MaintenanceActivityException.class)
+    public void testExceptionModifyPlannedMaintenanceActivity() throws MaintenanceActivityException{
+        Planner planner1 = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(), null);
+        planner1.modifyMaintenanceActivity(3, "branchOffice3", "area3", "typology3", "description3", 3, LocalDate.now().toString(), true, "PLANNED", null);  
+    }
+  
+    
+    /**
+     * Test of modifyMaintenanceActivity method, of class Planner.
+     */
+    @Test
+    public void testSuccessfulModifyEwoMaintenanceActivity() {
+        try{
+            Planner planner1 = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(), null);
+            assertTrue(planner1.modifyMaintenanceActivity(4, "branchOffice4", "area4", "typology4", "description4", 4, LocalDate.now().toString(), true, "UNPLANNED", "EWO"));
+        }catch(MaintenanceActivityException ex){
+            fail("MaintenanceActivityException");     
         }   
+    }
+    
+    
+    /**
+     * Test of modifyMaintenanceActivity method, of class Planner.
+     */
+    @Test
+    public void testUnsuccessfulModifyEwoMaintenanceActivity() {
+        try{
+            Planner planner1 = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(), null);
+            assertFalse(planner1.modifyMaintenanceActivity(5, "branchOffice5", "area5", "typology5", "description5", 5, LocalDate.now().toString(), true, "UNPLANNED", "EWO"));
+        }catch(MaintenanceActivityException ex){
+            fail("MaintenanceActivityException");     
+        }
+    }
+    
+    
+    /**
+     * Test of modifyMaintenanceActivity method, of class Planner.
+     */
+    @Test(expected = MaintenanceActivityException.class)
+    public void testExceptionModifyEwoMaintenanceActivity() throws MaintenanceActivityException{
+        Planner planner1 = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(), null);
+        planner1.modifyMaintenanceActivity(6, "branchOffice6", "area6", "typology6", "description6", 6, LocalDate.now().toString(), true, "UNPLANNED", "EWO");
     }
     
     /**
      * Test of modifyMaintenanceActivity method, of class Planner.
      */
     @Test
-    public void testUnsuccessfulModifyEWOMaintenanceActivity() throws MaintenanceActivityException{
+    public void testSuccessfulModifyExtraMaintenanceActivity() {
         try{
-            Statement stm = conn.createStatement();
-
-        
-            deleteDafaultMaintenanceActivity(stm);
-            MaintenanceActivity newActivity = new Ewo(1, new Site("ProvaBranchOfficeMod", "ProvaAreaMod"), "typologyNameMod", 
-                                    "ProvaDescrizioneMod", 400, LocalDate.parse("2050-12-12"), null, null, false);
-            
-            boolean result = instance.modifyMaintenaceActivity(newActivity);
-            assertEquals(false, result);
-            
-            conn.rollback();
-        }catch(SQLException ex){
-            Logger.getLogger(PlannerTest.class.getName()).log(Level.SEVERE, null, ex);            
-        }   
+            Planner planner1 = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(), null);
+            assertTrue(planner1.modifyMaintenanceActivity(7, "branchOffice7", "area7", "typology7", "description7", 7, LocalDate.now().toString(), true, "UNPLANNED", "EXTRA"));
+        }catch(MaintenanceActivityException ex){
+            fail("MaintenanceActivityException");     
+        }  
     }
+    
     
     /**
      * Test of modifyMaintenanceActivity method, of class Planner.
      */
     @Test
-    public void testUnsuccessfulModifyExtraMaintenanceActivity() throws MaintenanceActivityException{
+    public void testUnsuccessfulModifyExtraMaintenanceActivity() {
         try{
-            Statement stm = conn.createStatement();
-
-        
-            deleteDafaultMaintenanceActivity(stm);
-            MaintenanceActivity newActivity = new ExtraActivity(1, new Site("ProvaBranchOfficeMod", "ProvaAreaMod"), "typologyNameMod", 
-                                    "ProvaDescrizioneMod", 400, LocalDate.parse("2050-12-12"), null, null, false);
-            
-            boolean result = instance.modifyMaintenaceActivity(newActivity);
-            assertEquals(false, result);
-            
-            conn.rollback();
-        }catch(SQLException ex){
-            Logger.getLogger(PlannerTest.class.getName()).log(Level.SEVERE, null, ex);            
-        }   
+            Planner planner1 = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(), null);
+            assertFalse(planner1.modifyMaintenanceActivity(8, "branchOffice8", "area8", "typology8", "description8", 8, LocalDate.now().toString(), true, "UNPLANNED", "EXTRA"));
+        }catch(MaintenanceActivityException ex){
+            fail("MaintenanceActivityException");     
+        }  
     }
     
+    
+    /**
+     * Test of modifyMaintenanceActivity method, of class Planner.
+     */
+    @Test(expected = MaintenanceActivityException.class)
+    public void testExceptionModifyExtraMaintenanceActivity() throws MaintenanceActivityException{
+        Planner planner1 = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(), null);
+        planner1.modifyMaintenanceActivity(9, "branchOffice9", "area9", "typology9", "description9", 9, LocalDate.now().toString(), true, "UNPLANNED", "EXTRA"); 
+    }
+    
+    /*============================================================================================================================*/
+    @Test
+    public void testSuccessfulAddRequiredMaterial(){
+        try{
+            Planner planner1 = new Planner("ProvaUser","ProvaPassword", null, new RequiredMaterialForMaintenanceDAOStub());
+            List<Material> listMaterialToAdd = new ArrayList<>();                       
+            assertTrue(planner1.addRequiredMaterial(1, listMaterialToAdd));
+        }catch (MaterialException ex){
+            fail("MaterialException");
+        }
+    }
+    
+    @Test(expected = MaterialException.class)
+    public void testUnsuccessfulAddRequiredMaterial() throws MaterialException{
+        Planner planner1 = new Planner("ProvaUser","ProvaPassword", null, new RequiredMaterialForMaintenanceDAOStub());
+        List<Material> listMaterialToAdd = new ArrayList<>();
+        planner1.addRequiredMaterial(2, listMaterialToAdd);
+    }
+    
+    @Test
+    public void testSuccessfulRemoveRequiredMaterial(){
+        try {
+            Planner planner1 = new Planner("ProvaUser","ProvaPassword", null, new RequiredMaterialForMaintenanceDAOStub());
+            List<Material> listMaterialToAdd = new ArrayList<>();
+            assertTrue(planner1.removeRequiredMaterial(3, listMaterialToAdd));
+        } catch (MaterialException ex) {
+            fail("MaterialException");
+        }
+    }
+    
+    @Test
+    public void testRemoveRequiredMaterialNotComplete(){
+        try {
+            Planner planner1 = new Planner("ProvaUser","ProvaPassword", null, new RequiredMaterialForMaintenanceDAOStub());
+            List<Material> listMaterialToAdd = new ArrayList<>();
+            assertFalse(planner1.removeRequiredMaterial(4, listMaterialToAdd));
+        } catch (MaterialException ex) {
+            fail("MaterialException");
+        }
+    }
+    
+    
+    @Test(expected = MaterialException.class)
+    public void testUnsuccessfulRemoveRequiredMaterial() throws MaterialException{
+        Planner planner1 = new Planner("ProvaUser","ProvaPassword", null, new RequiredMaterialForMaintenanceDAOStub());
+        List<Material> listMaterialToAdd = new ArrayList<>();
+        planner1.removeRequiredMaterial(5, listMaterialToAdd);
+    }
+    
+    @Test
+    public void testRetrieveAvaliableMaterialToAdd(){
+        try {
+            Planner planner1 = new Planner("ProvaUser","ProvaPassword", null, new RequiredMaterialForMaintenanceDAOStub());
+            List<Material> expectedMaterialList = new ArrayList<>(){{
+                add(new Material("Material1"));
+                add(new Material("Material2"));
+            }};
+            List<Material> actualMaterialList = planner1.retrieveAvaliableMaterialToAdd(6);
+            assertEquals(expectedMaterialList, actualMaterialList);
+        } catch (MaterialException ex) {
+            fail("MaterialException");
+        }
+    }
+        
+    @Test
+    public void testRetrieveAvaliableMaterialToAddEmpty(){
+        try {
+            Planner planner1 = new Planner("ProvaUser","ProvaPassword", null, new RequiredMaterialForMaintenanceDAOStub());
+            List<Material> expectedMaterialList = new ArrayList<>();
+            List<Material> actualMaterialList = planner1.retrieveAvaliableMaterialToAdd(7);
+            assertEquals(expectedMaterialList, actualMaterialList);
+        } catch (MaterialException ex) {
+            fail("MaterialException");
+        }       
+    }
+    
+    @Test(expected = MaterialException.class)
+    public void testUnsuccessfulRetrieveAvaliableMaterialToAdd() throws MaterialException{
+        Planner planner1 = new Planner("ProvaUser","ProvaPassword", null, new RequiredMaterialForMaintenanceDAOStub());
+        planner1.retrieveAvaliableMaterialToAdd(8);   
+    }
     
     /*=================== PRIVATE METHODS OF MODIFY ==============================================================================*/
     
-    private void insertDefaultMaintenanceActivity(String typologyOfActivity, String typologyOfUnplannedActivity, Statement stm) throws SQLException {
+    private void insertDefaultMaintenanceActivity(String typologyOfActivity, String typologyOfUnplannedActivity, Statement stm, int id) throws SQLException {
         String query = "INSERT INTO MaintenanceActivity (activityId, activityDescription, "
                 + "estimatedInterventionTime, dateActivity, interruptibleActivity, typologyOfActivity,"
                 + " typologyOfUnplannedActivity, typologyName, branchOffice, area) "
-                + "VALUES (1, 'ProvaDescrizione', 200, '2030-12-1', True, '"+ typologyOfActivity +"',"
-                + " "+ typologyOfUnplannedActivity +", 'typologyName', 'ProvaBranchOffice', 'ProvaArea')";
+                + "VALUES (" + id + ", 'DefaultDescrizione', 1, '2100-1-1', True, '"+ typologyOfActivity +"',"
+                + " "+ typologyOfUnplannedActivity +", 'DefaultTypologyName', 'DefaultBranchOffice', 'DefaultArea')";
         stm.executeUpdate(query);
     }
     
-    private void deleteDafaultMaintenanceActivity(Statement stm) throws SQLException {
-        String query = "DELETE FROM MaintenanceActivity WHERE activityId=1";
+    private void deleteDafaultMaintenanceActivity(Statement stm, int id) throws SQLException {
+        String query = "DELETE FROM MaintenanceActivity WHERE activityId="+id;
         stm.executeUpdate(query);
     }
+    
+    public MaintenanceActivity createMaintenanceActivity(String typeOfActivity, int id) {
+        if(typeOfActivity.compareTo("Planned")==0){
+            System.out.println("sto creando Planned");
+            return new PlannedMaintenanceActivity(id, new Site("ProvaBranchOfficeMod"+id, "ProvaAreaMod"+id), "typologyNameMod"+id,
+                    "ProvaDescrizioneMod"+id, id, LocalDate.now(), null, null, id%2==0);
+        }else if(typeOfActivity.compareTo("EWO")==0){
+            System.out.println("sto creando EWO");
+            return new Ewo(id, new Site("ProvaBranchOfficeMod"+id, "ProvaAreaMod"+id), "typologyNameMod"+id,
+                    "ProvaDescrizioneMod"+id, id, LocalDate.now(), null, null, id%2==0);
+        }else{
+            System.out.println("sto creando Extra");
+            return new ExtraActivity(id, new Site("ProvaBranchOfficeMod"+id, "ProvaAreaMod"+id), "typologyNameMod"+id,
+                    "ProvaDescrizioneMod"+id, id, LocalDate.now(), null, null, id%2==0);
+        }
+    }
+    
+    /*===========================================================================================================================*/
     
     
     /**

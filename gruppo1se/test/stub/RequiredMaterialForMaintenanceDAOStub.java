@@ -55,19 +55,45 @@ public class RequiredMaterialForMaintenanceDAOStub implements RequiredMaterialFo
                 }};
     }
 
+    /*============================================================================================================================*/
+    
     @Override
-    public boolean addRequiredMaterial(int activityId, List<Material> requiredMaterial) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean addRequiredMaterial(int activityId, List<Material> requiredMaterial) throws MaterialException {      
+        switch(activityId){
+            case 1:
+                return true;
+            default:
+                throw new MaterialException();
+        }
     }
 
+    
     @Override
-    public boolean removeRequiredMaterial(int activityId, List<Material> requiredMaterial) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean removeRequiredMaterial(int activityId, List<Material> requiredMaterial) throws MaterialException {
+        switch (activityId){
+            case 3:
+                return true;
+            case 4:
+                return false;
+            default:
+                throw new MaterialException();
+        }
     }
 
+    
     @Override
     public List<Material> retrieveAvaliableMaterialToAdd(int activityId) throws MaterialException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        switch (activityId){
+            case 6:                
+                return new ArrayList<>(){{
+                    add(new Material("Material1"));
+                    add(new Material("Material2"));
+                }};
+            case 7:
+                return new ArrayList<>();
+            default:
+                throw new MaterialException();
+        }
     }
     
 }

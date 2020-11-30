@@ -60,4 +60,64 @@ public class SiteTest{
         assertEquals(workSpaceNotes, instance.getWorkSpaceNotes());
     }
     
+    /**
+     * Test of equals method, of class Site.
+     */
+    @Test
+    public void testEqualsSameInstance() {
+        Site expSite = instance;
+        boolean result = instance.equals(expSite);
+        assertTrue(result);
+    }
+    
+    
+    /**
+     * Test of equals method, of class Site.
+     */
+    @Test
+    public void testEqualsSameAttributes() {
+        Site expSite = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
+        boolean result = instance.equals(expSite);
+        assertTrue(result);
+    }
+    
+    /**
+     * Test of equals method, of class Site.
+     */
+    @Test
+    public void testEqualsDifferentAttributes1() {
+        Site expSite = new Site("ProvaBranchOffice2", "ProvaArea", "ProvaWorkspaceNotes");
+        boolean result = instance.equals(expSite);
+        assertFalse(result);
+    }
+    
+    /**
+     * Test of equals method, of class Site.
+     */
+    @Test
+    public void testEqualsDifferentAttributes2() {
+        Site expSite = new Site("ProvaBranchOffice", "ProvaArea2", "ProvaWorkspaceNotes");
+        boolean result = instance.equals(expSite);
+        assertFalse(result);
+    }
+    
+    /**
+     * Test of equals method, of class Site.
+     */
+    @Test
+    public void testEqualsDifferentAttributes3() {
+        Site expSite = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes2");
+        boolean result = instance.equals(expSite);
+        assertFalse(result);
+    }
+    
+    /**
+     * Test of toString method, of class Site.
+     */
+    @Test
+    public void testToString() {
+        String expResult = "Site{" + "branchOffice=" + "ProvaBranchOffice" + ", area=" + "ProvaArea" + ", workSpaceNotes=" + "ProvaWorkspaceNotes" + '}';
+        String result = instance.toString();
+        assertEquals(expResult, result);
+    }
 }
