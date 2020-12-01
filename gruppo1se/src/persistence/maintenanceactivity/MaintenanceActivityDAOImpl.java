@@ -25,7 +25,7 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     
     
     @Override
-    public boolean addMaintenanceActivity(MaintenanceActivity activity){
+    public boolean addMaintenanceActivity(MaintenanceActivity activity) throws MaintenanceActivityException{
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             PreparedStatement preparedStatement = conn.prepareStatement(SQL_INSERT);
@@ -68,7 +68,7 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
             }
             return true;
         } catch (SQLException ex) {
-            return false;
+            throw new MaintenanceActivityException();
         }
     }
     

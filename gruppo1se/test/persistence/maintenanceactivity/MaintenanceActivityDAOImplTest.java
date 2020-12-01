@@ -523,7 +523,6 @@ public class MaintenanceActivityDAOImplTest {
     @Test(expected = MaintenanceActivityException.class)
     public void testAddMaintenanceActivityWrongActivityID() throws MaintenanceActivityException {
         try {
-            MaintenanceActivityDAO instance = new MaintenanceActivityDAOStub();
             System.out.println("addMaintenanceActivityWrongActivityID");
             PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(0, site, typology, activityDescription, 300, LocalDate.of(2050, 11, 25), maintenanceProcedure, materials, false);
             Statement stmt = conn.createStatement();
