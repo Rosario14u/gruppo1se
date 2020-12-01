@@ -22,6 +22,8 @@ import persistence.maintenanceactivity.MaintenanceActivityDAO;
 public class Planner extends User {
     private final MaintenanceActivityDAO maintenanceActivityDao;
     private final RequiredMaterialForMaintenanceDAO requiredMaterialsDao;
+    
+    
     /**
      * Constructor of Planner
      * @param username username of Planner 
@@ -34,6 +36,8 @@ public class Planner extends User {
         this.maintenanceActivityDao = maintenanceActivityDao;
         this.requiredMaterialsDao = requiredMaterialsDao;
     }
+    
+    
     /**
      * This method returns Maintenance Activity with the passed activityId if exists,
      * null otherwise
@@ -44,7 +48,8 @@ public class Planner extends User {
      * @throws exception.MaterialException
      */
     /*Method developed by Rosario Gaeta*/
-    public MaintenanceActivity viewMaintenanceActivity(int activityId) throws SiteException, MaintenanceActivityException, MaterialException{
+    public MaintenanceActivity viewMaintenanceActivity(int activityId) throws SiteException, 
+            MaintenanceActivityException, MaterialException{
         /*this method uses MaintenanceActivityDaoImpl and RequiredMaterialForMaintenanceDaoImpl objects to
         retrieve the required MaintenanceActivity object if exists*/
         MaintenanceActivity activity = maintenanceActivityDao.retrieveMaintenanceActivityDao(activityId);
@@ -53,6 +58,7 @@ public class Planner extends User {
         }
         return activity;
     }
+    
     
     /**
      * 

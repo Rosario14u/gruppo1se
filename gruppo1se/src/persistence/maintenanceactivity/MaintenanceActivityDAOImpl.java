@@ -14,10 +14,19 @@ import persistence.database.ConnectionDB;
  * @author aless & vincy
  */
 public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
-    private static final String SQL_INSERT = "INSERT INTO MaintenanceActivity (activityId, activityDescription, estimatedInterventionTime, dateActivity, interruptibleActivity, typologyOfActivity, typologyOfUnplannedActivity, typologyName, branchOffice, area) VALUES (?,?,?,?,?,?,?,?,?,?)";
-    private static final String SQL_DELETE = "DELETE FROM MAINTENANCEACTIVITY WHERE ACTIVITYID=?";
+    private static final String INSERT_ACTIVITY = "INSERT INTO MaintenanceActivity (activityDescription,"
+            + " estimatedInterventionTime, dateActivity, interruptibleActivity, typologyOfActivity,"
+            + " typologyOfUnplannedActivity, typologyName, branchOffice, area, activityId) "
+            + "VALUES (?,?,?,?,?,?,?,?,?,?)";
+    private static final String DELETE_ACTIVITY = "DELETE FROM MAINTENANCEACTIVITY WHERE ACTIVITYID=?";
+    private static final String SELECT_ACTIVITY = "SELECT * FROM MaintenanceActivity WHERE activityId = ?";
+    private static final String UPDATE_ACTIVITY = "UPDATE MaintenanceActivity SET activityDescription=?, "
+            + "estimatedInterventionTime=?, dateActivity=?, interruptibleActivity=?, typologyOfActivity=?,"
+            + " typologyOfUnplannedActivity=?, typologyName=?, branchOffice=?, area=? WHERE activityId = ?";
+    
     private final SiteDao siteDao;
-
+    
+    
     public MaintenanceActivityDAOImpl(SiteDao siteDao) {
         this.siteDao = siteDao;
     }
@@ -28,44 +37,9 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     public boolean addMaintenanceActivity(MaintenanceActivity activity){
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
-            PreparedStatement preparedStatement = conn.prepareStatement(SQL_INSERT);
-            if (PlannedMaintenanceActivity.class.isInstance(activity)){
-                preparedStatement.setInt(1, activity.getActivityId());
-                preparedStatement.setString(2, activity.getActivityDescription());
-                preparedStatement.setInt(3, activity.getEstimatedInterventionTime());
-                preparedStatement.setObject(4, activity.getDate());
-                preparedStatement.setBoolean(5, activity.isInterruptibleActivity());
-                preparedStatement.setString(6, "Planned");
-                preparedStatement.setNull(7, java.sql.Types.VARCHAR);
-                preparedStatement.setString(8, activity.getTypology());
-                preparedStatement.setString(9, activity.getSite().getBranchOffice());
-                preparedStatement.setString(10, activity.getSite().getArea());
-                int row = preparedStatement.executeUpdate();
-            } else if(Ewo.class.isInstance(activity)){
-                preparedStatement.setInt(1, activity.getActivityId());
-                preparedStatement.setString(2, activity.getActivityDescription());
-                preparedStatement.setInt(3, activity.getEstimatedInterventionTime());
-                preparedStatement.setObject(4, activity.getDate());
-                preparedStatement.setBoolean(5, activity.isInterruptibleActivity());
-                preparedStatement.setString(6, "Unplanned");
-                preparedStatement.setString(7, "EWO");
-                preparedStatement.setString(8, activity.getTypology());
-                preparedStatement.setString(9, activity.getSite().getBranchOffice());
-                preparedStatement.setString(10, activity.getSite().getArea());
-                int row = preparedStatement.executeUpdate();
-            } else {
-                preparedStatement.setInt(1, activity.getActivityId());
-                preparedStatement.setString(2, activity.getActivityDescription());
-                preparedStatement.setInt(3, activity.getEstimatedInterventionTime());
-                preparedStatement.setObject(4, activity.getDate());
-                preparedStatement.setBoolean(5, activity.isInterruptibleActivity());
-                preparedStatement.setString(6, "Unplanned");
-                preparedStatement.setString(7, "Extra");
-                preparedStatement.setString(8, activity.getTypology());
-                preparedStatement.setString(9, activity.getSite().getBranchOffice());
-                preparedStatement.setString(10, activity.getSite().getArea());
-                int row = preparedStatement.executeUpdate();
-            }
+            PreparedStatement preparedStatement = conn.prepareStatement(INSERT_ACTIVITY);
+            setPreparedStatement(preparedStatement, activity);
+            preparedStatement.executeUpdate();
             return true;
         } catch (SQLException ex) {
             return false;
@@ -78,7 +52,7 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     public boolean deleteMaintenanceActivity(int activityId){
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
-            PreparedStatement preparedStatement = conn.prepareStatement(SQL_DELETE);
+            PreparedStatement preparedStatement = conn.prepareStatement(DELETE_ACTIVITY);
             preparedStatement.setInt(1,activityId);
             int row = preparedStatement.executeUpdate();
             return row > 0;
@@ -103,8 +77,7 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId) throws SiteException, MaintenanceActivityException{
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
-            String query = "SELECT * FROM MaintenanceActivity WHERE activityId = ?";
-            PreparedStatement pstm = conn.prepareStatement(query);
+            PreparedStatement pstm = conn.prepareStatement(SELECT_ACTIVITY);
             pstm.setInt(1,activityId);
             ResultSet rs = pstm.executeQuery();
             MaintenanceActivity ma = this.makeMaintenanceActivity(rs);
@@ -125,7 +98,7 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     * @throws exception.MaintenanceActivityException
     */
     /*Method developed by Rosario Gaeta*/
-    private MaintenanceActivity makeMaintenanceActivity(ResultSet rs) throws SQLException, SiteException{
+    private MaintenanceActivity makeMaintenanceActivity(ResultSet rs) throws SQLException, SiteException, MaintenanceActivityException{
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             while(rs.next()){
@@ -150,6 +123,8 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
             return null;
         } catch (SQLException ex) {
             throw ex;
+        }catch(IllegalArgumentException ex){
+            throw new MaintenanceActivityException("Typology of activity not valid");
         }
     }
     
@@ -157,7 +132,6 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     /**
      * This method allows to modify an existent Maintenance activity into databse, acccording to actvityId parameter
      * @param newActivity intance of Mintenance activity that contains the new fields to set
-     * @param conn
      * @return {@code true} if the the change is successful, false otherwise
      * @throws exception.MaintenanceActivityException
      */
@@ -166,36 +140,32 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     public boolean modifyMaintenaceActivity(MaintenanceActivity newActivity) throws MaintenanceActivityException{
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
-            String query = "UPDATE MaintenanceActivity SET activityDescription=?, "
-                    + "estimatedInterventionTime=?, dateActivity=?, "
-                    + "interruptibleActivity=?, branchOffice=?, area=?, "
-                    + "typologyName=?, typologyOfActivity=?, typologyOfUnplannedActivity=? "
-                    + "WHERE activityId = ?";
-            PreparedStatement pstm = conn.prepareStatement(query);
-            pstm.setString(1,newActivity.getActivityDescription());
-            pstm.setInt(2,newActivity.getEstimatedInterventionTime());
-            pstm.setDate(3,Date.valueOf(newActivity.getDate()));
-            pstm.setBoolean(4,newActivity.isInterruptibleActivity());
-            pstm.setString(5,newActivity.getSite().getBranchOffice());
-            pstm.setString(6,newActivity.getSite().getArea());
-            pstm.setString(7,newActivity.getTypology());  
-            if(newActivity instanceof PlannedMaintenanceActivity){
-                pstm.setString(8,"Planned");
-                pstm.setString(9, null);
-            }
-            else if (newActivity instanceof Ewo){
-                pstm.setString(8,"Unplanned");
-                pstm.setString(9, "EWO");
-            }
-            else{
-                pstm.setString(8,"Unplanned");
-                pstm.setString(9,"Extra");
-            }
-            pstm.setInt(10,newActivity.getActivityId());
-            
+            PreparedStatement pstm = conn.prepareStatement(UPDATE_ACTIVITY);
+            setPreparedStatement(pstm, newActivity);
             return pstm.executeUpdate()!=0;
         } catch (SQLException ex) {
             throw new MaintenanceActivityException("Modifying maintenance activity failed");
         }
+    }
+    
+    private void setPreparedStatement(PreparedStatement preparedStatement, MaintenanceActivity activity) throws SQLException{
+        preparedStatement.setString(1, activity.getActivityDescription());
+        preparedStatement.setInt(2, activity.getEstimatedInterventionTime());
+        preparedStatement.setObject(3, activity.getDate());
+        preparedStatement.setBoolean(4, activity.isInterruptibleActivity());
+        if (PlannedMaintenanceActivity.class.isInstance(activity)){
+            preparedStatement.setString(5, "Planned");
+            preparedStatement.setNull(6, java.sql.Types.VARCHAR);
+        } else if(Ewo.class.isInstance(activity)){
+            preparedStatement.setString(5, "Unplanned");
+            preparedStatement.setString(6, "EWO");
+        } else {
+            preparedStatement.setString(5, "Unplanned");
+            preparedStatement.setString(6, "Extra");
+        }
+        preparedStatement.setString(7, activity.getTypology());
+        preparedStatement.setString(8, activity.getSite().getBranchOffice());
+        preparedStatement.setString(9, activity.getSite().getArea());
+        preparedStatement.setInt(10, activity.getActivityId());
     }
 }

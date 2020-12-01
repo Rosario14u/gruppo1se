@@ -6,6 +6,7 @@
 package business.maintenanceactivity;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import static org.junit.Assert.*;
@@ -144,5 +145,20 @@ public class PlannedMaintenanceActivityTest {
         System.out.println("Instance of Planned");
         assertEquals(PlannedMaintenanceActivity.class.isInstance(this.instance), true);
     }
-
+    
+    /**
+     * Test of toString method, of class PlannedMaintenanceActivity.
+     */
+    @Test
+    public void testToString() {
+        List<Material> listMaterial = new ArrayList<>(){{
+                    add(new Material("material1"));
+                }};
+        String expResult = "PlannedMaintenanceActivity{activityId=1, site=Site{branchOffice=ProvaBranchOffice,"
+                + " area=ProvaArea, workSpaceNotes=ProvaWorkspaceNotes}, typology=ProvaTypology,"
+                + " activityDescription=ProvaActivityDescription, estimatedInterventionTime=30, date=2050-11-09,"
+                + " maintenanceProcedure=MaintenanceProcedure{smp=ProvaPDF}, materials=[material1], interruptibleActivity=true}";
+        String result = instance.toString();
+        assertEquals(expResult, result);
+    }
 }

@@ -188,7 +188,7 @@ public class MaintenanceActivityDAOImplTest {
      * when SiteDao return Null
      */
     @Test(expected = SiteException.class)
-    public void testRetrieveMaintenanceActivityDaoSiteExceptionCase1() throws  MaintenanceActivityException, SiteException {
+    public void testRetrieveMaintenanceActivityDaoSiteExceptionCase1() throws  SiteException {
         try {
             MaintenanceActivityDAO maintenanceActivityDAO = new MaintenanceActivityDAOImpl(new SiteDaoStub());
             deleteMaintenaceActivity(4);
@@ -197,7 +197,9 @@ public class MaintenanceActivityDAOImplTest {
             MaintenanceActivity activity = maintenanceActivityDAO.retrieveMaintenanceActivityDao(4);
         } catch (SQLException ex) {
             fail("SQLException");
-        }
+        } catch (MaintenanceActivityException ex) {
+            fail("MaintenanceActivityException");
+        } 
     }
     
     /**
@@ -205,7 +207,7 @@ public class MaintenanceActivityDAOImplTest {
      * when SiteDao raises an exception
      */
     @Test(expected = SiteException.class)
-    public void testRetrieveMaintenanceActivityDaoSiteExceptionCase2() throws  MaintenanceActivityException, SiteException {
+    public void testRetrieveMaintenanceActivityDaoSiteExceptionCase2() throws   SiteException {
         try {
             MaintenanceActivityDAO maintenanceActivityDAO = new MaintenanceActivityDAOImpl(new SiteDaoStub());
             deleteMaintenaceActivity(5);
@@ -214,7 +216,9 @@ public class MaintenanceActivityDAOImplTest {
             MaintenanceActivity activity = maintenanceActivityDAO.retrieveMaintenanceActivityDao(5);
         } catch (SQLException ex) {
             fail("SQLException");
-        }
+        } catch (MaintenanceActivityException ex) {
+            fail("MaintenanceActivityException");
+        } 
     }
     
     //=======================Utilities to test retrieveMaintenanceActivityDao=========================================
