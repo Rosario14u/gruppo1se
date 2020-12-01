@@ -328,7 +328,7 @@ public class PlannerTest {
      * Test of makeMaintenanceActivity method, of class Planner.
      */
     @Test
-    public void testMakeMaintenanceActivity() throws MaterialException {
+    public void testMakeMaintenanceActivity() throws MaterialException, MaintenanceActivityException{
         try {
             System.out.println("makeMaintenanceActivity");
             planner.removeMaintenanceActivity(activityId);
@@ -341,7 +341,7 @@ public class PlannerTest {
     }
 
     @Test
-    public void testMakeMaintenanceActivityWrongActivityID() throws MaterialException{
+    public void testMakeMaintenanceActivityWrongActivityID() throws MaterialException, MaintenanceActivityException{
         try {
             System.out.println("makeMaintenanceActivityWrongActivityID");
             activityId = 0;
@@ -354,7 +354,7 @@ public class PlannerTest {
         }
     }
     @Test
-    public void testMakeMaintenanceActivityWrongDate() throws MaterialException{
+    public void testMakeMaintenanceActivityWrongDate() throws MaterialException, MaintenanceActivityException{
         try {
             System.out.println("makeMaintenanceActivityWrongDate");
             date = "2010-11-25";
@@ -368,7 +368,7 @@ public class PlannerTest {
     }
     
     @Test
-    public void testMakeMaintenanceActivityExtra() throws MaterialException{
+    public void testMakeMaintenanceActivityExtra() throws MaterialException, MaintenanceActivityException{
         try {
             System.out.println("makeMaintenanceActivityExtra");
             plannedActivity = false;
@@ -383,7 +383,7 @@ public class PlannerTest {
     }
     
     @Test
-    public void testMakeMaintenanceActivityEwo() throws MaterialException{
+    public void testMakeMaintenanceActivityEwo() throws MaterialException, MaintenanceActivityException{
         try {
             System.out.println("makeMaintenanceActivityEwo");
             plannedActivity = false;
@@ -398,7 +398,7 @@ public class PlannerTest {
     }
     
     @Test
-    public void testMakeMaintenanceActivityInterruptible() throws MaterialException {
+    public void testMakeMaintenanceActivityInterruptible() throws MaterialException, MaintenanceActivityException{
         try {
             System.out.println("makeMaintenanceActivity");
             interruptibleActivity = true;

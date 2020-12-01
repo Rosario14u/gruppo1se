@@ -144,5 +144,21 @@ public class PlannedMaintenanceActivityTest {
         System.out.println("Instance of Planned");
         assertEquals(PlannedMaintenanceActivity.class.isInstance(this.instance), true);
     }
+    
+    @Test
+    public void testEquals(){
+        System.out.println("equals");
+        PlannedMaintenanceActivity obj = new PlannedMaintenanceActivity(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
+        boolean result = instance.equals(obj);
+        assertEquals(result, true);
+    }
+    
+    @Test
+    public void testNotEquals(){
+        System.out.println("not equals");
+        PlannedMaintenanceActivity obj = new PlannedMaintenanceActivity(2, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
+        boolean result = instance.equals(obj);
+        assertEquals(result, false);
+    }
 
 }

@@ -18,4 +18,8 @@ public class PlannedMaintenanceActivity extends MaintenanceActivity{
         super(activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity);
     }
     
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj) && PlannedMaintenanceActivity.class.isInstance(obj);
+    }
 }
