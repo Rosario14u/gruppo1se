@@ -17,10 +17,5 @@ public class PlannedMaintenanceActivity extends MaintenanceActivity{
     public PlannedMaintenanceActivity(int activityId, Site site, String typology, String activityDescription, int estimatedInterventionTime, LocalDate date, MaintenanceProcedure maintenanceProcedure, List<Material> materials, boolean interruptibleActivity) {
         super(activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity);
     }
-
-    @Override
-    public String toString() {
-        return "PlannedMaintenanceActivity" + super.toString();
-    }
-    
+   
 }
