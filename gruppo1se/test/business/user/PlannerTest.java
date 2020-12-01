@@ -453,6 +453,18 @@ public class PlannerTest {
         }
     }
     
+    @Test(expected = MaintenanceActivityException.class)
+    public void testRemoveMaintenanceActivityException() throws MaintenanceActivityException {
+        try {
+            Planner planner = new Planner("ProvaUsername","ProvaPassword",new MaintenanceActivityDAOStub(), new RequiredMaterialForMaintenanceDAOStub());
+            System.out.println("removeMaintenanceActivity that throws Exception");
+            boolean result = planner.removeMaintenanceActivity(3);
+            conn.rollback();
+        } catch (SQLException ex) {
+            System.out.println("Error on : connection rollback!");
+        }    
+    }
+    
     
     //========================Test of viewMaintenanceActivity================================================
     /*Test methods of viewMaintenanceActivity developed by Rosario Gaeta*/

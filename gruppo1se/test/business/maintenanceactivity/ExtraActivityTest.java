@@ -148,4 +148,19 @@ public class ExtraActivityTest {
         assertEquals(result,true);
     }
     
+    @Test
+    public void testEqualsExtraActivity() {
+        System.out.println("test Equals Extra Activity");
+        ExtraActivity extra = new ExtraActivity(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
+        boolean result = instance.equals(extra);
+        assertEquals(result,true);
+    }
+    
+    @Test
+    public void testNotEqualsExtraActivity() {
+        System.out.println("test Not Equals Extra Activity");
+        ExtraActivity extra = new ExtraActivity(2, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
+        boolean result = instance.equals(extra);
+        assertEquals(result,false);
+    }
 }
