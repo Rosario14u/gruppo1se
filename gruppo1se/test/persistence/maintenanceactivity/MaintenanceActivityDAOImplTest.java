@@ -498,7 +498,6 @@ public class MaintenanceActivityDAOImplTest {
             PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(1, site, typology, activityDescription, 300, LocalDate.of(2050, 11, 25), maintenanceProcedure, materials, false);
             Statement stmt = conn.createStatement();
             deleteDefaultMaintenanceActivity(stmt, activity.getActivityId());
-            //instance.deleteMaintenanceActivity(activity.getActivityId());
             instance.addMaintenanceActivity(activity);
             verify(selectDefaultMaintenanceActivity(stmt,1), activity);
             conn.rollback();
@@ -514,7 +513,6 @@ public class MaintenanceActivityDAOImplTest {
             PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(2, site, typology, activityDescription, 300, LocalDate.of(2020,11,24), maintenanceProcedure, materials, false);
             Statement stmt = conn.createStatement();
             deleteDefaultMaintenanceActivity(stmt, activity.getActivityId());
-            //instance.deleteMaintenanceActivity(activity.getActivityId());
             instance.addMaintenanceActivity(activity);
             conn.rollback();
         } catch (SQLException ex) {
@@ -530,7 +528,6 @@ public class MaintenanceActivityDAOImplTest {
             PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(0, site, typology, activityDescription, 300, LocalDate.of(2050, 11, 25), maintenanceProcedure, materials, false);
             Statement stmt = conn.createStatement();
             deleteDefaultMaintenanceActivity(stmt, activity.getActivityId());
-            //instance.deleteMaintenanceActivity(activity.getActivityId());
             instance.addMaintenanceActivity(activity);
             conn.rollback();
         } catch (SQLException ex) {
