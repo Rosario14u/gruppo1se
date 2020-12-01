@@ -12,18 +12,21 @@ import java.util.Objects;
 /**
  *
  * @author rosar
- * Developed by Rosario Gaeta
+ * 
  */
+//Class developed by Rosario Gaeta
 public abstract class MaintenanceActivity {
     private final int activityId;
-    private Site site;
-    private String typology;
-    private String activityDescription;
-    private int estimatedInterventionTime;
-    private LocalDate date;
-    private MaintenanceProcedure maintenanceProcedure;
+    private final Site site;
+    private final String typology;
+    private final String activityDescription;
+    private final int estimatedInterventionTime;
+    private final LocalDate date;
+    private final MaintenanceProcedure maintenanceProcedure;
     private List<Material> materials;
-    private boolean interruptibleActivity;
+    private final boolean interruptibleActivity;
+    
+    
     /**
      * Constructor of Maintenance Activity
      * @param activityId activityId of Maintenance Activity
@@ -49,6 +52,8 @@ public abstract class MaintenanceActivity {
         this.materials = materials;
         this.interruptibleActivity = interruptibleActivity;
     }
+    
+    
     /**
      * 
      * @return {@code int} activityId
@@ -56,6 +61,8 @@ public abstract class MaintenanceActivity {
     public int getActivityId() {
         return activityId;
     }
+    
+    
     /**
      * 
      * @return {@code Site} site
@@ -63,6 +70,8 @@ public abstract class MaintenanceActivity {
     public Site getSite() {
         return site;
     }
+    
+    
     /**
      * 
      * @return {@code String} typology
@@ -70,6 +79,8 @@ public abstract class MaintenanceActivity {
     public String getTypology() {
         return typology;
     }
+    
+    
     /**
      * 
      * @return {@code String} activityDescription
@@ -77,6 +88,8 @@ public abstract class MaintenanceActivity {
     public String getActivityDescription() {
         return activityDescription;
     }
+    
+    
     /**
      * 
      * @return {@code String} estimatedInterventionTime
@@ -84,6 +97,8 @@ public abstract class MaintenanceActivity {
     public int getEstimatedInterventionTime() {
         return estimatedInterventionTime;
     }
+    
+    
     /**
      * 
      * @return {@code LocalDate} date
@@ -91,6 +106,8 @@ public abstract class MaintenanceActivity {
     public LocalDate getDate() {
         return date;
     }
+    
+    
     /**
      * 
      * @return {@code MaintenanceProcedure} maintenanceProcedure
@@ -98,6 +115,8 @@ public abstract class MaintenanceActivity {
     public MaintenanceProcedure getMaintenanceProcedure() {
         return maintenanceProcedure;
     }
+    
+    
     /**
      * 
      * @return {@code List<String>} materials
@@ -105,6 +124,8 @@ public abstract class MaintenanceActivity {
     public List<Material> getMaterials() {
         return materials;
     }
+    
+    
     /**
      * 
      * @return {@code boolean} interruptibleActivity
@@ -112,6 +133,8 @@ public abstract class MaintenanceActivity {
     public boolean isInterruptibleActivity() {
         return interruptibleActivity;
     }
+    
+    
     /**
      * 
      * @param materials list of materials
@@ -119,13 +142,15 @@ public abstract class MaintenanceActivity {
     public void setMaterials(List<Material> materials) {
         this.materials = materials;
     }
+    
+    
     /**
      * Return string representation of the MaintenanceActivity object 
      * @return {@code String}
      */
     @Override
     public String toString() {
-        return "MaintenanceActivity{" + "activityId=" + activityId + ", site=" + site + ", typology=" + typology + 
+        return '{' + "activityId=" + activityId + ", site=" + site + ", typology=" + typology + 
                 ", activityDescription=" + activityDescription + ", estimatedInterventionTime=" + 
                 estimatedInterventionTime + ", date=" + date + ", maintenanceProcedure=" + maintenanceProcedure + 
                 ", materials=" + materials + ", interruptibleActivity=" + interruptibleActivity + '}';
@@ -146,7 +171,11 @@ public abstract class MaintenanceActivity {
         return hash;
     }
 
-
+    /**
+     * 
+     * @param obj
+     * @return true if the two object are equals, false otherwise
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

@@ -11,11 +11,14 @@ import java.util.List;
 /**
  *
  * @author rosar
- * Developed by Rosario Gaeta
+ * 
  */
+//Class developed by Rosario Gaeta
 public abstract class MaintenanceActivityFactory {
     
     public enum Typology {PLANNED, EWO, EXTRA}
+    
+    
     /**
      * Static method that creates and returns a Maintenance Activity object according to the value of parameter type
      * @param type typology of MaintenanceActivity  
@@ -44,6 +47,8 @@ public abstract class MaintenanceActivityFactory {
         return factory.build(type,activityId, branchOffice, area, workspaceNotes,typology, activityDescription,
                 estimatedInterventionTime, date, smp, materials, interruptibleActivity);
     }
+    
+    
     /**
     * ** This method build the correct maintenance activity based on typology parameter
      * @param type typology of MaintenanceActivity  
@@ -69,6 +74,8 @@ public abstract class MaintenanceActivityFactory {
         return this.selectMaintenanceActivity(type, activityId, site, typology, activityDescription,
                 estimatedInterventionTime, localDate, procedure, materials, interruptibleActivity);
     }
+    
+    
     /**
     ** This method returns the correct instance of maintenance activity based on factory class that extends
     * MaintenanceActivityFactory and implements selectMaintenanceActivity

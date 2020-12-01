@@ -5,14 +5,12 @@
  */
 package representation.planner;
 
-import business.maintenanceactivity.MaintenanceProcedure;
 import business.maintenanceactivity.Material;
 import business.user.Planner;
+import exception.MaintenanceActivityException;
 import exception.MaterialException;
-import java.time.LocalDate;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -26,7 +24,7 @@ import persistence.maintenanceactivity.SiteDaoImpl;
  */
 public class CreateActivity extends javax.swing.JFrame {
     private Planner planner = null;
-    private final JTextField[] textFields = new JTextField[10];
+    private final JTextField[] textFields = new JTextField[8];
     private boolean interruptible = false;
     private boolean typeOfActivity = false;
     private MyDocumentListener myDocumentListener = null;
@@ -41,15 +39,13 @@ public class CreateActivity extends javax.swing.JFrame {
         textFields[0] = jActivityId;
         textFields[1] = jBranchOffice;
         textFields[2] = jArea;
-        textFields[3] = jWorkspaceNotes;
-        textFields[4] = jTypology;
-        textFields[5] = jActivityDescription;
-        textFields[6] = jEstimatedInterventionTime;
-        textFields[7] = jDate;
-        textFields[8] = jMaintenanceProcedure;
-        textFields[9] = jMaterials;
-        for (JTextField textField : textFields) {
-            textField.getDocument().addDocumentListener(myDocumentListener);
+        textFields[3] = jTypology;
+        textFields[4] = jActivityDescription;
+        textFields[5] = jEstimatedInterventionTime;
+        textFields[6] = jDate;
+        textFields[7] = jMaterials;
+        for (int i = 0; i<textFields.length-1;i++) {
+            textFields[i].getDocument().addDocumentListener(myDocumentListener);
         }
     }
 
@@ -64,7 +60,6 @@ public class CreateActivity extends javax.swing.JFrame {
 
         buttonGroupTypeOfActivity = new javax.swing.ButtonGroup();
         buttonGroupInterruptible = new javax.swing.ButtonGroup();
-        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 32767));
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jActivityId = new javax.swing.JTextField();
@@ -72,8 +67,6 @@ public class CreateActivity extends javax.swing.JFrame {
         jBranchOffice = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jArea = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jWorkspaceNotes = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jTypology = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
@@ -82,8 +75,6 @@ public class CreateActivity extends javax.swing.JFrame {
         jEstimatedInterventionTime = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jDate = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
-        jMaintenanceProcedure = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         jMaterials = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
@@ -129,17 +120,14 @@ public class CreateActivity extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel4.setText("Workspace Notes:");
-
-        jWorkspaceNotes.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jWorkspaceNotesActionPerformed(evt);
-            }
-        });
-
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel5.setText("Typology:");
+
+        jTypology.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTypologyActionPerformed(evt);
+            }
+        });
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel6.setText("Activity Description:");
@@ -156,9 +144,6 @@ public class CreateActivity extends javax.swing.JFrame {
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel8.setText("Date (YYYY-MM-DD):");
-
-        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel9.setText("Maintenance Procedure:");
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel10.setText("Materials (separate each material with comma):");
@@ -247,72 +232,69 @@ public class CreateActivity extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel9)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jMaintenanceProcedure))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jDate))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jEstimatedInterventionTime))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jActivityDescription))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTypology))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jArea))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jActivityId))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jBranchOffice))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jWorkspaceNotes))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPlanned)
-                            .addComponent(jLabel11))
-                        .addGap(18, 18, 18)
+                        .addGap(23, 23, 23)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jInterruptibleTrue)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jInterruptibleFalse))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jExtra)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel6)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jActivityDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                            .addComponent(jLabel3)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(jArea, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(jActivityId))
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addComponent(jLabel2)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(jBranchOffice)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel5)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jTypology, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(18, 18, 18)
-                                .addComponent(jEwo)))
-                        .addGap(84, 84, 84))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jErrorActivityId, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+                                    .addComponent(jErrorEstimatedInterventionTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel11)
+                                .addGap(24, 24, 24)
+                                .addComponent(jInterruptibleTrue)
+                                .addGap(18, 18, 18)
+                                .addComponent(jInterruptibleFalse))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jLabel10)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jMaterials))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel7)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jEstimatedInterventionTime, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel8)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jDate, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jMaterials, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jErrorActivityId, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-                    .addComponent(jErrorEstimatedInterventionTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(43, Short.MAX_VALUE))
+                        .addGap(15, 15, 15)
+                        .addComponent(jPlanned)
+                        .addGap(18, 18, 18)
+                        .addComponent(jExtra)
+                        .addGap(18, 18, 18)
+                        .addComponent(jEwo)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25))
+                .addComponent(jCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(84, 84, 84))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -330,48 +312,41 @@ public class CreateActivity extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jArea, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jWorkspaceNotes, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jTypology, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jTypology, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jActivityDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jActivityDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jEstimatedInterventionTime, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jErrorEstimatedInterventionTime, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(jDate, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(jMaintenanceProcedure, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jEstimatedInterventionTime, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(7, 7, 7)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jErrorEstimatedInterventionTime, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel8)
+                        .addComponent(jDate, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
                     .addComponent(jMaterials, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(15, 15, 15)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jInterruptibleTrue)
                     .addComponent(jInterruptibleFalse))
-                .addGap(17, 17, 17)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jPlanned)
                     .addComponent(jExtra)
                     .addComponent(jEwo))
-                .addGap(86, 86, 86)
+                .addGap(64, 64, 64)
                 .addComponent(jCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41))
+                .addGap(35, 35, 35))
         );
 
         jActivityId.getAccessibleContext().setAccessibleName("");
@@ -382,11 +357,11 @@ public class CreateActivity extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 531, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -395,10 +370,6 @@ public class CreateActivity extends javax.swing.JFrame {
     private void jPlannedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPlannedActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jPlannedActionPerformed
-
-    private void jWorkspaceNotesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jWorkspaceNotesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jWorkspaceNotesActionPerformed
 
     private void jBranchOfficeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBranchOfficeActionPerformed
         // TODO add your handling code here:
@@ -438,43 +409,39 @@ public class CreateActivity extends javax.swing.JFrame {
             int activityId = Integer.parseInt(jActivityId.getText());
             String branchOffice = jBranchOffice.getText();
             String area = jArea.getText();
-            String workspaceNotes = jWorkspaceNotes.getText();
             String typology = jTypology.getText();
             String activityDescription = jActivityDescription.getText();
             int estimatedInterventionTime = Integer.parseInt(jEstimatedInterventionTime.getText());
             String date = jDate.getText();
-            String maintenanceProcedure = jMaintenanceProcedure.getText();
+            
             LinkedList<Material> materials = new LinkedList<>();
             String materialString = jMaterials.getText();
-            String[] materialStringList = materialString.split(",");
-            for (String material : materialStringList)
-                materials.add(new Material(material));
+            if (!materialString.equals("")){
+                String[] materialStringList = materialString.split(",");
+                for (String material : materialStringList)
+                    materials.add(new Material(material));
+            }else materials = null;
             boolean interruptibleActivity;
-            if (jInterruptibleTrue.isSelected())
-                interruptibleActivity = true;
-            else
-                interruptibleActivity = false;
+            interruptibleActivity = jInterruptibleTrue.isSelected();
             boolean plannedActivity = jPlanned.isSelected();
             boolean extraActivity = jExtra.isSelected();
             boolean ewo = jEwo.isSelected();
-            boolean insert = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
-            if (!insert)
-                System.out.println("Errore nell'inserimento");
+            planner.makeMaintenanceActivity(activityId, branchOffice, area, "", typology, activityDescription, estimatedInterventionTime, date, "", materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
             jActivityId.setText("");
             jBranchOffice.setText("");
             jArea.setText("");
-            jWorkspaceNotes.setText("");
             jTypology.setText("");
             jActivityDescription.setText("");
             jEstimatedInterventionTime.setText("");
             jDate.setText("");
-            jMaintenanceProcedure.setText("");
             jMaterials.setText("");
             buttonGroupInterruptible.clearSelection();
             buttonGroupTypeOfActivity.clearSelection();
             jCreate.setEnabled(false);
+        } catch (MaintenanceActivityException ex) {
+            JOptionPane.showMessageDialog(this, "Error inserting into MaintenanceActivity table", "ERRORE", JOptionPane.ERROR_MESSAGE);
         } catch (MaterialException ex) {
-            Logger.getLogger(CreateActivity.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Error inserting into RequiredMaterial table", "ERRORE", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jCreateActionPerformed
 
@@ -504,6 +471,10 @@ public class CreateActivity extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jAreaActionPerformed
 
+    private void jTypologyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTypologyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTypologyActionPerformed
+
     private class MyDocumentListener implements DocumentListener {
 
         @Override
@@ -528,8 +499,8 @@ public class CreateActivity extends javax.swing.JFrame {
         // check if all JTextfields have text. If so, activate the action
         public boolean checkTextFields() {
             boolean allFieldsHaveText = true;
-            for (JTextField jTextField : textFields) {
-                if (jTextField.getText().trim().isEmpty()) {
+            for (int i = 0; i<textFields.length-1;i++) {
+                if (textFields[i].getText().trim().isEmpty()) {
                     allFieldsHaveText = false;
                 }
             }
@@ -559,7 +530,6 @@ public class CreateActivity extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroupInterruptible;
     private javax.swing.ButtonGroup buttonGroupTypeOfActivity;
-    private javax.swing.Box.Filler filler1;
     private javax.swing.JTextField jActivityDescription;
     private javax.swing.JTextField jActivityId;
     private javax.swing.JTextField jArea;
@@ -578,17 +548,13 @@ public class CreateActivity extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JTextField jMaintenanceProcedure;
     private javax.swing.JTextField jMaterials;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JRadioButton jPlanned;
     private javax.swing.JTextField jTypology;
-    private javax.swing.JTextField jWorkspaceNotes;
     // End of variables declaration//GEN-END:variables
 }

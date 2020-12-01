@@ -18,4 +18,8 @@ public class Ewo extends UnplannedMaintenanceActivity {
         super(activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity);
     }
     
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj) && Ewo.class.isInstance(obj);
+    }       
 }

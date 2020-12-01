@@ -14,8 +14,8 @@ import exception.SiteException;
  * @author rosar
  */
 public interface MaintenanceActivityDAO{
-    public boolean addMaintenanceActivity(MaintenanceActivity activity);
-    public boolean deleteMaintenanceActivity(int activityId);    
+    public boolean addMaintenanceActivity(MaintenanceActivity activity) throws MaintenanceActivityException;
+    public boolean deleteMaintenanceActivity(int activityId) throws MaintenanceActivityException;
     public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId) throws SiteException ,MaintenanceActivityException;    
     public boolean modifyMaintenaceActivity(MaintenanceActivity newActivity) throws MaintenanceActivityException;
 }

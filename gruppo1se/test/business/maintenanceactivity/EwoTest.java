@@ -147,4 +147,20 @@ public class EwoTest {
         assertEquals(result,true);
     }
     
+    @Test
+    public void testEqualsEwo() {
+        System.out.println("test Equals Ewo");
+        Ewo ewo = new Ewo(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
+        boolean result = instance.equals(ewo);
+        assertEquals(result,true);
+    }
+    
+    @Test
+    public void testNotEqualsEwo() {
+        System.out.println("test Not Equals Ewo");
+        Ewo ewo = new Ewo(2, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
+        boolean result = instance.equals(ewo);
+        assertEquals(result,false);
+    }
+    
 }

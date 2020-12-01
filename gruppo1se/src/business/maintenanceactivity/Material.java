@@ -13,20 +13,37 @@ import java.util.Objects;
  */
 public class Material implements Comparable<Material> {
     private String name;
-
+    
+    /**
+     * 
+     * @param name 
+     */
     public Material(String name) {
         this.name = name;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public String getName() {
         return name;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     @Override
     public String toString() {
         return name;
     }
-
+    
+    
+    /**
+     * 
+     * @return 
+     */
     @Override
     public int hashCode() {
         int hash = 7;
@@ -35,7 +52,11 @@ public class Material implements Comparable<Material> {
     }
 
 
-
+    /**
+     * 
+     * @param obj
+     * @return 
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -53,7 +74,12 @@ public class Material implements Comparable<Material> {
         }
         return true;
     }
-
+    
+    /**
+     * 
+     * @param o
+     * @return 
+     */
     @Override
     public int compareTo(Material o) {
         return this.getName().compareTo(o.getName());

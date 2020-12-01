@@ -19,6 +19,8 @@ import persistence.database.ConnectionDB;
  * @author rosar
  */
 public class SiteDaoImpl implements SiteDao {
+    private final static String SELECT_SITE = "SELECT * FROM Site WHERE branchOffice = ? and area = ?";
+    
     /**
      * This method returns the site according to branchOffice and area attributes of the site object
      * @param branchOffice branchoffice of the required site
@@ -32,8 +34,7 @@ public class SiteDaoImpl implements SiteDao {
        try {
            Site site = null;
            Connection conn = ConnectionDB.getInstanceConnection().getConnection();
-           String query = "SELECT * FROM Site WHERE branchOffice = ? and area = ?";
-           PreparedStatement pstm = conn.prepareStatement(query);
+           PreparedStatement pstm = conn.prepareStatement(SELECT_SITE);
            pstm.setString(1,branchOffice);
            pstm.setString(2,area);
            ResultSet rs = pstm.executeQuery();

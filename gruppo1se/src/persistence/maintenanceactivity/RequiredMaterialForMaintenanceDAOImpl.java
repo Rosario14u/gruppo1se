@@ -22,6 +22,13 @@ import persistence.database.ConnectionDB;
  * @author rosar
  */
 public class RequiredMaterialForMaintenanceDAOImpl implements RequiredMaterialForMaintenanceDAO{
+    private final static String SELECT_REQUIRED_MATERIAL_BY_ACTIVITY_ID = "SELECT * FROM RequiredMaterial "
+            + "WHERE activityId = ? order by materialName";
+    private final static String INSERT_REQUIRED_MATERIAL = "INSERT INTO requiredmaterial VALUES (?,?)";
+    private final static String DELETE_REQUIRED_MATERIAL = "DELETE FROM requiredmaterial "
+            + "WHERE (activityid = ?) and (materialname = ?)";
+    private final static String SELECT_AVAILABLE_MATERIAL = "SELECT * FROM material EXCEPT "
+            + "SELECT materialname FROM requiredmaterial WHERE activityid=?";
     /**
      * This method retrieve a list materials associated to the maintenance activity identified by the activityId.
      * @param activityId of the MaintenanceActivity
@@ -34,8 +41,7 @@ public class RequiredMaterialForMaintenanceDAOImpl implements RequiredMaterialFo
         List<Material> listMaterials = new ArrayList<>();
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
-            String query = "SELECT * FROM RequiredMaterial WHERE activityId = ? order by materialName";
-            PreparedStatement pstm = conn.prepareStatement(query);
+            PreparedStatement pstm = conn.prepareStatement(SELECT_REQUIRED_MATERIAL_BY_ACTIVITY_ID);
             pstm.setInt(1,activityId);            
             ResultSet res = pstm.executeQuery();
             while(res.next()){
@@ -56,8 +62,7 @@ public class RequiredMaterialForMaintenanceDAOImpl implements RequiredMaterialFo
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             for(Material material : requiredMaterial){
-                String query = "INSERT INTO requiredmaterial VALUES (?,?)";
-                PreparedStatement pstm = conn.prepareStatement(query);
+                PreparedStatement pstm = conn.prepareStatement(INSERT_REQUIRED_MATERIAL);
                 pstm.setInt(1,activityId);            
                 pstm.setString(2,material.getName());            
                 pstm.executeUpdate();
@@ -75,8 +80,7 @@ public class RequiredMaterialForMaintenanceDAOImpl implements RequiredMaterialFo
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             int notRemovedCounter = 0;
             for(Material material : requiredMaterial){
-                String query = "DELETE FROM requiredmaterial WHERE (activityid = ?) and (materialname = ?)";
-                PreparedStatement pstm = conn.prepareStatement(query);
+                PreparedStatement pstm = conn.prepareStatement(DELETE_REQUIRED_MATERIAL);
                 pstm.setInt(1,activityId);            
                 pstm.setString(2,material.getName());
                 if(pstm.executeUpdate() == 0){
@@ -95,16 +99,12 @@ public class RequiredMaterialForMaintenanceDAOImpl implements RequiredMaterialFo
         List<Material> listMaterials = new ArrayList<>();
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
-            
-            String query = "SELECT * FROM material EXCEPT SELECT materialname FROM requiredmaterial WHERE activityid=?";
-            PreparedStatement pstm = conn.prepareStatement(query);
+            PreparedStatement pstm = conn.prepareStatement(SELECT_AVAILABLE_MATERIAL);
             pstm.setInt(1,activityId);           
             ResultSet res = pstm.executeQuery();
-            
             while(res.next()){
                 listMaterials.add(new Material(res.getString("materialName")));
             }
-            
             return listMaterials;
         } catch (SQLException ex) {
             throw new MaterialException("Retrieving avaliable material to use in Maintenance Activity failed");

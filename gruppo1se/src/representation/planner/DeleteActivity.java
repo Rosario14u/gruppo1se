@@ -10,8 +10,6 @@ import business.user.Planner;
 import exception.MaintenanceActivityException;
 import exception.MaterialException;
 import exception.SiteException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -198,12 +196,16 @@ public class DeleteActivity extends javax.swing.JFrame {
     }//GEN-LAST:event_jSearchActionPerformed
 
     private void jDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDeleteActionPerformed
-        int activityId = Integer.parseInt(jActivityID.getText());
-        planner.removeMaintenanceActivity(activityId);
-        jActivityID.setText("");
-        jMaintenanceActivity.setText("");
-        jSearch.setEnabled(false);
-        jDelete.setEnabled(false);
+        try {
+            int activityId = Integer.parseInt(jActivityID.getText());
+            planner.removeMaintenanceActivity(activityId);
+            jActivityID.setText("");
+            jMaintenanceActivity.setText("");
+            jSearch.setEnabled(false);
+            jDelete.setEnabled(false);
+        } catch (MaintenanceActivityException ex) {
+            errorMessage(ex.getMessage());
+        }
     }//GEN-LAST:event_jDeleteActionPerformed
 
     /**

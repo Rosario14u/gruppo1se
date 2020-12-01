@@ -174,7 +174,7 @@ public class MaintenanceActivityTest {
                     add(new Material("Materiale2"));
                     add(new Material("Materiale3"));
                 }};
-        String expResult = "MaintenanceActivity{" + "activityId=" + 1 + ", site=" + 
+        String expResult = '{' + "activityId=" + 1 + ", site=" + 
                 new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes").toString() + ", typology=" + "ProvaTipologia" + 
                 ", activityDescription=" + "ProvaDescrizione" + ", estimatedInterventionTime=" + 
                 120 + ", date=" + LocalDate.parse("2021-11-20").toString() + ", maintenanceProcedure="

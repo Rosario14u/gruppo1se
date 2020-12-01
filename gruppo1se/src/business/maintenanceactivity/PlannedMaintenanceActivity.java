@@ -26,4 +26,8 @@ public class PlannedMaintenanceActivity extends MaintenanceActivity{
     
     
     
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj) && PlannedMaintenanceActivity.class.isInstance(obj);
+    }
 }

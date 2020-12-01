@@ -34,7 +34,7 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     
     
     @Override
-    public boolean addMaintenanceActivity(MaintenanceActivity activity){
+    public boolean addMaintenanceActivity(MaintenanceActivity activity) throws MaintenanceActivityException{
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             PreparedStatement preparedStatement = conn.prepareStatement(INSERT_ACTIVITY);
@@ -42,14 +42,14 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
             preparedStatement.executeUpdate();
             return true;
         } catch (SQLException ex) {
-            return false;
+            throw new MaintenanceActivityException();
         }
     }
     
     
     //Returns true if at least one row has been deleted
     @Override
-    public boolean deleteMaintenanceActivity(int activityId){
+    public boolean deleteMaintenanceActivity(int activityId) throws MaintenanceActivityException{
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             PreparedStatement preparedStatement = conn.prepareStatement(DELETE_ACTIVITY);
@@ -58,10 +58,9 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
             return row > 0;
         }
         catch (SQLException ex) {
-            return false;
+            throw new MaintenanceActivityException("Maintenance Activity's deletion failed!");
         }   
     }
-    
     
     /**
      * 

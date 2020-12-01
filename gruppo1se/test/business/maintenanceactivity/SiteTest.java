@@ -120,4 +120,20 @@ public class SiteTest{
         String result = instance.toString();
         assertEquals(expResult, result);
     }
+    
+    @Test
+    public void testEquals(){
+        System.out.println("equals");
+        Site obj = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
+        boolean result = instance.equals(obj);
+        assertEquals(result, true);
+    }
+    
+    @Test
+    public void testNotEquals(){
+        System.out.println("equals");
+        Site obj = new Site("ProvaBranchOffice1", "ProvaArea", "ProvaWorkspaceNotes");
+        boolean result = instance.equals(obj);
+        assertEquals(result, false);
+    }
 }
