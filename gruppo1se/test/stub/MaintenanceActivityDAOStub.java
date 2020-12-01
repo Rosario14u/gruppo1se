@@ -67,10 +67,19 @@ public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
         else return false;
     }
 
+
     @Override
-    public boolean deleteMaintenanceActivity(int activityId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean deleteMaintenanceActivity(int activityId) throws MaintenanceActivityException {
+        switch(activityId){
+            case 1:
+                return true;
+            case 2:
+                return false;
+            default:
+                throw new MaintenanceActivityException();
+        }
     }
+
 
     @Override
     public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId) throws SiteException, MaintenanceActivityException {

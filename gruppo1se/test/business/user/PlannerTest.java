@@ -427,27 +427,11 @@ public class PlannerTest {
  * Test of removeMaintenanceActivity method, of class Planner.
  */
     @Test
-    public void testRemoveMaintenanceActivity() {
+    public void testRemoveMaintenanceActivity() throws MaintenanceActivityException {
         try {
+            Planner planner = new Planner("ProvaUsername","ProvaPassword",new MaintenanceActivityDAOStub(), new RequiredMaterialForMaintenanceDAOStub());
             System.out.println("removeMaintenanceActivity");
-            PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(activityId,site,typology,activityDescription,estimatedInterventionTime,LocalDate.of(2050,11,25),mProc,materials,true);
-            instance.deleteMaintenanceActivity(activityId);
-            instance.addMaintenanceActivity(activity);
-            boolean result = planner.removeMaintenanceActivity(activityId);
-            assertEquals(true, result);
-            conn.rollback();
-        } catch (SQLException ex) {
-            System.out.println("Error on : connection rollback!");
-        }
-    }
-    @Test
-    public void testRemoveMaintenanceActivityEwo() {
-        try {
-            System.out.println("removeMaintenanceActivity");
-            Ewo activity = new Ewo(activityId,site,typology,activityDescription,estimatedInterventionTime,LocalDate.of(2050,11,25),mProc,materials,true);
-            instance.deleteMaintenanceActivity(activityId);
-            instance.addMaintenanceActivity(activity);
-            boolean result = planner.removeMaintenanceActivity(activityId);
+            boolean result = planner.removeMaintenanceActivity(1);
             assertEquals(true, result);
             conn.rollback();
         } catch (SQLException ex) {
@@ -455,35 +439,20 @@ public class PlannerTest {
         }
     }
     
-    @Test
-    public void testRemoveMaintenanceActivityExtraActivity() {
-        try {
-            System.out.println("removeMaintenanceActivity");
-            ExtraActivity activity = new ExtraActivity(activityId,site,typology,activityDescription,estimatedInterventionTime,LocalDate.of(2050,11,25),mProc,materials,true);
-            instance.deleteMaintenanceActivity(activityId);
-            instance.addMaintenanceActivity(activity);
-            boolean result = planner.removeMaintenanceActivity(activityId);
-            assertEquals(true, result);
-            conn.rollback();
-        } catch (SQLException ex) {
-            System.out.println("Error on : connection rollback!");
-        }
-    }
     
     @Test
-    public void testRemoveMaintenanceActivityWithWrongId() {
+    public void testRemoveMaintenanceActivityWithWrongId() throws MaintenanceActivityException {
         try {
-            System.out.println("removeMaintenanceActivity");
-            PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(activityId,site,typology,activityDescription,estimatedInterventionTime,LocalDate.of(2050,11,25),mProc,materials,true);
-            instance.deleteMaintenanceActivity(activityId);
-            instance.addMaintenanceActivity(activity);
-            boolean result = planner.removeMaintenanceActivity(124);
+            Planner planner = new Planner("ProvaUsername","ProvaPassword",new MaintenanceActivityDAOStub(), new RequiredMaterialForMaintenanceDAOStub());
+            System.out.println("removeMaintenanceActivityWithWrongId");
+            boolean result = planner.removeMaintenanceActivity(2);
             assertEquals(false, result);
             conn.rollback();
         } catch (SQLException ex) {
             System.out.println("Error on : connection rollback!");
         }
     }
+    
     
     //========================Test of viewMaintenanceActivity================================================
     /*Test methods of viewMaintenanceActivity developed by Rosario Gaeta*/

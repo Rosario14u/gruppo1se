@@ -557,24 +557,37 @@ public class MaintenanceActivityDAOImplTest {
      */
     
     @Test
-    public void testDeleteMaintenanceActivity() {
+    public void testDeleteMaintenanceActivity() throws MaintenanceActivityException, SQLException {
         System.out.println("deleteMaintenanceActivity");
-        PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(123,site,typology,activityDescription,30,LocalDate.of(2050,11,25),maintenanceProcedure,materials,true);
-        instance.deleteMaintenanceActivity(activity.getActivityId());
-        instance.addMaintenanceActivity(activity);
-        boolean result = instance.deleteMaintenanceActivity(activity.getActivityId());
-        assertEquals(true, result);
-        
+        deleteDefaultMaintenanceActivity(conn.createStatement(),1);
+        insertDefaultMaintenanceActivity("Planned",null,conn.createStatement(),1);
+        boolean result = instance.deleteMaintenanceActivity(1);
+        assertEquals(true, result);    
     }
    
     
     @Test
-    public void testDeleteMaintenanceActivityWithWrongId() {
-        System.out.println("deleteMaintenanceActivity");
-        PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(123,site,typology,activityDescription,30,LocalDate.of(2050,11,25),maintenanceProcedure,materials,true);
-        instance.deleteMaintenanceActivity(activity.getActivityId());
-        instance.addMaintenanceActivity(activity);
-        boolean result = instance.deleteMaintenanceActivity(124);
-        assertEquals(false, result); 
+    public void testDeleteMaintenanceActivityWithWrongId() throws MaintenanceActivityException, SQLException {
+        deleteDefaultMaintenanceActivity(conn.createStatement(),1);
+        insertDefaultMaintenanceActivity("Planned",null,conn.createStatement(),1);
+        boolean result = instance.deleteMaintenanceActivity(2);
+        assertEquals(false, result);
+    }
+    
+    @Test
+    public void testDeleteMaintenanceActivityEwo() throws MaintenanceActivityException, SQLException {
+        deleteDefaultMaintenanceActivity(conn.createStatement(),1);
+        insertDefaultMaintenanceActivity("Unplanned","'EWO'",conn.createStatement(),3);
+        boolean result = instance.deleteMaintenanceActivity(3);
+        assertEquals(true, result);    
+    }
+    
+    
+    @Test
+    public void testDeleteMaintenanceActivityExtraActivity() throws MaintenanceActivityException, SQLException {
+        deleteDefaultMaintenanceActivity(conn.createStatement(),1);
+        insertDefaultMaintenanceActivity("Unplanned","'Extra'",conn.createStatement(),4);
+        boolean result = instance.deleteMaintenanceActivity(4);
+        assertEquals(true, result);    
     }
 }

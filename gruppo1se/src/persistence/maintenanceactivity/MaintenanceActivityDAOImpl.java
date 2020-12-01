@@ -75,7 +75,7 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     
     //Returns true if at least one row has been deleted
     @Override
-    public boolean deleteMaintenanceActivity(int activityId){
+    public boolean deleteMaintenanceActivity(int activityId) throws MaintenanceActivityException{
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             PreparedStatement preparedStatement = conn.prepareStatement(SQL_DELETE);
@@ -84,10 +84,9 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
             return row > 0;
         }
         catch (SQLException ex) {
-            return false;
+            throw new MaintenanceActivityException("Maintenance Activity's deletion failed!");
         }   
     }
-    
     
     /**
      * 

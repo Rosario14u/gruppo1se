@@ -83,7 +83,8 @@ public class Planner extends User {
         return maintenanceActivityDao.modifyMaintenaceActivity(newActivity);
     }
     
-    public boolean removeMaintenanceActivity(int activityId){
+    
+    public boolean removeMaintenanceActivity(int activityId) throws MaintenanceActivityException{
         return maintenanceActivityDao.deleteMaintenanceActivity(activityId);
     }
     
