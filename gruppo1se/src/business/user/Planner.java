@@ -80,13 +80,20 @@ public class Planner extends User {
             int estimatedInterventionTime, String date, boolean interruptibleActivity, 
             String typologyOfActivity, String typologyOfUnplannedActivity) throws MaintenanceActivityException{
         
-        MaintenanceActivityFactory.Typology type = typologyOfActivity.compareTo("PLANNED")==0 ? 
-                    MaintenanceActivityFactory.Typology.PLANNED : MaintenanceActivityFactory.Typology.valueOf(typologyOfUnplannedActivity);
+        typologyOfActivity = typologyOfActivity.toUpperCase();
+        typologyOfUnplannedActivity = typologyOfUnplannedActivity == null ? null : typologyOfUnplannedActivity.toUpperCase();
         
-        MaintenanceActivity newActivity = MaintenanceActivityFactory.make(type, activityId, branchOffice, area, null, typology, activityDescription, 
-                estimatedInterventionTime, date, null, null, interruptibleActivity);
-        
-        return maintenanceActivityDao.modifyMaintenaceActivity(newActivity);
+        try{
+            MaintenanceActivityFactory.Typology type = typologyOfActivity.compareTo("PLANNED")==0 ? 
+                        MaintenanceActivityFactory.Typology.PLANNED : MaintenanceActivityFactory.Typology.valueOf(typologyOfUnplannedActivity);
+
+            MaintenanceActivity newActivity = MaintenanceActivityFactory.make(type, activityId, branchOffice, area, null, typology, activityDescription, 
+                    estimatedInterventionTime, date, null, null, interruptibleActivity);
+
+            return maintenanceActivityDao.modifyMaintenaceActivity(newActivity);
+        }catch(IllegalArgumentException ex){
+            throw new MaintenanceActivityException("Typology of Activity not valid");
+        }
     }
     
     

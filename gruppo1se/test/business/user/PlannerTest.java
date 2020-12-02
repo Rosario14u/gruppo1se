@@ -208,6 +208,24 @@ public class PlannerTest {
                 "description9", 9, LocalDate.now().toString(), true, "UNPLANNED", "EXTRA"); 
     }
     
+    /**
+     * 
+     * @throws MaintenanceActivityException 
+     */
+    @Test(expected = MaintenanceActivityException.class)
+    public void testExceptionInvalidTypologyOfActivity() throws MaintenanceActivityException{
+        planner.modifyMaintenanceActivity(10, "branchOffice10", "area10", "typology10", "description10", 10, LocalDate.now().toString(), true, "UNPLANNED", "INVALID_VALUE");
+    }
+    
+    /**
+     * 
+     * @throws MaintenanceActivityException 
+     */
+    @Test(expected = MaintenanceActivityException.class)
+    public void testExceptionInvalidTypologyOfActivity2() throws MaintenanceActivityException{
+        planner.modifyMaintenanceActivity(11, "branchOffice11", "area11", "typology11", "description11", 11, LocalDate.now().toString(), true, "INVALID_VALUE", "INVALID_VALUE");
+    }
+    
     /*============================================================================================================================*/
     @Test
     public void testSuccessfulAddRequiredMaterial(){
