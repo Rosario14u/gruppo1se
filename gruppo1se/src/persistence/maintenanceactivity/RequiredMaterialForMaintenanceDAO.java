@@ -17,5 +17,5 @@ public interface RequiredMaterialForMaintenanceDAO {
     public List<Material> retrieveMaterialsByActivityId(int activityId) throws MaterialException;
     public boolean addRequiredMaterial(int activityId, List<Material> requiredMaterial) throws MaterialException;
     public boolean removeRequiredMaterial(int activityId, List<Material> requiredMaterial) throws MaterialException;
-    public List<Material> retrieveAvaliableMaterialToAdd(int activityId) throws MaterialException;
+    public List<Material> retrieveAvailableMaterialToAdd(int activityId) throws MaterialException;
 }

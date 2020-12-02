@@ -125,6 +125,6 @@ public class Planner extends User {
     
     //Developed by Antonio Gorrasi
     public List<Material> retrieveAvaliableMaterialToAdd(int activityId) throws MaterialException{
-        return requiredMaterialsDao.retrieveAvaliableMaterialToAdd(activityId);
+        return requiredMaterialsDao.retrieveAvailableMaterialToAdd(activityId);
     }
 }

@@ -82,7 +82,7 @@ public class RequiredMaterialForMaintenanceDAOStub implements RequiredMaterialFo
 
     
     @Override
-    public List<Material> retrieveAvaliableMaterialToAdd(int activityId) throws MaterialException {
+    public List<Material> retrieveAvailableMaterialToAdd(int activityId) throws MaterialException {
         switch (activityId){
             case 6:                
                 return new ArrayList<>(){{

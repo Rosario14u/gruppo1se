@@ -95,7 +95,7 @@ public class RequiredMaterialForMaintenanceDAOImpl implements RequiredMaterialFo
     
     //Developed by Antonio Gorrasi
     @Override
-    public List<Material> retrieveAvaliableMaterialToAdd(int activityId) throws MaterialException{
+    public List<Material> retrieveAvailableMaterialToAdd(int activityId) throws MaterialException{
         List<Material> listMaterials = new ArrayList<>();
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();

@@ -27,8 +27,8 @@ import persistence.database.ConnectionDB;
  */
 public class SiteDaoImplTest {
     private static Connection conn;
-    private static final String DELETEFROMSITE = "DELETE FROM Site WHERE branchOffice = ? and area = ?";
-    private static final String INSERTFROMSITE = "INSERT INTO Site (branchOffice,area,workspaceNotes) "
+    private static final String DELETE_FROM_SITE = "DELETE FROM Site WHERE branchOffice = ? and area = ?";
+    private static final String INSERT_FROM_SITE = "INSERT INTO Site (branchOffice,area,workspaceNotes) "
                     + "VALUES (?,?,?)";
     SiteDao siteDao;
     public SiteDaoImplTest() {
@@ -77,7 +77,7 @@ public class SiteDaoImplTest {
     public void testRetrieveSiteDao() {
         try {
             deleteFromSite("ProvaBranch", "ProvaBranch");
-            PreparedStatement pstm = conn.prepareStatement(INSERTFROMSITE);
+            PreparedStatement pstm = conn.prepareStatement(INSERT_FROM_SITE);
             pstm.setString(1, "ProvaBranch");
             pstm.setString(2, "ProvaArea");
             pstm.setString(3, "ProvaWorkspaceNotes");
@@ -111,7 +111,7 @@ public class SiteDaoImplTest {
     /*Utility method developed by Rosario Gaeta*/
     private void deleteFromSite(String officeBranch, String area) throws SQLException{
         try {
-            PreparedStatement pstm = conn.prepareStatement(DELETEFROMSITE);
+            PreparedStatement pstm = conn.prepareStatement(DELETE_FROM_SITE);
             pstm.setString(1, officeBranch);
             pstm.setString(2, area);
             pstm.executeUpdate();

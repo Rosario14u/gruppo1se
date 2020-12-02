@@ -59,12 +59,13 @@ public class PlannerTest {
     private boolean extraActivity = false;
     private boolean ewo = false;
     private MaintenanceActivityDAOImpl instance = new MaintenanceActivityDAOImpl(new SiteDaoImpl());
-    private final Planner planner = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
-                new RequiredMaterialForMaintenanceDAOImpl());
+    private final Planner planner = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(),
+                new RequiredMaterialForMaintenanceDAOStub());
     private final Site site = new Site(branchOffice,area,workspaceNotes);
     private final MaintenanceProcedure mProc = new MaintenanceProcedure(maintenanceProcedure);
     
     public PlannerTest() {
+        
     }
     
     @BeforeClass
@@ -101,8 +102,8 @@ public class PlannerTest {
     @Test
     public void testSuccessfulModifyPlannedMaintenanceActivity(){
         try{
-            Planner planner1 = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(), null);
-            assertTrue(planner1.modifyMaintenanceActivity(1, "branchOffice1", "area1", "typology1", "description1", 1, LocalDate.now().toString(), true, "PLANNED", null));
+            assertTrue(planner.modifyMaintenanceActivity(1, "branchOffice1", "area1", "typology1",
+                    "description1", 1, LocalDate.now().toString(), true, "PLANNED", null));
         }catch(MaintenanceActivityException ex){
             fail("MaintenanceActivityException");     
         }   
@@ -115,8 +116,8 @@ public class PlannerTest {
     @Test
     public void testUnsuccessfulModifyPlannedMaintenanceActivity() {
         try{
-            Planner planner1 = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(), null);
-            assertFalse(planner1.modifyMaintenanceActivity(2, "branchOffice2", "area2", "typology2", "description2", 2, LocalDate.now().toString(), true, "PLANNED", null));
+            assertFalse(planner.modifyMaintenanceActivity(2, "branchOffice2", "area2", "typology2",
+                    "description2", 2, LocalDate.now().toString(), true, "PLANNED", null));
         }catch(MaintenanceActivityException ex){
             fail("MaintenanceActivityException");     
         }
@@ -128,8 +129,8 @@ public class PlannerTest {
      */
     @Test(expected = MaintenanceActivityException.class)
     public void testExceptionModifyPlannedMaintenanceActivity() throws MaintenanceActivityException{
-        Planner planner1 = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(), null);
-        planner1.modifyMaintenanceActivity(3, "branchOffice3", "area3", "typology3", "description3", 3, LocalDate.now().toString(), true, "PLANNED", null);  
+        planner.modifyMaintenanceActivity(3, "branchOffice3", "area3", "typology3",
+                "description3", 3, LocalDate.now().toString(), true, "PLANNED", null);  
     }
   
     
@@ -139,8 +140,8 @@ public class PlannerTest {
     @Test
     public void testSuccessfulModifyEwoMaintenanceActivity() {
         try{
-            Planner planner1 = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(), null);
-            assertTrue(planner1.modifyMaintenanceActivity(4, "branchOffice4", "area4", "typology4", "description4", 4, LocalDate.now().toString(), true, "UNPLANNED", "EWO"));
+            assertTrue(planner.modifyMaintenanceActivity(4, "branchOffice4", "area4", "typology4",
+                    "description4", 4, LocalDate.now().toString(), true, "UNPLANNED", "EWO"));
         }catch(MaintenanceActivityException ex){
             fail("MaintenanceActivityException");     
         }   
@@ -153,8 +154,8 @@ public class PlannerTest {
     @Test
     public void testUnsuccessfulModifyEwoMaintenanceActivity() {
         try{
-            Planner planner1 = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(), null);
-            assertFalse(planner1.modifyMaintenanceActivity(5, "branchOffice5", "area5", "typology5", "description5", 5, LocalDate.now().toString(), true, "UNPLANNED", "EWO"));
+            assertFalse(planner.modifyMaintenanceActivity(5, "branchOffice5", "area5", "typology5",
+                    "description5", 5, LocalDate.now().toString(), true, "UNPLANNED", "EWO"));
         }catch(MaintenanceActivityException ex){
             fail("MaintenanceActivityException");     
         }
@@ -166,8 +167,8 @@ public class PlannerTest {
      */
     @Test(expected = MaintenanceActivityException.class)
     public void testExceptionModifyEwoMaintenanceActivity() throws MaintenanceActivityException{
-        Planner planner1 = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(), null);
-        planner1.modifyMaintenanceActivity(6, "branchOffice6", "area6", "typology6", "description6", 6, LocalDate.now().toString(), true, "UNPLANNED", "EWO");
+        planner.modifyMaintenanceActivity(6, "branchOffice6", "area6", "typology6",
+                "description6", 6, LocalDate.now().toString(), true, "UNPLANNED", "EWO");
     }
     
     /**
@@ -176,8 +177,8 @@ public class PlannerTest {
     @Test
     public void testSuccessfulModifyExtraMaintenanceActivity() {
         try{
-            Planner planner1 = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(), null);
-            assertTrue(planner1.modifyMaintenanceActivity(7, "branchOffice7", "area7", "typology7", "description7", 7, LocalDate.now().toString(), true, "UNPLANNED", "EXTRA"));
+            assertTrue(planner.modifyMaintenanceActivity(7, "branchOffice7", "area7", "typology7",
+                    "description7", 7, LocalDate.now().toString(), true, "UNPLANNED", "EXTRA"));
         }catch(MaintenanceActivityException ex){
             fail("MaintenanceActivityException");     
         }  
@@ -190,8 +191,8 @@ public class PlannerTest {
     @Test
     public void testUnsuccessfulModifyExtraMaintenanceActivity() {
         try{
-            Planner planner1 = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(), null);
-            assertFalse(planner1.modifyMaintenanceActivity(8, "branchOffice8", "area8", "typology8", "description8", 8, LocalDate.now().toString(), true, "UNPLANNED", "EXTRA"));
+            assertFalse(planner.modifyMaintenanceActivity(8, "branchOffice8", "area8", "typology8",
+                    "description8", 8, LocalDate.now().toString(), true, "UNPLANNED", "EXTRA"));
         }catch(MaintenanceActivityException ex){
             fail("MaintenanceActivityException");     
         }  
@@ -203,17 +204,16 @@ public class PlannerTest {
      */
     @Test(expected = MaintenanceActivityException.class)
     public void testExceptionModifyExtraMaintenanceActivity() throws MaintenanceActivityException{
-        Planner planner1 = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(), null);
-        planner1.modifyMaintenanceActivity(9, "branchOffice9", "area9", "typology9", "description9", 9, LocalDate.now().toString(), true, "UNPLANNED", "EXTRA"); 
+        planner.modifyMaintenanceActivity(9, "branchOffice9", "area9", "typology9",
+                "description9", 9, LocalDate.now().toString(), true, "UNPLANNED", "EXTRA"); 
     }
     
     /*============================================================================================================================*/
     @Test
     public void testSuccessfulAddRequiredMaterial(){
         try{
-            Planner planner1 = new Planner("ProvaUser","ProvaPassword", null, new RequiredMaterialForMaintenanceDAOStub());
             List<Material> listMaterialToAdd = new ArrayList<>();                       
-            assertTrue(planner1.addRequiredMaterial(1, listMaterialToAdd));
+            assertTrue(planner.addRequiredMaterial(1, listMaterialToAdd));
         }catch (MaterialException ex){
             fail("MaterialException");
         }
@@ -221,17 +221,15 @@ public class PlannerTest {
     
     @Test(expected = MaterialException.class)
     public void testUnsuccessfulAddRequiredMaterial() throws MaterialException{
-        Planner planner1 = new Planner("ProvaUser","ProvaPassword", null, new RequiredMaterialForMaintenanceDAOStub());
         List<Material> listMaterialToAdd = new ArrayList<>();
-        planner1.addRequiredMaterial(2, listMaterialToAdd);
+        planner.addRequiredMaterial(2, listMaterialToAdd);
     }
     
     @Test
     public void testSuccessfulRemoveRequiredMaterial(){
         try {
-            Planner planner1 = new Planner("ProvaUser","ProvaPassword", null, new RequiredMaterialForMaintenanceDAOStub());
             List<Material> listMaterialToAdd = new ArrayList<>();
-            assertTrue(planner1.removeRequiredMaterial(3, listMaterialToAdd));
+            assertTrue(planner.removeRequiredMaterial(3, listMaterialToAdd));
         } catch (MaterialException ex) {
             fail("MaterialException");
         }
@@ -240,9 +238,8 @@ public class PlannerTest {
     @Test
     public void testRemoveRequiredMaterialNotComplete(){
         try {
-            Planner planner1 = new Planner("ProvaUser","ProvaPassword", null, new RequiredMaterialForMaintenanceDAOStub());
             List<Material> listMaterialToAdd = new ArrayList<>();
-            assertFalse(planner1.removeRequiredMaterial(4, listMaterialToAdd));
+            assertFalse(planner.removeRequiredMaterial(4, listMaterialToAdd));
         } catch (MaterialException ex) {
             fail("MaterialException");
         }
@@ -251,20 +248,18 @@ public class PlannerTest {
     
     @Test(expected = MaterialException.class)
     public void testUnsuccessfulRemoveRequiredMaterial() throws MaterialException{
-        Planner planner1 = new Planner("ProvaUser","ProvaPassword", null, new RequiredMaterialForMaintenanceDAOStub());
         List<Material> listMaterialToAdd = new ArrayList<>();
-        planner1.removeRequiredMaterial(5, listMaterialToAdd);
+        planner.removeRequiredMaterial(5, listMaterialToAdd);
     }
     
     @Test
     public void testRetrieveAvaliableMaterialToAdd(){
         try {
-            Planner planner1 = new Planner("ProvaUser","ProvaPassword", null, new RequiredMaterialForMaintenanceDAOStub());
             List<Material> expectedMaterialList = new ArrayList<>(){{
                 add(new Material("Material1"));
                 add(new Material("Material2"));
             }};
-            List<Material> actualMaterialList = planner1.retrieveAvaliableMaterialToAdd(6);
+            List<Material> actualMaterialList = planner.retrieveAvaliableMaterialToAdd(6);
             assertEquals(expectedMaterialList, actualMaterialList);
         } catch (MaterialException ex) {
             fail("MaterialException");
@@ -274,9 +269,8 @@ public class PlannerTest {
     @Test
     public void testRetrieveAvaliableMaterialToAddEmpty(){
         try {
-            Planner planner1 = new Planner("ProvaUser","ProvaPassword", null, new RequiredMaterialForMaintenanceDAOStub());
             List<Material> expectedMaterialList = new ArrayList<>();
-            List<Material> actualMaterialList = planner1.retrieveAvaliableMaterialToAdd(7);
+            List<Material> actualMaterialList = planner.retrieveAvaliableMaterialToAdd(7);
             assertEquals(expectedMaterialList, actualMaterialList);
         } catch (MaterialException ex) {
             fail("MaterialException");
@@ -285,44 +279,10 @@ public class PlannerTest {
     
     @Test(expected = MaterialException.class)
     public void testUnsuccessfulRetrieveAvaliableMaterialToAdd() throws MaterialException{
-        Planner planner1 = new Planner("ProvaUser","ProvaPassword", null, new RequiredMaterialForMaintenanceDAOStub());
-        planner1.retrieveAvaliableMaterialToAdd(8);   
-    }
-    
-    /*=================== PRIVATE METHODS OF MODIFY ==============================================================================*/
-    
-    private void insertDefaultMaintenanceActivity(String typologyOfActivity, String typologyOfUnplannedActivity, Statement stm, int id) throws SQLException {
-        String query = "INSERT INTO MaintenanceActivity (activityId, activityDescription, "
-                + "estimatedInterventionTime, dateActivity, interruptibleActivity, typologyOfActivity,"
-                + " typologyOfUnplannedActivity, typologyName, branchOffice, area) "
-                + "VALUES (" + id + ", 'DefaultDescrizione', 1, '2100-1-1', True, '"+ typologyOfActivity +"',"
-                + " "+ typologyOfUnplannedActivity +", 'DefaultTypologyName', 'DefaultBranchOffice', 'DefaultArea')";
-        stm.executeUpdate(query);
-    }
-    
-    private void deleteDafaultMaintenanceActivity(Statement stm, int id) throws SQLException {
-        String query = "DELETE FROM MaintenanceActivity WHERE activityId="+id;
-        stm.executeUpdate(query);
-    }
-    
-    public MaintenanceActivity createMaintenanceActivity(String typeOfActivity, int id) {
-        if(typeOfActivity.compareTo("Planned")==0){
-            System.out.println("sto creando Planned");
-            return new PlannedMaintenanceActivity(id, new Site("ProvaBranchOfficeMod"+id, "ProvaAreaMod"+id), "typologyNameMod"+id,
-                    "ProvaDescrizioneMod"+id, id, LocalDate.now(), null, null, id%2==0);
-        }else if(typeOfActivity.compareTo("EWO")==0){
-            System.out.println("sto creando EWO");
-            return new Ewo(id, new Site("ProvaBranchOfficeMod"+id, "ProvaAreaMod"+id), "typologyNameMod"+id,
-                    "ProvaDescrizioneMod"+id, id, LocalDate.now(), null, null, id%2==0);
-        }else{
-            System.out.println("sto creando Extra");
-            return new ExtraActivity(id, new Site("ProvaBranchOfficeMod"+id, "ProvaAreaMod"+id), "typologyNameMod"+id,
-                    "ProvaDescrizioneMod"+id, id, LocalDate.now(), null, null, id%2==0);
-        }
+        planner.retrieveAvaliableMaterialToAdd(8);   
     }
     
     /*===========================================================================================================================*/
-    
     
     /**
      * Test of makeMaintenanceActivity method, of class Planner.
@@ -332,7 +292,6 @@ public class PlannerTest {
         try {
             System.out.println("makeMaintenanceActivity");
             //planner.removeMaintenanceActivity(activityId);
-            Planner planner = new Planner ("admin","password",new MaintenanceActivityDAOStub(), new RequiredMaterialForMaintenanceDAOStub());
             boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
             assertEquals(true, result);
             conn.rollback();
@@ -345,7 +304,6 @@ public class PlannerTest {
     public void testMakeMaintenanceActivityWrong() throws MaterialException, MaintenanceActivityException {
         try {
             System.out.println("makeMaintenanceActivityWrong");
-            Planner planner = new Planner ("admin","password",new MaintenanceActivityDAOStub(), new RequiredMaterialForMaintenanceDAOStub());
             activityId = 2;
             date = "2020-11-24";
             //planner.removeMaintenanceActivity(activityId);
@@ -360,7 +318,6 @@ public class PlannerTest {
     public void testMakeMaintenanceActivityExtraActivity() throws MaterialException, MaintenanceActivityException{
         try {
             System.out.println("makeMaintenanceActivityExtraActivity");
-            Planner planner = new Planner ("admin","password",new MaintenanceActivityDAOStub(), new RequiredMaterialForMaintenanceDAOStub());
             extraActivity = true;
             plannedActivity = false;
             //planner.removeMaintenanceActivity(activityId);
@@ -376,7 +333,6 @@ public class PlannerTest {
     public void testMakeMaintenanceActivityExtraActivityWrong() throws MaterialException, MaintenanceActivityException{
         try {
             System.out.println("makeMaintenanceActivityExtraActivityWrong");
-            Planner planner = new Planner ("admin","password",new MaintenanceActivityDAOStub(), new RequiredMaterialForMaintenanceDAOStub());
             activityId = 2;
             plannedActivity = false;
             extraActivity = true;
@@ -393,7 +349,6 @@ public class PlannerTest {
     public void testMakeMaintenanceActivityEwo() throws MaterialException, MaintenanceActivityException{
         try {
             System.out.println("makeMaintenanceActivityEwo");
-            Planner planner = new Planner ("admin","password",new MaintenanceActivityDAOStub(), new RequiredMaterialForMaintenanceDAOStub());
             plannedActivity = false;
             ewo = true;
             //planner.removeMaintenanceActivity(activityId);
@@ -409,7 +364,6 @@ public class PlannerTest {
     public void testMakeMaintenanceActivityEwoWrong() throws MaterialException, MaintenanceActivityException {
         try {
             System.out.println("makeMaintenanceActivityEwoWrong");
-            Planner planner = new Planner ("admin","password",new MaintenanceActivityDAOStub(), new RequiredMaterialForMaintenanceDAOStub());
             activityId = 2;
             ewo = true;
             plannedActivity = false;
@@ -429,7 +383,6 @@ public class PlannerTest {
     @Test
     public void testRemoveMaintenanceActivity() throws MaintenanceActivityException {
         try {
-            Planner planner = new Planner("ProvaUsername","ProvaPassword",new MaintenanceActivityDAOStub(), new RequiredMaterialForMaintenanceDAOStub());
             System.out.println("removeMaintenanceActivity");
             boolean result = planner.removeMaintenanceActivity(1);
             assertEquals(true, result);
@@ -443,7 +396,6 @@ public class PlannerTest {
     @Test
     public void testRemoveMaintenanceActivityWithWrongId() throws MaintenanceActivityException {
         try {
-            Planner planner = new Planner("ProvaUsername","ProvaPassword",new MaintenanceActivityDAOStub(), new RequiredMaterialForMaintenanceDAOStub());
             System.out.println("removeMaintenanceActivityWithWrongId");
             boolean result = planner.removeMaintenanceActivity(2);
             assertEquals(false, result);
@@ -456,7 +408,6 @@ public class PlannerTest {
     @Test(expected = MaintenanceActivityException.class)
     public void testRemoveMaintenanceActivityException() throws MaintenanceActivityException {
         try {
-            Planner planner = new Planner("ProvaUsername","ProvaPassword",new MaintenanceActivityDAOStub(), new RequiredMaterialForMaintenanceDAOStub());
             System.out.println("removeMaintenanceActivity that throws Exception");
             boolean result = planner.removeMaintenanceActivity(3);
             conn.rollback();
@@ -474,8 +425,6 @@ public class PlannerTest {
     @Test
     public void testviewMaintenanceActivityReturnPlanned() {
         try {
-            Planner planner = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(),
-                new RequiredMaterialForMaintenanceDAOStub());
             MaintenanceActivity activity = planner.viewMaintenanceActivity(1);
             List<Material> materials= new ArrayList<>(){{
                     add(new Material("Material1"));
@@ -498,8 +447,6 @@ public class PlannerTest {
     @Test
     public void testviewMaintenanceActivityReturnEwo() {
         try {
-            Planner planner = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(),
-                new RequiredMaterialForMaintenanceDAOStub());
             MaintenanceActivity activity = planner.viewMaintenanceActivity(2);
             List<Material> materials= new ArrayList<>(){{
                     add(new Material("Material4"));
@@ -522,8 +469,6 @@ public class PlannerTest {
     @Test
     public void testviewMaintenanceActivityReturnExtra() {
         try {
-            Planner planner = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(),
-                new RequiredMaterialForMaintenanceDAOStub());
             MaintenanceActivity activity = planner.viewMaintenanceActivity(3);
             List<Material> materials= new ArrayList<>(){{
                     add(new Material("Material7"));
@@ -547,8 +492,6 @@ public class PlannerTest {
     @Test
     public void testviewMaintenanceActivityNull(){
         try {
-            Planner planner = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(),
-                new RequiredMaterialForMaintenanceDAOStub());
             MaintenanceActivity activity = planner.viewMaintenanceActivity(4);
             assertNull("testviewMaintenanceActivityNull error", activity);
         }catch (SiteException ex) {
@@ -566,8 +509,6 @@ public class PlannerTest {
     @Test(expected = SiteException.class)
     public void testviewMaintenanceActivitySiteException() throws SiteException {
         try {
-            Planner planner = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(),
-                new RequiredMaterialForMaintenanceDAOStub());
             MaintenanceActivity activity = planner.viewMaintenanceActivity(5);
         } catch (MaintenanceActivityException ex) {
             fail("MaintenanceActivityException");
@@ -581,8 +522,6 @@ public class PlannerTest {
     @Test(expected = MaintenanceActivityException.class)
     public void testviewMaintenanceActivityMaintenanceActivityException() throws MaintenanceActivityException {
         try {
-            Planner planner = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(),
-                new RequiredMaterialForMaintenanceDAOStub());
             MaintenanceActivity activity = planner.viewMaintenanceActivity(6);
         } catch (SiteException ex) {
             fail("SiteException");
@@ -596,8 +535,6 @@ public class PlannerTest {
     @Test
     public void testviewMaintenanceActivityMaterialEmpty() {
         try {
-            Planner planner = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(),
-                new RequiredMaterialForMaintenanceDAOStub());
             MaintenanceActivity activity = planner.viewMaintenanceActivity(7);
             List<Material> materials= new ArrayList<>();
             assertViewMaintenanceActivity(activity, 7, "ProvaDescription7", 127, "2020-12-27", false, "Planned", null,
@@ -616,8 +553,6 @@ public class PlannerTest {
     @Test(expected = MaterialException.class)
     public void testviewMaintenanceActivityMaterialException() throws MaterialException {
         try {
-            Planner planner = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(),
-                new RequiredMaterialForMaintenanceDAOStub());
             MaintenanceActivity activity = planner.viewMaintenanceActivity(8);
         } catch (SiteException ex) {
             fail("SiteException");

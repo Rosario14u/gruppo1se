@@ -43,22 +43,29 @@ import stub.SiteDaoStub;
  */
 public class MaintenanceActivityDAOImplTest {
     private static Connection conn;
-    private static String[] arrayActivity;
-    private static final String DELETEMAINTENANCEACTIVITY = "DELETE FROM MAINTENANCEACTIVITY WHERE ACTIVITYID=?";
-    private static final String INSERTMAINTEANCEACTIVITY = "INSERT INTO MaintenanceActivity "
+    private static final String DELETE_MAINTENANCE_ACTIVITY = "DELETE FROM MAINTENANCEACTIVITY WHERE ACTIVITYID=?";
+    private static final String INSERT_MAINTENANCE_ACTIVITY = "INSERT INTO MaintenanceActivity "
             + "(activityId, activityDescription,"
             + " estimatedInterventionTime, dateActivity, interruptibleActivity, "
             + "typologyOfActivity, typologyOfUnplannedActivity, typologyName, "
             + "branchOffice, area) VALUES (?,?,?,?,?,?,?,?,?,?)";
-    private final Site site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
-    private final String activityDescription = "ProvaActivityDescription";
-    private final MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
-    private final LinkedList<Material> materials = new LinkedList<>();
-    private final String typology = "ProvaTypology";
-    private final MaintenanceActivityDAOImpl instance = new MaintenanceActivityDAOImpl(new SiteDaoImpl());
+    private static final String SELECT_MAINTENANCE_ACTIVITY = "SELECT * FROM MaintenanceActivity WHERE activityId= ?";
+    private final Site site;
+    private final String activityDescription;
+    private final MaintenanceProcedure maintenanceProcedure;
+    private final LinkedList<Material> materials;
+    private final String typology;
+    private final MaintenanceActivityDAOImpl maintenanceActivityDAO;
 
     
     public MaintenanceActivityDAOImplTest() {
+        site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
+        activityDescription = "ProvaActivityDescription";
+        maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
+        materials = new LinkedList<>();
+        typology = "ProvaTypology";
+        maintenanceActivityDAO = new MaintenanceActivityDAOImpl(new SiteDaoStub());
+        
     }
     
     @BeforeClass
@@ -66,7 +73,6 @@ public class MaintenanceActivityDAOImplTest {
         try {
             conn = ConnectionDB.getInstanceConnection().getConnection();
             conn.setAutoCommit(false);
-            arrayActivity = new String[]{"Planned","EWO","Extra"};
         } catch (SQLException ex) {
             Logger.getLogger(MaintenanceActivityDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -104,7 +110,6 @@ public class MaintenanceActivityDAOImplTest {
     @Test
     public void testRetrieveMaintenanceActivityDaoIsInDatabasePlanned() {
         try {
-            MaintenanceActivityDAO maintenanceActivityDAO = new MaintenanceActivityDAOImpl(new SiteDaoStub());
             deleteMaintenaceActivity(1);
             insertMaintenanceActivity(1,"ProvaDescrizione1",121,"2050-11-21",true, 
                     "Planned",null,"ProvaTypologyName1","ProvaBranch1","ProvaArea1");
@@ -126,7 +131,6 @@ public class MaintenanceActivityDAOImplTest {
     @Test
     public void testRetrieveMaintenanceActivityDaoIsInDatabaseEWO() {
         try {
-            MaintenanceActivityDAO maintenanceActivityDAO = new MaintenanceActivityDAOImpl(new SiteDaoStub());
             deleteMaintenaceActivity(2);
             insertMaintenanceActivity(2,"ProvaDescrizione2",122,"2050-11-22",true, 
                     "Unplanned","EWO","ProvaTypologyName2","ProvaBranch2","ProvaArea2");
@@ -148,7 +152,6 @@ public class MaintenanceActivityDAOImplTest {
     @Test
     public void testRetrieveMaintenanceActivityDaoIsInDatabaseExtra() {
         try {
-            MaintenanceActivityDAO maintenanceActivityDAO = new MaintenanceActivityDAOImpl(new SiteDaoStub());
             deleteMaintenaceActivity(3);
             insertMaintenanceActivity(3,"ProvaDescrizione3",123,"2050-11-23",false, 
                     "Unplanned","Extra","ProvaTypologyName3","ProvaBranch3","ProvaArea3");
@@ -171,7 +174,6 @@ public class MaintenanceActivityDAOImplTest {
     @Test
     public void testRetrieveMaintenanceActivityDaoNotInDatabase() {
         try {
-            MaintenanceActivityDAO maintenanceActivityDAO = new MaintenanceActivityDAOImpl(new SiteDaoStub());
             deleteMaintenaceActivity(1);
             MaintenanceActivity activity = maintenanceActivityDAO.retrieveMaintenanceActivityDao(1);
             assertNull("MaintenanceActivityImpl error", activity);
@@ -191,7 +193,6 @@ public class MaintenanceActivityDAOImplTest {
     @Test(expected = SiteException.class)
     public void testRetrieveMaintenanceActivityDaoSiteExceptionCase1() throws  SiteException {
         try {
-            MaintenanceActivityDAO maintenanceActivityDAO = new MaintenanceActivityDAOImpl(new SiteDaoStub());
             deleteMaintenaceActivity(4);
             insertMaintenanceActivity(4,"ProvaDescrizione4",124,"2050-11-24",false, 
                     "Unplanned","Extra","ProvaTypologyName4","ProvaBranch4","ProvaArea4");
@@ -210,7 +211,6 @@ public class MaintenanceActivityDAOImplTest {
     @Test(expected = SiteException.class)
     public void testRetrieveMaintenanceActivityDaoSiteExceptionCase2() throws   SiteException {
         try {
-            MaintenanceActivityDAO maintenanceActivityDAO = new MaintenanceActivityDAOImpl(new SiteDaoStub());
             deleteMaintenaceActivity(5);
             insertMaintenanceActivity(5,"ProvaDescrizione5",125,"2050-11-25",false, 
                     "Unplanned","Extra","ProvaTypologyName5","ProvaBranch5","ProvaArea5");
@@ -225,7 +225,7 @@ public class MaintenanceActivityDAOImplTest {
     //=======================Utilities to test retrieveMaintenanceActivityDao=========================================
     
     private void deleteMaintenaceActivity(int activityId) throws SQLException{
-        PreparedStatement pstm = conn.prepareStatement(DELETEMAINTENANCEACTIVITY);
+        PreparedStatement pstm = conn.prepareStatement(DELETE_MAINTENANCE_ACTIVITY);
         pstm.setInt(1, activityId);
         pstm.executeUpdate();
     }
@@ -233,7 +233,7 @@ public class MaintenanceActivityDAOImplTest {
     private void insertMaintenanceActivity(int activityId,String descrizione,int estimatedInterventionTime,
         String date,boolean InterruptibleActivity, String typologyOfActivity,String typologyOfUnplannedActivity,
         String typologyName,String branchOffice,String area) throws SQLException{
-        PreparedStatement pstm = conn.prepareStatement(INSERTMAINTEANCEACTIVITY);
+        PreparedStatement pstm = conn.prepareStatement(INSERT_MAINTENANCE_ACTIVITY);
         pstm.setInt(1, activityId);
         pstm.setString(2, descrizione);
         pstm.setInt(3, estimatedInterventionTime);
@@ -284,13 +284,12 @@ public class MaintenanceActivityDAOImplTest {
     public void testModifyPlannedToEwoMaintenaceActivity() {
         try{
             Statement stm = conn.createStatement();
-
-            deleteDefaultMaintenanceActivity(stm,1);
-            insertDefaultMaintenanceActivity("Planned", "null", stm, 1);            
+            deleteMaintenaceActivity(1);
+            insertMaintenanceActivity(1,"ProvaDescrizione1",121,"2050-11-21",true, 
+                    "Planned",null,"ProvaTypologyName1","ProvaBranch1","ProvaArea1");          
             MaintenanceActivity newActivity = createMaintenanceActivity("EWO", 1);
-            assertEquals(true, instance.modifyMaintenaceActivity(newActivity));
-            verify(selectDefaultMaintenanceActivity(stm,1), newActivity);
-            
+            assertEquals(true, maintenanceActivityDAO.modifyMaintenaceActivity(newActivity));
+            verify(selectDefaultMaintenanceActivity(1), newActivity);
         }catch(SQLException ex){
             fail("SQLException was thrown");
         }catch(MaintenanceActivityException ex){
@@ -308,13 +307,12 @@ public class MaintenanceActivityDAOImplTest {
     public void testModifyPlannedToExtraMaintenaceActivity(){
         try{
             Statement stm = conn.createStatement();
-        
-            deleteDefaultMaintenanceActivity(stm,2);
-            insertDefaultMaintenanceActivity("Planned", "null", stm, 2);            
+            deleteMaintenaceActivity(2);
+            insertMaintenanceActivity(2,"ProvaDescrizione2",122,"2050-11-22",true, 
+                    "Planned",null,"ProvaTypologyName2","ProvaBranch2","ProvaArea2");           
             MaintenanceActivity newActivity = createMaintenanceActivity("Extra", 2);
-            assertEquals(true, instance.modifyMaintenaceActivity(newActivity));
-            verify(selectDefaultMaintenanceActivity(stm,2), newActivity);
-           
+            assertEquals(true, maintenanceActivityDAO.modifyMaintenaceActivity(newActivity));
+            verify(selectDefaultMaintenanceActivity(2), newActivity);
         }catch(SQLException ex){
             fail("SQLException was thrown");
         }catch(MaintenanceActivityException ex){
@@ -331,11 +329,12 @@ public class MaintenanceActivityDAOImplTest {
     public void testModifyEwoToExtraMaintenaceActivity(){
         try{
             Statement stm = conn.createStatement();
-            deleteDefaultMaintenanceActivity(stm,3);
-            insertDefaultMaintenanceActivity("Unplanned", "'EWO'", stm, 3);
+            deleteMaintenaceActivity(3);
+            insertMaintenanceActivity(3,"ProvaDescrizione3",123,"2050-11-23",true, 
+                    "Unplanned","EWO","ProvaTypologyName3","ProvaBranch3","ProvaArea3");
             MaintenanceActivity newActivity = createMaintenanceActivity("Extra", 3);
-            assertEquals(true, instance.modifyMaintenaceActivity(newActivity));
-            verify(selectDefaultMaintenanceActivity(stm,3), newActivity);
+            assertEquals(true, maintenanceActivityDAO.modifyMaintenaceActivity(newActivity));
+            verify(selectDefaultMaintenanceActivity(3), newActivity);
         }catch(SQLException ex){
             fail("SQLException was thrown");
         }catch(MaintenanceActivityException ex){
@@ -352,11 +351,12 @@ public class MaintenanceActivityDAOImplTest {
     public void testModifyEwoToPlannedMaintenaceActivity(){
         try{
             Statement stm = conn.createStatement();
-            deleteDefaultMaintenanceActivity(stm,4);
-            insertDefaultMaintenanceActivity("Unplanned", "'EWO'", stm, 4);
+            deleteMaintenaceActivity(4);
+            insertMaintenanceActivity(4,"ProvaDescrizione4",124,"2050-11-24",false, 
+                    "Unplanned","EWO","ProvaTypologyName4","ProvaBranch4","ProvaArea4");
             MaintenanceActivity newActivity = createMaintenanceActivity("Planned", 4);
-            assertEquals(true, instance.modifyMaintenaceActivity(newActivity));
-            verify(selectDefaultMaintenanceActivity(stm,4), newActivity);
+            assertEquals(true, maintenanceActivityDAO.modifyMaintenaceActivity(newActivity));
+            verify(selectDefaultMaintenanceActivity(4), newActivity);
         }catch(SQLException ex){
             fail("SQLException was thrown");
         }catch(MaintenanceActivityException ex){
@@ -373,11 +373,12 @@ public class MaintenanceActivityDAOImplTest {
     public void testModifyExtraToPlannedMaintenaceActivity(){
         try{
             Statement stm = conn.createStatement();
-            deleteDefaultMaintenanceActivity(stm,5);
-            insertDefaultMaintenanceActivity("Unplanned", "'Extra'", stm, 5);
+            deleteMaintenaceActivity(5);
+            insertMaintenanceActivity(5,"ProvaDescrizione5",125,"2050-11-25",false, 
+                    "Unplanned","Extra","ProvaTypologyName5","ProvaBranch5","ProvaArea5");
             MaintenanceActivity newActivity = createMaintenanceActivity("Planned", 5);
-            assertEquals(true, instance.modifyMaintenaceActivity(newActivity));
-            verify(selectDefaultMaintenanceActivity(stm,5), newActivity);
+            assertEquals(true, maintenanceActivityDAO.modifyMaintenaceActivity(newActivity));
+            verify(selectDefaultMaintenanceActivity(5), newActivity);
         }catch(SQLException ex){
             fail("SQLException was thrown");
         }catch(MaintenanceActivityException ex){
@@ -394,11 +395,12 @@ public class MaintenanceActivityDAOImplTest {
     public void testModifyExtraToEwoMaintenaceActivity(){
         try{
             Statement stm = conn.createStatement();
-            deleteDefaultMaintenanceActivity(stm,6);
-            insertDefaultMaintenanceActivity("Unplanned", "'Extra'", stm, 6);
+            deleteMaintenaceActivity(6);
+            insertMaintenanceActivity(6,"ProvaDescrizione6",126,"2050-11-26",false, 
+                    "Unplanned","Extra","ProvaTypologyName6","ProvaBranch6","ProvaArea6");
             MaintenanceActivity newActivity = createMaintenanceActivity("EWO", 6);
-            assertEquals(true, instance.modifyMaintenaceActivity(newActivity));
-            verify(selectDefaultMaintenanceActivity(stm,6), newActivity);
+            assertEquals(true, maintenanceActivityDAO.modifyMaintenaceActivity(newActivity));
+            verify(selectDefaultMaintenanceActivity(6), newActivity);
         }catch(SQLException ex){
             fail("SQLException was thrown");
         }catch(MaintenanceActivityException ex){
@@ -415,9 +417,9 @@ public class MaintenanceActivityDAOImplTest {
     public void testModifyActivityNotPresent(){
         try{
             Statement stm = conn.createStatement();
-            deleteDefaultMaintenanceActivity(stm,7);
+            deleteMaintenaceActivity(7);
             MaintenanceActivity newActivity = createMaintenanceActivity("EWO", 7);
-            assertEquals(false, instance.modifyMaintenaceActivity(newActivity));
+            assertEquals(false, maintenanceActivityDAO.modifyMaintenaceActivity(newActivity));
         }catch(SQLException ex){
             fail("SQLException was thrown");
         }catch(MaintenanceActivityException ex){
@@ -427,28 +429,17 @@ public class MaintenanceActivityDAOImplTest {
     
     //=================== PRIVATE METHODS OF MODIFY ==============================================================================
     
-    private void insertDefaultMaintenanceActivity(String typologyOfActivity, String typologyOfUnplannedActivity, Statement stm, int id) throws SQLException {
-        String query = "INSERT INTO MaintenanceActivity (activityId, activityDescription, "
-                + "estimatedInterventionTime, dateActivity, interruptibleActivity, typologyOfActivity,"
-                + " typologyOfUnplannedActivity, typologyName, branchOffice, area) "
-                + "VALUES (" + id + ", 'DefaultDescrizione', 1, '2100-1-1', True, '"+ typologyOfActivity +"',"
-                + " "+ typologyOfUnplannedActivity +", 'DefaultTypologyName', 'DefaultBranchOffice', 'DefaultArea')";
-        stm.executeUpdate(query);
-    }
-    
-    private void deleteDefaultMaintenanceActivity(Statement stm, int id) throws SQLException {
-        String query = "DELETE FROM MaintenanceActivity WHERE activityId="+id;
-        stm.executeUpdate(query);
-    }
-    
-    private ResultSet selectDefaultMaintenanceActivity(Statement stm, int id) throws SQLException {
-        String query = "SELECT * FROM MaintenanceActivity WHERE activityId="+id;
-        return stm.executeQuery(query);
+
+    private ResultSet selectDefaultMaintenanceActivity(int id) throws SQLException {
+        PreparedStatement pstm = conn.prepareStatement(SELECT_MAINTENANCE_ACTIVITY);
+        pstm.setInt(1, id);
+        return pstm.executeQuery();
     }
     
     private void verify(ResultSet res, MaintenanceActivity newActivity) throws SQLException {
-        assertNotNull(res);
+        boolean isEmpty = true;
         while(res.next()){
+            isEmpty = false;
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             //System.out.println(newActivity.getDate().toString());
             assertEquals(newActivity.getActivityDescription(), res.getString("activityDescription"));
@@ -468,20 +459,18 @@ public class MaintenanceActivityDAOImplTest {
                 assertEquals("Unplanned", res.getString("typologyOfActivity"));
                 assertEquals("Extra", res.getString("typologyOfUnplannedActivity"));
             }
-        }   
+        }
+        assertFalse(isEmpty);
     }  
     
      public MaintenanceActivity createMaintenanceActivity(String typeOfActivity, int id) {
         if(typeOfActivity.compareTo("Planned")==0){
-            System.out.println("sto creando Planned");
             return new PlannedMaintenanceActivity(id, new Site("ProvaBranchOfficeMod"+id, "ProvaAreaMod"+id), "typologyNameMod"+id,
                     "ProvaDescrizioneMod"+id, id, LocalDate.now(), null, null, id%2==0);
         }else if(typeOfActivity.compareTo("EWO")==0){
-            System.out.println("sto creando EWO");
             return new Ewo(id, new Site("ProvaBranchOfficeMod"+id, "ProvaAreaMod"+id), "typologyNameMod"+id,
                     "ProvaDescrizioneMod"+id, id, LocalDate.now(), null, null, id%2==0);
         }else{
-            System.out.println("sto creando Extra");
             return new ExtraActivity(id, new Site("ProvaBranchOfficeMod"+id, "ProvaAreaMod"+id), "typologyNameMod"+id,
                     "ProvaDescrizioneMod"+id, id, LocalDate.now(), null, null, id%2==0);
         }
@@ -489,22 +478,18 @@ public class MaintenanceActivityDAOImplTest {
     
   //=======================================================================================================================================
     
-    /**
-     * Test of addMaintenanceActivity method, of class MaintenanceActivityDAO.
-     */
+
     /**
      * Test of addMaintenanceActivity method, of class MaintenanceActivityDAOImpl.
      */
     @Test
     public void testAddMaintenanceActivity() throws MaintenanceActivityException {
         try {
-            System.out.println("addMaintenanceActivity");
-            PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(1, site, typology, activityDescription, 300, LocalDate.of(2050, 11, 25), maintenanceProcedure, materials, false);
-            Statement stmt = conn.createStatement();
-            deleteDefaultMaintenanceActivity(stmt, activity.getActivityId());
-            instance.addMaintenanceActivity(activity);
-            verify(selectDefaultMaintenanceActivity(stmt,1), activity);
-            conn.rollback();
+            PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(1, site, typology,
+                    activityDescription, 300, LocalDate.of(2050, 11, 25), maintenanceProcedure, materials, false);
+            deleteMaintenaceActivity(activity.getActivityId());
+            maintenanceActivityDAO.addMaintenanceActivity(activity);
+            verify(selectDefaultMaintenanceActivity(1), activity);
         } catch (SQLException ex) {
             System.out.println("Error on: connection rollback");
         }
@@ -513,12 +498,10 @@ public class MaintenanceActivityDAOImplTest {
     @Test(expected = MaintenanceActivityException.class)
     public void testAddMaintenanceActivityWrongDate() throws MaintenanceActivityException {
         try {
-            System.out.println("addMaintenanceActivityWrongDate");
-            PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(2, site, typology, activityDescription, 300, LocalDate.of(2020,11,24), maintenanceProcedure, materials, false);
-            Statement stmt = conn.createStatement();
-            deleteDefaultMaintenanceActivity(stmt, activity.getActivityId());
-            instance.addMaintenanceActivity(activity);
-            conn.rollback();
+            PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(2, site, typology,
+                    activityDescription, 300, LocalDate.of(2020,11,24), maintenanceProcedure, materials, false);
+            deleteMaintenaceActivity(activity.getActivityId());
+            maintenanceActivityDAO.addMaintenanceActivity(activity);
         } catch (SQLException ex) {
             System.out.println("Error on: connection rollback");
         }
@@ -527,12 +510,10 @@ public class MaintenanceActivityDAOImplTest {
     @Test(expected = MaintenanceActivityException.class)
     public void testAddMaintenanceActivityWrongActivityID() throws MaintenanceActivityException {
         try {
-            System.out.println("addMaintenanceActivityWrongActivityID");
-            PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(0, site, typology, activityDescription, 300, LocalDate.of(2050, 11, 25), maintenanceProcedure, materials, false);
-            Statement stmt = conn.createStatement();
-            deleteDefaultMaintenanceActivity(stmt, activity.getActivityId());
-            instance.addMaintenanceActivity(activity);
-            conn.rollback();
+            PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(0, site, typology,
+                    activityDescription, 300, LocalDate.of(2050, 11, 25), maintenanceProcedure, materials, false);
+            deleteMaintenaceActivity(activity.getActivityId());
+            maintenanceActivityDAO.addMaintenanceActivity(activity);
         } catch (SQLException ex) {
             System.out.println("Error on: connection rollback");
         }
@@ -541,14 +522,11 @@ public class MaintenanceActivityDAOImplTest {
     @Test
     public void testAddMaintenanceActivityUnplanned() throws MaintenanceActivityException {
         try {
-            System.out.println("addMaintenanceActivityUnplanned");
-            Ewo activity = new Ewo(3, site, typology, activityDescription, 300, LocalDate.of(2050, 11, 25), maintenanceProcedure, materials, false);
-            Statement stmt = conn.createStatement();
-            deleteDefaultMaintenanceActivity(stmt, activity.getActivityId());
-            //instance.deleteMaintenanceActivity(activity.getActivityId());
-            instance.addMaintenanceActivity(activity);
-            verify(selectDefaultMaintenanceActivity(stmt,3), activity);
-            conn.rollback();
+            Ewo activity = new Ewo(3, site, typology, activityDescription, 300,
+                    LocalDate.of(2050, 11, 25), maintenanceProcedure, materials, false);
+            deleteMaintenaceActivity(activity.getActivityId());
+            maintenanceActivityDAO.addMaintenanceActivity(activity);
+            verify(selectDefaultMaintenanceActivity(3), activity);
         } catch (SQLException ex) {
             System.out.println("Error on: connection rollback");
         }
@@ -562,35 +540,37 @@ public class MaintenanceActivityDAOImplTest {
     
     @Test
     public void testDeleteMaintenanceActivity() throws MaintenanceActivityException, SQLException {
-        System.out.println("deleteMaintenanceActivity");
-        deleteDefaultMaintenanceActivity(conn.createStatement(),1);
-        insertDefaultMaintenanceActivity("Planned",null,conn.createStatement(),1);
-        boolean result = instance.deleteMaintenanceActivity(1);
+        deleteMaintenaceActivity(1);
+        insertMaintenanceActivity(1,"ProvaDescrizione1",121,"2050-11-21",true, 
+                    "Planned",null,"ProvaTypologyName1","ProvaBranch1","ProvaArea1");
+        boolean result = maintenanceActivityDAO.deleteMaintenanceActivity(1);
         assertEquals(true, result);    
     }
    
     
     @Test
     public void testDeleteMaintenanceActivityWithWrongId() throws MaintenanceActivityException, SQLException {
-        deleteDefaultMaintenanceActivity(conn.createStatement(),2);
-        boolean result = instance.deleteMaintenanceActivity(2);
+        deleteMaintenaceActivity(2);
+        boolean result = maintenanceActivityDAO.deleteMaintenanceActivity(2);
         assertEquals(false, result);
     }
     
     @Test
     public void testDeleteMaintenanceActivityEwo() throws MaintenanceActivityException, SQLException {
-        deleteDefaultMaintenanceActivity(conn.createStatement(),3);
-        insertDefaultMaintenanceActivity("Unplanned","'EWO'",conn.createStatement(),3);
-        boolean result = instance.deleteMaintenanceActivity(3);
+        deleteMaintenaceActivity(3);
+        insertMaintenanceActivity(3,"ProvaDescrizione3",123,"2050-11-23",false, 
+                    "Unplanned","EWO","ProvaTypologyName3","ProvaBranch3","ProvaArea3");
+        boolean result = maintenanceActivityDAO.deleteMaintenanceActivity(3);
         assertEquals(true, result);    
     }
     
     
     @Test
     public void testDeleteMaintenanceActivityExtraActivity() throws MaintenanceActivityException, SQLException {
-        deleteDefaultMaintenanceActivity(conn.createStatement(),1);
-        insertDefaultMaintenanceActivity("Unplanned","'Extra'",conn.createStatement(),4);
-        boolean result = instance.deleteMaintenanceActivity(4);
+        deleteMaintenaceActivity(4);
+        insertMaintenanceActivity(4,"ProvaDescrizione4",124,"2050-11-24",false, 
+                    "Unplanned","Extra","ProvaTypologyName4","ProvaBranch4","ProvaArea4");
+        boolean result = maintenanceActivityDAO.deleteMaintenanceActivity(4);
         assertEquals(true, result);    
     }
 }
