@@ -52,7 +52,7 @@ public class DeleteActivity extends javax.swing.JFrame {
         jDelete = new javax.swing.JButton();
         jError = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jPanel1.setBackground(new java.awt.Color(255, 153, 0));
@@ -68,9 +68,7 @@ public class DeleteActivity extends javax.swing.JFrame {
             }
         });
 
-        jSearch.setBackground(new java.awt.Color(102, 102, 102));
-        jSearch.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        jSearch.setForeground(new java.awt.Color(255, 255, 255));
+        jSearch.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jSearch.setText("Search");
         jSearch.setEnabled(false);
         jSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -85,9 +83,7 @@ public class DeleteActivity extends javax.swing.JFrame {
         jMaintenanceActivity.setRows(5);
         jScrollPane2.setViewportView(jMaintenanceActivity);
 
-        jDelete.setBackground(new java.awt.Color(102, 102, 102));
-        jDelete.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        jDelete.setForeground(new java.awt.Color(255, 255, 255));
+        jDelete.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jDelete.setText("Delete");
         jDelete.setEnabled(false);
         jDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -145,9 +141,7 @@ public class DeleteActivity extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
