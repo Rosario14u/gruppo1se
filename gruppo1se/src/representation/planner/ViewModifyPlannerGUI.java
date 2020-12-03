@@ -126,14 +126,14 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         areaLabel.setText("Area:");
 
         activityIdTextField.setFont(new java.awt.Font("Rockwell", 2, 14)); // NOI18N
-        activityIdTextField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                activityIdTextFieldFocusGained(evt);
-            }
-        });
         activityIdTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 activityIdTextFieldActionPerformed(evt);
+            }
+        });
+        activityIdTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                activityIdTextFieldKeyPressed(evt);
             }
         });
 
@@ -358,7 +358,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(modifyButton)
                         .addComponent(viewButton))
-                    .addContainerGap(9, Short.MAX_VALUE))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             );
 
             javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -406,6 +406,8 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
     private void modifyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyButtonActionPerformed
         try {
             getField();
+            clearField();
+            initializeField(false);
         } catch (NumberNotValidException ex) {
             errorMessage(ex.getMessage());
         }
@@ -449,10 +451,11 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
-    private void activityIdTextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_activityIdTextFieldFocusGained
+    private void activityIdTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_activityIdTextFieldKeyPressed
         initializeField(false);
-    }//GEN-LAST:event_activityIdTextFieldFocusGained
+    }//GEN-LAST:event_activityIdTextFieldKeyPressed
 
+    
     
     
     private void getField() throws NumberNotValidException{
@@ -553,7 +556,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         modifyButton.setEnabled(enabled);
         typologyTextField.setEnabled(enabled);        
         activityComboBox.setEnabled(enabled);
-        //calendarDateChooser.setEnabled(enabled);
+        calendarDateChooser.setEnabled(enabled);
         materialComboBox.setEnabled(enabled);
     }
     
