@@ -6,8 +6,11 @@
 package persistence.maintenanceactivity;
 
 import business.maintenanceactivity.MaintenanceActivity;
+import exception.DateException;
 import exception.MaintenanceActivityException;
 import exception.SiteException;
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  *
@@ -18,4 +21,6 @@ public interface MaintenanceActivityDAO{
     public boolean deleteMaintenanceActivity(int activityId) throws MaintenanceActivityException;
     public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId) throws SiteException ,MaintenanceActivityException;    
     public boolean modifyMaintenaceActivity(MaintenanceActivity newActivity) throws MaintenanceActivityException;
+    public List<MaintenanceActivity> retrieveMaintenanceActivityFromRange(LocalDate startDate, LocalDate stopDate) 
+            throws MaintenanceActivityException, SiteException, DateException;
 }

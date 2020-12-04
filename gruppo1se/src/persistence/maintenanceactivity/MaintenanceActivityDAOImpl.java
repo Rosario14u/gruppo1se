@@ -160,7 +160,9 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
      * @return
      * @throws MaintenanceActivityException
      * @throws SiteException 
+     * @throws exception.DateException 
      */
+    @Override
     public List<MaintenanceActivity> retrieveMaintenanceActivityFromRange(LocalDate startDate, LocalDate stopDate)
             throws MaintenanceActivityException, SiteException, DateException{
         if (startDate==null || stopDate==null || startDate.isAfter(stopDate))

@@ -12,6 +12,7 @@ import business.maintenanceactivity.MaintenanceProcedure;
 import business.maintenanceactivity.Material;
 import business.maintenanceactivity.PlannedMaintenanceActivity;
 import business.maintenanceactivity.Site;
+import exception.DateException;
 import exception.MaintenanceActivityException;
 import exception.SiteException;
 import java.time.LocalDate;
@@ -164,6 +165,11 @@ public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
         }else{
             throw new MaintenanceActivityException();
         }   
+    }
+
+    @Override
+    public List<MaintenanceActivity> retrieveMaintenanceActivityFromRange(LocalDate startDate, LocalDate stopDate) throws MaintenanceActivityException, SiteException, DateException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
