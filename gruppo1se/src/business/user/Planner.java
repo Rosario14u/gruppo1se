@@ -8,9 +8,11 @@ package business.user;
 import business.maintenanceactivity.MaintenanceActivity;
 import business.maintenanceactivity.MaintenanceActivityFactory;
 import business.maintenanceactivity.Material;
+import exception.DateException;
 import exception.MaintenanceActivityException;
 import exception.MaterialException;
 import exception.SiteException;
+import java.time.LocalDate;
 import java.util.List;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAO;
 import persistence.maintenanceactivity.MaintenanceActivityDAO;
@@ -133,5 +135,12 @@ public class Planner extends User {
     //Developed by Antonio Gorrasi
     public List<Material> retrieveAvaliableMaterialToAdd(int activityId) throws MaterialException{
         return requiredMaterialsDao.retrieveAvailableMaterialToAdd(activityId);
+    }
+    
+    public List<MaintenanceActivity> viewMaintenanceActivityByWeek(int week, int year) throws MaintenanceActivityException, SiteException, DateException{
+        List<LocalDate> date = WeekConverter.getStartEndDate(week, year);
+        LocalDate startDateOfWeek = date.get(0);
+        LocalDate endDateOfWeek = date.get(1);
+        return maintenanceActivityDao.retrieveMaintenanceActivityFromRange(startDateOfWeek, endDateOfWeek);
     }
 }

@@ -16,8 +16,8 @@ import exception.DateException;
 import exception.MaintenanceActivityException;
 import exception.SiteException;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import persistence.maintenanceactivity.MaintenanceActivityDAO;
 
@@ -169,7 +169,19 @@ public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
 
     @Override
     public List<MaintenanceActivity> retrieveMaintenanceActivityFromRange(LocalDate startDate, LocalDate stopDate) throws MaintenanceActivityException, SiteException, DateException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(startDate.equals(LocalDate.of(2021, Month.JANUARY, 4))){
+            throw new MaintenanceActivityException();
+        }else if(startDate.equals(LocalDate.of(2021, Month.JANUARY, 11))){
+            throw new SiteException();
+        }else if(startDate.equals(LocalDate.of(2021, Month.JANUARY, 18))){
+            throw new DateException();
+        }else if(startDate.equals(LocalDate.of(2021, Month.JANUARY, 25))){
+            return new ArrayList(){{{
+            new PlannedMaintenanceActivity(1, new Site("ProvaBranchOffice1", "ProvaArea1"), "ProvaTypology1", "ProvaDescription1", 1, LocalDate.of(2020, Month.JANUARY, 1), null, null, true);
+            new PlannedMaintenanceActivity(1, new Site("ProvaBranchOffice2", "ProvaArea2"), "ProvaTypology2", "ProvaDescription2", 2, LocalDate.of(2020, Month.JANUARY, 2), null, null, true);
+            new PlannedMaintenanceActivity(1, new Site("ProvaBranchOffice3", "ProvaArea3"), "ProvaTypology3", "ProvaDescription3", 3, LocalDate.of(2020, Month.JANUARY, 3), null, null, true);}}};
+        }else{
+            return new ArrayList();
+        }
     }
-    
 }
