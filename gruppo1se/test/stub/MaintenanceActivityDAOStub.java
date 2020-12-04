@@ -106,7 +106,7 @@ public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
             case 7:
                 return new PlannedMaintenanceActivity(activityId, new Site("ProvaBranchOffice7", "ProvaArea7", "ProvaWorkspaceNotes7"),
                         "ProvaTypology7", "ProvaDescription7", 127, LocalDate.parse("2020-12-27"),
-                        new MaintenanceProcedure("ProvaSmp7"), null, false);
+                        null, null, false);
             default:
                 return new PlannedMaintenanceActivity(activityId, new Site("ProvaBranchOffice8", "ProvaArea8", "ProvaWorkspaceNotes8"),
                         "ProvaTypology8", "ProvaDescription8", 128, LocalDate.parse("2020-12-28"),

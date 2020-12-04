@@ -15,7 +15,7 @@ import java.util.Objects;
  * 
  */
 //Class developed by Rosario Gaeta
-public abstract class MaintenanceActivity {
+public abstract class MaintenanceActivity implements Comparable<MaintenanceActivity> {
     private final int activityId;
     private final Site site;
     private final String typology;
@@ -217,6 +217,12 @@ public abstract class MaintenanceActivity {
         }
         return true;
     }
+
+    @Override
+    public int compareTo(MaintenanceActivity o) {
+        return this.getActivityId() - o.getActivityId();
+    }
+    
     
     
 

@@ -8,6 +8,11 @@ import business.maintenanceactivity.*;
 import exception.MaintenanceActivityException;
 import exception.SiteException;
 import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import persistence.database.ConnectionDB;
 /**
  *
@@ -23,6 +28,7 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     private static final String UPDATE_ACTIVITY = "UPDATE MaintenanceActivity SET activityDescription=?, "
             + "estimatedInterventionTime=?, dateActivity=?, interruptibleActivity=?, typologyOfActivity=?,"
             + " typologyOfUnplannedActivity=?, typologyName=?, branchOffice=?, area=? WHERE activityId = ?";
+    private static final String SELECT_ACTIVITY_DATE_RANGE = "SELECT * FROM MaintenanceActivity WHERE dateActivity between ? and ?";
     
     private final SiteDao siteDao;
     
@@ -75,11 +81,14 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     @Override
     public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId) throws SiteException, MaintenanceActivityException{
         try {
+            MaintenanceActivity ma = null;
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             PreparedStatement pstm = conn.prepareStatement(SELECT_ACTIVITY);
             pstm.setInt(1,activityId);
             ResultSet rs = pstm.executeQuery();
-            MaintenanceActivity ma = this.makeMaintenanceActivity(rs);
+            while(rs.next()){
+               ma = this.makeMaintenanceActivity(rs); 
+            }
             return ma;
         } catch (SQLException ex) {
            throw new MaintenanceActivityException("Maintenance Activity retriving error");
@@ -100,26 +109,23 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     private MaintenanceActivity makeMaintenanceActivity(ResultSet rs) throws SQLException, SiteException, MaintenanceActivityException{
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
-            while(rs.next()){
-                String typologyOfActivity = rs.getString("typologyOfActivity").toUpperCase();
-                String typologyOfUnplanned = rs.getString("typologyOfUnplannedActivity");
-                typologyOfUnplanned = typologyOfUnplanned == null ? null : typologyOfUnplanned.toUpperCase();
-                // Selection of the type of the object to create 
-                MaintenanceActivityFactory.Typology type = typologyOfActivity.compareTo("PLANNED")==0 ? 
-                        MaintenanceActivityFactory.Typology.PLANNED : 
-                        MaintenanceActivityFactory.Typology.valueOf(typologyOfUnplanned);
-                String branchOffice = rs.getString("branchOffice");
-                String area = rs.getString("area");
-                Site site = siteDao.retrieveSiteDao(branchOffice, area);
-                if (site != null){
-                    return MaintenanceActivityFactory.make(type, rs.getInt("activityId"), site.getBranchOffice(), site.getArea(),site.getWorkSpaceNotes(), 
-                                rs.getString("typologyName"), rs.getString("activityDescription"), 
-                                rs.getInt("estimatedInterventionTime"), rs.getString("dateActivity"),
-                                null, null,rs.getBoolean("interruptibleActivity"));
-                }
-                throw new SiteException(); 
+            String typologyOfActivity = rs.getString("typologyOfActivity").toUpperCase();
+            String typologyOfUnplanned = rs.getString("typologyOfUnplannedActivity");
+            typologyOfUnplanned = typologyOfUnplanned == null ? null : typologyOfUnplanned.toUpperCase();
+            // Selection of the type of the object to create 
+            MaintenanceActivityFactory.Typology type = typologyOfActivity.compareTo("PLANNED")==0 ? 
+                    MaintenanceActivityFactory.Typology.PLANNED : 
+                    MaintenanceActivityFactory.Typology.valueOf(typologyOfUnplanned);
+            String branchOffice = rs.getString("branchOffice");
+            String area = rs.getString("area");
+            Site site = siteDao.retrieveSiteDao(branchOffice, area);
+            if (site != null){
+                return MaintenanceActivityFactory.make(type, rs.getInt("activityId"), site.getBranchOffice(), site.getArea(),site.getWorkSpaceNotes(), 
+                            rs.getString("typologyName"), rs.getString("activityDescription"), 
+                            rs.getInt("estimatedInterventionTime"), rs.getString("dateActivity"),
+                            rs.getString("smp"), null,rs.getBoolean("interruptibleActivity"));
             }
-            return null;
+            throw new SiteException(); 
         } catch (SQLException ex) {
             throw ex;
         }catch(IllegalArgumentException ex){
@@ -144,6 +150,33 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
             return pstm.executeUpdate()!=0;
         } catch (SQLException ex) {
             throw new MaintenanceActivityException("Modifying maintenance activity failed");
+        }
+    }
+    /**
+     * This method retrieve a list of MaintenanceActivity according to startDate and stopDate
+     * @param startDate
+     * @param stopDate
+     * @return
+     * @throws MaintenanceActivityException
+     * @throws SiteException 
+     */
+    public List<MaintenanceActivity> retrieveMaintenanceActivityFromRange(LocalDate startDate, LocalDate stopDate)
+            throws MaintenanceActivityException, SiteException{
+        if (startDate.isAfter(stopDate))
+            throw new MaintenanceActivityException("startDate is greater than stopDate");
+        try {
+            List<MaintenanceActivity> activityList = new ArrayList<>();
+            Connection conn = ConnectionDB.getInstanceConnection().getConnection();
+            PreparedStatement pstm = conn.prepareStatement(SELECT_ACTIVITY_DATE_RANGE);
+            pstm.setDate(1, Date.valueOf(startDate));
+            pstm.setDate(2, Date.valueOf(stopDate));
+            ResultSet rs = pstm.executeQuery();
+            while(rs.next()){
+               activityList.add(this.makeMaintenanceActivity(rs)); 
+            }
+            return activityList;
+        } catch (SQLException ex) {
+           throw new MaintenanceActivityException("Maintenance Activity retriving error");
         }
     }
     

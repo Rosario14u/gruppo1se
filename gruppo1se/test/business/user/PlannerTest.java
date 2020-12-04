@@ -17,7 +17,6 @@ import exception.MaterialException;
 import exception.SiteException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -33,7 +32,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import persistence.database.ConnectionDB;
 import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
-import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.SiteDaoImpl;
 import stub.MaintenanceActivityDAOStub;
 import stub.RequiredMaterialForMaintenanceDAOStub;
@@ -450,7 +448,7 @@ public class PlannerTest {
                     add(new Material("Material3"));
                 }};
             assertViewMaintenanceActivity(activity, 1, "ProvaDescription1", 121, "2020-12-21", true, "Planned", null,
-                    "ProvaTypology1", "ProvaBranchOffice1", "ProvaArea1", "ProvaWorkspaceNotes1",materials);
+                    "ProvaTypology1", "ProvaBranchOffice1", "ProvaArea1", "ProvaWorkspaceNotes1",materials,"ProvaSmp1");
         } catch (SiteException ex) {
             fail("SiteException");
         } catch (MaintenanceActivityException ex) {
@@ -472,7 +470,7 @@ public class PlannerTest {
                     add(new Material("Material6"));
                 }};
             assertViewMaintenanceActivity(activity, 2, "ProvaDescription2", 122, "2020-12-22", false, "Unplanned", "EWO",
-                    "ProvaTypology2", "ProvaBranchOffice2", "ProvaArea2", "ProvaWorkspaceNotes2",materials);
+                    "ProvaTypology2", "ProvaBranchOffice2", "ProvaArea2", "ProvaWorkspaceNotes2",materials,"ProvaSmp2");
         } catch (SiteException ex) {
             fail("SiteException");
         } catch (MaintenanceActivityException ex) {
@@ -494,7 +492,7 @@ public class PlannerTest {
                     add(new Material("Material9"));
                 }};
             assertViewMaintenanceActivity(activity, 3, "ProvaDescription3", 123, "2020-12-23", false, "Unplanned", "Extra",
-                    "ProvaTypology3", "ProvaBranchOffice3", "ProvaArea3", "ProvaWorkspaceNotes3",materials);
+                    "ProvaTypology3", "ProvaBranchOffice3", "ProvaArea3", "ProvaWorkspaceNotes3",materials,"ProvaSmp3");
         } catch (SiteException ex) {
             fail("SiteException");
         } catch (MaintenanceActivityException ex) {
@@ -556,7 +554,7 @@ public class PlannerTest {
             MaintenanceActivity activity = planner.viewMaintenanceActivity(7);
             List<Material> materials= new ArrayList<>();
             assertViewMaintenanceActivity(activity, 7, "ProvaDescription7", 127, "2020-12-27", false, "Planned", null,
-                    "ProvaTypology7", "ProvaBranchOffice7", "ProvaArea7", "ProvaWorkspaceNotes7", materials);
+                    "ProvaTypology7", "ProvaBranchOffice7", "ProvaArea7", "ProvaWorkspaceNotes7", materials, null);
         } catch (SiteException ex) {
             fail("SiteException");
         } catch (MaintenanceActivityException ex) {
@@ -583,7 +581,7 @@ public class PlannerTest {
     int activityId,String descrizione,int estimatedInterventionTime,
     String date,boolean InterruptibleActivity, String typologyOfActivity,
     String typologyOfUnplannedActivity, String typologyName,String branchOffice,
-    String area, String workSpaceNotes, List<Material> listMaterial){
+    String area, String workSpaceNotes, List<Material> listMaterial,String smp){
         Class activityClass = returnMaintenanceActivityClass(typologyOfActivity,typologyOfUnplannedActivity );
         assertEquals("activityId error",activityId, activity.getActivityId());
         assertEquals("activityDescription error",descrizione, activity.getActivityDescription());
@@ -596,6 +594,11 @@ public class PlannerTest {
         assertEquals("branchOffice error", branchOffice, activity.getSite().getBranchOffice());
         assertEquals("area error", area, activity.getSite().getArea());
         assertEquals("workSpaceNotes error", workSpaceNotes, activity.getSite().getWorkSpaceNotes());
+        if (smp != null){
+            assertEquals("smp error", smp, activity.getMaintenanceProcedure().getSmp());
+        }else{
+            assertNull("smp error",activity.getMaintenanceProcedure());
+        }
         assertMaterial(activity.getMaterials(), listMaterial);
     }
     
