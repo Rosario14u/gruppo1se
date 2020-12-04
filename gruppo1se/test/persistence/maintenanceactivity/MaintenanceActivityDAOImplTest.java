@@ -12,6 +12,7 @@ import business.maintenanceactivity.MaintenanceProcedure;
 import business.maintenanceactivity.Material;
 import business.maintenanceactivity.PlannedMaintenanceActivity;
 import business.maintenanceactivity.Site;
+import exception.DateException;
 import exception.MaintenanceActivityException;
 import exception.SiteException;
 import java.sql.Connection;
@@ -596,6 +597,8 @@ public class MaintenanceActivityDAOImplTest {
             fail("MaterialException was thrown");
         } catch (SiteException ex) {
             fail("SiteException");
+        } catch (DateException ex) {
+            fail("DateException");
         }    
     }
     
@@ -617,10 +620,12 @@ public class MaintenanceActivityDAOImplTest {
             assertMaintenanceActivity(resultList.get(2),3,"ProvaDescrizione3",123,"2050-11-23",false, 
                     "Unplanned","Extra","ProvaTypologyName3","ProvaBranch3","ProvaArea3", "ProvaWorkSpaceNotes3","smp3");
         }catch(MaintenanceActivityException ex){
-            fail("MaterialException was thrown");
+            fail("MaintenanceActivityException was thrown");
         }catch (SiteException ex) {
             fail("SiteException");
-        }
+        } catch (DateException ex) {
+            fail("DateException");
+        } 
         
     }
     
@@ -636,24 +641,60 @@ public class MaintenanceActivityDAOImplTest {
             Collections.sort(resultList);
             assertTrue(resultList.isEmpty());
         }catch(MaintenanceActivityException ex){
-            fail("MaterialException was thrown");
+            fail("MaintenanceActivityException was thrown");
         } catch (SiteException ex) {
             fail("SiteException");
-        }    
+        } catch (DateException ex) {
+            fail("DateException");
+        }     
     }
     
     /**
      * This method asserts that retrieveMaintenanceFromRangeMoreElement correctly raises MaintenanceActivityException
      */
-    @Test(expected = MaintenanceActivityException.class)
-    public void testRetrieveMaintenanceActivityFromRangeStartGreaterThanStop() throws MaintenanceActivityException{
+    @Test(expected = DateException.class)
+    public void testRetrieveMaintenanceActivityFromRangeStartGreaterThanStop() throws DateException{
         try {
             initializeRange();
             List<MaintenanceActivity> resultList = maintenanceActivityDAO.retrieveMaintenanceActivityFromRange(LocalDate.parse("2050-11-23"),
                     LocalDate.parse("2050-11-21"));
         } catch (SiteException ex) {
             fail("SiteException");
-        }   
+        }catch(MaintenanceActivityException ex){
+            fail("MaintenanceActivityException was thrown");
+        } 
+    }
+    
+    /**
+     * This method asserts that retrieveMaintenanceFromRangeMoreElement correctly raises MaintenanceActivityException
+     */
+    @Test(expected = DateException.class)
+    public void testRetrieveMaintenanceActivityFromRangeStartNull() throws DateException{
+        try {
+            initializeRange();
+            List<MaintenanceActivity> resultList = maintenanceActivityDAO.retrieveMaintenanceActivityFromRange(null,
+                    LocalDate.parse("2050-11-21"));
+        } catch (SiteException ex) {
+            fail("SiteException");
+        }catch(MaintenanceActivityException ex){
+            fail("MaintenanceActivityException was thrown");
+        } 
+    }
+    
+    /**
+     * This method asserts that retrieveMaintenanceFromRangeMoreElement correctly raises MaintenanceActivityException
+     */
+    @Test(expected = DateException.class)
+    public void testRetrieveMaintenanceActivityFromRangeStopNull() throws DateException{
+        try {
+            initializeRange();
+            List<MaintenanceActivity> resultList = maintenanceActivityDAO.retrieveMaintenanceActivityFromRange(LocalDate.parse("2050-11-23"),
+                    null);
+        } catch (SiteException ex) {
+            fail("SiteException");
+        }catch(MaintenanceActivityException ex){
+            fail("MaintenanceActivityException was thrown");
+        } 
     }
     
     /**
@@ -666,8 +707,10 @@ public class MaintenanceActivityDAOImplTest {
             List<MaintenanceActivity> resultList = maintenanceActivityDAO.retrieveMaintenanceActivityFromRange(LocalDate.parse("2050-11-21"),
                     LocalDate.parse("2050-11-28"));
         }catch (MaintenanceActivityException ex) {
-            fail("MaterialException was thrown");
-        }    
+            fail("MaintenanceActivityException was thrown");
+        }   catch (DateException ex) {
+            fail("DateException");
+        }   
     }
     
     private void initializeRange(){

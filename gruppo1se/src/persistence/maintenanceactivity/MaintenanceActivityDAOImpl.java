@@ -5,6 +5,7 @@
  */
 package persistence.maintenanceactivity;
 import business.maintenanceactivity.*;
+import exception.DateException;
 import exception.MaintenanceActivityException;
 import exception.SiteException;
 import java.sql.*;
@@ -161,9 +162,9 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
      * @throws SiteException 
      */
     public List<MaintenanceActivity> retrieveMaintenanceActivityFromRange(LocalDate startDate, LocalDate stopDate)
-            throws MaintenanceActivityException, SiteException{
-        if (startDate.isAfter(stopDate))
-            throw new MaintenanceActivityException("startDate is greater than stopDate");
+            throws MaintenanceActivityException, SiteException, DateException{
+        if (startDate==null || stopDate==null || startDate.isAfter(stopDate))
+            throw new DateException("Maintenance Activity retriving error");
         try {
             List<MaintenanceActivity> activityList = new ArrayList<>();
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
