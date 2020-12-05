@@ -15,6 +15,12 @@ import persistence.maintenanceactivity.MaintenanceProcedureDAO;
  */
 public class SystemAdministrator extends User {
     private MaintenanceProcedureDAO procedureDao;
+    
+    public SystemAdministrator(String username, String password){
+        super(username, password);
+        this.procedureDao = null;
+    }
+    
     public SystemAdministrator(String username, String password,MaintenanceProcedureDAO procedureDao) {
         super(username, password);
         this.procedureDao = procedureDao; 
