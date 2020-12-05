@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;

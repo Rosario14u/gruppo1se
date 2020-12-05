@@ -98,7 +98,7 @@ public class PlannerTest {
     /**
      * Test of modifyMaintenanceActivity method, of class Planner.
      */
-    //@Test
+    @Test
     public void testSuccessfulModifyPlannedMaintenanceActivity(){
         try{
             assertTrue(planner.modifyMaintenanceActivity(1, "branchOffice1", "area1", "typology1",
@@ -112,7 +112,7 @@ public class PlannerTest {
     /**
      * Test of modifyMaintenanceActivity method, of class Planner.
      */
-    //@Test
+    @Test
     public void testUnsuccessfulModifyPlannedMaintenanceActivity() {
         try{
             assertFalse(planner.modifyMaintenanceActivity(2, "branchOffice2", "area2", "typology2",
@@ -126,7 +126,7 @@ public class PlannerTest {
     /**
      * Test of modifyMaintenanceActivity method, of class Planner.
      */
-    //@Test(expected = MaintenanceActivityException.class)
+    @Test(expected = MaintenanceActivityException.class)
     public void testExceptionModifyPlannedMaintenanceActivity() throws MaintenanceActivityException{
         planner.modifyMaintenanceActivity(3, "branchOffice3", "area3", "typology3",
                 "description3", 3, LocalDate.now().toString(), true, "PLANNED", null);  
@@ -136,7 +136,7 @@ public class PlannerTest {
     /**
      * Test of modifyMaintenanceActivity method, of class Planner.
      */
-    //@Test
+    @Test
     public void testSuccessfulModifyEwoMaintenanceActivity() {
         try{
             assertTrue(planner.modifyMaintenanceActivity(4, "branchOffice4", "area4", "typology4",
@@ -150,7 +150,7 @@ public class PlannerTest {
     /**
      * Test of modifyMaintenanceActivity method, of class Planner.
      */
-    //@Test
+    @Test
     public void testUnsuccessfulModifyEwoMaintenanceActivity() {
         try{
             assertFalse(planner.modifyMaintenanceActivity(5, "branchOffice5", "area5", "typology5",
@@ -164,7 +164,7 @@ public class PlannerTest {
     /**
      * Test of modifyMaintenanceActivity method, of class Planner.
      */
-    //@Test(expected = MaintenanceActivityException.class)
+    @Test(expected = MaintenanceActivityException.class)
     public void testExceptionModifyEwoMaintenanceActivity() throws MaintenanceActivityException{
         planner.modifyMaintenanceActivity(6, "branchOffice6", "area6", "typology6",
                 "description6", 6, LocalDate.now().toString(), true, "UNPLANNED", "EWO");
@@ -173,7 +173,7 @@ public class PlannerTest {
     /**
      * Test of modifyMaintenanceActivity method, of class Planner.
      */
-    //@Test
+    @Test
     public void testSuccessfulModifyExtraMaintenanceActivity() {
         try{
             assertTrue(planner.modifyMaintenanceActivity(7, "branchOffice7", "area7", "typology7",
@@ -187,7 +187,7 @@ public class PlannerTest {
     /**
      * Test of modifyMaintenanceActivity method, of class Planner.
      */
-    //@Test
+    @Test
     public void testUnsuccessfulModifyExtraMaintenanceActivity() {
         try{
             assertFalse(planner.modifyMaintenanceActivity(8, "branchOffice8", "area8", "typology8",
@@ -201,7 +201,7 @@ public class PlannerTest {
     /**
      * Test of modifyMaintenanceActivity method, of class Planner.
      */
-    //@Test(expected = MaintenanceActivityException.class)
+    @Test(expected = MaintenanceActivityException.class)
     public void testExceptionModifyExtraMaintenanceActivity() throws MaintenanceActivityException{
         planner.modifyMaintenanceActivity(9, "branchOffice9", "area9", "typology9",
                 "description9", 9, LocalDate.now().toString(), true, "UNPLANNED", "EXTRA"); 
@@ -211,7 +211,7 @@ public class PlannerTest {
      * 
      * @throws MaintenanceActivityException 
      */
-    //@Test(expected = MaintenanceActivityException.class)
+    @Test(expected = MaintenanceActivityException.class)
     public void testExceptionInvalidTypologyOfActivity() throws MaintenanceActivityException{
         planner.modifyMaintenanceActivity(10, "branchOffice10", "area10", "typology10", "description10", 10, LocalDate.now().toString(), true, "UNPLANNED", "INVALID_VALUE");
     }
@@ -220,13 +220,13 @@ public class PlannerTest {
      * 
      * @throws MaintenanceActivityException 
      */
-    //@Test(expected = MaintenanceActivityException.class)
+    @Test(expected = MaintenanceActivityException.class)
     public void testExceptionInvalidTypologyOfActivity2() throws MaintenanceActivityException{
         planner.modifyMaintenanceActivity(11, "branchOffice11", "area11", "typology11", "description11", 11, LocalDate.now().toString(), true, "INVALID_VALUE", "INVALID_VALUE");
     }
     
     /*============================================================================================================================*/
-    //@Test
+    @Test
     public void testSuccessfulAddRequiredMaterial(){
         try{
             List<Material> listMaterialToAdd = new ArrayList<>();                       
@@ -236,13 +236,13 @@ public class PlannerTest {
         }
     }
     
-    //@Test(expected = MaterialException.class)
+    @Test(expected = MaterialException.class)
     public void testUnsuccessfulAddRequiredMaterial() throws MaterialException{
         List<Material> listMaterialToAdd = new ArrayList<>();
         planner.addRequiredMaterial(2, listMaterialToAdd);
     }
     
-    //@Test
+    @Test
     public void testSuccessfulRemoveRequiredMaterial(){
         try {
             List<Material> listMaterialToAdd = new ArrayList<>();
@@ -252,7 +252,7 @@ public class PlannerTest {
         }
     }
     
-    //@Test
+    @Test
     public void testRemoveRequiredMaterialNotComplete(){
         try {
             List<Material> listMaterialToAdd = new ArrayList<>();
@@ -263,13 +263,13 @@ public class PlannerTest {
     }
     
     
-    //@Test(expected = MaterialException.class)
+    @Test(expected = MaterialException.class)
     public void testUnsuccessfulRemoveRequiredMaterial() throws MaterialException{
         List<Material> listMaterialToAdd = new ArrayList<>();
         planner.removeRequiredMaterial(5, listMaterialToAdd);
     }
     
-    //@Test
+    @Test
     public void testRetrieveAvaliableMaterialToAdd(){
         try {
             List<Material> expectedMaterialList = new ArrayList<>(){{
@@ -283,7 +283,7 @@ public class PlannerTest {
         }
     }
         
-    //@Test
+    @Test
     public void testRetrieveAvaliableMaterialToAddEmpty(){
         try {
             List<Material> expectedMaterialList = new ArrayList<>();
@@ -294,7 +294,7 @@ public class PlannerTest {
         }       
     }
     
-    //@Test(expected = MaterialException.class)
+    @Test(expected = MaterialException.class)
     public void testUnsuccessfulRetrieveAvaliableMaterialToAdd() throws MaterialException{
         planner.retrieveAvaliableMaterialToAdd(8);   
     }
@@ -304,7 +304,7 @@ public class PlannerTest {
     /**
      * Test of makeMaintenanceActivity method, of class Planner.
      */
-    //@Test
+    @Test
     public void testMakeMaintenanceActivity() throws MaterialException, MaintenanceActivityException {
         try {
             System.out.println("makeMaintenanceActivity");
@@ -317,7 +317,7 @@ public class PlannerTest {
         }
     }
 
-    //@Test(expected = MaintenanceActivityException.class)
+    @Test(expected = MaintenanceActivityException.class)
     public void testMakeMaintenanceActivityWrong() throws MaterialException, MaintenanceActivityException {
         try {
             System.out.println("makeMaintenanceActivityWrong");
@@ -331,7 +331,7 @@ public class PlannerTest {
         }
     }
     
-    //@Test
+    @Test
     public void testMakeMaintenanceActivityExtraActivity() throws MaterialException, MaintenanceActivityException{
         try {
             System.out.println("makeMaintenanceActivityExtraActivity");
@@ -346,7 +346,7 @@ public class PlannerTest {
         }
     }
     
-    //@Test(expected = MaintenanceActivityException.class)
+    @Test(expected = MaintenanceActivityException.class)
     public void testMakeMaintenanceActivityExtraActivityWrong() throws MaterialException, MaintenanceActivityException{
         try {
             System.out.println("makeMaintenanceActivityExtraActivityWrong");
@@ -362,7 +362,7 @@ public class PlannerTest {
         }
     }
     
-    //@Test
+    @Test
     public void testMakeMaintenanceActivityEwo() throws MaterialException, MaintenanceActivityException{
         try {
             System.out.println("makeMaintenanceActivityEwo");
@@ -377,7 +377,7 @@ public class PlannerTest {
         }
     }
     
-    //@Test(expected = MaintenanceActivityException.class)
+    @Test(expected = MaintenanceActivityException.class)
     public void testMakeMaintenanceActivityEwoWrong() throws MaterialException, MaintenanceActivityException {
         try {
             System.out.println("makeMaintenanceActivityEwoWrong");
@@ -397,7 +397,7 @@ public class PlannerTest {
   /**
  * Test of removeMaintenanceActivity method, of class Planner.
  */
-    //@Test
+    @Test
     public void testRemoveMaintenanceActivity() throws MaintenanceActivityException {
         try {
             System.out.println("removeMaintenanceActivity");
@@ -410,7 +410,7 @@ public class PlannerTest {
     }
     
     
-    //@Test
+    @Test
     public void testRemoveMaintenanceActivityWithWrongId() throws MaintenanceActivityException {
         try {
             System.out.println("removeMaintenanceActivityWithWrongId");
@@ -422,7 +422,7 @@ public class PlannerTest {
         }
     }
     
-    //@Test(expected = MaintenanceActivityException.class)
+    @Test(expected = MaintenanceActivityException.class)
     public void testRemoveMaintenanceActivityException() throws MaintenanceActivityException {
         try {
             System.out.println("removeMaintenanceActivity that throws Exception");
@@ -439,7 +439,7 @@ public class PlannerTest {
     /**
      * This test method assert that viewMaintenanceActivity correctly return a planned activity
      */
-    //@Test
+    @Test
     public void testviewMaintenanceActivityReturnPlanned() {
         try {
             MaintenanceActivity activity = planner.viewMaintenanceActivity(1);
@@ -461,7 +461,7 @@ public class PlannerTest {
     /**
      * This test method assert that viewMaintenanceActivity correctly return a Ewo activity
      */
-    //@Test
+    @Test
     public void testviewMaintenanceActivityReturnEwo() {
         try {
             MaintenanceActivity activity = planner.viewMaintenanceActivity(2);
@@ -483,7 +483,7 @@ public class PlannerTest {
     /**
      * This test method assert that viewMaintenanceActivity correctly return a Extra activity
      */
-    //@Test
+    @Test
     public void testviewMaintenanceActivityReturnExtra() {
         try {
             MaintenanceActivity activity = planner.viewMaintenanceActivity(3);
@@ -506,7 +506,7 @@ public class PlannerTest {
     /**
      * This test method assert that viewMaintenanceActivity correctly return null when activity is not present
      */
-    //@Test
+    @Test
     public void testviewMaintenanceActivityNull(){
         try {
             MaintenanceActivity activity = planner.viewMaintenanceActivity(4);
@@ -523,7 +523,7 @@ public class PlannerTest {
     /**
      * This test method assert that viewMaintenanceActivity correctly raises SiteException
      */
-    //@Test(expected = SiteException.class)
+    @Test(expected = SiteException.class)
     public void testviewMaintenanceActivitySiteException() throws SiteException {
         try {
             MaintenanceActivity activity = planner.viewMaintenanceActivity(5);
@@ -536,7 +536,7 @@ public class PlannerTest {
     /**
      * This test method assert that viewMaintenanceActivity correctly raises MaintenanceActivityException
      */
-    //@Test(expected = MaintenanceActivityException.class)
+    @Test(expected = MaintenanceActivityException.class)
     public void testviewMaintenanceActivityMaintenanceActivityException() throws MaintenanceActivityException {
         try {
             MaintenanceActivity activity = planner.viewMaintenanceActivity(6);
@@ -549,7 +549,7 @@ public class PlannerTest {
     /**
      * This test method assert that viewMaintenanceActivity correctly return a maintenance activity with no material associated
      */
-    //@Test
+    @Test
     public void testviewMaintenanceActivityMaterialEmpty() {
         try {
             MaintenanceActivity activity = planner.viewMaintenanceActivity(7);
@@ -567,7 +567,7 @@ public class PlannerTest {
     /**
      * This test method assert that viewMaintenanceActivity correctly raises MaterialException
      */
-    //@Test(expected = MaterialException.class)
+    @Test(expected = MaterialException.class)
     public void testviewMaintenanceActivityMaterialException() throws MaterialException {
         try {
             MaintenanceActivity activity = planner.viewMaintenanceActivity(8);
