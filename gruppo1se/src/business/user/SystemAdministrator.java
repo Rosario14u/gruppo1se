@@ -26,12 +26,19 @@ public class SystemAdministrator extends User {
         this.procedureDao = procedureDao; 
     }
     
-    public boolean saveSmpProcedure(String smp) throws ProcedureException{
-        if (smp != null){
-           return procedureDao.addSmp(new MaintenanceProcedure(smp)); 
-        }else{
-            throw new ProcedureException("Error in procedure creation");
+    public boolean saveSmpProcedure(String newSmp,String oldSmp) throws ProcedureException{
+        MaintenanceProcedure procedure;
+        boolean retVal = false;
+        if (newSmp == null || newSmp.trim().replaceAll("  +", " ").equals("")){
+            throw new ProcedureException("Problem in saving smp");
         }
-        
+        procedure = new MaintenanceProcedure(newSmp);
+        if (oldSmp != null && !oldSmp.trim().replaceAll("  +", " ").equals("")){
+            retVal = procedureDao.updateSmp(procedure,oldSmp);
+        }
+        if (retVal == false){
+            procedureDao.addSmp(procedure);
+        }
+        return true;
     }
 }

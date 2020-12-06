@@ -5,13 +5,18 @@
  */
 package business.user;
 
+import business.maintenanceactivity.MaintenanceProcedure;
 import exception.ProcedureException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import persistence.database.ConnectionDB;
 import stub.MaintenanceProcedureDAOStub;
 
 /**
@@ -41,12 +46,13 @@ public class SystemAdministratorTest {
     }
 
     /**
-     * Test of saveSmpProcedure method, of class SystemAdministrator.
+     * this test assert that saveSmpProcedure correctly returns true when addSmp returns true because there is an insert
+     * and there is a ridenomination
      */
     @Test
-    public void testSaveSmpProcedureTrue() {
+    public void testSaveSmpProcedureInsert() {
         try {
-            boolean retResult = admin.saveSmpProcedure("ProvaSmp1");
+            boolean retResult = admin.saveSmpProcedure("ProvaSmp1","ProvaSmp1Rin");
             assertTrue("Procedure True", retResult);
         } catch (ProcedureException ex) {
             fail("Procedure Exception");
@@ -54,34 +60,76 @@ public class SystemAdministratorTest {
     }
     
     /**
-     * Test of saveSmpProcedure method, of class SystemAdministrator.
+     * this test assert that saveSmpProcedure correctly returns true when addSmp returns true because there is an insert
+     * and there isn't a ridenomination
      */
     @Test
-    public void testSaveSmpProcedureFalse() {
+    public void testSaveSmpProcedureInsertNotRename1() {
         try {
-            boolean retResult = admin.saveSmpProcedure("ProvaSmp2");
-            assertFalse("Procedure False", retResult);
+            boolean retResult = admin.saveSmpProcedure("ProvaSmp1"," ");
+            assertTrue("Procedure True", retResult);
         } catch (ProcedureException ex) {
             fail("Procedure Exception");
         }
     }
     
     /**
-     * Test of saveSmpProcedure method, of class SystemAdministrator.
+     * this test assert that saveSmpProcedure correctly returns true when addSmp returns true because there is an insert
+     * and there isn't a ridenomination
+     */
+    @Test
+    public void testSaveSmpProcedureInsertNotRename2() {
+        try {
+            boolean retResult = admin.saveSmpProcedure("ProvaSmp1",null);
+            assertTrue("Procedure True", retResult);
+        } catch (ProcedureException ex) {
+            fail("Procedure Exception");
+        }
+    }
+    
+    /**
+     * this test assert that saveSmpProcedure correctly returns true when updateProcedure returns true because there is an update
+     * and there is a ridenomination
+     */
+    @Test
+    public void testSaveSmpProcedureUpdate() {
+        try {
+            boolean retResult = admin.saveSmpProcedure("ProvaSmp2","ProvaSmp2Rin");
+            assertTrue("Procedure True", retResult);
+        } catch (ProcedureException ex) {
+            fail("Procedure Exception");
+        }
+    }
+    
+    /**
+     * this test assert that saveSmpProcedure correctly raises exception when addSmp raises exception because the procedure
+     * is already present
+     * @throws exception.ProcedureException
      */
     @Test(expected = ProcedureException.class)
-    public void testSaveSmpProcedureNull() throws ProcedureException {
-        boolean retResult = admin.saveSmpProcedure(null);
+    public void testSaveSmpUpdateThrowException() throws ProcedureException {
+        boolean retResult = admin.saveSmpProcedure("ProvaSmp3", " ");
         
     }
     
     /**
-     * Test of saveSmpProcedure method, of class SystemAdministrator.
+     * this test assert that saveSmpProcedure correctly raises exception when procedure passed is empty string
+     * @throws exception.ProcedureException
      */
     @Test(expected = ProcedureException.class)
-    public void testSaveSmpProcedureException() throws ProcedureException {
-        boolean retResult = admin.saveSmpProcedure("ProvaSmp4");
+    public void testSaveSmpEmptyProcedure() throws ProcedureException {
+        boolean retResult = admin.saveSmpProcedure(" ", " ");
         
     }
+    
+    /**
+     * this test assert that saveSmpProcedure correctly raises exception when procedure passed is null
+     * @throws exception.ProcedureException
+     */
+    @Test(expected = ProcedureException.class)
+    public void testSaveSmpNullProcedure() throws ProcedureException {
+        boolean retResult = admin.saveSmpProcedure(null, " ");
+    }
+    
     
 }
