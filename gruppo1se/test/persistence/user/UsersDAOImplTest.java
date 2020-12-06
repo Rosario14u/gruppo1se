@@ -22,12 +22,13 @@ import persistence.database.ConnectionDB;
  *
  * @author aless
  */
-public class UsersDAOTest{
+public class UsersDAOImplTest{
     private static Connection conn;
     private static final String INSERTUSER = "INSERT INTO USERS (username, password, role) values (?,?,?)";
-    private UsersDAO instance = new UsersDAO();
+    private final UsersDAOImpl instance = new UsersDAOImpl();
+    private final UsersDAOImpl instance2 = new UsersDAOImpl();
     
-    public UsersDAOTest() {
+    public UsersDAOImplTest() {
     }
     
     @BeforeClass
@@ -36,7 +37,7 @@ public class UsersDAOTest{
             conn = ConnectionDB.getInstanceConnection().getConnection();
             conn.setAutoCommit(false);
         } catch (SQLException ex) {
-            Logger.getLogger(UsersDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UsersDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -46,7 +47,7 @@ public class UsersDAOTest{
           conn.setAutoCommit(true);
           conn.close();
         } catch (SQLException ex) {
-          Logger.getLogger(UsersDAO.class.getName()).log(Level.SEVERE, null, ex);
+          Logger.getLogger(UsersDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

@@ -7,7 +7,14 @@ package business.user;
 
 import business.maintenanceactivity.MaintenanceProcedure;
 import exception.ProcedureException;
+import exception.UsersException;
+import java.util.List;
+import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.MaintenanceProcedureDAO;
+import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
+import persistence.maintenanceactivity.SiteDaoImpl;
+import persistence.user.UsersDAO;
+import persistence.user.UsersDAOImpl;
 
 /**
  *
@@ -15,15 +22,25 @@ import persistence.maintenanceactivity.MaintenanceProcedureDAO;
  */
 public class SystemAdministrator extends User {
     private MaintenanceProcedureDAO procedureDao;
+    private final UsersDAO usersDAO;
+    
     
     public SystemAdministrator(String username, String password){
         super(username, password);
         this.procedureDao = null;
+        this.usersDAO = null;
     }
     
     public SystemAdministrator(String username, String password,MaintenanceProcedureDAO procedureDao) {
         super(username, password);
         this.procedureDao = procedureDao; 
+        this.usersDAO = null;
+    }
+    
+    public SystemAdministrator(String username, String password, UsersDAO usersDAO){
+        super(username, password);
+        this.procedureDao = null;
+        this.usersDAO = usersDAO;
     }
     
     public boolean saveSmpProcedure(String newSmp,String oldSmp) throws ProcedureException{
@@ -40,5 +57,20 @@ public class SystemAdministrator extends User {
             procedureDao.addSmp(procedure);
         }
         return true;
+    }
+    
+    public List<User> viewUser(String username, String role) throws UsersException{
+        return usersDAO.readUser(username, role);
+    }
+    
+    public boolean makeUser(String username, String password, String role) throws UsersException{
+        User user;
+        if (role.equals("System Administrator"))
+            user = new SystemAdministrator(username, password, new UsersDAOImpl());
+        else if (role.equals("Maintainer"))
+            user = new Maintainer(username, password);
+        else
+            user = new Planner(username, password, new MaintenanceActivityDAOImpl(new SiteDaoImpl()), new RequiredMaterialForMaintenanceDAOImpl());
+        return usersDAO.addUser(user);
     }
 }

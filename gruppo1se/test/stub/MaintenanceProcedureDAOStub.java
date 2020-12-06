@@ -17,17 +17,33 @@ public class MaintenanceProcedureDAOStub implements MaintenanceProcedureDAO {
 
     @Override
     public boolean addSmp(MaintenanceProcedure procedure) throws ProcedureException {
-        if(procedure != null){
-            if (procedure.getSmp().equals("ProvaSmp1")){
-                return true;
-            }else if(procedure.getSmp().equals("ProvaSmp2")){
-                return false;
-            }else{
-                throw new ProcedureException();
-            }
-        }else{
+        if(procedure == null || procedure.getSmp().equals("")){
             return false;
+        }else if (procedure.getSmp().equals("ProvaSmp1")){
+            return true;
+        }else if(procedure.getSmp().equals("ProvaSmp2")){
+            throw new ProcedureException();
+        }else{
+            throw new ProcedureException();
         }
+        
+    }
+
+    @Override
+    public boolean updateSmp(MaintenanceProcedure newProcedure, String oldSmp) throws ProcedureException {
+        if(newProcedure == null || newProcedure.getSmp().equals("")){
+            return false;
+        }else if(newProcedure.getSmp().equals("ProvaSmp1")){
+            return false;
+        }else if(newProcedure.getSmp().equals("ProvaSmp2") && (oldSmp == null
+                || oldSmp.trim().replaceAll("  +", " ").equals(""))){
+            throw new ProcedureException();
+        }else if(newProcedure.getSmp().equals("ProvaSmp2")){
+            return true;
+        }else{
+            throw new ProcedureException();
+        }
+        
     }
     
 }

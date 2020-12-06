@@ -48,6 +48,11 @@ public class MaintenanceProcedureDAOImplTest {
     
     @AfterClass
     public static void tearDownClass() {
+        try {
+            conn.setAutoCommit(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MaintenanceProcedureDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     @Before
@@ -118,10 +123,102 @@ public class MaintenanceProcedureDAOImplTest {
         PreparedStatement pstm = conn.prepareStatement(SELECT_PROCEDURE);
         pstm.setString(1, smp);
         ResultSet rs = pstm.executeQuery();
-        if (smp!=null){
-            while(rs.next()){
-                assertEquals("smp error",smp, rs.getString("smp"));
-            }
+        boolean isEmpty = true;
+        while(rs.next()){
+            isEmpty = false;
+            assertEquals("smp error",smp, rs.getString("smp"));
         }
+        assertFalse(isEmpty);
+        
+    }
+    
+    @Test
+    public void updateSmpSuccessfulUpdate() {
+        MaintenanceProcedure procedure = new MaintenanceProcedure("ProvaSmpRin1");
+        try {
+            delete_procedure("ProvaSmp1");
+            insert_procedure("ProvaSmp1");
+            boolean retVal = procedureDao.updateSmp(procedure, "ProvaSmp1");
+            assertTrue("SuccessfulUpdate", retVal);
+            select_procedure("ProvaSmpRin1");
+        } catch (SQLException ex) {
+            fail("SQLEXception");
+        } catch (ProcedureException ex) {
+            fail("ProcedureException");
+        } 
+    }
+    
+    @Test
+    public void updateSmpUnsuccessfulUpdate() {
+        MaintenanceProcedure procedure = new MaintenanceProcedure("ProvaSmpRin1");
+        try {
+            delete_procedure("ProvaSmp1");
+            boolean retVal = procedureDao.updateSmp(procedure, "ProvaSmp1");
+            assertFalse("UnsuccessfulUpdate", retVal);
+        } catch (SQLException ex) {
+            fail("SQLEXception");
+        } catch (ProcedureException ex) {
+            fail("ProcedureException");
+        } 
+    }
+    
+    @Test(expected = ProcedureException.class)
+    public void updateSmpUnsuccessfulUpdateException1() throws ProcedureException {
+        MaintenanceProcedure procedure = new MaintenanceProcedure("ProvaSmp1");
+        try {
+            delete_procedure("ProvaSmp1");
+            insert_procedure("ProvaSmp1");
+            boolean retVal = procedureDao.updateSmp(procedure, null);
+        } catch (SQLException ex) {
+            fail("SQLEXception");
+        }
+    }
+    
+    @Test(expected = ProcedureException.class)
+    public void updateSmpUnsuccessfulUpdateException2() throws ProcedureException {
+        MaintenanceProcedure procedure = new MaintenanceProcedure("ProvaSmp1");
+        try {
+            delete_procedure("ProvaSmp1");
+            insert_procedure("ProvaSmp1");
+            boolean retVal = procedureDao.updateSmp(procedure, " ");
+        } catch (SQLException ex) {
+            fail("SQLEXception");
+        }
+    }
+    
+    @Test(expected = ProcedureException.class)
+    public void updateSmpUnsuccessfulUpdateException3() throws ProcedureException {
+        MaintenanceProcedure procedure = new MaintenanceProcedure("ProvaSmp1");
+        try {
+            delete_procedure("ProvaSmp1");
+            insert_procedure("ProvaSmp1");
+            boolean retVal = procedureDao.updateSmp(null, "ProvaSmp1");
+        } catch (SQLException ex) {
+            fail("SQLEXception");
+        }
+    }
+    
+    @Test(expected = ProcedureException.class)
+    public void updateSmpUnsuccessfulUpdateException4() throws ProcedureException {
+        MaintenanceProcedure procedure = new MaintenanceProcedure(" ");
+        try {
+            delete_procedure("ProvaSmp1");
+            insert_procedure("ProvaSmp1");
+            boolean retVal = procedureDao.updateSmp(procedure, "ProvaSmp1");
+        } catch (SQLException ex) {
+            fail("SQLEXception");
+        } 
+    }
+    
+    @Test(expected = ProcedureException.class)
+    public void updateSmpUnsuccessfulUpdateException5() throws ProcedureException {
+        MaintenanceProcedure procedure = new MaintenanceProcedure("ProvaSmp1");
+        try {
+            delete_procedure("ProvaSmp1");
+            insert_procedure("ProvaSmp1");
+            boolean retVal = procedureDao.updateSmp(procedure, "ProvaSmp1");
+        } catch (SQLException ex) {
+            fail("SQLEXception");
+        } 
     }
 }

@@ -14,4 +14,5 @@ import exception.ProcedureException;
  */
 public interface MaintenanceProcedureDAO {
     public boolean addSmp(MaintenanceProcedure procedure) throws ProcedureException;
+    public boolean updateSmp(MaintenanceProcedure newProcedure, String oldSmp) throws ProcedureException;
 }

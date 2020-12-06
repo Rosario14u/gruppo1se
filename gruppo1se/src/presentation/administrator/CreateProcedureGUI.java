@@ -36,8 +36,7 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
         fileChoosen = null;
         admin = new SystemAdministrator("admin","admin", new MaintenanceProcedureDAOImpl());
         initComponents();
-        procedureTextField.setEnabled(false);
-        RenameLabel.setVisible(false);
+        setField(false);
     }
 
     /**
@@ -143,19 +142,28 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
 
     private void fileChooserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileChooserButtonActionPerformed
         StringBuilder builder = new StringBuilder();
+        String inputFileName = procedureTextField.getText().trim().replaceAll("  +", " ");
+        if (inputFileName.lastIndexOf('.')!=-1)
+            inputFileName = inputFileName.substring(0, inputFileName.lastIndexOf('.'));
+        String oldFileName = fileChoosen.getName();
+        if (oldFileName.lastIndexOf('.')!=-1)
+            oldFileName = oldFileName.substring(0, oldFileName.lastIndexOf('.'));
         try {
-            String newName = procedureTextField.getText().equals("") ?  fileChoosen.getName() : procedureTextField.getText();
-            builder.append(PROJECT_PATH).append(RELATIVE_PROJECT_PATH).append(newName);
-            if (!procedureTextField.getText().equals("")){
-                builder.append(FILE_EXTENSION);
+            String newName = null;
+            String oldName = null;
+            if (inputFileName.equals("") || inputFileName.equals(" ") || inputFileName.equals(oldFileName)){
+                newName = oldFileName;
+            }else{
+                newName = inputFileName;
+                oldName = oldFileName;
             }
+            builder.append(PROJECT_PATH).append(RELATIVE_PROJECT_PATH).append(newName).append(FILE_EXTENSION);
             boolean choosen = fileChoosen.renameTo(new File(builder.toString()));
             if (choosen == true){
-                String fileName = fileChoosen.getName();
-                admin.saveSmpProcedure(fileName);
+                admin.saveSmpProcedure(newName,oldName);
                 infoMessage("Procedura aggiunta con successo");
-                procedureTextField.setEnabled(false);
-                RenameLabel.setVisible(false);
+                setField(false);
+                procedureTextField.setText("");
             }else{
                 errorMessage("Nome file già esistente");
             }
@@ -176,8 +184,8 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
         int result = filechooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION){
             fileChoosen = filechooser.getSelectedFile();
-            procedureTextField.setEnabled(true);
-            RenameLabel.setVisible(true);
+            setField(true);
+            procedureTextField.setText(fileChoosen.getName().substring(0, fileChoosen.getName().lastIndexOf('.')));
             procedureTextField.requestFocus();
         }
     }//GEN-LAST:event_chooserButtonActionPerformed
@@ -215,6 +223,11 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
                 new CreateProcedureGUI().setVisible(true);
             }
         });
+    }
+    
+    private void setField(boolean enable){
+        procedureTextField.setEnabled(enable);
+        RenameLabel.setVisible(enable);
     }
     
     private void errorMessage(String message){
