@@ -22,13 +22,13 @@ import persistence.database.ConnectionDB;
  *
  * @author aless
  */
-public class UsersDAOTest{
+public class UsersDAOImplTest{
     private static Connection conn;
     private static final String INSERTUSER = "INSERT INTO USERS (username, password, role) values (?,?,?)";
     private final UsersDAOImpl instance = new UsersDAOImpl();
     private final UsersDAOImpl instance2 = new UsersDAOImpl();
     
-    public UsersDAOTest() {
+    public UsersDAOImplTest() {
     }
     
     @BeforeClass
