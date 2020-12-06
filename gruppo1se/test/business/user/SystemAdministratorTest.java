@@ -6,6 +6,9 @@
 package business.user;
 
 import exception.ProcedureException;
+import exception.UsersException;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -13,6 +16,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import stub.MaintenanceProcedureDAOStub;
+import stub.UsersDAOStub;
 
 /**
  *
@@ -20,6 +24,9 @@ import stub.MaintenanceProcedureDAOStub;
  */
 public class SystemAdministratorTest {
     private SystemAdministrator admin;
+    private final SystemAdministrator instance = new SystemAdministrator("systemAdministratorUsername","systemAdministratorPassword",new UsersDAOStub());
+    private final String username = "maintainerUsername"; 
+    
     public SystemAdministratorTest() {
         admin = new SystemAdministrator("admin","admin",new MaintenanceProcedureDAOStub());
     }
@@ -83,5 +90,47 @@ public class SystemAdministratorTest {
         boolean retResult = admin.saveSmpProcedure("ProvaSmp4");
         
     }
+//=========================================================================================================================================
+        /**
+     * Test of viewUser method, of class SystemAdministrator.
+     */
+    
+        
+    @Test
+    public void testViewUser() throws UsersException {
+        System.out.println("viewUser");
+        List<User> users = instance.viewUser(null,null);
+        assertNull(users);      
+    }
+    
+    
+    @Test
+    public void testViewUserUsername() throws UsersException {
+        System.out.println("viewUserUsernameTest");
+        List<User> expectedUsers = new ArrayList<>();
+        expectedUsers.add(new Maintainer(username,"maintainerPassword"));
+        List<User> users = instance.viewUser(username, null);
+        assertEquals(true,expectedUsers.equals(users));      
+    }
+    
+        
+    @Test
+    public void testViewUserRole() throws UsersException {
+        System.out.println("viewUserRoleTest");
+        List<User> expectedUsers = new ArrayList<>(){{
+            add(new Maintainer("maintainerUsername","maintainerPassword"));
+            add(new Maintainer("maintainer2Username","maintainer2Password"));
+            add(new Maintainer("maintainer3Username","maintainer3Password"));
+        }};
+        List<User> users = instance.viewUser(null,"Maintainer");
+        assertEquals(true,expectedUsers.equals(users));      
+    }
+    
+    @Test (expected = UsersException.class)
+    public void testViewUserException() throws UsersException {
+        System.out.println("viewUserExceptionTest");
+        List<User> users = instance.viewUser(username,"Maintainer");
+    }
+
     
 }

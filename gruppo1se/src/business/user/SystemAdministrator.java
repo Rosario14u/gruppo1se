@@ -7,7 +7,10 @@ package business.user;
 
 import business.maintenanceactivity.MaintenanceProcedure;
 import exception.ProcedureException;
+import exception.UsersException;
+import java.util.List;
 import persistence.maintenanceactivity.MaintenanceProcedureDAO;
+import persistence.user.UsersDAO;
 
 /**
  *
@@ -15,15 +18,25 @@ import persistence.maintenanceactivity.MaintenanceProcedureDAO;
  */
 public class SystemAdministrator extends User {
     private MaintenanceProcedureDAO procedureDao;
+    private final UsersDAO usersDAO;
+    
     
     public SystemAdministrator(String username, String password){
         super(username, password);
         this.procedureDao = null;
+        this.usersDAO = null;
     }
     
     public SystemAdministrator(String username, String password,MaintenanceProcedureDAO procedureDao) {
         super(username, password);
         this.procedureDao = procedureDao; 
+        this.usersDAO = null;
+    }
+    
+    public SystemAdministrator(String username, String password, UsersDAO usersDAO){
+        super(username, password);
+        this.procedureDao = null;
+        this.usersDAO = usersDAO;
     }
     
     public boolean saveSmpProcedure(String smp) throws ProcedureException{
@@ -33,5 +46,9 @@ public class SystemAdministrator extends User {
             throw new ProcedureException("Error in procedure creation");
         }
         
+    }
+    
+    public List<User> viewUser(String username, String role) throws UsersException{
+        return usersDAO.readUser(username, role);
     }
 }
