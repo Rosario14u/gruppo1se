@@ -9,8 +9,12 @@ import business.maintenanceactivity.MaintenanceProcedure;
 import exception.ProcedureException;
 import exception.UsersException;
 import java.util.List;
+import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.MaintenanceProcedureDAO;
+import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
+import persistence.maintenanceactivity.SiteDaoImpl;
 import persistence.user.UsersDAO;
+import persistence.user.UsersDAOImpl;
 
 /**
  *
@@ -50,5 +54,16 @@ public class SystemAdministrator extends User {
     
     public List<User> viewUser(String username, String role) throws UsersException{
         return usersDAO.readUser(username, role);
+    }
+    
+    public boolean makeUser(String username, String password, String role) throws UsersException{
+        User user;
+        if (role.equals("System Administrator"))
+            user = new SystemAdministrator(username, password, new UsersDAOImpl());
+        else if (role.equals("Maintainer"))
+            user = new Maintainer(username, password);
+        else
+            user = new Planner(username, password, new MaintenanceActivityDAOImpl(new SiteDaoImpl()), new RequiredMaterialForMaintenanceDAOImpl());
+        return usersDAO.addUser(user);
     }
 }

@@ -26,6 +26,7 @@ public class SystemAdministratorTest {
     private SystemAdministrator admin;
     private final SystemAdministrator instance = new SystemAdministrator("systemAdministratorUsername","systemAdministratorPassword",new UsersDAOStub());
     private final String username = "maintainerUsername"; 
+    private final String password = "maintainerPassword";
     
     public SystemAdministratorTest() {
         admin = new SystemAdministrator("admin","admin",new MaintenanceProcedureDAOStub());
@@ -131,6 +132,23 @@ public class SystemAdministratorTest {
         System.out.println("viewUserExceptionTest");
         List<User> users = instance.viewUser(username,"Maintainer");
     }
-
+//=========================================================================================================================================
+    
+    /**
+     * Test of makeUser method, of class SystemAdministrator.
+     * @throws exception.UsersException
+     */
+    @Test
+    public void testMakeUser() throws UsersException {
+        System.out.println("makeUserTest");
+        boolean result = instance.makeUser(username, password, "Maintainer");
+        assertEquals(true, result);
+    }
+    
+    @Test(expected = UsersException.class)
+    public void testMakeUserException() throws UsersException {
+        System.out.println("makeUserExceptionTest");
+        boolean result = instance.makeUser(username, null, "Maintainer");
+    }
     
 }

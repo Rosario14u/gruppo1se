@@ -36,4 +36,12 @@ public class UsersDAOStub implements UsersDAO {
             throw new UsersException();
     }
     
+    @Override
+    public boolean addUser(User user) throws UsersException {
+        if (user.getUsername() != null && user.getPassword() != null)
+            return true;
+        else 
+            throw new UsersException();
+    }
+    
 }
