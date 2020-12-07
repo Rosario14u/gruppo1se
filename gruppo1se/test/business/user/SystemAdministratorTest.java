@@ -29,12 +29,14 @@ import stub.UsersDAOStub;
  */
 public class SystemAdministratorTest {
     private SystemAdministrator admin;
-    private final SystemAdministrator instance = new SystemAdministrator("systemAdministratorUsername","systemAdministratorPassword",new UsersDAOStub());
+    private final SystemAdministrator instance = new SystemAdministrator("systemAdministratorUsername","systemAdministratorPassword",
+            new MaintenanceProcedureDAOStub(),
+            new UsersDAOStub());
     private final String username = "maintainerUsername"; 
     private final String password = "maintainerPassword";
     
     public SystemAdministratorTest() {
-        admin = new SystemAdministrator("admin","admin",new MaintenanceProcedureDAOStub());
+        admin = new SystemAdministrator("admin","admin",new MaintenanceProcedureDAOStub(),null);
     }
     
     @BeforeClass

@@ -108,7 +108,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="weekComboBoxActionPerformed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="int numberOfWeeks = WeekConverter.getNumberOfWeeksInYear();&#xa;&#xa;for(int i=1;i&lt;=numberOfWeeks;i++){&#xa;    weekComboBox.addItem(i);&#xa;}"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="int numberOfWeeks = WeekConverter.getNumberOfWeeksInYear(LocalDate.now().getYear());&#xa;&#xa;for(int i=1;i&lt;=numberOfWeeks;i++){&#xa;    weekComboBox.addItem(i);&#xa;}"/>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Integer&gt;"/>
           </AuxValues>
         </Component>

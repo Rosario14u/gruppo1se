@@ -19,6 +19,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import persistence.database.ConnectionDB;
+import persistence.maintenanceactivity.MaintenanceProcedureDAOImplTest;
 import persistence.maintenanceactivity.MaintenanceActivityDAOImplTest;
 
 /**
@@ -57,9 +58,10 @@ public class UsersDAOImplTest{
         }
     }
     
-    
-    @Before
+        @Before
     public void setUp() {
+        
+        
     }
     
     @After
@@ -67,7 +69,7 @@ public class UsersDAOImplTest{
         try {
             conn.rollback();
         } catch (SQLException ex) {
-            Logger.getLogger(UsersDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UsersDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -96,8 +98,8 @@ public class UsersDAOImplTest{
     }
     /**
      * Test of addUser method, of class UsersDAO.
-     * @throws exception.UsersException
-     * @throws java.sql.SQLException
+     * //@throws exception.UsersException
+     * //@throws java.sql.SQLException
      */
     @Test
     public void testAddUserPlanner() throws UsersException, SQLException{
@@ -112,8 +114,8 @@ public class UsersDAOImplTest{
     
     /**
      * Test of addUser method, of class UsersDAO.
-     * @throws exception.UsersException
-     * @throws java.sql.SQLException
+     * //@throws exception.UsersException
+     * //@throws java.sql.SQLException
      */
     @Test
     public void testAddUserMaintainer() throws UsersException, SQLException{
@@ -128,8 +130,8 @@ public class UsersDAOImplTest{
     
     /**
      * Test of addUser method, of class UsersDAO.
-     * @throws exception.UsersException
-     * @throws java.sql.SQLException
+     * //@throws exception.UsersException
+     * //@throws java.sql.SQLException
      */
     @Test
     public void testAddUserSystemAdministrator() throws UsersException, SQLException{
@@ -173,7 +175,7 @@ public class UsersDAOImplTest{
         conn.rollback();
     }
     
-        @Test
+    @Test
     public void testReadUserRoleSystemAdministrator() throws UsersException, SQLException{
         System.out.println("readUserSystemAdministrator");
         Statement stm = conn.createStatement();
@@ -189,7 +191,8 @@ public class UsersDAOImplTest{
         assertEquals(true,systemAdministratorList.equals(expectedList));
         conn.rollback();
     }
-        @Test
+    
+    @Test
     public void testReadUserRoleMaintainer() throws UsersException, SQLException{
         System.out.println("readUserMaintainer");
         Statement stm = conn.createStatement();
@@ -260,6 +263,189 @@ public class UsersDAOImplTest{
     }
     
     
+    //========================================== MODIFY USER =============================================================================
+    
+    
+    private static final String DELETE_USER = "DELETE FROM users WHERE username=?";
+    private static final String INSERT_USER = "INSERT INTO users (username, password, role) VALUES (?,?,?)";
+    private static final String SELECT_USER = "SELECT * FROM users WHERE username = ?";
+
+    private void insertUser(String username, String password, String role) throws SQLException{
+        PreparedStatement pstm = conn.prepareStatement(INSERT_USER);
+        pstm.setString(1, username);
+        pstm.setString(2, password);
+        pstm.setString(3, role);
+        pstm.executeUpdate();
+    }
+
+    private void removeUser(String username) throws SQLException{
+        PreparedStatement pstm = conn.prepareStatement(DELETE_USER);
+        pstm.setString(1, username);
+        pstm.executeUpdate();
+    }
+    
+    private ResultSet selectUser(String username) throws SQLException {
+        PreparedStatement pstm = conn.prepareStatement(SELECT_USER);
+        pstm.setString(1, username);
+        return pstm.executeQuery();
+    }
+    
+    private User createUser(String username, String password, String role){
+        if(role.equals("Planner")){
+            return new Planner(username, password, null, null);
+        }else if(role.equals("Maintainer")){
+            return new Maintainer(username, password);
+        }else{
+            return new SystemAdministrator(username, password, null, null);
+        }
+    }
+    
+    
+    private void verifyUser(ResultSet res, User newUser) throws SQLException {
+        boolean isEmpty = true;
+        while(res.next()){
+            isEmpty = false;
+            assertEquals(newUser.getUsername(), res.getString("username"));
+            assertEquals(newUser.getPassword(), res.getString("password"));
+            if(newUser instanceof Planner){
+                assertEquals("Planner", res.getString("role"));
+            }else if(newUser instanceof Maintainer){
+                assertEquals("Maintainer", res.getString("role"));
+            }else
+                assertEquals("System Administrator", res.getString("role"));
+        }
+        assertFalse(isEmpty);
+    }
+    
+    private void isEmptyResultSet(String username) throws SQLException{
+        PreparedStatement pstm = conn.prepareStatement(SELECT_USER);
+        pstm.setString(1, username);
+        ResultSet rs = pstm.executeQuery();
+        boolean isEmpty = true;
+        while(rs.next()){
+            isEmpty = false;
+        }
+        assertTrue("isEmpty",isEmpty);
+    }
+        
+    
+    //======================================= TEST MODIFY ====================================================================================
+
+    @Test
+    public void testUpdateUserPlannerToMaintainer() {        
+        try {
+            String username = "username";
+            removeUser(username);
+            insertUser(username, "password", "Planner");
+            User modifiedUser = createUser("newUsername", "newPassword", "Maintainer");
+            assertTrue(instance.updateUser(username, modifiedUser));
+            verifyUser(selectUser("newUsername"), modifiedUser);
+            isEmptyResultSet(username);
+        } catch (SQLException ex) {
+            fail("SQLException");
+        } catch (UsersException ex){
+            fail("UsersException");
+        }
+    }
+    
+    @Test
+    public void testUpdateUserPlannerToSystemAdministrator() {        
+        try {
+            String username = "username";
+            removeUser(username);
+            insertUser(username, "password", "Planner");
+            User modifiedUser = createUser("newUsername", "newPassword", "System Administrator");
+            assertTrue(instance.updateUser(username, modifiedUser));
+            verifyUser(selectUser("newUsername"), modifiedUser); 
+            isEmptyResultSet(username);
+        } catch (SQLException ex) {
+            fail("SQLException");
+        } catch (UsersException ex){
+            fail("UsersException");
+        }
+    }
+    
+    @Test
+    public void testUpdateUserMaintainerToPlanner() {        
+        try {
+            String username = "username";
+            removeUser(username);
+            insertUser(username, "password", "Maintainer");
+            User modifiedUser = createUser("newUsername", "newPassword", "Planner");
+            assertTrue(instance.updateUser(username, modifiedUser));
+            verifyUser(selectUser("newUsername"), modifiedUser);   
+            isEmptyResultSet(username);
+        } catch (SQLException ex) {
+            fail("SQLException");
+        } catch (UsersException ex){
+            fail("UsersException");
+        }
+    }
+    
+    @Test
+    public void testUpdateUserMaintainerToSystemAdministrator() {        
+        try {
+            String username = "username";
+            removeUser(username);
+            insertUser(username, "password", "Maintainer");
+            User modifiedUser = createUser("newUsername", "newPassword", "System Administrator");
+            assertTrue(instance.updateUser(username, modifiedUser));
+            verifyUser(selectUser("newUsername"), modifiedUser);   
+            isEmptyResultSet(username);
+        } catch (SQLException ex) {
+            fail("SQLException");
+        } catch (UsersException ex){
+            fail("UsersException");
+        }
+    }
+    
+    @Test
+    public void testUpdateUserSystemAdministratorToPlanner() {        
+        try {
+            String username = "username";
+            removeUser(username);
+            insertUser(username, "password", "System Administrator");
+            User modifiedUser = createUser("newUsername", "newPassword", "Planner");
+            assertTrue(instance.updateUser(username, modifiedUser));
+            verifyUser(selectUser("newUsername"), modifiedUser); 
+            isEmptyResultSet(username);
+        } catch (SQLException ex) {
+            fail("SQLException");
+        } catch (UsersException ex){
+            fail("UsersException");
+        }
+    }
+    
+    @Test
+    public void testUpdateUserSystemAdministratorToMaintainer() {        
+        try {
+            String username = "username";
+            removeUser(username);
+            insertUser(username, "password", "System Administrator");
+            User modifiedUser = createUser("newUsername", "newPassword", "Maintainer");
+            assertTrue(instance.updateUser(username, modifiedUser));
+            verifyUser(selectUser("newUsername"), modifiedUser);   
+            isEmptyResultSet(username);
+        } catch (SQLException ex) {
+            fail("SQLException");
+        } catch (UsersException ex){
+            fail("UsersException");
+        }
+    }
+    
+    @Test
+    public void testModifyActivityNotPresent(){
+        try {
+            String username = "username";
+            removeUser(username);
+            User modifiedUser = createUser("newUsername", "newPassword", "Maintainer");
+            assertFalse(instance.updateUser(username, modifiedUser));            
+        } catch (SQLException ex) {
+            fail("SQLException");
+        } catch (UsersException ex){
+            fail("UsersException");
+        }
+    }
     //===============================================================================================================================================
     
     private void insertUser(String username, String password, String role) throws SQLException{

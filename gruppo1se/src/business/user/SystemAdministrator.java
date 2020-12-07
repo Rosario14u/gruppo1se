@@ -23,7 +23,7 @@ import persistence.user.UsersDAOImpl;
  */
 public class SystemAdministrator extends User {
     private MaintenanceProcedureDAO procedureDao;
-    private final UsersDAO usersDAO;
+    private UsersDAO usersDAO;
     
     
     public SystemAdministrator(String username, String password){

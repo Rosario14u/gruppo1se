@@ -50,7 +50,9 @@ public class WeekConverter {
     }
     
     
-    public static int getNumberOfWeeksInYear(){
-        return Calendar.getInstance().getActualMaximum(Calendar.WEEK_OF_YEAR);
+    public static int getNumberOfWeeksInYear(int year){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);   
+        return calendar.getWeeksInWeekYear();
     }
 }

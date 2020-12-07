@@ -16,6 +16,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
+import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
+import persistence.maintenanceactivity.SiteDaoImpl;
 
 /**
  *
@@ -75,5 +78,24 @@ public class WeekConverterTest {
         List<LocalDate> actualDates = WeekConverter.getStartEndDate(numberWeek, 2020);
         assertEquals(LocalDate.of(2020, Month.DECEMBER, 28), actualDates.get(0));
         assertEquals(LocalDate.of(2021, Month.JANUARY, 3), actualDates.get(1));
+    }
+    
+    @Test
+    public void testGetWeek(){
+        LocalDate date = LocalDate.of(2020, 12, 31);
+        assertEquals(53, WeekConverter.getWeek(date));
+    }
+    
+    @Test
+    public void testGetWeek1(){
+        LocalDate date = LocalDate.of(2020, 1, 1);
+        assertEquals(1, WeekConverter.getWeek(date));
+    }
+    
+    @Test
+    public void testGetNumberOfWeeksInYear(){
+        assertEquals(53, WeekConverter.getNumberOfWeeksInYear(2020));
+        assertEquals(52, WeekConverter.getNumberOfWeeksInYear(2021));
+        assertEquals(52, WeekConverter.getNumberOfWeeksInYear(2022));
     }
 }

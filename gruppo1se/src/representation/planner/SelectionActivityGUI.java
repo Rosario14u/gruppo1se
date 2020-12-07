@@ -66,7 +66,7 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
         jLabel1.setText("Week n°:");
 
         weekComboBox.setModel(new javax.swing.DefaultComboBoxModel<>());
-        int numberOfWeeks = WeekConverter.getNumberOfWeeksInYear();
+        int numberOfWeeks = WeekConverter.getNumberOfWeeksInYear(LocalDate.now().getYear());
 
         for(int i=1;i<=numberOfWeeks;i++){
             weekComboBox.addItem(i);

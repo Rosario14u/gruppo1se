@@ -23,6 +23,7 @@ public class UsersDAOImpl implements UsersDAO {
     private final String DELETE_USER = "DELETE FROM Users WHERE username = ?";
     private final String SQL_SELECT_USERNAME = "SELECT * FROM USERS WHERE USERNAME = ?";
     private final String SQL_SELECT_ROLE = "SELECT * FROM USERS WHERE ROLE = ?";
+    private final String SQL_UPDATE = "UPDATE users SET username=?, password=?, role=? WHERE username = ?";
     
     public boolean addUser(User user) throws UsersException{
         try {
@@ -108,4 +109,25 @@ public class UsersDAOImpl implements UsersDAO {
         return builder.toString();   
     }
     
+    
+    public boolean updateUser(String oldUsername, User newUser) throws UsersException {       
+        try {
+            Connection conn = ConnectionDB.getInstanceConnection().getConnection();
+            PreparedStatement stm = conn.prepareStatement(SQL_UPDATE);
+            stm.setString(1, newUser.getUsername());
+            stm.setString(2, newUser.getPassword());
+            if (Maintainer.class.isInstance(newUser))
+                stm.setString(3, "Maintainer");
+            else if (Planner.class.isInstance(newUser))
+                stm.setString(3, "Planner");
+            else
+                stm.setString(3, "System Administrator");
+            stm.setString(4, oldUsername);
+            int row = stm.executeUpdate();
+            return row > 0;
+
+        } catch (SQLException ex) {
+            throw new UsersException("Error in updating");
+        }
+    }
 }

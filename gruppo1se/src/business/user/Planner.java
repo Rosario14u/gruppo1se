@@ -22,8 +22,18 @@ import persistence.maintenanceactivity.MaintenanceActivityDAO;
  * @author rosar
  */
 public class Planner extends User {
-    private final MaintenanceActivityDAO maintenanceActivityDao;
-    private final RequiredMaterialForMaintenanceDAO requiredMaterialsDao;
+    private MaintenanceActivityDAO maintenanceActivityDao;
+    private RequiredMaterialForMaintenanceDAO requiredMaterialsDao;
+    
+    
+    /**
+     * Constructor of Planner
+     * @param username username of Planner 
+     * @param password password of Planner
+     */
+    public Planner(String username, String password) {
+        super(username, password);
+    }
     
     
     /**
