@@ -12,6 +12,7 @@ import java.sql.*;
 import exception.UsersException;
 import java.util.ArrayList;
 import java.util.List;
+import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
 
 /**
  *
@@ -19,6 +20,7 @@ import java.util.List;
  */
 public class UsersDAOImpl implements UsersDAO {
     private final String SQL_INSERT = "INSERT INTO USERS (username, password, role) VALUES (?,?,?)";
+    private final String DELETE_USER = "DELETE FROM Users WHERE username = ?";
     private final String SQL_SELECT_USERNAME = "SELECT * FROM USERS WHERE USERNAME = ?";
     private final String SQL_SELECT_ROLE = "SELECT * FROM USERS WHERE ROLE = ?";
     
@@ -69,7 +71,7 @@ public class UsersDAOImpl implements UsersDAO {
         try {
             while (set.next()){
                 if (set.getString("role").equals("System Administrator"))
-                    users.add(new SystemAdministrator(set.getString("username"), set.getString("password"),new UsersDAOImpl()));
+                    users.add(new SystemAdministrator(set.getString("username"), set.getString("password"),new MaintenanceProcedureDAOImpl(),new UsersDAOImpl()));
                 else if (set.getString("role").equals("Maintainer"))
                     users.add(new Maintainer(set.getString("username"), set.getString("password")));
                 else
@@ -80,4 +82,30 @@ public class UsersDAOImpl implements UsersDAO {
             throw new UsersException("Error on select query");
         }
     }
+    
+    public int deleteUser(List<String> usernameList) throws UsersException{
+        try{
+            if (usernameList != null && !usernameList.isEmpty()){
+                String query = queryBuilder(usernameList.size());
+                Connection conn = ConnectionDB.getInstanceConnection().getConnection();
+                PreparedStatement pstm = conn.prepareStatement(query);
+                for(int i = 0; i < usernameList.size(); i++){
+                    pstm.setString(i+1, usernameList.get(i));
+                }
+                return pstm.executeUpdate();
+            }
+            return 0;
+        }catch(SQLException ex){
+            throw new UsersException("Problems in users deleting");
+        }
+    }
+    
+    private String queryBuilder(int size){
+        StringBuilder builder = new StringBuilder(DELETE_USER);
+        for(int i = 1; i < size; i++){
+            builder.append(" or username = ?");
+        }
+        return builder.toString();   
+    }
+    
 }

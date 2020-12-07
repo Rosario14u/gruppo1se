@@ -12,11 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Before;
 import persistence.database.ConnectionDB;
+import persistence.maintenanceactivity.MaintenanceActivityDAOImplTest;
 
 /**
  *
@@ -25,6 +28,9 @@ import persistence.database.ConnectionDB;
 public class UsersDAOImplTest{
     private static Connection conn;
     private static final String INSERTUSER = "INSERT INTO USERS (username, password, role) values (?,?,?)";
+    private static final String DELETE_USERS = "DELETE FROM Users WHERE username=?";
+    private static final String INSERT_USERS = "INSERT INTO Users (username, password, role) VALUES (?,?,?)";
+    private static final String SELECT_USERS = "SELECT * FROM Users WHERE username=?";
     private final UsersDAOImpl instance = new UsersDAOImpl();
     private final UsersDAOImpl instance2 = new UsersDAOImpl();
     
@@ -48,6 +54,20 @@ public class UsersDAOImplTest{
           conn.close();
         } catch (SQLException ex) {
           Logger.getLogger(UsersDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    @Before
+    public void setUp() {
+    }
+    
+    @After
+    public void tearDown() {
+        try {
+            conn.rollback();
+        } catch (SQLException ex) {
+            Logger.getLogger(UsersDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -237,6 +257,117 @@ public class UsersDAOImplTest{
         maintainerList = instance.readUser("Maintainer2",null);
         assertEquals(false,maintainerList.equals(expectedList));
         conn.rollback();
+    }
+    
+    
+    //===============================================================================================================================================
+    
+    private void insertUser(String username, String password, String role) throws SQLException{
+        PreparedStatement pstm = conn.prepareStatement(INSERT_USERS);
+        pstm.setString(1, username);
+        pstm.setString(2, password);
+        pstm.setString(3, role);
+        pstm.executeUpdate();
+    }
+
+    private void removeUser(String username) throws SQLException{
+        PreparedStatement pstm = conn.prepareStatement(DELETE_USERS);
+        pstm.setString(1, username);
+        pstm.executeUpdate();
+    }
+    
+    private void isEmptyResultSet(String username) throws SQLException{
+        PreparedStatement pstm = conn.prepareStatement(SELECT_USERS);
+        pstm.setString(1, username);
+        ResultSet rs = pstm.executeQuery();
+        boolean isEmpty = true;
+        while(rs.next()){
+            isEmpty = false;
+        }
+        assertTrue("isEmpty",isEmpty);
+    }
+    
+    
+    /**
+     * this method assert that deleteUser correctly delete the rows in database
+     */
+    @Test
+    public void testDeleteUser(){
+        try {
+            List<String> usernameList = new ArrayList<>(){{
+                add("username1");
+                add("username2");
+                add("username3");
+            }};
+            removeUser("username1");
+            removeUser("username2");
+            removeUser("username3");
+            insertUser("username1","password1","Planner");
+            insertUser("username2","password2","Maintainer");
+            insertUser("username3","password3","System Administrator");
+            int numOfDeletedRow = instance.deleteUser(usernameList);
+            assertEquals(numOfDeletedRow,usernameList.size());
+            for(String username: usernameList){
+                isEmptyResultSet(username);
+            }
+        } catch (SQLException ex) {
+            fail("SQL_EXCEPTION");
+        } catch (UsersException ex) {
+            fail("USERS_EXCEPTION");
+        }
+    }
+    
+    
+    /**
+     * this method assert that deleteUser correctly return 0 if there aren't the searched username in database
+     */
+    @Test
+    public void testDeleteUserZero(){
+        try {
+            List<String> usernameList = new ArrayList<>(){{
+                add("username4");
+                add("username5");
+                add("username6");
+            }};
+            removeUser("username4");
+            removeUser("username5");
+            removeUser("username6");
+            int numOfDeletedRow = instance.deleteUser(usernameList);
+            assertEquals(numOfDeletedRow,0);
+        } catch (SQLException ex) {
+            fail("SQL_EXCEPTION");
+        } catch (UsersException ex) {
+            fail("USERS_EXCEPTION");
+        }
+    }
+    
+    
+    /**
+     * this method assert that deleteUser correctly return 0 if an empty list is passed
+     */
+    @Test
+    public void testDeleteUserZero2(){
+        try {
+            List<String> usernameList = new ArrayList<>();
+            int numOfDeletedRow = instance.deleteUser(usernameList);
+            assertEquals(numOfDeletedRow,0);
+        } catch (UsersException ex) {
+            fail("USERS_EXCEPTION");
+        }
+    }
+    
+    
+    /**
+     * this method assert that deleteUser correctly return 0 if null is passed
+     */
+    @Test
+    public void testDeleteUserZero3(){
+        try {
+            int numOfDeletedRow = instance.deleteUser(null);
+            assertEquals(numOfDeletedRow,0);
+        } catch (UsersException ex) {
+            fail("USERS_EXCEPTION");
+        }
     }
     
 }

@@ -11,6 +11,7 @@ import exception.UsersException;
 import java.util.List;
 import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.MaintenanceProcedureDAO;
+import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.SiteDaoImpl;
 import persistence.user.UsersDAO;
@@ -31,17 +32,13 @@ public class SystemAdministrator extends User {
         this.usersDAO = null;
     }
     
-    public SystemAdministrator(String username, String password,MaintenanceProcedureDAO procedureDao) {
+    
+    public SystemAdministrator(String username, String password,MaintenanceProcedureDAO procedureDao, UsersDAO usersDAO) {
         super(username, password);
         this.procedureDao = procedureDao; 
-        this.usersDAO = null;
-    }
-    
-    public SystemAdministrator(String username, String password, UsersDAO usersDAO){
-        super(username, password);
-        this.procedureDao = null;
         this.usersDAO = usersDAO;
     }
+    
     
     public boolean saveSmpProcedure(String newSmp,String oldSmp) throws ProcedureException{
         MaintenanceProcedure procedure;
@@ -63,14 +60,18 @@ public class SystemAdministrator extends User {
         return usersDAO.readUser(username, role);
     }
     
+    
     public boolean makeUser(String username, String password, String role) throws UsersException{
         User user;
         if (role.equals("System Administrator"))
-            user = new SystemAdministrator(username, password, new UsersDAOImpl());
+            user = new SystemAdministrator(username, password, new MaintenanceProcedureDAOImpl(),new UsersDAOImpl());
         else if (role.equals("Maintainer"))
             user = new Maintainer(username, password);
         else
             user = new Planner(username, password, new MaintenanceActivityDAOImpl(new SiteDaoImpl()), new RequiredMaterialForMaintenanceDAOImpl());
         return usersDAO.addUser(user);
     }
+    
+    
+    
 }
