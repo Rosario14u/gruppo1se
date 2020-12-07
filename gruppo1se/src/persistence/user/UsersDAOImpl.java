@@ -12,6 +12,8 @@ import java.sql.*;
 import exception.UsersException;
 import java.util.ArrayList;
 import java.util.List;
+import persistence.maintenanceactivity.MaintenanceProcedureDAO;
+import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
 
 /**
  *
@@ -21,6 +23,7 @@ public class UsersDAOImpl implements UsersDAO {
     private final String SQL_INSERT = "INSERT INTO USERS (username, password, role) VALUES (?,?,?)";
     private final String SQL_SELECT_USERNAME = "SELECT * FROM USERS WHERE USERNAME = ?";
     private final String SQL_SELECT_ROLE = "SELECT * FROM USERS WHERE ROLE = ?";
+    private final String SQL_UPDATE = "UPDATE users SET username=?, password=?, role=? WHERE username = ?";
     
     public boolean addUser(User user) throws UsersException{
         try {
@@ -69,7 +72,7 @@ public class UsersDAOImpl implements UsersDAO {
         try {
             while (set.next()){
                 if (set.getString("role").equals("System Administrator"))
-                    users.add(new SystemAdministrator(set.getString("username"), set.getString("password"),new UsersDAOImpl()));
+                    users.add(new SystemAdministrator(set.getString("username"), set.getString("password"), new MaintenanceProcedureDAOImpl(), new UsersDAOImpl()));
                 else if (set.getString("role").equals("Maintainer"))
                     users.add(new Maintainer(set.getString("username"), set.getString("password")));
                 else
@@ -78,6 +81,28 @@ public class UsersDAOImpl implements UsersDAO {
             return users;
         } catch (SQLException ex) {
             throw new UsersException("Error on select query");
+        }
+    }
+    
+    
+    public boolean updateUser(String oldUsername, User newUser) throws UsersException {       
+        try {
+            Connection conn = ConnectionDB.getInstanceConnection().getConnection();
+            PreparedStatement stm = conn.prepareStatement(SQL_UPDATE);
+            stm.setString(1, newUser.getUsername());
+            stm.setString(2, newUser.getPassword());
+            if (Maintainer.class.isInstance(newUser))
+                stm.setString(3, "Maintainer");
+            else if (Planner.class.isInstance(newUser))
+                stm.setString(3, "Planner");
+            else
+                stm.setString(3, "System Administrator");
+            stm.setString(4, oldUsername);
+            int row = stm.executeUpdate();
+            return row > 0;
+
+        } catch (SQLException ex) {
+            throw new UsersException("Error in updating");
         }
     }
 }
