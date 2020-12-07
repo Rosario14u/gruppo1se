@@ -448,30 +448,7 @@ public class UsersDAOImplTest{
     }
     //===============================================================================================================================================
     
-    private void insertUser(String username, String password, String role) throws SQLException{
-        PreparedStatement pstm = conn.prepareStatement(INSERT_USERS);
-        pstm.setString(1, username);
-        pstm.setString(2, password);
-        pstm.setString(3, role);
-        pstm.executeUpdate();
-    }
-
-    private void removeUser(String username) throws SQLException{
-        PreparedStatement pstm = conn.prepareStatement(DELETE_USERS);
-        pstm.setString(1, username);
-        pstm.executeUpdate();
-    }
     
-    private void isEmptyResultSet(String username) throws SQLException{
-        PreparedStatement pstm = conn.prepareStatement(SELECT_USERS);
-        pstm.setString(1, username);
-        ResultSet rs = pstm.executeQuery();
-        boolean isEmpty = true;
-        while(rs.next()){
-            isEmpty = false;
-        }
-        assertTrue("isEmpty",isEmpty);
-    }
     
     
     /**
