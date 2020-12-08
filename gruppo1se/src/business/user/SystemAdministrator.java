@@ -56,8 +56,8 @@ public class SystemAdministrator extends User {
         return true;
     }
     
-    public List<User> viewUser(String username, String role) throws UsersException{
-        return usersDAO.readUser(username, role);
+    public List<User> viewUsers() throws UsersException{
+        return usersDAO.readUsers();
     }
     
     

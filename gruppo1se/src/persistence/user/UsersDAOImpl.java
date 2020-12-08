@@ -21,8 +21,7 @@ import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
 public class UsersDAOImpl implements UsersDAO {
     private final String SQL_INSERT = "INSERT INTO USERS (username, password, role) VALUES (?,?,?)";
     private final String DELETE_USER = "DELETE FROM Users WHERE username = ?";
-    private final String SQL_SELECT_USERNAME = "SELECT * FROM USERS WHERE USERNAME = ?";
-    private final String SQL_SELECT_ROLE = "SELECT * FROM USERS WHERE ROLE = ?";
+    private final String SQL_SELECT = "SELECT * FROM USERS";
     private final String SQL_UPDATE = "UPDATE users SET username=?, password=?, role=? WHERE username = ?";
     
     public boolean addUser(User user) throws UsersException{
@@ -44,25 +43,16 @@ public class UsersDAOImpl implements UsersDAO {
         }
     }
     
-    public List<User> readUser(String username, String role) throws UsersException{
+
+    
+    public List<User> readUsers() throws UsersException{
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
-            PreparedStatement stmt = null;
-            if (username == null && role == null)
-                return null;
-            if (username == null){
-                stmt = conn.prepareStatement(SQL_SELECT_ROLE);
-                stmt.setString(1, role);
-                ResultSet set = stmt.executeQuery();
-                return this.makeUsers(set);
+            Statement stmt = conn.createStatement();
+            ResultSet set = stmt.executeQuery(SQL_SELECT);
+            return this.makeUsers(set);
             }
-            else{ 
-                stmt = conn.prepareStatement(SQL_SELECT_USERNAME);
-                stmt.setString(1, username);
-                ResultSet set = stmt.executeQuery();
-                return this.makeUsers(set);
-            }
-        } catch (SQLException ex) {
+        catch (SQLException ex) {
             throw new UsersException();
         }
     }
@@ -72,7 +62,7 @@ public class UsersDAOImpl implements UsersDAO {
         try {
             while (set.next()){
                 if (set.getString("role").equals("System Administrator"))
-                    users.add(new SystemAdministrator(set.getString("username"), set.getString("password"),new MaintenanceProcedureDAOImpl(),new UsersDAOImpl()));
+                    users.add(new SystemAdministrator(set.getString("username"), set.getString("password"), new MaintenanceProcedureDAOImpl(), new UsersDAOImpl()));
                 else if (set.getString("role").equals("Maintainer"))
                     users.add(new Maintainer(set.getString("username"), set.getString("password")));
                 else
@@ -83,7 +73,7 @@ public class UsersDAOImpl implements UsersDAO {
             throw new UsersException("Error on select query");
         }
     }
-    
+
     public int deleteUser(List<String> usernameList) throws UsersException{
         try{
             if (usernameList != null && !usernameList.isEmpty()){
