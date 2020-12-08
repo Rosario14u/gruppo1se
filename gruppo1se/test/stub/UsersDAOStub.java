@@ -6,6 +6,8 @@
 package stub;
 
 import business.user.Maintainer;
+import business.user.Planner;
+import business.user.SystemAdministrator;
 import business.user.User;
 import exception.UsersException;
 import java.sql.Connection;
@@ -14,7 +16,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import persistence.database.ConnectionDB;
+import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
+import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
+import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
+import persistence.maintenanceactivity.SiteDaoImpl;
 import persistence.user.UsersDAO;
+import persistence.user.UsersDAOImpl;
 
 /**
  *
@@ -23,21 +30,12 @@ import persistence.user.UsersDAO;
 public class UsersDAOStub implements UsersDAO {
 
     @Override
-    public List<User> readUser(String username, String role) throws UsersException {
-        if (username == null && role == null)
-            return null;
-        if (username == null)
-            return new ArrayList<>(){{
-            add(new Maintainer("maintainerUsername","maintainerPassword"));
-            add(new Maintainer("maintainer2Username","maintainer2Password"));
-            add(new Maintainer("maintainer3Username","maintainer3Password"));
-            }};
-        else if (role == null)
-            return new ArrayList<>(){{
-                add(new Maintainer(username,"maintainerPassword"));
-            }};
-        else
-            throw new UsersException();
+    public List<User> readUsers() throws UsersException {
+        List<User> users = new ArrayList<>();
+        users.add(new Maintainer("UserMaintainer","PwdMaintainer"));
+        users.add(new Planner("UserPlanner","PwdPlanner", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),new RequiredMaterialForMaintenanceDAOImpl()));
+        users.add(new SystemAdministrator("UserSystemAdministrator","PwdSystemAdministrator",new MaintenanceProcedureDAOImpl(),new UsersDAOImpl()));
+        return users;
     }
     
     @Override

@@ -17,7 +17,7 @@ public class MaintenanceProcedureDAOStub implements MaintenanceProcedureDAO {
 
     @Override
     public boolean addSmp(MaintenanceProcedure procedure) throws ProcedureException {
-        if(procedure == null || procedure.getSmp().equals("")){
+        if(procedure == null || procedure.getSmp().equals("")){ 
             return false;
         }else if (procedure.getSmp().equals("ProvaSmp1")){
             return true;

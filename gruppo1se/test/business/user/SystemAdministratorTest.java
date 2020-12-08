@@ -22,6 +22,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import persistence.database.ConnectionDB;
+import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
+import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
+import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
+import persistence.maintenanceactivity.SiteDaoImpl;
+import persistence.user.UsersDAOImpl;
 import stub.MaintenanceProcedureDAOStub;
 import stub.UsersDAOStub;
 
@@ -148,41 +153,20 @@ public class SystemAdministratorTest {
      * Test of viewUser method, of class SystemAdministrator.
      */
     
-        
+    /**
+     * Test of viewUser method, of class SystemAdministrator.
+     * @throws exception.UsersException
+     */
+    
     @Test
     public void testViewUser() throws UsersException {
         System.out.println("viewUser");
-        List<User> users = instance.viewUser(null,null);
-        assertNull(users);      
-    }
-    
-    
-    @Test
-    public void testViewUserUsername() throws UsersException {
-        System.out.println("viewUserUsernameTest");
-        List<User> expectedUsers = new ArrayList<>();
-        expectedUsers.add(new Maintainer(username,"maintainerPassword"));
-        List<User> users = instance.viewUser(username, null);
-        assertEquals(true,expectedUsers.equals(users));      
-    }
-    
-        
-    @Test
-    public void testViewUserRole() throws UsersException {
-        System.out.println("viewUserRoleTest");
-        List<User> expectedUsers = new ArrayList<>(){{
-            add(new Maintainer("maintainerUsername","maintainerPassword"));
-            add(new Maintainer("maintainer2Username","maintainer2Password"));
-            add(new Maintainer("maintainer3Username","maintainer3Password"));
-        }};
-        List<User> users = instance.viewUser(null,"Maintainer");
-        assertEquals(true,expectedUsers.equals(users));      
-    }
-    
-    @Test (expected = UsersException.class)
-    public void testViewUserException() throws UsersException {
-        System.out.println("viewUserExceptionTest");
-        List<User> users = instance.viewUser(username,"Maintainer");
+        List<User> expected = new ArrayList<>();
+        expected.add(new Maintainer("UserMaintainer","PwdMaintainer"));
+        expected.add(new Planner("UserPlanner","PwdPlanner", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),new RequiredMaterialForMaintenanceDAOImpl()));
+        expected.add(new SystemAdministrator("UserSystemAdministrator","PwdSystemAdministrator",new MaintenanceProcedureDAOImpl(),new UsersDAOImpl()));
+        List<User> users = instance.viewUsers();
+        assertEquals(true,expected.equals(users));
     }
 //=========================================================================================================================================
     
