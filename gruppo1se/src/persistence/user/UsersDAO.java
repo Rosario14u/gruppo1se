@@ -15,7 +15,7 @@ import java.util.List;
  * @author VincenzaCoppola <v.coppola38@studenti.unisa.it>
  */
 public interface UsersDAO {
-   public List<User> readUser(String username, String role) throws UsersException;
+   public List<User> readUsers() throws UsersException;
    public boolean addUser(User user) throws UsersException;
    public boolean updateUser(String oldUsername, User newUser) throws UsersException;
 }
