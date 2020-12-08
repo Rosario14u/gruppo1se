@@ -279,5 +279,4 @@ public class SystemAdministratorTest {
         User systemAdministrator = new SystemAdministrator(null, "newPassword");        
         admin.modifyUser("oldUsername1", systemAdministrator);
     }
-    
 }
