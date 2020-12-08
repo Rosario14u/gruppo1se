@@ -10,8 +10,12 @@ import business.user.Planner;
 import business.user.SystemAdministrator;
 import business.user.User;
 import exception.UsersException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import persistence.database.ConnectionDB;
 import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
@@ -43,6 +47,20 @@ public class UsersDAOStub implements UsersDAO {
     }
     
     @Override
+    public int deleteUsers(List<String> usernameList) throws UsersException{
+        if (usernameList == null){           // case in which a null parameter is passed  
+            return 0;
+        }else if(usernameList.size() == 3){  // case in which a non empty list is passed and the elements are deleted  
+            return 3;
+        }else if (usernameList.size() == 1){ // case in which a non empty list is passed but there wasn't element in database  
+            return 0;
+        }else if (usernameList.isEmpty()){   // case in which an empty list is passed 
+            return 0;
+        }else{                               // case in which a deleteUsers method raise an exception
+            throw new UsersException();
+        }      
+    }
+    
     public boolean updateUser(String oldUsername, User newUser) throws UsersException{
         System.out.println("popopopopopopopo");
         if (oldUsername==null || newUser==null || newUser.getUsername()==null || newUser.getPassword()==null

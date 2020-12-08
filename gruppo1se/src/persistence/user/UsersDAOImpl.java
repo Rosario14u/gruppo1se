@@ -24,6 +24,7 @@ public class UsersDAOImpl implements UsersDAO {
     private final String SQL_SELECT = "SELECT * FROM USERS";
     private final String SQL_UPDATE = "UPDATE users SET username=?, password=?, role=? WHERE username = ?";
     
+    @Override
     public boolean addUser(User user) throws UsersException{
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
@@ -73,8 +74,9 @@ public class UsersDAOImpl implements UsersDAO {
             throw new UsersException("Error on select query");
         }
     }
-
-    public int deleteUser(List<String> usernameList) throws UsersException{
+    
+    @Override
+    public int deleteUsers(List<String> usernameList) throws UsersException{
         try{
             if (usernameList != null && !usernameList.isEmpty()){
                 String query = queryBuilder(usernameList.size());
@@ -116,7 +118,6 @@ public class UsersDAOImpl implements UsersDAO {
             stm.setString(4, oldUsername);
             int row = stm.executeUpdate();
             return row > 0;
-
         } catch (SQLException ex) {
             throw new UsersException("Error in updating");
         }

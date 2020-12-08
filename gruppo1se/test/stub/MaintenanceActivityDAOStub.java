@@ -84,7 +84,6 @@ public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
 
     @Override
     public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId) throws SiteException, MaintenanceActivityException {
-        List<Material> listaMaterial;
         switch (activityId) {
             case 1:
                 return new PlannedMaintenanceActivity(activityId, new Site("ProvaBranchOffice1", "ProvaArea1", "ProvaWorkspaceNotes1"),

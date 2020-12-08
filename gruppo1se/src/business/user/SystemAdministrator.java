@@ -72,6 +72,12 @@ public class SystemAdministrator extends User {
         return usersDAO.addUser(user);
     }
     
+    public int removeUsers(List<String> usernameList) throws UsersException{
+        if(usernameList == null || usernameList.isEmpty())
+            return 0;
+        return usersDAO.deleteUsers(usernameList);
+    }
+    
     
     public boolean modifyUser(String oldUsername, User newUser) throws UsersException{
         if(oldUsername==null || newUser==null || newUser.getUsername()==null || newUser.getPassword()==null

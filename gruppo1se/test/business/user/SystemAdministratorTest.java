@@ -13,6 +13,8 @@ import java.util.List;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -41,7 +43,7 @@ public class SystemAdministratorTest {
     private final String password = "maintainerPassword";
     
     public SystemAdministratorTest() {
-        admin = new SystemAdministrator("admin","admin",new MaintenanceProcedureDAOStub(), new UsersDAOStub());
+        admin = new SystemAdministrator("admin","admin",new MaintenanceProcedureDAOStub(),new UsersDAOStub());
     }
     
     @BeforeClass
@@ -185,6 +187,29 @@ public class SystemAdministratorTest {
         boolean result = instance.makeUser(username, null, "Maintainer");
     }
     
+    
+    
+    //=========================================================================================================================================
+    
+    /**
+     * this test assert that removeUsers correctly returns the number of deleted rows when addSmp returns true because there is an insert
+     * and there is a ridenomination
+     */
+    @Test
+    public void testRemoveUsers(){
+        try {
+            List<String> usernameList = new ArrayList<>() {{
+                add("username1");
+                add("username2");
+                add("username3");
+            }};
+            
+            int returnedNumberOfDeletedRow = admin.removeUsers(usernameList);
+            assertEquals(returnedNumberOfDeletedRow,usernameList.size());
+        } catch (UsersException ex) {
+            fail("UsersException");
+        }
+    }
 
     
     
@@ -201,6 +226,18 @@ public class SystemAdministratorTest {
     }
     
     @Test
+    public void testRemoveUsersZero(){
+        try {
+            List<String> usernameList = new ArrayList<>() {{
+                add("username1");
+            }};
+            int returnedNumberOfDeletedRow = admin.removeUsers(usernameList);
+            assertEquals(returnedNumberOfDeletedRow,0);
+        } catch (UsersException ex) {
+            
+        }        
+    }
+    
     public void testModifyUserUnsuccessfulUpdateToPlanner(){
         try{
             User planner = new Planner("newUsername", "newPassword", null, null);
@@ -209,6 +246,37 @@ public class SystemAdministratorTest {
             fail("UsersException");
         }
     }
+    
+    @Test
+    public void testRemoveUsersIsEmpty(){
+        try {
+            List<String> usernameList = new ArrayList<>();
+            int returnedNumberOfDeletedRow = admin.removeUsers(usernameList);
+            assertEquals(returnedNumberOfDeletedRow,usernameList.size());
+        } catch (UsersException ex) {
+            fail("UsersException");
+        }
+    }
+    
+    @Test
+    public void testRemoveUsersNull(){
+        try {
+            int returnedNumberOfDeletedRow = admin.removeUsers(null);
+            assertEquals(returnedNumberOfDeletedRow,0);
+        } catch (UsersException ex) {
+            fail("UsersException");
+        }
+    }
+    
+    @Test(expected = UsersException.class)
+    public void testRemoveUsersRaisesException() throws UsersException{
+        List<String> usernameList = new ArrayList<>() {{
+            add("username1");
+            add("username2");
+        }};
+        int returnedNumberOfDeletedRow = admin.removeUsers(usernameList);
+    }
+    
     
     @Test(expected = UsersException.class)
     public void testModifyUserUpdateToPlannerException() throws UsersException{
