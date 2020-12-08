@@ -73,5 +73,11 @@ public class SystemAdministrator extends User {
     }
     
     
-    
+    public boolean modifyUser(String oldUsername, User newUser) throws UsersException{
+        if(oldUsername==null || newUser==null || newUser.getUsername()==null || newUser.getPassword()==null
+                || oldUsername.equals("") || newUser.getUsername().equals("")){
+            throw new UsersException("Invalid parameters");
+        }
+        return usersDAO.updateUser(oldUsername, newUser);
+    }
 }

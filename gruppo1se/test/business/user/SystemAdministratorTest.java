@@ -36,7 +36,7 @@ public class SystemAdministratorTest {
     private final String password = "maintainerPassword";
     
     public SystemAdministratorTest() {
-        admin = new SystemAdministrator("admin","admin",new MaintenanceProcedureDAOStub(),null);
+        admin = new SystemAdministrator("admin","admin",new MaintenanceProcedureDAOStub(), new UsersDAOStub());
     }
     
     @BeforeClass
@@ -131,6 +131,16 @@ public class SystemAdministratorTest {
         boolean retResult = admin.saveSmpProcedure(" ", " ");
         
     }
+    
+    /**
+     * this test assert that saveSmpProcedure correctly raises exception when procedure passed is null
+     * @throws exception.ProcedureException
+     */
+    @Test(expected = ProcedureException.class)
+    public void testSaveSmpNullProcedure() throws ProcedureException {
+        boolean retResult = admin.saveSmpProcedure(null, " ");
+    }
+    
 //=========================================================================================================================================
         /**
      * Test of viewUser method, of class SystemAdministrator.
@@ -191,14 +201,99 @@ public class SystemAdministratorTest {
         boolean result = instance.makeUser(username, null, "Maintainer");
     }
     
-    /**
-     * this test assert that saveSmpProcedure correctly raises exception when procedure passed is null
-     * @throws exception.ProcedureException
-     */
-    @Test(expected = ProcedureException.class)
-    public void testSaveSmpNullProcedure() throws ProcedureException {
-        boolean retResult = admin.saveSmpProcedure(null, " ");
+
+    
+    
+//=========================================================================================================================================
+
+    @Test
+    public void testModifyUserSuccessfulUpdateToPlanner(){
+        try{
+            User planner = new Planner("newUsername", "newPassword", null, null);
+            assertTrue(admin.modifyUser("oldUsername1", planner));
+        } catch(UsersException ex){
+            fail("UsersException");
+        }
     }
     
+    @Test
+    public void testModifyUserUnsuccessfulUpdateToPlanner(){
+        try{
+            User planner = new Planner("newUsername", "newPassword", null, null);
+            assertFalse(admin.modifyUser("oldUsername2", planner));
+        } catch(UsersException ex){
+            fail("UsersException");
+        }
+    }
+    
+    @Test(expected = UsersException.class)
+    public void testModifyUserUpdateToPlannerException() throws UsersException{
+        User planner = new Planner("newUsername", "newPassword", null, null);
+        admin.modifyUser("oldUsername3", planner);
+    }
+    
+    @Test
+    public void testModifyUserSuccessfulUpdateToMaintainer(){
+        try{
+            User maintainer = new Maintainer("newUsername", "newPassword");
+            assertTrue(admin.modifyUser("oldUsername1", maintainer));
+        } catch(UsersException ex){
+            fail("UsersException");
+        }
+    }
+    
+    @Test
+    public void testModifyUserUnsuccessfulUpdateToMaintainer(){
+        try{
+            User maintainer = new Maintainer("newUsername", "newPassword");
+            assertFalse(admin.modifyUser("oldUsername2", maintainer));
+        } catch(UsersException ex){
+            fail("UsersException");
+        }
+    }
+    
+    @Test(expected = UsersException.class)
+    public void testModifyUserUpdateToMaintainerException() throws UsersException{
+        User maintainer = new Maintainer("newUsername", "newPassword");
+        admin.modifyUser("oldUsername3", maintainer);
+    }
+    
+    @Test
+    public void testModifyUserSuccessfulUpdateTo(){
+        try{
+            User systemAdministrator = new SystemAdministrator("newUsername", "newPassword");
+            assertTrue(admin.modifyUser("oldUsername1", systemAdministrator));
+        } catch(UsersException ex){
+            fail("UsersException");
+        }
+    }
+    
+    @Test
+    public void testModifyUserUnsuccessfulUpdateToSystemAdministrator(){
+        try{
+            User systemAdministrator = new SystemAdministrator("newUsername", "newPassword");
+            assertFalse(admin.modifyUser("oldUsername2", systemAdministrator));
+        } catch(UsersException ex){
+            fail("UsersException");
+        }
+    }
+    
+    @Test(expected = UsersException.class)
+    public void testModifyUserUpdateToSystemAdministratorException() throws UsersException{
+        User systemAdministrator = new SystemAdministrator("newUsername", "newPassword");
+        admin.modifyUser("oldUsername3 ", systemAdministrator);
+    }
+    
+    @Test(expected = UsersException.class)
+    public void testModifyUserOldUsernameNull() throws UsersException{
+        User systemAdministrator = new SystemAdministrator("newUsername", "newPassword");
+        admin.modifyUser("null", systemAdministrator);        
+    }
+    
+    @Test(expected = UsersException.class)
+    public void testModifyUserNewUsernameNull() throws UsersException {
+        User systemAdministrator = new SystemAdministrator(null, "newPassword");        
+        admin.modifyUser("oldUsername1", systemAdministrator);
+    }
     
 }

@@ -110,6 +110,7 @@ public class UsersDAOImpl implements UsersDAO {
     }
     
     
+    @Override
     public boolean updateUser(String oldUsername, User newUser) throws UsersException {       
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
