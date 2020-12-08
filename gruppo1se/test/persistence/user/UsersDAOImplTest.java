@@ -449,13 +449,11 @@ public class UsersDAOImplTest{
     //===============================================================================================================================================
     
     
-    
-    
     /**
-     * this method assert that deleteUser correctly delete the rows in database
+     * this method assert that deleteUsers correctly delete the rows in database
      */
     @Test
-    public void testDeleteUser(){
+    public void testDeleteUsers(){
         try {
             List<String> usernameList = new ArrayList<>(){{
                 add("username1");
@@ -468,7 +466,7 @@ public class UsersDAOImplTest{
             insertUser("username1","password1","Planner");
             insertUser("username2","password2","Maintainer");
             insertUser("username3","password3","System Administrator");
-            int numOfDeletedRow = instance.deleteUser(usernameList);
+            int numOfDeletedRow = instance.deleteUsers(usernameList);
             assertEquals(numOfDeletedRow,usernameList.size());
             for(String username: usernameList){
                 isEmptyResultSet(username);
@@ -482,10 +480,10 @@ public class UsersDAOImplTest{
     
     
     /**
-     * this method assert that deleteUser correctly return 0 if there aren't the searched username in database
+     * this method assert that deleteUsers correctly return 0 if there aren't the searched username in database
      */
     @Test
-    public void testDeleteUserZero(){
+    public void testDeleteUsersZero(){
         try {
             List<String> usernameList = new ArrayList<>(){{
                 add("username4");
@@ -495,7 +493,7 @@ public class UsersDAOImplTest{
             removeUser("username4");
             removeUser("username5");
             removeUser("username6");
-            int numOfDeletedRow = instance.deleteUser(usernameList);
+            int numOfDeletedRow = instance.deleteUsers(usernameList);
             assertEquals(numOfDeletedRow,0);
         } catch (SQLException ex) {
             fail("SQL_EXCEPTION");
@@ -506,13 +504,13 @@ public class UsersDAOImplTest{
     
     
     /**
-     * this method assert that deleteUser correctly return 0 if an empty list is passed
+     * this method assert that deleteUsers correctly return 0 if an empty list is passed
      */
     @Test
-    public void testDeleteUserZero2(){
+    public void testDeleteUsersZero2(){
         try {
             List<String> usernameList = new ArrayList<>();
-            int numOfDeletedRow = instance.deleteUser(usernameList);
+            int numOfDeletedRow = instance.deleteUsers(usernameList);
             assertEquals(numOfDeletedRow,0);
         } catch (UsersException ex) {
             fail("USERS_EXCEPTION");
@@ -521,16 +519,17 @@ public class UsersDAOImplTest{
     
     
     /**
-     * this method assert that deleteUser correctly return 0 if null is passed
+     * this method assert that deleteUsers correctly return 0 if null is passed
      */
     @Test
-    public void testDeleteUserZero3(){
+    public void testDeleteUsersZero3(){
         try {
-            int numOfDeletedRow = instance.deleteUser(null);
+            int numOfDeletedRow = instance.deleteUsers(null);
             assertEquals(numOfDeletedRow,0);
         } catch (UsersException ex) {
             fail("USERS_EXCEPTION");
         }
     }
+   
     
 }
