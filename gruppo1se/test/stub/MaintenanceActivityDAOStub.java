@@ -27,43 +27,43 @@ import persistence.maintenanceactivity.MaintenanceActivityDAO;
  */
 public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
 
-    @Override
+     @Override
     public boolean addMaintenanceActivity(MaintenanceActivity activity) throws MaintenanceActivityException {
         if (activity.getActivityId() == 1 && activity.getSite().getBranchOffice().equals("ProvaBranchOffice") && activity.getSite().getArea().equals("ProvaArea") &&
                 activity.getSite().getWorkSpaceNotes().equals("ProvaWorkspaceNotes") && activity.getTypology().equals("ProvaTypology") && 
                 activity.getEstimatedInterventionTime() == 30 && activity.getDate().equals(LocalDate.of(2050, 11, 25)) && 
-                activity.getMaintenanceProcedure().getSmp().equals("ProvaPDF") && activity.getMaterials().isEmpty() && !activity.isInterruptibleActivity() &&
-                PlannedMaintenanceActivity.class.isInstance(activity))
+                activity.getMaintenanceProcedure().getSmp().equals("ProvaPDF") && activity.getMaterials().isEmpty() && activity.getSkills().isEmpty()
+                && !activity.isInterruptibleActivity() && PlannedMaintenanceActivity.class.isInstance(activity))
             return true;
         else if (activity.getActivityId() == 2 && activity.getSite().getBranchOffice().equals("ProvaBranchOffice") && activity.getSite().getArea().equals("ProvaArea") &&
                 activity.getSite().getWorkSpaceNotes().equals("ProvaWorkspaceNotes") && activity.getTypology().equals("ProvaTypology") && 
                 activity.getEstimatedInterventionTime() == 30 && activity.getDate().equals(LocalDate.of(2020, 11, 24)) && 
-                activity.getMaintenanceProcedure().getSmp().equals("ProvaPDF") && activity.getMaterials().isEmpty() && !activity.isInterruptibleActivity() &&
-                PlannedMaintenanceActivity.class.isInstance(activity))
+                activity.getMaintenanceProcedure().getSmp().equals("ProvaPDF") && activity.getMaterials().isEmpty() && activity.getSkills().isEmpty()
+                && !activity.isInterruptibleActivity() && PlannedMaintenanceActivity.class.isInstance(activity))
             throw new MaintenanceActivityException();
         else if (activity.getActivityId() == 1 && activity.getSite().getBranchOffice().equals("ProvaBranchOffice") && activity.getSite().getArea().equals("ProvaArea") &&
                 activity.getSite().getWorkSpaceNotes().equals("ProvaWorkspaceNotes") && activity.getTypology().equals("ProvaTypology") && 
                 activity.getEstimatedInterventionTime() == 30 && activity.getDate().equals(LocalDate.of(2050, 11, 25)) && 
-                activity.getMaintenanceProcedure().getSmp().equals("ProvaPDF") && activity.getMaterials().isEmpty() && !activity.isInterruptibleActivity() &&
-                ExtraActivity.class.isInstance(activity)) 
+                activity.getMaintenanceProcedure().getSmp().equals("ProvaPDF") && activity.getMaterials().isEmpty() && activity.getSkills().isEmpty()
+                && !activity.isInterruptibleActivity() && ExtraActivity.class.isInstance(activity)) 
             return true;
         else if (activity.getActivityId() == 2 && activity.getSite().getBranchOffice().equals("ProvaBranchOffice") && activity.getSite().getArea().equals("ProvaArea") &&
                 activity.getSite().getWorkSpaceNotes().equals("ProvaWorkspaceNotes") && activity.getTypology().equals("ProvaTypology") && 
                 activity.getEstimatedInterventionTime() == 30 && activity.getDate().equals(LocalDate.of(2020, 11, 24)) && 
-                activity.getMaintenanceProcedure().getSmp().equals("ProvaPDF") && activity.getMaterials().isEmpty() && !activity.isInterruptibleActivity() && 
-                ExtraActivity.class.isInstance(activity))
+                activity.getMaintenanceProcedure().getSmp().equals("ProvaPDF") && activity.getMaterials().isEmpty() && activity.getSkills().isEmpty() 
+                && !activity.isInterruptibleActivity() && ExtraActivity.class.isInstance(activity))
             throw new MaintenanceActivityException();
         else if (activity.getActivityId() == 1 && activity.getSite().getBranchOffice().equals("ProvaBranchOffice") && activity.getSite().getArea().equals("ProvaArea") &&
                 activity.getSite().getWorkSpaceNotes().equals("ProvaWorkspaceNotes") && activity.getTypology().equals("ProvaTypology") && 
                 activity.getEstimatedInterventionTime() == 30 && activity.getDate().equals(LocalDate.of(2050, 11, 25)) && 
-                activity.getMaintenanceProcedure().getSmp().equals("ProvaPDF") && activity.getMaterials().isEmpty() && !activity.isInterruptibleActivity() && 
-                Ewo.class.isInstance(activity))
+                activity.getMaintenanceProcedure().getSmp().equals("ProvaPDF") && activity.getMaterials().isEmpty() && activity.getSkills().isEmpty()
+                && !activity.isInterruptibleActivity() && Ewo.class.isInstance(activity))
             return true;
         else if (activity.getActivityId() == 2 && activity.getSite().getBranchOffice().equals("ProvaBranchOffice") && activity.getSite().getArea().equals("ProvaArea") &&
                 activity.getSite().getWorkSpaceNotes().equals("ProvaWorkspaceNotes") && activity.getTypology().equals("ProvaTypology") && 
                 activity.getEstimatedInterventionTime() == 30 && activity.getDate().equals(LocalDate.of(2020, 11, 24)) && 
-                activity.getMaintenanceProcedure().getSmp().equals("ProvaPDF") && activity.getMaterials().isEmpty() && !activity.isInterruptibleActivity() && 
-                Ewo.class.isInstance(activity))
+                activity.getMaintenanceProcedure().getSmp().equals("ProvaPDF") && activity.getMaterials().isEmpty() && activity.getSkills().isEmpty()
+                && !activity.isInterruptibleActivity() && Ewo.class.isInstance(activity))
             throw new MaintenanceActivityException();
         else return false;
     }

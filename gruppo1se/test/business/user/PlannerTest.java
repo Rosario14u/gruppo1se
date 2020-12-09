@@ -12,10 +12,12 @@ import business.maintenanceactivity.MaintenanceProcedure;
 import business.maintenanceactivity.Material;
 import business.maintenanceactivity.PlannedMaintenanceActivity;
 import business.maintenanceactivity.Site;
+import business.maintenanceactivity.Skill;
 import exception.DateException;
 import exception.MaintenanceActivityException;
 import exception.MaterialException;
 import exception.SiteException;
+import exception.SkillException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -36,6 +38,7 @@ import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.SiteDaoImpl;
 import stub.MaintenanceActivityDAOStub;
 import stub.RequiredMaterialForMaintenanceDAOStub;
+import stub.RequiredSkillForMaintenanceDAOStub;
 
 /**
  *
@@ -53,13 +56,14 @@ public class PlannerTest {
     private String date = "2050-11-25";
     private final String maintenanceProcedure = "ProvaPDF";
     private final ArrayList<Material> materials = new ArrayList<>();
+    private final ArrayList<Skill> skills = new ArrayList<>();
     private boolean interruptibleActivity = false;
     private boolean plannedActivity = true;
     private boolean extraActivity = false;
     private boolean ewo = false;
     private MaintenanceActivityDAOImpl instance = new MaintenanceActivityDAOImpl(new SiteDaoImpl());
     private final Planner planner = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(),
-                new RequiredMaterialForMaintenanceDAOStub());
+                new RequiredMaterialForMaintenanceDAOStub(), new RequiredSkillForMaintenanceDAOStub());
     private final Site site = new Site(branchOffice,area,workspaceNotes);
     private final MaintenanceProcedure mProc = new MaintenanceProcedure(maintenanceProcedure);
     
@@ -305,11 +309,11 @@ public class PlannerTest {
      * Test of makeMaintenanceActivity method, of class Planner.
      */
     @Test
-    public void testMakeMaintenanceActivity() throws MaterialException, MaintenanceActivityException {
+    public void testMakeMaintenanceActivity() throws MaterialException, MaintenanceActivityException, SkillException {
         try {
             System.out.println("makeMaintenanceActivity");
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, skills, interruptibleActivity, plannedActivity, extraActivity, ewo);
             assertEquals(true, result);
             conn.rollback();
         } catch (SQLException ex) {
@@ -318,13 +322,13 @@ public class PlannerTest {
     }
 
     @Test(expected = MaintenanceActivityException.class)
-    public void testMakeMaintenanceActivityWrong() throws MaterialException, MaintenanceActivityException {
+    public void testMakeMaintenanceActivityWrong() throws MaterialException, MaintenanceActivityException, SkillException {
         try {
             System.out.println("makeMaintenanceActivityWrong");
             activityId = 2;
             date = "2020-11-24";
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, skills, interruptibleActivity, plannedActivity, extraActivity, ewo);
             conn.rollback();
         } catch (SQLException ex) {
             System.out.println("Error on: connection rollback");
@@ -332,13 +336,13 @@ public class PlannerTest {
     }
     
     @Test
-    public void testMakeMaintenanceActivityExtraActivity() throws MaterialException, MaintenanceActivityException{
+    public void testMakeMaintenanceActivityExtraActivity() throws MaterialException, MaintenanceActivityException, SkillException{
         try {
             System.out.println("makeMaintenanceActivityExtraActivity");
             extraActivity = true;
             plannedActivity = false;
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, skills, interruptibleActivity, plannedActivity, extraActivity, ewo);
             assertEquals(true, result);
             conn.rollback();
         } catch (SQLException ex) {
@@ -347,7 +351,7 @@ public class PlannerTest {
     }
     
     @Test(expected = MaintenanceActivityException.class)
-    public void testMakeMaintenanceActivityExtraActivityWrong() throws MaterialException, MaintenanceActivityException{
+    public void testMakeMaintenanceActivityExtraActivityWrong() throws MaterialException, MaintenanceActivityException, SkillException{
         try {
             System.out.println("makeMaintenanceActivityExtraActivityWrong");
             activityId = 2;
@@ -355,7 +359,7 @@ public class PlannerTest {
             extraActivity = true;
             date = "2020-11-24";
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, skills, interruptibleActivity, plannedActivity, extraActivity, ewo);
             conn.rollback();
         } catch (SQLException ex) {
             System.out.println("Error on: connection rollback");
@@ -363,13 +367,13 @@ public class PlannerTest {
     }
     
     @Test
-    public void testMakeMaintenanceActivityEwo() throws MaterialException, MaintenanceActivityException{
+    public void testMakeMaintenanceActivityEwo() throws MaterialException, MaintenanceActivityException, SkillException{
         try {
             System.out.println("makeMaintenanceActivityEwo");
             plannedActivity = false;
             ewo = true;
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, skills, interruptibleActivity, plannedActivity, extraActivity, ewo);
             assertEquals(true, result);
             conn.rollback();
         } catch (SQLException ex) {
@@ -378,7 +382,7 @@ public class PlannerTest {
     }
     
     @Test(expected = MaintenanceActivityException.class)
-    public void testMakeMaintenanceActivityEwoWrong() throws MaterialException, MaintenanceActivityException {
+    public void testMakeMaintenanceActivityEwoWrong() throws MaterialException, MaintenanceActivityException, SkillException {
         try {
             System.out.println("makeMaintenanceActivityEwoWrong");
             activityId = 2;
@@ -386,7 +390,7 @@ public class PlannerTest {
             plannedActivity = false;
             date = "2020-11-24";
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, skills, interruptibleActivity, plannedActivity, extraActivity, ewo);
             conn.rollback();
         } catch (SQLException ex) {
             System.out.println("Error on: connection rollback");

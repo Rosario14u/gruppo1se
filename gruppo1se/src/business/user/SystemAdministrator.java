@@ -13,6 +13,7 @@ import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.MaintenanceProcedureDAO;
 import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
+import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.SiteDaoImpl;
 import persistence.user.UsersDAO;
 import persistence.user.UsersDAOImpl;
@@ -64,11 +65,11 @@ public class SystemAdministrator extends User {
     public boolean makeUser(String username, String password, String role) throws UsersException{
         User user;
         if (role.equals("System Administrator"))
-            user = new SystemAdministrator(username, password, new MaintenanceProcedureDAOImpl(),new UsersDAOImpl());
+            user = new SystemAdministrator(username, password, new MaintenanceProcedureDAOImpl(), new UsersDAOImpl());
         else if (role.equals("Maintainer"))
             user = new Maintainer(username, password);
         else
-            user = new Planner(username, password, new MaintenanceActivityDAOImpl(new SiteDaoImpl()), new RequiredMaterialForMaintenanceDAOImpl());
+            user = new Planner(username, password, new MaintenanceActivityDAOImpl(new SiteDaoImpl()), new RequiredMaterialForMaintenanceDAOImpl(), new RequiredSkillForMaintenanceDAOImpl());
         return usersDAO.addUser(user);
     }
     

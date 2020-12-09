@@ -100,13 +100,13 @@ public class UsersDAOImplTest{
     }
     /**
      * Test of addUser method, of class UsersDAO.
-     * //@throws exception.UsersException
-     * //@throws java.sql.SQLException
+     * @throws exception.UsersException
+     * @throws java.sql.SQLException
      */
     @Test
     public void testAddUserPlanner() throws UsersException, SQLException{
         System.out.println("addUserPlanner");
-        User user = new Planner("ProvaUsername","ProvaPassword", null, null);
+        User user = new Planner("ProvaUsername","ProvaPassword", null, null, null);
         Statement stmt = conn.createStatement();
         deleteUserDefault(stmt, user.getUsername());
         instance.addUser(user);
@@ -116,8 +116,8 @@ public class UsersDAOImplTest{
     
     /**
      * Test of addUser method, of class UsersDAO.
-     * //@throws exception.UsersException
-     * //@throws java.sql.SQLException
+     * @throws exception.UsersException
+     * @throws java.sql.SQLException
      */
     @Test
     public void testAddUserMaintainer() throws UsersException, SQLException{
@@ -132,8 +132,8 @@ public class UsersDAOImplTest{
     
     /**
      * Test of addUser method, of class UsersDAO.
-     * //@throws exception.UsersException
-     * //@throws java.sql.SQLException
+     * @throws exception.UsersException
+     * @throws java.sql.SQLException
      */
     @Test
     public void testAddUserSystemAdministrator() throws UsersException, SQLException{

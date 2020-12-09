@@ -18,6 +18,7 @@ import org.junit.*;
  */
 public class PlannedMaintenanceActivityTest {
     private final LinkedList<Material> materials = new LinkedList<>();
+    private final LinkedList<Skill> skills = new LinkedList<>();
     private final MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
     private final Site site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
     private final LocalDate date = LocalDate.of(2050, 11, 9);
@@ -25,7 +26,7 @@ public class PlannedMaintenanceActivityTest {
     
     public PlannedMaintenanceActivityTest() {
         materials.add(new Material("material1"));
-        instance = new PlannedMaintenanceActivity(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
+        instance = new PlannedMaintenanceActivity(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, skills, true);
     }
     
 
@@ -146,10 +147,33 @@ public class PlannedMaintenanceActivityTest {
         assertEquals(PlannedMaintenanceActivity.class.isInstance(this.instance), true);
     }
     
+    /**
+     * Test of getSkills method, of class PlannedMaintenanceActivity.
+     */
+    @Test
+    public void testGetSkills() {
+        System.out.println("getSkills");
+        List<Skill> expResult = skills;
+        List<Skill> result = instance.getSkills();
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of setSkills method, of class PlannedMaintenanceActivity.
+     */
+    @Test
+    public void testSetskills() {
+        System.out.println("setSkills");
+        List<Skill> skillsAdd = new LinkedList<>();
+        skillsAdd.add(new Skill("skills2"));
+        instance.setSkills(skillsAdd);
+        assertEquals(instance.getMaterials(), skillsAdd);
+    }
+    
     @Test
     public void testEquals(){
         System.out.println("equals");
-        PlannedMaintenanceActivity obj = new PlannedMaintenanceActivity(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
+        PlannedMaintenanceActivity obj = new PlannedMaintenanceActivity(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, skills, true);
         boolean result = instance.equals(obj);
         assertEquals(result, true);
     }
@@ -157,7 +181,7 @@ public class PlannedMaintenanceActivityTest {
     @Test
     public void testNotEquals(){
         System.out.println("not equals");
-        PlannedMaintenanceActivity obj = new PlannedMaintenanceActivity(2, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
+        PlannedMaintenanceActivity obj = new PlannedMaintenanceActivity(2, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, skills, true);
         boolean result = instance.equals(obj);
         assertEquals(result, false);
     }

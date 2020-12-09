@@ -25,18 +25,19 @@ public class UnplannedActivityFactory extends MaintenanceActivityFactory{
      * @param date date of maintenance activity to instantiate
      * @param maintenanceProcedure procedure of maintenance activity to instantiate
      * @param materials required materials for maintenance to instantiate
+     * @param skills required skills for maintenance to instantiate
      * @param interruptibleActivity indicates whether the activity is interruptible to instantiate
      * @return the correct instance of unplanned maintenance activity 
      */
     @Override
     protected MaintenanceActivity selectMaintenanceActivity(MaintenanceActivityFactory.Typology type, int activityId, Site site, String typology,
             String activityDescription, int estimatedInterventionTime, LocalDate date, 
-            MaintenanceProcedure maintenanceProcedure, List<Material> materials, boolean interruptibleActivity) {
+            MaintenanceProcedure maintenanceProcedure, List<Material> materials, List<Skill> skills, boolean interruptibleActivity) {
         if (type == MaintenanceActivityFactory.Typology.EWO){
             return new Ewo(activityId, site, typology, activityDescription,
-                estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity);
+                estimatedInterventionTime, date, maintenanceProcedure, materials, skills, interruptibleActivity);
         }
         return new ExtraActivity(activityId, site, typology, activityDescription,
-            estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity);
-    }   
+            estimatedInterventionTime, date, maintenanceProcedure, materials, skills, interruptibleActivity);
+    }  
 }

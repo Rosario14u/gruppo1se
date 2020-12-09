@@ -8,14 +8,17 @@ package business.user;
 import business.maintenanceactivity.MaintenanceActivity;
 import business.maintenanceactivity.MaintenanceActivityFactory;
 import business.maintenanceactivity.Material;
+import business.maintenanceactivity.Skill;
 import exception.DateException;
 import exception.MaintenanceActivityException;
 import exception.MaterialException;
 import exception.SiteException;
+import exception.SkillException;
 import java.time.LocalDate;
 import java.util.List;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAO;
 import persistence.maintenanceactivity.MaintenanceActivityDAO;
+import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAO;
 
 /**
  *
@@ -24,6 +27,7 @@ import persistence.maintenanceactivity.MaintenanceActivityDAO;
 public class Planner extends User {
     private MaintenanceActivityDAO maintenanceActivityDao;
     private RequiredMaterialForMaintenanceDAO requiredMaterialsDao;
+    private final RequiredSkillForMaintenanceDAO requiredSkillsDao;
     
     
     /**
@@ -43,10 +47,11 @@ public class Planner extends User {
      * @param maintenanceActivityDao MaintenanceActivityDao object of Planner
      * @param requiredMaterialsDao RequiredMaterialDao object of Planner
      */
-    public Planner(String username, String password, MaintenanceActivityDAO maintenanceActivityDao, RequiredMaterialForMaintenanceDAO requiredMaterialsDao) {
+    public Planner(String username, String password, MaintenanceActivityDAO maintenanceActivityDao, RequiredMaterialForMaintenanceDAO requiredMaterialsDao, RequiredSkillForMaintenanceDAO requiredSkillsDao) {
         super(username, password);
         this.maintenanceActivityDao = maintenanceActivityDao;
         this.requiredMaterialsDao = requiredMaterialsDao;
+        this.requiredSkillsDao = requiredSkillsDao;
     }
     
     
@@ -114,8 +119,8 @@ public class Planner extends User {
     }
     
     public boolean makeMaintenanceActivity(int activityId, String branchOffice, String area, String workspaceNotes, String typology, String activityDescription, int estimatedInterventionTime, 
-            String date, String smp, List<Material> materials, boolean interruptibleActivity,
-            boolean plannedActivity, boolean extraActivity, boolean ewo) throws MaintenanceActivityException, MaterialException{
+            String date, String smp, List<Material> materials, List<Skill> skills, boolean interruptibleActivity,
+            boolean plannedActivity, boolean extraActivity, boolean ewo) throws MaintenanceActivityException, MaterialException, SkillException{
         MaintenanceActivityFactory.Typology type = null;
         if (plannedActivity)
             type = MaintenanceActivityFactory.Typology.PLANNED;
@@ -124,10 +129,14 @@ public class Planner extends User {
         else
             type = MaintenanceActivityFactory.Typology.EWO;
         MaintenanceActivity activity = MaintenanceActivityFactory.make(type, activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime,
-                date, smp, materials, interruptibleActivity);
-        if (materials!=null)
+                date, smp, materials, skills, interruptibleActivity);
+        if (materials!=null && skills!=null)
+            return maintenanceActivityDao.addMaintenanceActivity(activity) && requiredMaterialsDao.addRequiredMaterial(activityId, materials) && requiredSkillsDao.addRequiredSkill(activityId, skills);
+        else if (materials!=null)
             return maintenanceActivityDao.addMaintenanceActivity(activity) && requiredMaterialsDao.addRequiredMaterial(activityId, materials);
-        else
+        else if (skills!=null)
+            return maintenanceActivityDao.addMaintenanceActivity(activity) && requiredSkillsDao.addRequiredSkill(activityId, skills);
+        else 
             return maintenanceActivityDao.addMaintenanceActivity(activity);
     }
 
