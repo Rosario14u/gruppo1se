@@ -24,7 +24,6 @@ public abstract class MaintenanceActivity implements Comparable<MaintenanceActiv
     private final LocalDate date;
     private final MaintenanceProcedure maintenanceProcedure;
     private List<Material> materials;
-    private List<Skill> skills;
     private final boolean interruptibleActivity;
     
     
@@ -43,7 +42,7 @@ public abstract class MaintenanceActivity implements Comparable<MaintenanceActiv
      */
     public MaintenanceActivity(int activityId, Site site, String typology, String activityDescription,
             int estimatedInterventionTime, LocalDate date, MaintenanceProcedure maintenanceProcedure,
-            List<Material> materials, List<Skill> skills, boolean interruptibleActivity) {
+            List<Material> materials, boolean interruptibleActivity) {
         this.activityId = activityId;
         this.site = site;
         this.typology = typology;
@@ -52,7 +51,6 @@ public abstract class MaintenanceActivity implements Comparable<MaintenanceActiv
         this.date = date;
         this.maintenanceProcedure = maintenanceProcedure;
         this.materials = materials;
-        this.skills = skills;
         this.interruptibleActivity = interruptibleActivity;
     }
     
@@ -130,15 +128,6 @@ public abstract class MaintenanceActivity implements Comparable<MaintenanceActiv
     
     /**
      * 
-     * @return {@code List<String>} skills
-     */
-    public List<Skill> getSkills() {
-        return skills;
-    }
-    
-    
-    /**
-     * 
      * @return {@code boolean} interruptibleActivity
      */
     public boolean isInterruptibleActivity() {
@@ -152,14 +141,6 @@ public abstract class MaintenanceActivity implements Comparable<MaintenanceActiv
      */
     public void setMaterials(List<Material> materials) {
         this.materials = materials;
-    }
-    
-    /**
-     * 
-     * @param skills list of skills
-     */
-    public void setSkills(List<Skill> skills) {
-        this.skills = skills;
     }
     
     
@@ -186,7 +167,6 @@ public abstract class MaintenanceActivity implements Comparable<MaintenanceActiv
         hash = 67 * hash + Objects.hashCode(this.date);
         hash = 67 * hash + Objects.hashCode(this.maintenanceProcedure);
         hash = 67 * hash + Objects.hashCode(this.materials);
-        hash = 67 * hash + Objects.hashCode(this.skills);
         hash = 67 * hash + (this.interruptibleActivity ? 1 : 0);
         return hash;
     }
@@ -233,9 +213,6 @@ public abstract class MaintenanceActivity implements Comparable<MaintenanceActiv
             return false;
         }
         if (!((this.materials.size() == other.materials.size()) && (this.materials.containsAll(other.materials)))) {
-            return false;
-        }
-        if (!((this.skills.size() == other.skills.size()) && (this.skills.containsAll(other.skills)))) {
             return false;
         }
         return true;

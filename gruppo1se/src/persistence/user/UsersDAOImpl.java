@@ -73,7 +73,7 @@ public class UsersDAOImpl implements UsersDAO {
                 else
                     users.add(new Planner(set.getString("username"), set.getString("password"),
                             new MaintenanceActivityDAOImpl(new SiteDaoImpl()) ,
-                            new RequiredMaterialForMaintenanceDAOImpl(), new RequiredSkillForMaintenanceDAOImpl()));
+                            new RequiredMaterialForMaintenanceDAOImpl()));
             }
             return users;
         } catch (SQLException ex) {

@@ -5,6 +5,7 @@
  */
 package business.maintenanceactivity;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -14,6 +15,7 @@ import java.util.Objects;
  */
 public class MaintenanceProcedure {
     private String smp;
+    private List<Skill> skills;
 
     /**
      * Constructor of Maintenance Procedure
@@ -21,6 +23,11 @@ public class MaintenanceProcedure {
      */
     public MaintenanceProcedure(String smp) {
         this.smp = smp;
+        skills = null;
+    }
+
+    public List<Skill> getSkills() {
+        return skills;
     }
 
     /**
@@ -37,6 +44,10 @@ public class MaintenanceProcedure {
      */
     public void setSmp(String smp) {
         this.smp = smp;
+    }
+
+    public void setSkills(List<Skill> skills) {
+        this.skills = skills;
     }
 
     @Override

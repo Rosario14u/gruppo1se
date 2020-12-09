@@ -27,7 +27,6 @@ import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAO;
 public class Planner extends User {
     private MaintenanceActivityDAO maintenanceActivityDao;
     private RequiredMaterialForMaintenanceDAO requiredMaterialsDao;
-    private RequiredSkillForMaintenanceDAO requiredSkillsDao;
     
     
     /**
@@ -47,11 +46,10 @@ public class Planner extends User {
      * @param maintenanceActivityDao MaintenanceActivityDao object of Planner
      * @param requiredMaterialsDao RequiredMaterialDao object of Planner
      */
-    public Planner(String username, String password, MaintenanceActivityDAO maintenanceActivityDao, RequiredMaterialForMaintenanceDAO requiredMaterialsDao, RequiredSkillForMaintenanceDAO requiredSkillsDao) {
+    public Planner(String username, String password, MaintenanceActivityDAO maintenanceActivityDao, RequiredMaterialForMaintenanceDAO requiredMaterialsDao) {
         super(username, password);
         this.maintenanceActivityDao = maintenanceActivityDao;
         this.requiredMaterialsDao = requiredMaterialsDao;
-        this.requiredSkillsDao = requiredSkillsDao;
     }
     
     
@@ -72,7 +70,6 @@ public class Planner extends User {
         MaintenanceActivity activity = maintenanceActivityDao.retrieveMaintenanceActivityDao(activityId);
         if(activity != null){
             activity.setMaterials(requiredMaterialsDao.retrieveMaterialsByActivityId(activityId));
-            activity.setSkills(requiredSkillsDao.retrieveSkillsByActivityId(activityId));
         }
         return activity;
     }
@@ -106,7 +103,7 @@ public class Planner extends User {
                         MaintenanceActivityFactory.Typology.PLANNED : MaintenanceActivityFactory.Typology.valueOf(typologyOfUnplannedActivity);
 
             MaintenanceActivity newActivity = MaintenanceActivityFactory.make(type, activityId, branchOffice, area, null, typology, activityDescription, 
-                    estimatedInterventionTime, date, null, null, null,interruptibleActivity);
+                    estimatedInterventionTime, date, null, null, interruptibleActivity);
 
             return maintenanceActivityDao.modifyMaintenaceActivity(newActivity);
         }catch(IllegalArgumentException ex){
@@ -120,8 +117,8 @@ public class Planner extends User {
     }
     
     public boolean makeMaintenanceActivity(int activityId, String branchOffice, String area, String workspaceNotes, String typology, String activityDescription, int estimatedInterventionTime, 
-            String date, String smp, List<Material> materials, List<Skill> skills, boolean interruptibleActivity,
-            boolean plannedActivity, boolean extraActivity, boolean ewo) throws MaintenanceActivityException, MaterialException, SkillException{
+            String date, String smp, List<Material> materials, boolean interruptibleActivity,
+            boolean plannedActivity, boolean extraActivity, boolean ewo) throws MaintenanceActivityException, MaterialException{
         MaintenanceActivityFactory.Typology type = null;
         if (plannedActivity)
             type = MaintenanceActivityFactory.Typology.PLANNED;
@@ -130,13 +127,9 @@ public class Planner extends User {
         else
             type = MaintenanceActivityFactory.Typology.EWO;
         MaintenanceActivity activity = MaintenanceActivityFactory.make(type, activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime,
-                date, smp, materials, skills, interruptibleActivity);
-        if (materials!=null && skills!=null)
-            return maintenanceActivityDao.addMaintenanceActivity(activity) && requiredMaterialsDao.addRequiredMaterial(activityId, materials) && requiredSkillsDao.addRequiredSkill(activityId, skills);
-        else if (materials!=null)
+                date, smp, materials, interruptibleActivity);
+        if (materials!=null)
             return maintenanceActivityDao.addMaintenanceActivity(activity) && requiredMaterialsDao.addRequiredMaterial(activityId, materials);
-        else if (skills!=null)
-            return maintenanceActivityDao.addMaintenanceActivity(activity) && requiredSkillsDao.addRequiredSkill(activityId, skills);
         else 
             return maintenanceActivityDao.addMaintenanceActivity(activity);
     }

@@ -69,7 +69,7 @@ public class SystemAdministrator extends User {
         else if (role.equals("Maintainer"))
             user = new Maintainer(username, password);
         else
-            user = new Planner(username, password, new MaintenanceActivityDAOImpl(new SiteDaoImpl()), new RequiredMaterialForMaintenanceDAOImpl(), new RequiredSkillForMaintenanceDAOImpl());
+            user = new Planner(username, password, new MaintenanceActivityDAOImpl(new SiteDaoImpl()), new RequiredMaterialForMaintenanceDAOImpl());
         return usersDAO.addUser(user);
     }
     
