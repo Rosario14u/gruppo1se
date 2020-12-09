@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.event.DocumentEvent;
@@ -321,6 +322,11 @@ public class ViewUsers extends javax.swing.JFrame {
         jRole.setEnabled(false);
 
         deleteButton.setText("Delete");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
 
         modifyButton.setText("Modify");
         modifyButton.addActionListener(new java.awt.event.ActionListener() {
@@ -397,6 +403,41 @@ public class ViewUsers extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        try {
+            int[] selectedIndex = jTable.getSelectedRows();
+            User user = null;
+            List<String> usernameList = new ArrayList<>();
+            for(int i = 0; i < selectedIndex.length; i++)    
+                usernameList.add(String.valueOf(tableModel.getValueAt(i, 0)));
+            if(!usernameList.isEmpty()){
+                int dialogResult = confirmMessage("Are you sure you wish to delete these users");
+                if(dialogResult == JOptionPane.YES_OPTION){
+                    systemAdministrator.removeUsers(usernameList);
+                    for(int i = 0; i < selectedIndex.length; i++)    
+                        tableModel.removeRow(i);
+                }
+                jTable.clearSelection();
+            }else{
+                infoMessage("There aren't user selected");
+            }
+        } catch (UsersException ex) {
+            errorMessage(ex.getMessage());
+        }
+    }//GEN-LAST:event_deleteButtonActionPerformed
+   
+    
+    private void errorMessage(String message){
+        JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    private void infoMessage(String message){
+        JOptionPane.showMessageDialog(this, message, "INFO", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    private int confirmMessage(String message){
+        return JOptionPane.showConfirmDialog(this, message, "Confirm", JOptionPane.YES_NO_OPTION);
+    }
     //================================================================================================================================
     
     private void modifyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyButtonActionPerformed
@@ -474,10 +515,7 @@ public class ViewUsers extends javax.swing.JFrame {
                 return DO_NOTHING_ON_CLOSE;
         }
     }
-    
-    private void infoMessage(String message){
-        JOptionPane.showMessageDialog(this, message, "INFO", JOptionPane.INFORMATION_MESSAGE);
-    }
+   
     //================================================================================================================================
     
     /**
