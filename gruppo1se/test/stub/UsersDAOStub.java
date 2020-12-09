@@ -35,7 +35,7 @@ public class UsersDAOStub implements UsersDAO {
         List<User> users = new ArrayList<>();
         users.add(new Maintainer("UserMaintainer","PwdMaintainer"));
         users.add(new Planner("UserPlanner","PwdPlanner", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
-                new RequiredMaterialForMaintenanceDAOImpl(),new RequiredSkillForMaintenanceDAOImpl()));
+                new RequiredMaterialForMaintenanceDAOImpl()));
         users.add(new SystemAdministrator("UserSystemAdministrator","PwdSystemAdministrator",new MaintenanceProcedureDAOImpl(),new UsersDAOImpl()));
         return users;
     }

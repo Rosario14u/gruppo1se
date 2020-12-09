@@ -14,8 +14,8 @@ import java.util.List;
  * @author aless
  */
 public interface RequiredSkillForMaintenanceDAO {
-    public List<Skill> retrieveSkillsByActivityId(int activityId) throws SkillException;
-    public boolean addRequiredSkill(int activityId, List<Skill> requiredSkill) throws SkillException;
-    public boolean removeRequiredSkill(int activityId, List<Skill> requiredSkill) throws SkillException;
-    public List<Skill> retrieveAvailableSkillToAdd(int activityId) throws SkillException;
+    public List<Skill> retrieveSkillsBySmp(String smp) throws SkillException;
+    public boolean addRequiredSkill(String smp, List<Skill> requiredSkill) throws SkillException;
+    public boolean removeRequiredSkill(String smp, List<Skill> requiredSkill) throws SkillException;
+    public List<Skill> retrieveAvailableSkillToAdd(String smp) throws SkillException;
 }

@@ -26,14 +26,14 @@ import persistence.database.ConnectionDB;
  */
 public class RequiredSkillForMaintenanceDAOImplTest {
     private static Connection conn;
-    private static String DELETE_ASSOCIATION_SKILL_TO_ACTIVITY = "DELETE FROM RequiredSkill where activityId = ?";
-    private static String ASSOCIATE_SKILL_TO_ACTIVITY = "INSERT INTO RequiredSkill values(?,?),(?,?),(?,?)";
-    private static String SELECT_SKILL_WITH_ACTIVITY_ID = "SELECT skillname"
-            + " FROM RequiredSkill WHERE activityId = ? ORDER BY skillname";
-    private static String INSERT_SKILL_FOR_ACTIVITY = "INSERT INTO RequiredSkill VALUES (?,?)";
-    private static String DELETE_SKILL = "DELETE FROM skill";
-    private static String INSERT_SKILL = "INSERT INTO skill VALUES (?)";
-    private RequiredSkillForMaintenanceDAOImpl skillForMaintenanceDao;
+    private static final String DELETE_ASSOCIATION_SKILL_BY_SMP = "DELETE FROM RequiredProcedureSkill where smp = ?";
+    private static final String ASSOCIATE_SKILL_TO_PROCEDURE = "INSERT INTO RequiredProcedureSkill values(?,?),(?,?),(?,?)";
+    private static final String SELECT_SKILL_WITH_SMP = "SELECT skillname"
+            + " FROM RequiredProcedureSkill WHERE smp = ? ORDER BY skillname";
+    private static final String INSERT_SKILL_FOR_PROCEDURE = "INSERT INTO RequiredProcedureSkill VALUES (?,?)";
+    private static final String DELETE_SKILL = "DELETE FROM skill";
+    private static final String INSERT_SKILL = "INSERT INTO skill VALUES (?)";
+    private final RequiredSkillForMaintenanceDAOImpl skillForMaintenanceDao;
     
     public RequiredSkillForMaintenanceDAOImplTest() {
         skillForMaintenanceDao= new RequiredSkillForMaintenanceDAOImpl();
@@ -83,18 +83,18 @@ public class RequiredSkillForMaintenanceDAOImplTest {
                     add(new Skill("SQL knowledge"));
                 }};
         try {
-            PreparedStatement pstm = conn.prepareStatement(DELETE_ASSOCIATION_SKILL_TO_ACTIVITY);
-            pstm.setInt(1, 1);
+            PreparedStatement pstm = conn.prepareStatement(DELETE_ASSOCIATION_SKILL_BY_SMP);
+            pstm.setString(1, "smp");
             pstm.executeUpdate();
-            pstm = conn.prepareStatement(ASSOCIATE_SKILL_TO_ACTIVITY);
-            pstm.setInt(1, 1);
+            pstm = conn.prepareStatement(ASSOCIATE_SKILL_TO_PROCEDURE);
+            pstm.setString(1, "smp");
             pstm.setString(2, expectedResult.get(0).getName());
-            pstm.setInt(3, 1);
+            pstm.setString(3, "smp");
             pstm.setString(4, expectedResult.get(1).getName());
-            pstm.setInt(5, 1);
+            pstm.setString(5, "smp");
             pstm.setString(6, expectedResult.get(2).getName());
             pstm.executeUpdate();
-            List<Skill> result= skillForMaintenanceDao.retrieveSkillsByActivityId(1);
+            List<Skill> result= skillForMaintenanceDao.retrieveSkillsBySmp("smp");
             Collections.sort(expectedResult);
             Collections.sort(result);
             assertEquals("retrieveSkillsByActivityIdInDatabase error",expectedResult, result);
@@ -112,10 +112,10 @@ public class RequiredSkillForMaintenanceDAOImplTest {
     @Test
     public void testRetrieveSkillsByActivityIdNotInDatabase() {
         try {
-            PreparedStatement pstm = conn.prepareStatement(DELETE_ASSOCIATION_SKILL_TO_ACTIVITY);
-            pstm.setInt(1, 1);
+            PreparedStatement pstm = conn.prepareStatement(DELETE_ASSOCIATION_SKILL_BY_SMP);
+            pstm.setString(1, "smp");
             pstm.executeUpdate();
-            List<Skill> result = skillForMaintenanceDao.retrieveSkillsByActivityId(1);
+            List<Skill> result = skillForMaintenanceDao.retrieveSkillsBySmp("smp");
             assertTrue("requiredSkill error", result.isEmpty());        
         } catch (SQLException ex) {
             fail("SQLException");
@@ -131,8 +131,8 @@ public class RequiredSkillForMaintenanceDAOImplTest {
     @Test
     public void testAddRequiredSkill(){
         try {
-            PreparedStatement pstm = conn.prepareStatement(DELETE_ASSOCIATION_SKILL_TO_ACTIVITY);
-            pstm.setInt(1, 1);
+            PreparedStatement pstm = conn.prepareStatement(DELETE_ASSOCIATION_SKILL_BY_SMP);
+            pstm.setString(1, "smp");
             pstm.executeUpdate();
             List<Skill> listSkills = new ArrayList<>();
             
@@ -140,10 +140,10 @@ public class RequiredSkillForMaintenanceDAOImplTest {
                 listSkills.add(new Skill(String.valueOf(Character.toChars(i))));
             }
             
-            assertTrue(skillForMaintenanceDao.addRequiredSkill(1, listSkills));
+            assertTrue(skillForMaintenanceDao.addRequiredSkill("smp", listSkills));
             
-            pstm = conn.prepareStatement(SELECT_SKILL_WITH_ACTIVITY_ID);
-            pstm.setInt(1, 1);
+            pstm = conn.prepareStatement(SELECT_SKILL_WITH_SMP);
+            pstm.setString(1, "smp");
             ResultSet res = pstm.executeQuery();
             
             for(int i=0;res.next();i++){
@@ -163,22 +163,22 @@ public class RequiredSkillForMaintenanceDAOImplTest {
     public void testRemoveRequiredSkillInDatabase(){
         try {
             List<Skill> listSkills = new ArrayList<>();
-            PreparedStatement pstm = conn.prepareStatement(DELETE_ASSOCIATION_SKILL_TO_ACTIVITY);
-            pstm.setInt(1, 1);
+            PreparedStatement pstm = conn.prepareStatement(DELETE_ASSOCIATION_SKILL_BY_SMP);
+            pstm.setString(1, "smp");
             pstm.executeUpdate();
             
-            pstm = conn.prepareStatement(INSERT_SKILL_FOR_ACTIVITY);
+            pstm = conn.prepareStatement(INSERT_SKILL_FOR_PROCEDURE);
             for(int i='a';i<='z';i++){
-                pstm.setInt(1, 1);
+                pstm.setString(1, "smp");
                 pstm.setString(2, String.valueOf(Character.toChars(i)));
                 pstm.executeUpdate();
                 listSkills.add(new Skill(String.valueOf(Character.toChars(i))));
             }
             
-            assertTrue(skillForMaintenanceDao.removeRequiredSkill(1, listSkills));
+            assertTrue(skillForMaintenanceDao.removeRequiredSkill("smp", listSkills));
             
-            pstm = conn.prepareStatement(SELECT_SKILL_WITH_ACTIVITY_ID);
-            pstm.setInt(1, 1);
+            pstm = conn.prepareStatement(SELECT_SKILL_WITH_SMP);
+            pstm.setString(1, "smp");
             ResultSet res = pstm.executeQuery();
             
             //returns false if there are no more rows to return
@@ -194,18 +194,18 @@ public class RequiredSkillForMaintenanceDAOImplTest {
     public void testRemoveRequiredSkillNotInDatabase(){
         try {
             List<Skill> listSkills = new ArrayList<>();
-            PreparedStatement pstm = conn.prepareStatement(DELETE_ASSOCIATION_SKILL_TO_ACTIVITY);
-            pstm.setInt(1, 1);
+            PreparedStatement pstm = conn.prepareStatement(DELETE_ASSOCIATION_SKILL_BY_SMP);
+            pstm.setString(1, "smp");
             pstm.executeUpdate();
             
             for(int i='a';i<='z';i++){
                 listSkills.add(new Skill(String.valueOf(Character.toChars(i))));
             }
             
-            assertFalse(skillForMaintenanceDao.removeRequiredSkill(1, listSkills));
+            assertFalse(skillForMaintenanceDao.removeRequiredSkill("smp", listSkills));
             
-            pstm = conn.prepareStatement(SELECT_SKILL_WITH_ACTIVITY_ID);
-            pstm.setInt(1, 1);
+            pstm = conn.prepareStatement(SELECT_SKILL_WITH_SMP);
+            pstm.setString(1, "smp");
             ResultSet res = pstm.executeQuery();
             
             //returns false if there are no more rows to return
@@ -222,8 +222,8 @@ public class RequiredSkillForMaintenanceDAOImplTest {
         try {
             List<Skill> expectedSkillsList = new ArrayList<>();
             List<Skill> actualSkillsList = new ArrayList<>();
-            PreparedStatement pstm = conn.prepareStatement(DELETE_ASSOCIATION_SKILL_TO_ACTIVITY);
-            pstm.setInt(1, 1);
+            PreparedStatement pstm = conn.prepareStatement(DELETE_ASSOCIATION_SKILL_BY_SMP);
+            pstm.setString(1, "smp");
             pstm.executeUpdate();
             
             Statement stm = conn.createStatement();
@@ -237,7 +237,7 @@ public class RequiredSkillForMaintenanceDAOImplTest {
                 expectedSkillsList.add(new Skill(String.valueOf(Character.toChars(i))));
             }
             
-            actualSkillsList = skillForMaintenanceDao.retrieveAvailableSkillToAdd(1);
+            actualSkillsList = skillForMaintenanceDao.retrieveAvailableSkillToAdd("smp");
             
             Collections.sort(actualSkillsList);
             assertEquals(expectedSkillsList,actualSkillsList);
@@ -253,14 +253,14 @@ public class RequiredSkillForMaintenanceDAOImplTest {
         try {
             List<Skill> expectedSkillsList = new ArrayList<>();
             List<Skill> actualSkillsList = new ArrayList<>();
-            PreparedStatement pstm = conn.prepareStatement(DELETE_ASSOCIATION_SKILL_TO_ACTIVITY);
-            pstm.setInt(1, 1);
+            PreparedStatement pstm = conn.prepareStatement(DELETE_ASSOCIATION_SKILL_BY_SMP);
+            pstm.setString(1, "smp");
             pstm.executeUpdate();
             
             Statement stm = conn.createStatement();
             stm.executeUpdate(DELETE_SKILL);
             
-            actualSkillsList = skillForMaintenanceDao.retrieveAvailableSkillToAdd(1);
+            actualSkillsList = skillForMaintenanceDao.retrieveAvailableSkillToAdd("smp");
             
             assertEquals(expectedSkillsList,actualSkillsList);
         } catch (SQLException ex) {

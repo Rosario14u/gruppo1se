@@ -119,12 +119,12 @@ public class MenuPlanner extends javax.swing.JFrame {
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         new DeleteActivity(new Planner("admin","admin", new MaintenanceActivityDAOImpl(new SiteDaoImpl()), 
-                new RequiredMaterialForMaintenanceDAOImpl(),new RequiredSkillForMaintenanceDAOImpl())).setVisible(true);
+                new RequiredMaterialForMaintenanceDAOImpl())).setVisible(true);
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         new CreateActivity(new Planner("admin","admin", new MaintenanceActivityDAOImpl(new SiteDaoImpl()), 
-                new RequiredMaterialForMaintenanceDAOImpl(),new RequiredSkillForMaintenanceDAOImpl())).setVisible(true);
+                new RequiredMaterialForMaintenanceDAOImpl())).setVisible(true);
     }//GEN-LAST:event_addButtonActionPerformed
 
     /**

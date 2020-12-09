@@ -36,7 +36,7 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
      */
     public SelectionActivityGUI() {
         planner = new Planner("admin","admin", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
-                new RequiredMaterialForMaintenanceDAOImpl(), new RequiredSkillForMaintenanceDAOImpl());
+                new RequiredMaterialForMaintenanceDAOImpl());
         initComponents();
         inizializeField();
     }

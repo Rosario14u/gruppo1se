@@ -49,7 +49,7 @@ public class SystemAdministratorTest {
     public SystemAdministratorTest() {
         admin = new SystemAdministrator("admin","admin",new MaintenanceProcedureDAOStub(),new UsersDAOStub());
         planner =  new Planner("newUsername", "newPassword", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
-                    new RequiredMaterialForMaintenanceDAOImpl(),new RequiredSkillForMaintenanceDAOImpl());
+                    new RequiredMaterialForMaintenanceDAOImpl());
         maintainer = new Maintainer("newUsername", "newPassword");
         systemAdministrator = new SystemAdministrator("newUsername", "newPassword");
     }
@@ -172,7 +172,7 @@ public class SystemAdministratorTest {
         List<User> expected = new ArrayList<>();
         expected.add(new Maintainer("UserMaintainer","PwdMaintainer"));
         expected.add(new Planner("UserPlanner","PwdPlanner", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
-                new RequiredMaterialForMaintenanceDAOImpl(),new RequiredSkillForMaintenanceDAOImpl()));
+                new RequiredMaterialForMaintenanceDAOImpl()));
         expected.add(new SystemAdministrator("UserSystemAdministrator","PwdSystemAdministrator",new MaintenanceProcedureDAOImpl(),new UsersDAOImpl()));
         List<User> users = instance.viewUsers();
         assertEquals(true,expected.equals(users));

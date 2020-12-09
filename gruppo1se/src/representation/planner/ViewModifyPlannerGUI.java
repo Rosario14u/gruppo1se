@@ -49,7 +49,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
     public ViewModifyPlannerGUI() {
         listModel = new DefaultListModel<>();
         planner = new Planner("admin","admin", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
-                new RequiredMaterialForMaintenanceDAOImpl(), new RequiredSkillForMaintenanceDAOImpl());
+                new RequiredMaterialForMaintenanceDAOImpl());
         initComponents();
         initializeField(false);
         weekTextField.setEnabled(false);

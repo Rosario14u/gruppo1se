@@ -55,10 +55,9 @@ public class UnplannedActivityFactoryTest {
         int estimatedInterventionTime = 120;
         LocalDate date = LocalDate.parse("2020-11-30");
         MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("Smp");
-        List<Material> listMaterial = createListMaterial("Materiale2","Materiale1","Materiale3");
-        List<Skill> listSkill = createListSkill("Skill2","Skill1","Skill3");
+        List<Material> materials = createListMaterial("Materiale2","Materiale1","Materiale3");
         boolean interruptibleActivity = false;
-        Ewo expResult = new Ewo(activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, listMaterial, listSkill,interruptibleActivity);
+        Ewo expResult = new Ewo(activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity);
         MaintenanceActivity result = instance.selectMaintenanceActivity(type, activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity);
         assertEquals(expResult, result);
     }

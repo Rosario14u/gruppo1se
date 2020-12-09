@@ -27,7 +27,7 @@ public class ExtraActivityTest {
     public ExtraActivityTest() {
         materials.add(new Material("material1"));
         skills.add(new Skill("skill1"));
-        instance = new ExtraActivity(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials,skills, true);
+        instance = new ExtraActivity(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
     }
     
     
@@ -120,16 +120,6 @@ public class ExtraActivityTest {
         assertEquals(expResult, result);
     }
     
-    /**
-     * Test of getSkills method, of class ExtraActivity.
-     */
-    @Test
-    public void testGetSkills() {
-        System.out.println("getSkills");
-        List<Skill> expResult = skills;
-        List<Skill> result = instance.getSkills();
-        assertEquals(expResult, result);
-    }
     
     /**
      * Test of isInterruptibleActivity method, of class ExtraActivity.
@@ -154,17 +144,7 @@ public class ExtraActivityTest {
         assertEquals(instance.getMaterials(), materialsAdd);
     }
     
-    /**
-     * Test of setSkills method, of class ExtraActivity.
-     */
-    @Test
-    public void testSetSkills() {
-        System.out.println("setSkills");
-        List<Skill> skillsAdd = new LinkedList<>();
-        skillsAdd.add(new Skill("skills2"));
-        instance.setSkills(skillsAdd);
-        assertEquals(instance.getSkills(), skillsAdd);
-    }
+
     
     
     @Test
@@ -177,7 +157,7 @@ public class ExtraActivityTest {
     @Test
     public void testEqualsExtraActivity() {
         System.out.println("test Equals Extra Activity");
-        ExtraActivity extra = new ExtraActivity(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials,skills, true);
+        ExtraActivity extra = new ExtraActivity(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
         boolean result = instance.equals(extra);
         assertEquals(result,true);
     }
@@ -185,7 +165,7 @@ public class ExtraActivityTest {
     @Test
     public void testNotEqualsExtraActivity() {
         System.out.println("test Not Equals Extra Activity");
-        ExtraActivity extra = new ExtraActivity(2, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials,skills, true);
+        ExtraActivity extra = new ExtraActivity(2, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
         boolean result = instance.equals(extra);
         assertEquals(result,false);
     }

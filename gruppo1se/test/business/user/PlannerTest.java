@@ -63,7 +63,7 @@ public class PlannerTest {
     private boolean ewo = false;
     private MaintenanceActivityDAOImpl instance = new MaintenanceActivityDAOImpl(new SiteDaoImpl());
     private final Planner planner = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(),
-                new RequiredMaterialForMaintenanceDAOStub(), new RequiredSkillForMaintenanceDAOStub());
+                new RequiredMaterialForMaintenanceDAOStub());
     private final Site site = new Site(branchOffice,area,workspaceNotes);
     private final MaintenanceProcedure mProc = new MaintenanceProcedure(maintenanceProcedure);
     
@@ -313,7 +313,7 @@ public class PlannerTest {
         try {
             System.out.println("makeMaintenanceActivity");
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, skills, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
             assertEquals(true, result);
             conn.rollback();
         } catch (SQLException ex) {
@@ -328,7 +328,7 @@ public class PlannerTest {
             activityId = 2;
             date = "2020-11-24";
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, skills, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
             conn.rollback();
         } catch (SQLException ex) {
             System.out.println("Error on: connection rollback");
@@ -342,7 +342,7 @@ public class PlannerTest {
             extraActivity = true;
             plannedActivity = false;
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, skills, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
             assertEquals(true, result);
             conn.rollback();
         } catch (SQLException ex) {
@@ -359,7 +359,7 @@ public class PlannerTest {
             extraActivity = true;
             date = "2020-11-24";
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, skills, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
             conn.rollback();
         } catch (SQLException ex) {
             System.out.println("Error on: connection rollback");
@@ -373,7 +373,7 @@ public class PlannerTest {
             plannedActivity = false;
             ewo = true;
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, skills, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
             assertEquals(true, result);
             conn.rollback();
         } catch (SQLException ex) {
@@ -390,7 +390,7 @@ public class PlannerTest {
             plannedActivity = false;
             date = "2020-11-24";
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, skills, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
             conn.rollback();
         } catch (SQLException ex) {
             System.out.println("Error on: connection rollback");

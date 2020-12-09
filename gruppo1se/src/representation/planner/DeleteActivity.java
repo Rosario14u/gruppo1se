@@ -173,10 +173,6 @@ public class DeleteActivity extends javax.swing.JFrame {
                     builder.append(m.getName());
                     builder.append(",");
                 }
-                for(Skill s : activity.getSkills()){
-                    builder2.append(s.getName());
-                    builder2.append(",");
-                }
                 jMaintenanceActivity.setText("\n"+" ActivityID: "+ Integer.toString(activity.getActivityId())+"\n\n"+
                         " Branch Office: "+ activity.getSite().getBranchOffice()+"\n\n"+
                         " Area: "+ activity.getSite().getArea()+"\n\n"+
@@ -244,7 +240,7 @@ public class DeleteActivity extends javax.swing.JFrame {
     
     public static void main(String args[]) {
         Planner planner = new Planner("admin","admin", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
-                new RequiredMaterialForMaintenanceDAOImpl(), new RequiredSkillForMaintenanceDAOImpl());
+                new RequiredMaterialForMaintenanceDAOImpl());
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {

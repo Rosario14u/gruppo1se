@@ -48,11 +48,6 @@ public class VerifyActivity extends javax.swing.JFrame {
         jActivityToAssign.setText(Integer.toString(activity.getActivityId())+" - "+activity.getSite().getArea()
                 +" - "+activity.getTypology()+" - "+ Integer.toString(activity.getEstimatedInterventionTime())+"'");
         StringBuilder builder2 = new StringBuilder();
-        for(Skill s : activity.getSkills()){
-            builder2.append("- ");
-            builder2.append(s.getName());
-            builder2.append(". \n");
-        }
         jSkillsNeeded.setText(builder2.toString());
         
     }
@@ -399,7 +394,7 @@ public class VerifyActivity extends javax.swing.JFrame {
                 skills.add(new Skill("Java Knowledge"));
                 skills.add(new Skill("English Knowledge"));
                 skills.add(new Skill("SQL Knowledge"));
-                MaintenanceActivity activity =  new PlannedMaintenanceActivity(1, new Site("ProvaArea","ProvaBranchOffice","ProvaWorkspaceNotes"),"ProvaTypology","ProvaActivityDescription",90,LocalDate.of(2020,12,22),new MaintenanceProcedure("FilePDF"),new ArrayList<Material>(),skills, true);
+                MaintenanceActivity activity =  new PlannedMaintenanceActivity(1, new Site("ProvaArea","ProvaBranchOffice","ProvaWorkspaceNotes"),"ProvaTypology","ProvaActivityDescription",90,LocalDate.of(2020,12,22),new MaintenanceProcedure("FilePDF"),new ArrayList<Material>(), true);
                 new VerifyActivity(activity).setVisible(true);
             }
         });

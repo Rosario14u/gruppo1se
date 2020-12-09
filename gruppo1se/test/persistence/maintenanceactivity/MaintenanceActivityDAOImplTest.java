@@ -475,13 +475,13 @@ public class MaintenanceActivityDAOImplTest {
      public MaintenanceActivity createMaintenanceActivity(String typeOfActivity, int id) {
         if(typeOfActivity.compareTo("Planned")==0){
             return new PlannedMaintenanceActivity(id, new Site("ProvaBranchOfficeMod"+id, "ProvaAreaMod"+id), "typologyNameMod"+id,
-                    "ProvaDescrizioneMod"+id, id, LocalDate.now(), null, null, null,id%2==0);
+                    "ProvaDescrizioneMod"+id, id, LocalDate.now(), null, null, id%2==0);
         }else if(typeOfActivity.compareTo("EWO")==0){
             return new Ewo(id, new Site("ProvaBranchOfficeMod"+id, "ProvaAreaMod"+id), "typologyNameMod"+id,
-                    "ProvaDescrizioneMod"+id, id, LocalDate.now(), null, null, null,id%2==0);
+                    "ProvaDescrizioneMod"+id, id, LocalDate.now(), null, null, id%2==0);
         }else{
             return new ExtraActivity(id, new Site("ProvaBranchOfficeMod"+id, "ProvaAreaMod"+id), "typologyNameMod"+id,
-                    "ProvaDescrizioneMod"+id, id, LocalDate.now(), null, null, null,id%2==0);
+                    "ProvaDescrizioneMod"+id, id, LocalDate.now(), null, null, id%2==0);
         }
     }
     
@@ -495,7 +495,7 @@ public class MaintenanceActivityDAOImplTest {
     public void testAddMaintenanceActivity() throws MaintenanceActivityException {
         try {
             PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(1, site, typology,
-                    activityDescription, 300, LocalDate.of(2050, 11, 25), maintenanceProcedure, materials, skills, false);
+                    activityDescription, 300, LocalDate.of(2050, 11, 25), maintenanceProcedure, materials, false);
             deleteMaintenaceActivity(activity.getActivityId());
             maintenanceActivityDAO.addMaintenanceActivity(activity);
             verify(selectDefaultMaintenanceActivity(1), activity);
@@ -508,7 +508,7 @@ public class MaintenanceActivityDAOImplTest {
     public void testAddMaintenanceActivityWrongDate() throws MaintenanceActivityException {
         try {
             PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(2, site, typology,
-                    activityDescription, 300, LocalDate.of(2020,11,24), maintenanceProcedure, materials, skills, false);
+                    activityDescription, 300, LocalDate.of(2020,11,24), maintenanceProcedure, materials, false);
             deleteMaintenaceActivity(activity.getActivityId());
             maintenanceActivityDAO.addMaintenanceActivity(activity);
         } catch (SQLException ex) {
@@ -520,7 +520,7 @@ public class MaintenanceActivityDAOImplTest {
     public void testAddMaintenanceActivityWrongActivityID() throws MaintenanceActivityException {
         try {
             PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(0, site, typology,
-                    activityDescription, 300, LocalDate.of(2050, 11, 25), maintenanceProcedure, materials, skills,false);
+                    activityDescription, 300, LocalDate.of(2050, 11, 25), maintenanceProcedure, materials,false);
             deleteMaintenaceActivity(activity.getActivityId());
             maintenanceActivityDAO.addMaintenanceActivity(activity);
         } catch (SQLException ex) {
@@ -532,7 +532,7 @@ public class MaintenanceActivityDAOImplTest {
     public void testAddMaintenanceActivityUnplanned() throws MaintenanceActivityException {
         try {
             Ewo activity = new Ewo(3, site, typology, activityDescription, 300,
-                    LocalDate.of(2050, 11, 25), maintenanceProcedure, materials, skills, false);
+                    LocalDate.of(2050, 11, 25), maintenanceProcedure, materials, false);
             deleteMaintenaceActivity(activity.getActivityId());
             maintenanceActivityDAO.addMaintenanceActivity(activity);
             verify(selectDefaultMaintenanceActivity(3), activity);

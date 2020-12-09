@@ -18,21 +18,21 @@ import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAO;
 public class RequiredSkillForMaintenanceDAOStub implements RequiredSkillForMaintenanceDAO{
 
     @Override
-    public List<Skill> retrieveSkillsByActivityId(int activityId) throws SkillException {
-        switch (activityId) {
-            case 1:
+    public List<Skill> retrieveSkillsBySmp(String smp) throws SkillException {
+        switch (smp) {
+            case "smp1":
                 return retrieveArrayList("Skill1","Skill2","Skill3");
-            case 2:
+            case "smp2":
                 return retrieveArrayList("Skill4","Skill5","Skill6");
-            case 3:
+            case "smp3":
                 return retrieveArrayList("Skill7","Skill8","Skill9");
-            case 4:
+            case "smp4":
                 return retrieveArrayList("Skil10","Skill1","Skill2");
-            case 5:
+            case "smp5":
                 return retrieveArrayList("Skill13","Skill14","Skill5");
-            case 6:
+            case "smp6":
                 return retrieveArrayList("Skill16","Skill17","Skill8");
-            case 7:
+            case "smp7":
                 return new ArrayList<>();
             default:
                 throw new SkillException();
@@ -50,9 +50,9 @@ public class RequiredSkillForMaintenanceDAOStub implements RequiredSkillForMaint
     /*============================================================================================================================*/
     
     @Override
-    public boolean addRequiredSkill(int activityId, List<Skill> requiredSkill) throws SkillException {      
-        switch(activityId){
-            case 1:
+    public boolean addRequiredSkill(String smp, List<Skill> requiredSkill) throws SkillException {      
+        switch(smp){
+            case "smp":
                 return true;
             default:
                 throw new SkillException();
@@ -61,11 +61,11 @@ public class RequiredSkillForMaintenanceDAOStub implements RequiredSkillForMaint
 
     
     @Override
-    public boolean removeRequiredSkill(int activityId, List<Skill> requiredSkill) throws SkillException {
-        switch (activityId){
-            case 3:
+    public boolean removeRequiredSkill(String smp, List<Skill> requiredSkill) throws SkillException {
+        switch (smp){
+            case "smp3":
                 return true;
-            case 4:
+            case "smp4":
                 return false;
             default:
                 throw new SkillException();
@@ -74,14 +74,14 @@ public class RequiredSkillForMaintenanceDAOStub implements RequiredSkillForMaint
 
     
     @Override
-    public List<Skill> retrieveAvailableSkillToAdd(int activityId) throws SkillException {
-        switch (activityId){
-            case 6:                
+    public List<Skill> retrieveAvailableSkillToAdd(String smp) throws SkillException {
+        switch (smp){
+            case "smp6":                
                 return new ArrayList<>(){{
                     add(new Skill("Skill1"));
                     add(new Skill("Skill2"));
                 }};
-            case 7:
+            case "smp7":
                 return new ArrayList<>();
             default:
                 throw new SkillException();

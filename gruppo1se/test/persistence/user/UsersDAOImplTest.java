@@ -114,7 +114,7 @@ public class UsersDAOImplTest{
     @Test
     public void testAddUserPlanner() throws UsersException, SQLException{
         System.out.println("addUserPlanner");
-        User user = new Planner("ProvaUsername","ProvaPassword", null, null, null);
+        User user = new Planner("ProvaUsername","ProvaPassword", null, null);
         Statement stmt = conn.createStatement();
         deleteUserDefault(stmt, user.getUsername());
         instance.addUser(user);
@@ -178,12 +178,12 @@ public class UsersDAOImplTest{
         deleteAllUsersDefault(stm);
         List<User> expectedList = new ArrayList<>();
         expectedList.add(new Planner("Planner1","PwdPlanner1", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
-                    new RequiredMaterialForMaintenanceDAOImpl(),new RequiredSkillForMaintenanceDAOImpl()));
+                    new RequiredMaterialForMaintenanceDAOImpl()));
         expectedList.add(new SystemAdministrator("SystemAdministrator1","PwdSystemAdministrator1",maintenanceProcedure, instance2));
         expectedList.add(new Maintainer("Maintainer1","PwdMaintainer1"));
         List<User> plannerList = new ArrayList<>();
         insertUserDefault(stm,new Planner("Planner1","PwdPlanner1", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
-                    new RequiredMaterialForMaintenanceDAOImpl(),new RequiredSkillForMaintenanceDAOImpl()));
+                    new RequiredMaterialForMaintenanceDAOImpl()));
         insertUserDefault(stm,new SystemAdministrator("SystemAdministrator1","PwdSystemAdministrator1",maintenanceProcedure,instance2));
         insertUserDefault(stm,new Maintainer("Maintainer1","PwdMaintainer1"));
         plannerList = instance.readUsers();
@@ -221,7 +221,7 @@ public class UsersDAOImplTest{
     private User createUser(String username, String password, String role){
         if(role.equals("Planner")){
             return new Planner(username, password, new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
-                    new RequiredMaterialForMaintenanceDAOImpl(),new RequiredSkillForMaintenanceDAOImpl());
+                    new RequiredMaterialForMaintenanceDAOImpl());
         }else if(role.equals("Maintainer")){
             return new Maintainer(username, password);
         }else{

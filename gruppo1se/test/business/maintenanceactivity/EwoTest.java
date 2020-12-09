@@ -26,7 +26,7 @@ public class EwoTest {
     public EwoTest() {
         materials.add(new Material("material1"));
         skills.add(new Skill("skill1"));
-        instance = new Ewo(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, skills, true);
+        instance = new Ewo(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials,true);
     }
     
     
@@ -119,16 +119,6 @@ public class EwoTest {
         assertEquals(expResult, result);
     }
     
-    /**
-     * Test of getSkills method, of class Ewo.
-     */
-    @Test
-    public void testGetSkills() {
-        System.out.println("getSkills");
-        List<Skill> expResult = skills;
-        List<Skill> result = instance.getSkills();
-        assertEquals(expResult, result);
-    }
     
     /**
      * Test of isInterruptibleActivity method, of class Ewo.
@@ -153,17 +143,6 @@ public class EwoTest {
         assertEquals(instance.getMaterials(), materialsAdd);
     }
     
-    /**
-     * Test of setSkills method, of class Ewo.
-     */
-    @Test
-    public void testSetSkills() {
-        System.out.println("setSkills");
-        List<Skill> skillsAdd = new LinkedList<>();
-        skillsAdd.add(new Skill("skills2"));
-        instance.setSkills(skillsAdd);
-        assertEquals(instance.getSkills(), skillsAdd);
-    }
     
     @Test 
     public void isInstanceOfExtraActivity(){
@@ -175,7 +154,7 @@ public class EwoTest {
     @Test
     public void testEqualsEwo() {
         System.out.println("test Equals Ewo");
-        Ewo ewo = new Ewo(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials,skills, true);
+        Ewo ewo = new Ewo(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
         boolean result = instance.equals(ewo);
         assertEquals(result,true);
     }
@@ -183,7 +162,7 @@ public class EwoTest {
     @Test
     public void testNotEqualsEwo() {
         System.out.println("test Not Equals Ewo");
-        Ewo ewo = new Ewo(2, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials,skills, true);
+        Ewo ewo = new Ewo(2, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
         boolean result = instance.equals(ewo);
         assertEquals(result,false);
     }

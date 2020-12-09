@@ -32,37 +32,37 @@ public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
         if (activity.getActivityId() == 1 && activity.getSite().getBranchOffice().equals("ProvaBranchOffice") && activity.getSite().getArea().equals("ProvaArea") &&
                 activity.getSite().getWorkSpaceNotes().equals("ProvaWorkspaceNotes") && activity.getTypology().equals("ProvaTypology") && 
                 activity.getEstimatedInterventionTime() == 30 && activity.getDate().equals(LocalDate.of(2050, 11, 25)) && 
-                activity.getMaintenanceProcedure().getSmp().equals("ProvaPDF") && activity.getMaterials().isEmpty() && activity.getSkills().isEmpty()
+                activity.getMaintenanceProcedure().getSmp().equals("ProvaPDF") && activity.getMaterials().isEmpty()
                 && !activity.isInterruptibleActivity() && PlannedMaintenanceActivity.class.isInstance(activity))
             return true;
         else if (activity.getActivityId() == 2 && activity.getSite().getBranchOffice().equals("ProvaBranchOffice") && activity.getSite().getArea().equals("ProvaArea") &&
                 activity.getSite().getWorkSpaceNotes().equals("ProvaWorkspaceNotes") && activity.getTypology().equals("ProvaTypology") && 
                 activity.getEstimatedInterventionTime() == 30 && activity.getDate().equals(LocalDate.of(2020, 11, 24)) && 
-                activity.getMaintenanceProcedure().getSmp().equals("ProvaPDF") && activity.getMaterials().isEmpty() && activity.getSkills().isEmpty()
+                activity.getMaintenanceProcedure().getSmp().equals("ProvaPDF") && activity.getMaterials().isEmpty() 
                 && !activity.isInterruptibleActivity() && PlannedMaintenanceActivity.class.isInstance(activity))
             throw new MaintenanceActivityException();
         else if (activity.getActivityId() == 1 && activity.getSite().getBranchOffice().equals("ProvaBranchOffice") && activity.getSite().getArea().equals("ProvaArea") &&
                 activity.getSite().getWorkSpaceNotes().equals("ProvaWorkspaceNotes") && activity.getTypology().equals("ProvaTypology") && 
                 activity.getEstimatedInterventionTime() == 30 && activity.getDate().equals(LocalDate.of(2050, 11, 25)) && 
-                activity.getMaintenanceProcedure().getSmp().equals("ProvaPDF") && activity.getMaterials().isEmpty() && activity.getSkills().isEmpty()
+                activity.getMaintenanceProcedure().getSmp().equals("ProvaPDF") && activity.getMaterials().isEmpty()
                 && !activity.isInterruptibleActivity() && ExtraActivity.class.isInstance(activity)) 
             return true;
         else if (activity.getActivityId() == 2 && activity.getSite().getBranchOffice().equals("ProvaBranchOffice") && activity.getSite().getArea().equals("ProvaArea") &&
                 activity.getSite().getWorkSpaceNotes().equals("ProvaWorkspaceNotes") && activity.getTypology().equals("ProvaTypology") && 
                 activity.getEstimatedInterventionTime() == 30 && activity.getDate().equals(LocalDate.of(2020, 11, 24)) && 
-                activity.getMaintenanceProcedure().getSmp().equals("ProvaPDF") && activity.getMaterials().isEmpty() && activity.getSkills().isEmpty() 
+                activity.getMaintenanceProcedure().getSmp().equals("ProvaPDF") && activity.getMaterials().isEmpty()
                 && !activity.isInterruptibleActivity() && ExtraActivity.class.isInstance(activity))
             throw new MaintenanceActivityException();
         else if (activity.getActivityId() == 1 && activity.getSite().getBranchOffice().equals("ProvaBranchOffice") && activity.getSite().getArea().equals("ProvaArea") &&
                 activity.getSite().getWorkSpaceNotes().equals("ProvaWorkspaceNotes") && activity.getTypology().equals("ProvaTypology") && 
                 activity.getEstimatedInterventionTime() == 30 && activity.getDate().equals(LocalDate.of(2050, 11, 25)) && 
-                activity.getMaintenanceProcedure().getSmp().equals("ProvaPDF") && activity.getMaterials().isEmpty() && activity.getSkills().isEmpty()
+                activity.getMaintenanceProcedure().getSmp().equals("ProvaPDF") && activity.getMaterials().isEmpty()
                 && !activity.isInterruptibleActivity() && Ewo.class.isInstance(activity))
             return true;
         else if (activity.getActivityId() == 2 && activity.getSite().getBranchOffice().equals("ProvaBranchOffice") && activity.getSite().getArea().equals("ProvaArea") &&
                 activity.getSite().getWorkSpaceNotes().equals("ProvaWorkspaceNotes") && activity.getTypology().equals("ProvaTypology") && 
                 activity.getEstimatedInterventionTime() == 30 && activity.getDate().equals(LocalDate.of(2020, 11, 24)) && 
-                activity.getMaintenanceProcedure().getSmp().equals("ProvaPDF") && activity.getMaterials().isEmpty() && activity.getSkills().isEmpty()
+                activity.getMaintenanceProcedure().getSmp().equals("ProvaPDF") && activity.getMaterials().isEmpty() 
                 && !activity.isInterruptibleActivity() && Ewo.class.isInstance(activity))
             throw new MaintenanceActivityException();
         else return false;
@@ -88,7 +88,7 @@ public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
             case 1:
                 return new PlannedMaintenanceActivity(activityId, new Site("ProvaBranchOffice1", "ProvaArea1", "ProvaWorkspaceNotes1"),
                         "ProvaTypology1", "ProvaDescription1", 121, LocalDate.parse("2020-12-21"), 
-                        new MaintenanceProcedure("ProvaSmp1"), null, null,true);
+                        new MaintenanceProcedure("ProvaSmp1"), null, true);
             case 2:
                 return new Ewo(activityId, new Site("ProvaBranchOffice2", "ProvaArea2", "ProvaWorkspaceNotes2"),
                         "ProvaTypology2", "ProvaDescription2", 122, LocalDate.parse("2020-12-22"), 
@@ -106,11 +106,11 @@ public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
             case 7:
                 return new PlannedMaintenanceActivity(activityId, new Site("ProvaBranchOffice7", "ProvaArea7", "ProvaWorkspaceNotes7"),
                         "ProvaTypology7", "ProvaDescription7", 127, LocalDate.parse("2020-12-27"),
-                        null, null, null,false);
+                        null, null,false);
             default:
                 return new PlannedMaintenanceActivity(activityId, new Site("ProvaBranchOffice8", "ProvaArea8", "ProvaWorkspaceNotes8"),
                         "ProvaTypology8", "ProvaDescription8", 128, LocalDate.parse("2020-12-28"),
-                        new MaintenanceProcedure("ProvaSmp8"), null, null,true);
+                        new MaintenanceProcedure("ProvaSmp8"), null, true);
         }
     }
 
@@ -176,9 +176,9 @@ public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
             throw new DateException();
         }else if(startDate.equals(LocalDate.of(2021, Month.JANUARY, 25))){
             return new ArrayList<>(){{
-                add(new PlannedMaintenanceActivity(1, new Site("ProvaBranchOffice1", "ProvaArea1"), "ProvaTypology1", "ProvaDescription1", 1, LocalDate.of(2020, Month.JANUARY, 1), null, null, null, true));
-                add(new PlannedMaintenanceActivity(1, new Site("ProvaBranchOffice2", "ProvaArea2"), "ProvaTypology2", "ProvaDescription2", 2, LocalDate.of(2020, Month.JANUARY, 2), null, null, null,true));
-                add(new PlannedMaintenanceActivity(1, new Site("ProvaBranchOffice3", "ProvaArea3"), "ProvaTypology3", "ProvaDescription3", 3, LocalDate.of(2020, Month.JANUARY, 3), null, null, null,true));
+                add(new PlannedMaintenanceActivity(1, new Site("ProvaBranchOffice1", "ProvaArea1"), "ProvaTypology1", "ProvaDescription1", 1, LocalDate.of(2020, Month.JANUARY, 1), null, null, true));
+                add(new PlannedMaintenanceActivity(1, new Site("ProvaBranchOffice2", "ProvaArea2"), "ProvaTypology2", "ProvaDescription2", 2, LocalDate.of(2020, Month.JANUARY, 2), null, null,true));
+                add(new PlannedMaintenanceActivity(1, new Site("ProvaBranchOffice3", "ProvaArea3"), "ProvaTypology3", "ProvaDescription3", 3, LocalDate.of(2020, Month.JANUARY, 3), null, null,true));
             }};
         }else{
             return new ArrayList();
