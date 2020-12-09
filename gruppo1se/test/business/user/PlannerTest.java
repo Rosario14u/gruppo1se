@@ -16,6 +16,7 @@ import exception.DateException;
 import exception.MaintenanceActivityException;
 import exception.MaterialException;
 import exception.SiteException;
+import exception.UsersException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -34,8 +35,10 @@ import static org.junit.Assert.*;
 import persistence.database.ConnectionDB;
 import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.SiteDaoImpl;
+import stub.EmployeeAppointmentDAOStub;
 import stub.MaintenanceActivityDAOStub;
 import stub.RequiredMaterialForMaintenanceDAOStub;
+import stub.UsersDAOStub;
 
 /**
  *
@@ -59,7 +62,7 @@ public class PlannerTest {
     private boolean ewo = false;
     private MaintenanceActivityDAOImpl instance = new MaintenanceActivityDAOImpl(new SiteDaoImpl());
     private final Planner planner = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(),
-                new RequiredMaterialForMaintenanceDAOStub());
+                new RequiredMaterialForMaintenanceDAOStub(), new UsersDAOStub(), new EmployeeAppointmentDAOStub());
     private final Site site = new Site(branchOffice,area,workspaceNotes);
     private final MaintenanceProcedure mProc = new MaintenanceProcedure(maintenanceProcedure);
     
@@ -663,6 +666,20 @@ public class PlannerTest {
         }catch(SiteException ex){
             fail("SiteException");
         }catch(DateException ex){
+            fail("DateException");
+        }
+    }
+    
+    //==================================================================================================================
+    
+    @Test
+    public void testViewEmployeeAvailabilityWrongDate() {
+        try {
+            List<Maintainer> list = planner.viewEmployeeAvailability(20, 20);
+            assertEquals(2, list.size());
+        } catch (UsersException ex) {
+            fail("UsersException");
+        } catch (DateException ex) {
             fail("DateException");
         }
     }

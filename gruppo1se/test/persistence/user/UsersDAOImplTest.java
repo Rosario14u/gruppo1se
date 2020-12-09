@@ -103,7 +103,7 @@ public class UsersDAOImplTest{
      * //@throws exception.UsersException
      * //@throws java.sql.SQLException
      */
-    @Test
+    //@Test
     public void testAddUserPlanner() throws UsersException, SQLException{
         System.out.println("addUserPlanner");
         User user = new Planner("ProvaUsername","ProvaPassword", null, null);
@@ -119,7 +119,7 @@ public class UsersDAOImplTest{
      * //@throws exception.UsersException
      * //@throws java.sql.SQLException
      */
-    @Test
+    //@Test
     public void testAddUserMaintainer() throws UsersException, SQLException{
         System.out.println("addUserMaintainer");
         User user = new Maintainer("ProvaUsername","ProvaPassword");
@@ -135,7 +135,7 @@ public class UsersDAOImplTest{
      * //@throws exception.UsersException
      * //@throws java.sql.SQLException
      */
-    @Test
+    //@Test
     public void testAddUserSystemAdministrator() throws UsersException, SQLException{
         System.out.println("addUserSystemAdministrator");
         User user = new SystemAdministrator("ProvaUsername","ProvaPassword");
@@ -163,7 +163,7 @@ public class UsersDAOImplTest{
     /**
      * Test of readUser method, of class UsersDAOImpl.
      */
-    @Test
+    //@Test
     public void testReadUsers() throws UsersException, SQLException{
         System.out.println("readUsers");
         Statement stm = conn.createStatement();
@@ -248,7 +248,7 @@ public class UsersDAOImplTest{
     
     //======================================= TEST MODIFY ====================================================================================
 
-    @Test
+    //@Test
     public void testUpdateUserPlannerToMaintainer() {        
         try {
             String username = "username";
@@ -265,7 +265,7 @@ public class UsersDAOImplTest{
         }
     }
     
-    @Test
+    //@Test
     public void testUpdateUserPlannerToSystemAdministrator() {        
         try {
             String username = "username";
@@ -282,7 +282,7 @@ public class UsersDAOImplTest{
         }
     }
     
-    @Test
+    //@Test
     public void testUpdateUserMaintainerToPlanner() {        
         try {
             String username = "username";
@@ -299,7 +299,7 @@ public class UsersDAOImplTest{
         }
     }
     
-    @Test
+    //@Test
     public void testUpdateUserMaintainerToSystemAdministrator() {        
         try {
             String username = "username";
@@ -316,7 +316,7 @@ public class UsersDAOImplTest{
         }
     }
     
-    @Test
+    //@Test
     public void testUpdateUserSystemAdministratorToPlanner() {        
         try {
             String username = "username";
@@ -333,7 +333,7 @@ public class UsersDAOImplTest{
         }
     }
     
-    @Test
+    //@Test
     public void testUpdateUserSystemAdministratorToMaintainer() {        
         try {
             String username = "username";
@@ -350,7 +350,7 @@ public class UsersDAOImplTest{
         }
     }
     
-    @Test
+    //@Test
     public void testModifyActivityNotPresent(){
         try {
             String username = "username";
@@ -369,7 +369,7 @@ public class UsersDAOImplTest{
     /**
      * this method assert that deleteUsers correctly delete the rows in database
      */
-    @Test
+    //@Test
     public void testDeleteUsers(){
         try {
             List<String> usernameList = new ArrayList<>(){{
@@ -399,7 +399,7 @@ public class UsersDAOImplTest{
     /**
      * this method assert that deleteUsers correctly return 0 if there aren't the searched username in database
      */
-    @Test
+    //@Test
     public void testDeleteUsersZero(){
         try {
             List<String> usernameList = new ArrayList<>(){{
@@ -423,7 +423,7 @@ public class UsersDAOImplTest{
     /**
      * this method assert that deleteUsers correctly return 0 if an empty list is passed
      */
-    @Test
+    //@Test
     public void testDeleteUsersZero2(){
         try {
             List<String> usernameList = new ArrayList<>();
@@ -438,7 +438,7 @@ public class UsersDAOImplTest{
     /**
      * this method assert that deleteUsers correctly return 0 if null is passed
      */
-    @Test
+    //@Test
     public void testDeleteUsersZero3(){
         try {
             int numOfDeletedRow = instance.deleteUsers(null);
@@ -447,6 +447,56 @@ public class UsersDAOImplTest{
             fail("USERS_EXCEPTION");
         }
     }
-   
     
+ //======================================================================================================================
+    private static String DELETE_ALL_USERS = "DELETE FROM USERS";
+    
+    
+    @Test
+    public void testCorrectlyReadMaintainers(){
+        try {
+            deleteUsers();
+            insertUser("username1", "pwd1", "Maintainer");
+            insertUser("username2", "pwd2", "Maintainer");
+            insertUser("username3", "pwd3", "Maintainer");
+            insertUser("username4", "pwd4", "Planner");
+            insertUser("username5", "pwd5", "System Administrator");
+            
+            List<Maintainer> maintainers = instance.readMaintainers();
+            
+            for(int i=1;i<=maintainers.size();i++){
+                assertTrue(maintainers.get(i-1) instanceof Maintainer);
+                assertEquals("username"+String.valueOf(i), maintainers.get(i-1).getUsername());
+                assertEquals("pwd"+String.valueOf(i), maintainers.get(i-1).getPassword());
+            }            
+        } catch (SQLException ex) {
+            fail("SQLException");
+        } catch (UsersException ex) {
+            fail("UsersException");
+        }
+    }    
+    
+    
+    @Test
+    public void testReadMaintainersEmptyList(){
+        try {
+            deleteUsers();
+            insertUser("username4", "pwd4", "Planner");
+            insertUser("username5", "pwd5", "System Administrator");
+            
+            List<Maintainer> maintainers = instance.readMaintainers();
+            
+            assertTrue(maintainers.size()==0);
+        } catch (SQLException ex) {
+            fail("SQLException");
+        } catch (UsersException ex) {
+            fail("UsersException");
+        }
+    }    
+    
+    
+    private void deleteUsers() throws SQLException{
+        Statement stm = conn.createStatement();
+        stm.executeUpdate(DELETE_ALL_USERS);
+    }
 }

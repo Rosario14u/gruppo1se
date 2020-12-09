@@ -12,10 +12,13 @@ import exception.DateException;
 import exception.MaintenanceActivityException;
 import exception.MaterialException;
 import exception.SiteException;
+import exception.UsersException;
 import java.time.LocalDate;
 import java.util.List;
+import persistence.maintenanceactivity.EmployeeAppointmentDAO;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAO;
 import persistence.maintenanceactivity.MaintenanceActivityDAO;
+import persistence.user.UsersDAO;
 
 /**
  *
@@ -24,6 +27,8 @@ import persistence.maintenanceactivity.MaintenanceActivityDAO;
 public class Planner extends User {
     private MaintenanceActivityDAO maintenanceActivityDao;
     private RequiredMaterialForMaintenanceDAO requiredMaterialsDao;
+    private UsersDAO userDao;
+    private EmployeeAppointmentDAO employeeAppointmentDao;
     
     
     /**
@@ -43,12 +48,23 @@ public class Planner extends User {
      * @param maintenanceActivityDao MaintenanceActivityDao object of Planner
      * @param requiredMaterialsDao RequiredMaterialDao object of Planner
      */
-    public Planner(String username, String password, MaintenanceActivityDAO maintenanceActivityDao, RequiredMaterialForMaintenanceDAO requiredMaterialsDao) {
+    public Planner(String username, String password, MaintenanceActivityDAO maintenanceActivityDao, 
+            RequiredMaterialForMaintenanceDAO requiredMaterialsDao) {
         super(username, password);
         this.maintenanceActivityDao = maintenanceActivityDao;
         this.requiredMaterialsDao = requiredMaterialsDao;
     }
     
+    
+    public Planner(String username, String password, MaintenanceActivityDAO maintenanceActivityDao, 
+            RequiredMaterialForMaintenanceDAO requiredMaterialsDao, 
+            UsersDAO userDao, EmployeeAppointmentDAO employeeAppointmentDao) {
+        super(username, password);
+        this.maintenanceActivityDao = maintenanceActivityDao;
+        this.requiredMaterialsDao = requiredMaterialsDao;
+        this.userDao = userDao;
+        this.employeeAppointmentDao = employeeAppointmentDao;
+    }
     
     /**
      * This method returns Maintenance Activity with the passed activityId if exists,
@@ -147,10 +163,23 @@ public class Planner extends User {
         return requiredMaterialsDao.retrieveAvailableMaterialToAdd(activityId);
     }
     
+    //Developed by Antonio Gorrasi
     public List<MaintenanceActivity> viewMaintenanceActivityByWeek(int week, int year) throws MaintenanceActivityException, SiteException, DateException{
         List<LocalDate> date = WeekConverter.getStartEndDate(week, year);
         LocalDate startDateOfWeek = date.get(0);
         LocalDate endDateOfWeek = date.get(1);
         return maintenanceActivityDao.retrieveMaintenanceActivityFromRange(startDateOfWeek, endDateOfWeek);
+    }
+    
+    //Developed by Antonio Gorrasi
+    public List<Maintainer> viewEmployeeAvailability(int week, int year) throws UsersException, DateException{
+        List<Maintainer> maintainers = userDao.readMaintainers();
+        List<LocalDate> date = WeekConverter.getStartEndDate(week, year);
+        LocalDate startDateOfWeek = date.get(0);
+        LocalDate endDateOfWeek = date.get(1);
+//        for(Maintainer maintainer: maintainers){
+//            maintainer.setAppointmentsInWeek(EmployeeAppointmentDAOImpl.getEmployeeAvailability(maintainer.getUsername(),startDateOfWeek,endDateOfWeek)); 
+//        }
+        return maintainers;
     }
 }

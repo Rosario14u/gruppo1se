@@ -22,6 +22,7 @@ public class UsersDAOImpl implements UsersDAO {
     private final String SQL_INSERT = "INSERT INTO USERS (username, password, role) VALUES (?,?,?)";
     private final String DELETE_USER = "DELETE FROM Users WHERE username = ?";
     private final String SQL_SELECT = "SELECT * FROM USERS";
+    private final String SELECT_MAINTAINER = "SELECT * FROM Users WHERE role = 'Maintainer' ORDER BY username";
     private final String SQL_UPDATE = "UPDATE users SET username=?, password=?, role=? WHERE username = ?";
     
     @Override
@@ -120,6 +121,23 @@ public class UsersDAOImpl implements UsersDAO {
             return row > 0;
         } catch (SQLException ex) {
             throw new UsersException("Error in updating");
+        }
+    }
+    
+    @Override
+    public List<Maintainer> readMaintainers() throws UsersException{
+        List<Maintainer> maintainers = new ArrayList<>();
+        try {
+            Connection conn = ConnectionDB.getInstanceConnection().getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet set = stmt.executeQuery(SELECT_MAINTAINER);
+            while(set.next()){
+                maintainers.add(new Maintainer(set.getString("username"), set.getString("password")));
+            }
+            return maintainers;
+        }
+        catch (SQLException ex) {
+            throw new UsersException();
         }
     }
 }

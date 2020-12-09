@@ -10,12 +10,8 @@ import business.user.Planner;
 import business.user.SystemAdministrator;
 import business.user.User;
 import exception.UsersException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import persistence.database.ConnectionDB;
 import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
@@ -62,19 +58,15 @@ public class UsersDAOStub implements UsersDAO {
     }
     
     public boolean updateUser(String oldUsername, User newUser) throws UsersException{
-        System.out.println("popopopopopopopo");
         if (oldUsername==null || newUser==null || newUser.getUsername()==null || newUser.getPassword()==null
                 || oldUsername.equals("") || newUser.getUsername().equals("")){
             ////case where the passed parameters are not valid
-            System.out.println("QUAQUAUQUAUQAU");
             throw new UsersException();            
         } else if(oldUsername.equals("oldUsername1")){
             //case where the passed parameters are valid and the method successfully updates a row
-            System.out.println(1);
             return true;
         } else if(oldUsername.equals("oldUsername2")){
             //case where the passed parameters are valid and the method does not update any rows
-            System.out.println(2);
             return false;
         } else if(oldUsername.equals("oldUsername3")){
             //case where the method throws a SQLException
@@ -128,4 +120,12 @@ public class UsersDAOStub implements UsersDAO {
 //            throw new UsersException();
 //        }
 //    }
+
+    @Override
+    public List<Maintainer> readMaintainers() throws UsersException {
+        return new ArrayList<>(){{
+            add(new Maintainer("username1", "pwd1"));
+            add(new Maintainer("username2", "pwd2"));
+        }};
+    }
 }
