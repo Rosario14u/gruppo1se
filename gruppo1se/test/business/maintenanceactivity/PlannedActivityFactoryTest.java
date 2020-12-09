@@ -57,8 +57,8 @@ public class PlannedActivityFactoryTest {
         List<Material> listMaterial = createListMaterial("Materiale2","Materiale1","Materiale3");
         List<Skill> listSkill = createListSkill("Skill2","Skill1","Skill3");
         boolean interruptibleActivity = false;
-        MaintenanceActivity expResult = new PlannedMaintenanceActivity(activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, listMaterial, listSkill,interruptibleActivity);
-        MaintenanceActivity result = instance.selectMaintenanceActivity(type, activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, listMaterial, listSkill,interruptibleActivity);
+        MaintenanceActivity expResult = new PlannedMaintenanceActivity(activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, listMaterial, interruptibleActivity);
+        MaintenanceActivity result = instance.selectMaintenanceActivity(type, activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, listMaterial, interruptibleActivity);
         assertEquals(expResult, result);
     }
     

@@ -373,7 +373,7 @@ public class MaintenanceActivityTest {
             int estimatedInterventionTime, LocalDate date, MaintenanceProcedure maintenanceProcedure,
             List<Material> materials, List<Skill> skills,boolean interruptibleActivity) {
             super(activityId, site, typology, activityDescription, estimatedInterventionTime,
-                    date, maintenanceProcedure, materials, skills,interruptibleActivity);
+                    date, maintenanceProcedure, materials,interruptibleActivity);
         }
     }
     

@@ -38,7 +38,7 @@ public abstract class MaintenanceActivityFactory {
      */
     public static MaintenanceActivity make(Typology type, int activityId, String branchOffice, String area,
             String workspaceNotes,String typology, String activityDescription, int estimatedInterventionTime, String date,
-            String smp, List<Material> materials, List<Skill> skills, boolean interruptibleActivity){
+            String smp, List<Material> materials, boolean interruptibleActivity){
         MaintenanceActivityFactory factory = null;
         if (type == Typology.PLANNED){
             factory = new PlannedActivityFactory();
@@ -46,7 +46,7 @@ public abstract class MaintenanceActivityFactory {
             factory = new UnplannedActivityFactory();
         }
         return factory.build(type,activityId, branchOffice, area, workspaceNotes,typology, activityDescription,
-                estimatedInterventionTime, date, smp, materials, skills, interruptibleActivity);
+                estimatedInterventionTime, date, smp, materials, interruptibleActivity);
     }
     
     
@@ -69,12 +69,12 @@ public abstract class MaintenanceActivityFactory {
      */
     private MaintenanceActivity build(Typology type, int activityId, String branchOffice, String area,
             String workspaceNotes,String typology, String activityDescription, int estimatedInterventionTime, String date,
-            String smp, List<Material> materials, List<Skill> skills, boolean interruptibleActivity) {
+            String smp, List<Material> materials, boolean interruptibleActivity) {
         Site site = new Site(branchOffice, area, workspaceNotes);
         LocalDate localDate = LocalDate.parse(date);
         MaintenanceProcedure procedure = new MaintenanceProcedure(smp);
         return this.selectMaintenanceActivity(type, activityId, site, typology, activityDescription,
-                estimatedInterventionTime, localDate, procedure, materials, skills, interruptibleActivity);
+                estimatedInterventionTime, localDate, procedure, materials, interruptibleActivity);
     }
     
     
@@ -95,6 +95,6 @@ public abstract class MaintenanceActivityFactory {
      */
     protected abstract MaintenanceActivity selectMaintenanceActivity(Typology type, int activityId, Site site,
             String typology, String activityDescription, int estimatedInterventionTime,
-            LocalDate date, MaintenanceProcedure maintenanceProcedure, List<Material> materials, List<Skill> skills,
+            LocalDate date, MaintenanceProcedure maintenanceProcedure, List<Material> materials,
             boolean interruptibleActivity);
 }

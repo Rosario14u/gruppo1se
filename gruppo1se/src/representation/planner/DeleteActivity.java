@@ -10,6 +10,7 @@ import business.user.Planner;
 import exception.MaintenanceActivityException;
 import exception.MaterialException;
 import exception.SiteException;
+import exception.SkillException;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -167,6 +168,7 @@ public class DeleteActivity extends javax.swing.JFrame {
             int activityId = Integer.parseInt(jActivityID.getText());
             MaintenanceActivity activity = planner.viewMaintenanceActivity(activityId);
             StringBuilder builder = new StringBuilder();
+            StringBuilder builder2 = new StringBuilder();
             if (activity!= null){
                 jDelete.setEnabled(true);
                 for(Material m : activity.getMaterials()){
@@ -181,13 +183,14 @@ public class DeleteActivity extends javax.swing.JFrame {
                         " Activity Description: "+activity.getActivityDescription()+"\n\n"+
                         " Estimated Intervention Time: "+ Integer.toString(activity.getEstimatedInterventionTime())+"\n\n"+
                         " Date: "+activity.getDate().toString()+"\n\n"+
-                        " Materials: "+builder.toString()+ "\n\n"+
+                        " Materials: "+builder.toString().substring(0,builder.length()-1)+ "\n\n"+
+                        " Skills: "+builder2.toString().substring(0,builder2.length()-1)+ "\n\n"+
                         " Interruptible Activity: "+Boolean.toString(activity.isInterruptibleActivity())+"\n\n"+
                         " Activity: "+activity.getClass().getSimpleName());
             }
             else
                 jMaintenanceActivity.setText("The activity with ActivityID: "+jActivityID.getText()+" isn't in the database!");
-        } catch (SiteException | MaintenanceActivityException | MaterialException ex) {
+        } catch (SiteException | MaintenanceActivityException | MaterialException | SkillException ex) {
             errorMessage(ex.getMessage());
         }
     }//GEN-LAST:event_jSearchActionPerformed

@@ -318,7 +318,7 @@ public class PlannerTest {
         try {
             System.out.println("makeMaintenanceActivity");
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, skills, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
             assertEquals(true, result);
             conn.rollback();
         } catch (SQLException ex) {
@@ -333,7 +333,7 @@ public class PlannerTest {
             activityId = 2;
             date = "2020-11-24";
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, skills, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
             conn.rollback();
         } catch (SQLException ex) {
             System.out.println("Error on: connection rollback");
@@ -347,7 +347,7 @@ public class PlannerTest {
             extraActivity = true;
             plannedActivity = false;
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, skills, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
             assertEquals(true, result);
             conn.rollback();
         } catch (SQLException ex) {
@@ -364,7 +364,7 @@ public class PlannerTest {
             extraActivity = true;
             date = "2020-11-24";
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, skills, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
             conn.rollback();
         } catch (SQLException ex) {
             System.out.println("Error on: connection rollback");
@@ -378,7 +378,7 @@ public class PlannerTest {
             plannedActivity = false;
             ewo = true;
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, skills, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
             assertEquals(true, result);
             conn.rollback();
         } catch (SQLException ex) {
@@ -395,7 +395,7 @@ public class PlannerTest {
             plannedActivity = false;
             date = "2020-11-24";
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, skills, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
             conn.rollback();
         } catch (SQLException ex) {
             System.out.println("Error on: connection rollback");
@@ -449,7 +449,7 @@ public class PlannerTest {
      * This test method assert that viewMaintenanceActivity correctly return a planned activity
      */
     @Test
-    public void testviewMaintenanceActivityReturnPlanned() {
+    public void testviewMaintenanceActivityReturnPlanned() throws SkillException {
         try {
             MaintenanceActivity activity = planner.viewMaintenanceActivity(1);
             List<Material> materials= new ArrayList<>(){{
@@ -471,7 +471,7 @@ public class PlannerTest {
      * This test method assert that viewMaintenanceActivity correctly return a Ewo activity
      */
     @Test
-    public void testviewMaintenanceActivityReturnEwo() {
+    public void testviewMaintenanceActivityReturnEwo() throws SkillException {
         try {
             MaintenanceActivity activity = planner.viewMaintenanceActivity(2);
             List<Material> materials= new ArrayList<>(){{
@@ -493,7 +493,7 @@ public class PlannerTest {
      * This test method assert that viewMaintenanceActivity correctly return a Extra activity
      */
     @Test
-    public void testviewMaintenanceActivityReturnExtra() {
+    public void testviewMaintenanceActivityReturnExtra() throws SkillException {
         try {
             MaintenanceActivity activity = planner.viewMaintenanceActivity(3);
             List<Material> materials= new ArrayList<>(){{
@@ -516,7 +516,7 @@ public class PlannerTest {
      * This test method assert that viewMaintenanceActivity correctly return null when activity is not present
      */
     @Test
-    public void testviewMaintenanceActivityNull(){
+    public void testviewMaintenanceActivityNull() throws SkillException{
         try {
             MaintenanceActivity activity = planner.viewMaintenanceActivity(4);
             assertNull("testviewMaintenanceActivityNull error", activity);
@@ -533,7 +533,7 @@ public class PlannerTest {
      * This test method assert that viewMaintenanceActivity correctly raises SiteException
      */
     @Test(expected = SiteException.class)
-    public void testviewMaintenanceActivitySiteException() throws SiteException {
+    public void testviewMaintenanceActivitySiteException() throws SiteException, SkillException {
         try {
             MaintenanceActivity activity = planner.viewMaintenanceActivity(5);
         } catch (MaintenanceActivityException ex) {
@@ -546,7 +546,7 @@ public class PlannerTest {
      * This test method assert that viewMaintenanceActivity correctly raises MaintenanceActivityException
      */
     @Test(expected = MaintenanceActivityException.class)
-    public void testviewMaintenanceActivityMaintenanceActivityException() throws MaintenanceActivityException {
+    public void testviewMaintenanceActivityMaintenanceActivityException() throws MaintenanceActivityException, SkillException {
         try {
             MaintenanceActivity activity = planner.viewMaintenanceActivity(6);
         } catch (SiteException ex) {
@@ -559,7 +559,7 @@ public class PlannerTest {
      * This test method assert that viewMaintenanceActivity correctly return a maintenance activity with no material associated
      */
     @Test
-    public void testviewMaintenanceActivityMaterialEmpty() {
+    public void testviewMaintenanceActivityMaterialEmpty() throws SkillException {
         try {
             MaintenanceActivity activity = planner.viewMaintenanceActivity(7);
             List<Material> materials= new ArrayList<>();
@@ -577,7 +577,7 @@ public class PlannerTest {
      * This test method assert that viewMaintenanceActivity correctly raises MaterialException
      */
     @Test(expected = MaterialException.class)
-    public void testviewMaintenanceActivityMaterialException() throws MaterialException {
+    public void testviewMaintenanceActivityMaterialException() throws MaterialException, SkillException {
         try {
             MaintenanceActivity activity = planner.viewMaintenanceActivity(8);
         } catch (SiteException ex) {

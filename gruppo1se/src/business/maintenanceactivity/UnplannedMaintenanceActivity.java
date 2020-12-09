@@ -14,8 +14,8 @@ import java.util.List;
  */
 public abstract class UnplannedMaintenanceActivity extends MaintenanceActivity{
     
-    public UnplannedMaintenanceActivity(int activityId, Site site, String typology, String activityDescription, int estimatedInterventionTime, LocalDate date, MaintenanceProcedure maintenanceProcedure, List<Material> materials, List<Skill> skills, boolean interruptibleActivity) {
-        super(activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, skills, interruptibleActivity);
+    public UnplannedMaintenanceActivity(int activityId, Site site, String typology, String activityDescription, int estimatedInterventionTime, LocalDate date, MaintenanceProcedure maintenanceProcedure, List<Material> materials, boolean interruptibleActivity) {
+        super(activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity);
     }
 
     @Override

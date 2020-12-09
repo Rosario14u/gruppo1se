@@ -43,7 +43,7 @@ public abstract class MaintenanceActivity implements Comparable<MaintenanceActiv
      */
     public MaintenanceActivity(int activityId, Site site, String typology, String activityDescription,
             int estimatedInterventionTime, LocalDate date, MaintenanceProcedure maintenanceProcedure,
-            List<Material> materials, List<Skill> skills, boolean interruptibleActivity) {
+            List<Material> materials, boolean interruptibleActivity) {
         this.activityId = activityId;
         this.site = site;
         this.typology = typology;
@@ -52,7 +52,6 @@ public abstract class MaintenanceActivity implements Comparable<MaintenanceActiv
         this.date = date;
         this.maintenanceProcedure = maintenanceProcedure;
         this.materials = materials;
-        this.skills = skills;
         this.interruptibleActivity = interruptibleActivity;
     }
     
@@ -130,15 +129,6 @@ public abstract class MaintenanceActivity implements Comparable<MaintenanceActiv
     
     /**
      * 
-     * @return {@code List<String>} skills
-     */
-    public List<Skill> getSkills() {
-        return skills;
-    }
-    
-    
-    /**
-     * 
      * @return {@code boolean} interruptibleActivity
      */
     public boolean isInterruptibleActivity() {
@@ -154,13 +144,6 @@ public abstract class MaintenanceActivity implements Comparable<MaintenanceActiv
         this.materials = materials;
     }
     
-    /**
-     * 
-     * @param skills list of skills
-     */
-    public void setSkills(List<Skill> skills) {
-        this.skills = skills;
-    }
     
     
     /**

@@ -13,9 +13,8 @@ import java.util.List;
  * @author VincenzaCoppola <v.coppola38@studenti.unisa.it>
  */
 public class Ewo extends UnplannedMaintenanceActivity {
-
+    
     public Ewo(int activityId, Site site, String typology, String activityDescription, int estimatedInterventionTime, LocalDate date, MaintenanceProcedure maintenanceProcedure, List<Material> materials, boolean interruptibleActivity) {
         super(activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity);
-    }
-    
+    } 
 }

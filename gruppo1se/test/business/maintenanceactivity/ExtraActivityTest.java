@@ -18,6 +18,7 @@ import org.junit.*;
 public class ExtraActivityTest {
 
     private final LinkedList<Material> materials = new LinkedList<>();
+    private final LinkedList<Skill> skills = new LinkedList<>();
     private final MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
     private final Site site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
     private final LocalDate date = LocalDate.of(2050, 11, 9);
@@ -25,6 +26,7 @@ public class ExtraActivityTest {
     
     public ExtraActivityTest() {
         materials.add(new Material("material1"));
+        skills.add(new Skill("skill1"));
         instance = new ExtraActivity(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
     }
     
@@ -117,7 +119,8 @@ public class ExtraActivityTest {
         List<Material> result = instance.getMaterials();
         assertEquals(expResult, result);
     }
-
+    
+    
     /**
      * Test of isInterruptibleActivity method, of class ExtraActivity.
      */
@@ -140,6 +143,9 @@ public class ExtraActivityTest {
         instance.setMaterials(materialsAdd);
         assertEquals(instance.getMaterials(), materialsAdd);
     }
+    
+
+    
     
     @Test
     public void isInstanceOfExtraActivity(){

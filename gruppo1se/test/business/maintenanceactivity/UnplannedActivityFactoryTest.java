@@ -56,10 +56,9 @@ public class UnplannedActivityFactoryTest {
         LocalDate date = LocalDate.parse("2020-11-30");
         MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("Smp");
         List<Material> materials = createListMaterial("Materiale2","Materiale1","Materiale3");
-        List<Skill> skills = createListSkill("Skill2","Skill1","Skill3");
         boolean interruptibleActivity = false;
-        Ewo expResult = new Ewo(activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, skills,interruptibleActivity);
-        MaintenanceActivity result = instance.selectMaintenanceActivity(type, activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, skills, interruptibleActivity);
+        Ewo expResult = new Ewo(activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials,interruptibleActivity);
+        MaintenanceActivity result = instance.selectMaintenanceActivity(type, activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity);
         assertEquals(expResult, result);
     }
     
@@ -81,7 +80,7 @@ public class UnplannedActivityFactoryTest {
         List<Skill> skills = createListSkill("Skill4","Skill5","Skill6");
         boolean interruptibleActivity = true;
         ExtraActivity expResult = new ExtraActivity(activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity);
-        MaintenanceActivity result = instance.selectMaintenanceActivity(type, activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, skills, interruptibleActivity);
+        MaintenanceActivity result = instance.selectMaintenanceActivity(type, activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity);
         assertEquals(expResult, result);
     }
     
