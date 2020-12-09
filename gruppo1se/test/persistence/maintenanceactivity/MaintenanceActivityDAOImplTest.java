@@ -532,7 +532,7 @@ public class MaintenanceActivityDAOImplTest {
     public void testAddMaintenanceActivityUnplanned() throws MaintenanceActivityException {
         try {
             Ewo activity = new Ewo(3, site, typology, activityDescription, 300,
-                    LocalDate.of(2050, 11, 25), maintenanceProcedure, materials, false);
+                    LocalDate.of(2050, 11, 25), maintenanceProcedure, materials, skills, false);
             deleteMaintenaceActivity(activity.getActivityId());
             maintenanceActivityDAO.addMaintenanceActivity(activity);
             verify(selectDefaultMaintenanceActivity(3), activity);

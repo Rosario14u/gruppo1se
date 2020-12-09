@@ -6,6 +6,7 @@
 package representation.planner;
 
 import business.maintenanceactivity.Material;
+import business.maintenanceactivity.Skill;
 import business.user.Planner;
 import exception.MaintenanceActivityException;
 import exception.MaterialException;
@@ -28,7 +29,7 @@ import persistence.maintenanceactivity.SiteDaoImpl;
  */
 public class CreateActivity extends javax.swing.JFrame {
     private Planner planner = null;
-    private final JTextField[] textFields = new JTextField[8];
+    private final JTextField[] textFields = new JTextField[9];
     private boolean interruptible = false;
     private boolean typeOfActivity = false;
     private MyDocumentListener myDocumentListener = null;
@@ -48,6 +49,7 @@ public class CreateActivity extends javax.swing.JFrame {
         textFields[5] = jEstimatedInterventionTime;
         textFields[6] = jDate;
         textFields[7] = jMaterials;
+        textFields[8] = jSkills;
         for (int i = 0; i<textFields.length-1;i++) {
             textFields[i].getDocument().addDocumentListener(myDocumentListener);
         }
@@ -90,6 +92,8 @@ public class CreateActivity extends javax.swing.JFrame {
         jInterruptibleFalse = new javax.swing.JRadioButton();
         jErrorActivityId = new javax.swing.JLabel();
         jErrorEstimatedInterventionTime = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jSkills = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -229,73 +233,86 @@ public class CreateActivity extends javax.swing.JFrame {
 
         jErrorEstimatedInterventionTime.setFont(new java.awt.Font("Tahoma", 3, 12)); // NOI18N
 
+        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel12.setText("Skills (separate  each skill with comma):");
+
+        jSkills.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jSkillsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jActivityDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jLabel3)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jArea, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jActivityId))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jLabel2)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jBranchOffice)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jTypology, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(jErrorActivityId, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel11)
-                                .addGap(24, 24, 24)
+                                .addGap(27, 27, 27)
                                 .addComponent(jInterruptibleTrue)
                                 .addGap(18, 18, 18)
                                 .addComponent(jInterruptibleFalse))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel6)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel12)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jActivityDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                            .addComponent(jLabel3)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(jArea, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jSkills))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel10)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jMaterials))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(jActivityId))
+                                            .addComponent(jLabel7)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(jEstimatedInterventionTime, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addComponent(jLabel2)
+                                            .addComponent(jLabel8)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(jBranchOffice)))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel5)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jTypology, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(18, 18, 18)
-                                .addComponent(jErrorActivityId, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                            .addComponent(jLabel10)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(jMaterials))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(jLabel7)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jEstimatedInterventionTime, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(jLabel8)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jDate, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(jErrorEstimatedInterventionTime, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(jPlanned)
-                        .addGap(18, 18, 18)
-                        .addComponent(jExtra)
-                        .addGap(18, 18, 18)
-                        .addComponent(jEwo)))
+                                            .addComponent(jDate, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jErrorEstimatedInterventionTime, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(25, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPlanned)
+                .addGap(18, 18, 18)
+                .addComponent(jExtra)
+                .addGap(18, 18, 18)
+                .addComponent(jEwo)
+                .addGap(263, 263, 263))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -335,17 +352,21 @@ public class CreateActivity extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
                     .addComponent(jMaterials, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
+                .addGap(6, 6, 6)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jSkills, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jInterruptibleTrue)
                     .addComponent(jInterruptibleFalse))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jPlanned)
+                    .addComponent(jEwo)
                     .addComponent(jExtra)
-                    .addComponent(jEwo))
-                .addGap(42, 42, 42)
+                    .addComponent(jPlanned))
+                .addGap(16, 16, 16)
                 .addComponent(jCreate)
                 .addGap(22, 22, 22))
         );
@@ -416,18 +437,25 @@ public class CreateActivity extends javax.swing.JFrame {
             String date = jDate.getText();
             
             LinkedList<Material> materials = new LinkedList<>();
+            LinkedList<Skill> skills = new LinkedList<>();
             String materialString = jMaterials.getText();
+            String skillString = jSkills.getText();
             if (!materialString.equals("")){
                 String[] materialStringList = materialString.split(",");
                 for (String material : materialStringList)
-                    materials.add(new Material(material));
+                    materials.add(new Material(material.trim()));
             }else materials = null;
+            if (!skillString.equals("")){
+                String[] skillStringList = skillString.split(",");
+                for (String skill : skillStringList)
+                    skills.add(new Skill(skill.trim()));
+            }else skills = null;
             boolean interruptibleActivity;
             interruptibleActivity = jInterruptibleTrue.isSelected();
             boolean plannedActivity = jPlanned.isSelected();
             boolean extraActivity = jExtra.isSelected();
             boolean ewo = jEwo.isSelected();
-            planner.makeMaintenanceActivity(activityId, branchOffice, area, "", typology, activityDescription, estimatedInterventionTime, date, "", materials, null,interruptibleActivity, plannedActivity, extraActivity, ewo);
+            planner.makeMaintenanceActivity(activityId, branchOffice, area, "", typology, activityDescription, estimatedInterventionTime, date, " ", materials, skills, interruptibleActivity, plannedActivity, extraActivity, ewo);
             jActivityId.setText("");
             jBranchOffice.setText("");
             jArea.setText("");
@@ -436,6 +464,7 @@ public class CreateActivity extends javax.swing.JFrame {
             jEstimatedInterventionTime.setText("");
             jDate.setText("");
             jMaterials.setText("");
+            jSkills.setText("");
             buttonGroupInterruptible.clearSelection();
             buttonGroupTypeOfActivity.clearSelection();
             jCreate.setEnabled(false);
@@ -477,6 +506,10 @@ public class CreateActivity extends javax.swing.JFrame {
     private void jTypologyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTypologyActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTypologyActionPerformed
+
+    private void jSkillsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSkillsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jSkillsActionPerformed
 
     private class MyDocumentListener implements DocumentListener {
 
@@ -549,6 +582,7 @@ public class CreateActivity extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
@@ -558,6 +592,7 @@ public class CreateActivity extends javax.swing.JFrame {
     private javax.swing.JTextField jMaterials;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JRadioButton jPlanned;
+    private javax.swing.JTextField jSkills;
     private javax.swing.JTextField jTypology;
     // End of variables declaration//GEN-END:variables
 }

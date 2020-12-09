@@ -15,6 +15,7 @@ import exception.NumberNotValidException;
 import exception.MaintenanceActivityException;
 import exception.MaterialException;
 import exception.SiteException;
+import exception.SkillException;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
@@ -396,7 +397,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
             }        
         }catch(NumberFormatException ex){
             errorMessage("ID must be an integer");
-        } catch (SiteException | MaintenanceActivityException | MaterialException | NumberNotValidException ex) {
+        } catch (SiteException | MaintenanceActivityException | MaterialException | NumberNotValidException | SkillException ex) {
             errorMessage(ex.getMessage());
         } 
     }//GEN-LAST:event_viewButtonActionPerformed
