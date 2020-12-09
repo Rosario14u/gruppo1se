@@ -19,9 +19,13 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import persistence.database.ConnectionDB;
+import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.MaintenanceProcedureDAOImplTest;
 import persistence.maintenanceactivity.MaintenanceActivityDAOImplTest;
 import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
+import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
+import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
+import persistence.maintenanceactivity.SiteDaoImpl;
 
 /**
  *
@@ -168,11 +172,13 @@ public class UsersDAOImplTest{
         System.out.println("readUsers");
         Statement stm = conn.createStatement();
         List<User> expectedList = new ArrayList<>();
-        expectedList.add(new Planner("Planner1","PwdPlanner1",null,null));
+        expectedList.add(new Planner("Planner1","PwdPlanner1", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
+                    new RequiredMaterialForMaintenanceDAOImpl(),new RequiredSkillForMaintenanceDAOImpl()));
         expectedList.add(new SystemAdministrator("SystemAdministrator1","PwdSystemAdministrator1",maintenanceProcedure, instance2));
         expectedList.add(new Maintainer("Maintainer1","PwdMaintainer1"));
         List<User> plannerList = new ArrayList<>();
-        insertUserDefault(stm,new Planner("Planner1","PwdPlanner1",null,null));
+        insertUserDefault(stm,new Planner("Planner1","PwdPlanner1", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
+                    new RequiredMaterialForMaintenanceDAOImpl(),new RequiredSkillForMaintenanceDAOImpl()));
         insertUserDefault(stm,new SystemAdministrator("SystemAdministrator1","PwdSystemAdministrator1",maintenanceProcedure,instance2));
         insertUserDefault(stm,new Maintainer("Maintainer1","PwdMaintainer1"));
         plannerList = instance.readUsers();
@@ -209,7 +215,8 @@ public class UsersDAOImplTest{
     
     private User createUser(String username, String password, String role){
         if(role.equals("Planner")){
-            return new Planner(username, password, null, null);
+            return new Planner(username, password, new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
+                    new RequiredMaterialForMaintenanceDAOImpl(),new RequiredSkillForMaintenanceDAOImpl());
         }else if(role.equals("Maintainer")){
             return new Maintainer(username, password);
         }else{

@@ -9,6 +9,7 @@ import business.user.Planner;
 import persistence.maintenanceactivity.MaintenanceActivityDAO;
 import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
+import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.SiteDaoImpl;
 
 /**
@@ -118,12 +119,12 @@ public class MenuPlanner extends javax.swing.JFrame {
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         new DeleteActivity(new Planner("admin","admin", new MaintenanceActivityDAOImpl(new SiteDaoImpl()), 
-                new RequiredMaterialForMaintenanceDAOImpl())).setVisible(true);
+                new RequiredMaterialForMaintenanceDAOImpl(),new RequiredSkillForMaintenanceDAOImpl())).setVisible(true);
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         new CreateActivity(new Planner("admin","admin", new MaintenanceActivityDAOImpl(new SiteDaoImpl()), 
-                new RequiredMaterialForMaintenanceDAOImpl())).setVisible(true);
+                new RequiredMaterialForMaintenanceDAOImpl(),new RequiredSkillForMaintenanceDAOImpl())).setVisible(true);
     }//GEN-LAST:event_addButtonActionPerformed
 
     /**

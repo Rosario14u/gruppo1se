@@ -53,7 +53,7 @@ public class MaintenanceActivityFactoryTest {
                 expectedActivity.getSite().getBranchOffice(), expectedActivity.getSite().getArea(), expectedActivity.getSite().getWorkSpaceNotes(),
                 expectedActivity.getTypology(), expectedActivity.getActivityDescription(),
                 expectedActivity.getEstimatedInterventionTime(), String.valueOf(expectedActivity.getDate()),
-                expectedActivity.getMaintenanceProcedure().getSmp(), expectedActivity.getMaterials(),
+                expectedActivity.getMaintenanceProcedure().getSmp(), expectedActivity.getMaterials(), expectedActivity.getSkills(),
                 expectedActivity.isInterruptibleActivity());
         assertMaintenanceActivity(expectedActivity,returnedActivity);
         
@@ -69,7 +69,7 @@ public class MaintenanceActivityFactoryTest {
         MaintenanceActivity returnedActivity = MaintenanceActivityFactory.make(MaintenanceActivityFactory.Typology.EWO,1, expectedActivity.getSite().getBranchOffice(), 
                 expectedActivity.getSite().getArea(),expectedActivity.getSite().getWorkSpaceNotes(), expectedActivity.getTypology(), expectedActivity.getActivityDescription(),
                 expectedActivity.getEstimatedInterventionTime(), String.valueOf(expectedActivity.getDate()),
-                expectedActivity.getMaintenanceProcedure().getSmp(), expectedActivity.getMaterials(),
+                expectedActivity.getMaintenanceProcedure().getSmp(), expectedActivity.getMaterials(), expectedActivity.getSkills(),
                 expectedActivity.isInterruptibleActivity());
         assertMaintenanceActivity(expectedActivity,returnedActivity);
         
@@ -85,7 +85,7 @@ public class MaintenanceActivityFactoryTest {
         MaintenanceActivity returnedActivity = MaintenanceActivityFactory.make(MaintenanceActivityFactory.Typology.EXTRA,1, expectedActivity.getSite().getBranchOffice(), 
                 expectedActivity.getSite().getArea(), expectedActivity.getSite().getWorkSpaceNotes(), expectedActivity.getTypology(), expectedActivity.getActivityDescription(),
                 expectedActivity.getEstimatedInterventionTime(), String.valueOf(expectedActivity.getDate()),
-                expectedActivity.getMaintenanceProcedure().getSmp(), expectedActivity.getMaterials(),
+                expectedActivity.getMaintenanceProcedure().getSmp(), expectedActivity.getMaterials(),expectedActivity.getSkills(),
                 expectedActivity.isInterruptibleActivity());
         assertMaintenanceActivity(expectedActivity,returnedActivity);   
     }
@@ -99,6 +99,7 @@ public class MaintenanceActivityFactoryTest {
         assertEquals("date error", expectedActivity.getDate(), returnedActivity.getDate());
         assertEquals("procedure error", expectedActivity.getMaintenanceProcedure().getSmp(), returnedActivity.getMaintenanceProcedure().getSmp());
         assertEquals("material error", expectedActivity.getMaterials(), returnedActivity.getMaterials());
+        assertEquals("skill error", expectedActivity.getSkills(), returnedActivity.getSkills());
         assertEquals("interruptible error", expectedActivity.isInterruptibleActivity(), returnedActivity.isInterruptibleActivity());
         assertEquals("instance error", expectedActivity.getClass(), returnedActivity.getClass());
     }
@@ -107,13 +108,14 @@ public class MaintenanceActivityFactoryTest {
             String workspaceNotes, String typology, String activityDescription, int estimatedInterventionTime, String dateString,
             String smp, boolean interruptibleActivity){
         MaintenanceActivity activity = null;
-        List<Material> listMaterial = new ArrayList(Arrays.asList("MaterialeProva1","MaterialeProva2","MaterialeProva3"));
+        List<Material> listMaterial = createListMaterial("MaterialeProva1", "MaterialeProva2", "MaterialeProva3");
+        List<Skill> listSkill = createListSkill("SkillProva1", "SkillProva2", "SkillProva3");
         Site site = new Site(branchOffice, area, workspaceNotes);
         MaintenanceProcedure procedure = new MaintenanceProcedure(smp);
         LocalDate date = LocalDate.parse(dateString);
         if (role.compareTo("Planned")== 0){
             activity = new PlannedMaintenanceActivity(1, site, typology, activityDescription, estimatedInterventionTime, 
-                    date, procedure, listMaterial, interruptibleActivity);
+                    date, procedure, listMaterial, listSkill,interruptibleActivity);
         }else if (role.compareTo("Ewo")== 0) {
             activity = new Ewo(1, site, typology, activityDescription, estimatedInterventionTime, 
                     date, procedure, listMaterial, interruptibleActivity);
@@ -122,6 +124,22 @@ public class MaintenanceActivityFactoryTest {
                     date, procedure, listMaterial, interruptibleActivity);
         }
         return activity;
+    }
+    
+    private List<Material> createListMaterial(String materialElement1, String materialElement2, String materialElement3){
+        return new ArrayList<>() {{
+            add(new Material(materialElement1));
+            add(new Material(materialElement2));
+            add(new Material(materialElement3));    
+        }};
+    }
+    
+    private List<Skill> createListSkill(String skillElement1, String skillElement2, String skillElement3){
+        return new ArrayList<>() {{
+            add(new Skill(skillElement1));
+            add(new Skill(skillElement1));
+            add(new Skill(skillElement1));    
+        }};
     }
     
     /**

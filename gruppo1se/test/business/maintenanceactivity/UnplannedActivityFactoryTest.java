@@ -55,13 +55,10 @@ public class UnplannedActivityFactoryTest {
         int estimatedInterventionTime = 120;
         LocalDate date = LocalDate.parse("2020-11-30");
         MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("Smp");
-        List<Material> materials = new ArrayList<>() {{
-            add(new Material("Material1"));
-            add(new Material("Material2"));
-            add(new Material("Material3"));
-        }};
+        List<Material> listMaterial = createListMaterial("Materiale2","Materiale1","Materiale3");
+        List<Skill> listSkill = createListSkill("Skill2","Skill1","Skill3");
         boolean interruptibleActivity = false;
-        Ewo expResult = new Ewo(activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity);
+        Ewo expResult = new Ewo(activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, listMaterial, listSkill,interruptibleActivity);
         MaintenanceActivity result = instance.selectMaintenanceActivity(type, activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity);
         assertEquals(expResult, result);
     }
@@ -89,6 +86,22 @@ public class UnplannedActivityFactoryTest {
         ExtraActivity expResult = new ExtraActivity(activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity);
         MaintenanceActivity result = instance.selectMaintenanceActivity(type, activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity);
         assertEquals(expResult, result);
+    }
+    
+    private List<Material> createListMaterial(String materialElement1, String materialElement2, String materialElement3){
+        return new ArrayList<>() {{
+            add(new Material(materialElement1));
+            add(new Material(materialElement2));
+            add(new Material(materialElement3));    
+        }};
+    }
+    
+    private List<Skill> createListSkill(String skillElement1, String skillElement2, String skillElement3){
+        return new ArrayList<>() {{
+            add(new Skill(skillElement1));
+            add(new Skill(skillElement1));
+            add(new Skill(skillElement1));    
+        }};
     }
     
 }

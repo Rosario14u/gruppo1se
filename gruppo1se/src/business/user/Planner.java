@@ -105,7 +105,7 @@ public class Planner extends User {
                         MaintenanceActivityFactory.Typology.PLANNED : MaintenanceActivityFactory.Typology.valueOf(typologyOfUnplannedActivity);
 
             MaintenanceActivity newActivity = MaintenanceActivityFactory.make(type, activityId, branchOffice, area, null, typology, activityDescription, 
-                    estimatedInterventionTime, date, null, null, interruptibleActivity);
+                    estimatedInterventionTime, date, null, null, null,interruptibleActivity);
 
             return maintenanceActivityDao.modifyMaintenaceActivity(newActivity);
         }catch(IllegalArgumentException ex){
