@@ -5,9 +5,9 @@
  */
 package persistence.user;
 
+import business.user.Maintainer;
 import business.user.User;
 import exception.UsersException;
-import java.sql.ResultSet;
 import java.util.List;
 
 /**
@@ -18,6 +18,6 @@ public interface UsersDAO {
    public List<User> readUsers() throws UsersException;
    public boolean addUser(User user) throws UsersException;
    public int deleteUsers(List<String> usernameList) throws UsersException;
-   
    public boolean updateUser(String oldUsername, User newUser) throws UsersException;
+   public List<Maintainer> readMaintainers() throws UsersException;
 }

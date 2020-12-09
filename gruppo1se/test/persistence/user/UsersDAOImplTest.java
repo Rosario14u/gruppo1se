@@ -19,9 +19,12 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import persistence.database.ConnectionDB;
-import persistence.maintenanceactivity.MaintenanceProcedureDAOImplTest;
-import persistence.maintenanceactivity.MaintenanceActivityDAOImplTest;
 import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
+import stub.EmployeeAppointmentDAOStub;
+import stub.MaintenanceActivityDAOStub;
+import stub.RequiredMaterialForMaintenanceDAOStub;
+import stub.RequiredSkillForMaintenanceDAOStub;
+import stub.UsersDAOStub;
 
 /**
  *
@@ -100,13 +103,15 @@ public class UsersDAOImplTest{
     }
     /**
      * Test of addUser method, of class UsersDAO.
-     * //@throws exception.UsersException
-     * //@throws java.sql.SQLException
+     * @throws exception.UsersException
+     * @throws java.sql.SQLException
      */
     //@Test
     public void testAddUserPlanner() throws UsersException, SQLException{
         System.out.println("addUserPlanner");
-        User user = new Planner("ProvaUsername","ProvaPassword", null, null);
+        User user = new Planner("ProvaUsername","ProvaPassword",new MaintenanceActivityDAOStub(),
+            new RequiredMaterialForMaintenanceDAOStub(), new UsersDAOStub(),
+            new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub());
         Statement stmt = conn.createStatement();
         deleteUserDefault(stmt, user.getUsername());
         instance.addUser(user);
@@ -116,8 +121,8 @@ public class UsersDAOImplTest{
     
     /**
      * Test of addUser method, of class UsersDAO.
-     * //@throws exception.UsersException
-     * //@throws java.sql.SQLException
+     * @throws exception.UsersException
+     * @throws java.sql.SQLException
      */
     //@Test
     public void testAddUserMaintainer() throws UsersException, SQLException{
@@ -132,8 +137,8 @@ public class UsersDAOImplTest{
     
     /**
      * Test of addUser method, of class UsersDAO.
-     * //@throws exception.UsersException
-     * //@throws java.sql.SQLException
+     * @throws exception.UsersException
+     * @throws java.sql.SQLException
      */
     //@Test
     public void testAddUserSystemAdministrator() throws UsersException, SQLException{
@@ -168,11 +173,15 @@ public class UsersDAOImplTest{
         System.out.println("readUsers");
         Statement stm = conn.createStatement();
         List<User> expectedList = new ArrayList<>();
-        expectedList.add(new Planner("Planner1","PwdPlanner1",null,null));
+        expectedList.add(new Planner("Planner1","PwdPlanner1", new MaintenanceActivityDAOStub(),
+            new RequiredMaterialForMaintenanceDAOStub(), new UsersDAOStub(),
+            new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub()));
         expectedList.add(new SystemAdministrator("SystemAdministrator1","PwdSystemAdministrator1",maintenanceProcedure, instance2));
         expectedList.add(new Maintainer("Maintainer1","PwdMaintainer1"));
         List<User> plannerList = new ArrayList<>();
-        insertUserDefault(stm,new Planner("Planner1","PwdPlanner1",null,null));
+        insertUserDefault(stm,new Planner("Planner1","PwdPlanner1", new MaintenanceActivityDAOStub(),
+            new RequiredMaterialForMaintenanceDAOStub(), new UsersDAOStub(),
+            new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub()));
         insertUserDefault(stm,new SystemAdministrator("SystemAdministrator1","PwdSystemAdministrator1",maintenanceProcedure,instance2));
         insertUserDefault(stm,new Maintainer("Maintainer1","PwdMaintainer1"));
         plannerList = instance.readUsers();
@@ -209,7 +218,9 @@ public class UsersDAOImplTest{
     
     private User createUser(String username, String password, String role){
         if(role.equals("Planner")){
-            return new Planner(username, password, null, null);
+            return new Planner(username, password, new MaintenanceActivityDAOStub(),
+            new RequiredMaterialForMaintenanceDAOStub(), new UsersDAOStub(),
+            new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub());
         }else if(role.equals("Maintainer")){
             return new Maintainer(username, password);
         }else{

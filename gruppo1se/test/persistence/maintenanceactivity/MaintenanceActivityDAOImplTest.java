@@ -12,6 +12,7 @@ import business.maintenanceactivity.MaintenanceProcedure;
 import business.maintenanceactivity.Material;
 import business.maintenanceactivity.PlannedMaintenanceActivity;
 import business.maintenanceactivity.Site;
+import business.maintenanceactivity.Skill;
 import exception.DateException;
 import exception.MaintenanceActivityException;
 import exception.SiteException;
@@ -25,8 +26,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,7 +38,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import persistence.database.ConnectionDB;
-import stub.MaintenanceActivityDAOStub;
 import stub.SiteDaoStub;
 
 /**
@@ -56,7 +56,8 @@ public class MaintenanceActivityDAOImplTest {
     private final Site site;
     private final String activityDescription;
     private final MaintenanceProcedure maintenanceProcedure;
-    private final LinkedList<Material> materials;
+    private final ArrayList<Material> materials;
+    private final ArrayList<Skill> skills;
     private final String typology;
     private final MaintenanceActivityDAOImpl maintenanceActivityDAO;
 
@@ -65,7 +66,8 @@ public class MaintenanceActivityDAOImplTest {
         site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
         activityDescription = "ProvaActivityDescription";
         maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
-        materials = new LinkedList<>();
+        materials = new ArrayList<>();
+        skills = new ArrayList<>();
         typology = "ProvaTypology";
         maintenanceActivityDAO = new MaintenanceActivityDAOImpl(new SiteDaoStub());
         
@@ -471,13 +473,13 @@ public class MaintenanceActivityDAOImplTest {
      public MaintenanceActivity createMaintenanceActivity(String typeOfActivity, int id) {
         if(typeOfActivity.compareTo("Planned")==0){
             return new PlannedMaintenanceActivity(id, new Site("ProvaBranchOfficeMod"+id, "ProvaAreaMod"+id), "typologyNameMod"+id,
-                    "ProvaDescrizioneMod"+id, id, LocalDate.now(), null, null, id%2==0);
+                    "ProvaDescrizioneMod"+id, id, LocalDate.now(), null, null, null,id%2==0);
         }else if(typeOfActivity.compareTo("EWO")==0){
             return new Ewo(id, new Site("ProvaBranchOfficeMod"+id, "ProvaAreaMod"+id), "typologyNameMod"+id,
-                    "ProvaDescrizioneMod"+id, id, LocalDate.now(), null, null, id%2==0);
+                    "ProvaDescrizioneMod"+id, id, LocalDate.now(), null, null, null,id%2==0);
         }else{
             return new ExtraActivity(id, new Site("ProvaBranchOfficeMod"+id, "ProvaAreaMod"+id), "typologyNameMod"+id,
-                    "ProvaDescrizioneMod"+id, id, LocalDate.now(), null, null, id%2==0);
+                    "ProvaDescrizioneMod"+id, id, LocalDate.now(), null, null, null,id%2==0);
         }
     }
     
@@ -491,7 +493,7 @@ public class MaintenanceActivityDAOImplTest {
     public void testAddMaintenanceActivity() throws MaintenanceActivityException {
         try {
             PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(1, site, typology,
-                    activityDescription, 300, LocalDate.of(2050, 11, 25), maintenanceProcedure, materials, false);
+                    activityDescription, 300, LocalDate.of(2050, 11, 25), maintenanceProcedure, materials, skills, false);
             deleteMaintenaceActivity(activity.getActivityId());
             maintenanceActivityDAO.addMaintenanceActivity(activity);
             verify(selectDefaultMaintenanceActivity(1), activity);
@@ -504,7 +506,7 @@ public class MaintenanceActivityDAOImplTest {
     public void testAddMaintenanceActivityWrongDate() throws MaintenanceActivityException {
         try {
             PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(2, site, typology,
-                    activityDescription, 300, LocalDate.of(2020,11,24), maintenanceProcedure, materials, false);
+                    activityDescription, 300, LocalDate.of(2020,11,24), maintenanceProcedure, materials, skills, false);
             deleteMaintenaceActivity(activity.getActivityId());
             maintenanceActivityDAO.addMaintenanceActivity(activity);
         } catch (SQLException ex) {
@@ -516,7 +518,7 @@ public class MaintenanceActivityDAOImplTest {
     public void testAddMaintenanceActivityWrongActivityID() throws MaintenanceActivityException {
         try {
             PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(0, site, typology,
-                    activityDescription, 300, LocalDate.of(2050, 11, 25), maintenanceProcedure, materials, false);
+                    activityDescription, 300, LocalDate.of(2050, 11, 25), maintenanceProcedure, materials, skills,false);
             deleteMaintenaceActivity(activity.getActivityId());
             maintenanceActivityDAO.addMaintenanceActivity(activity);
         } catch (SQLException ex) {

@@ -12,7 +12,12 @@ import java.sql.*;
 import exception.UsersException;
 import java.util.ArrayList;
 import java.util.List;
+import persistence.maintenanceactivity.EmployeeAppointmentDAOImpl;
+import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
+import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
+import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
+import persistence.maintenanceactivity.SiteDaoImpl;
 
 /**
  *
@@ -68,7 +73,11 @@ public class UsersDAOImpl implements UsersDAO {
                 else if (set.getString("role").equals("Maintainer"))
                     users.add(new Maintainer(set.getString("username"), set.getString("password")));
                 else
-                    users.add(new Planner(set.getString("username"), set.getString("password"), null, null));
+                    users.add(new Planner(set.getString("username"), set.getString("password"),
+                            new MaintenanceActivityDAOImpl(new SiteDaoImpl()) ,
+                            new RequiredMaterialForMaintenanceDAOImpl(), 
+                            new UsersDAOImpl(), new EmployeeAppointmentDAOImpl(),
+                            new RequiredSkillForMaintenanceDAOImpl()));
             }
             return users;
         } catch (SQLException ex) {

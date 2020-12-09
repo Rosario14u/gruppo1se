@@ -8,16 +8,21 @@ package business.user;
 import business.maintenanceactivity.MaintenanceActivity;
 import business.maintenanceactivity.MaintenanceActivityFactory;
 import business.maintenanceactivity.Material;
+import business.maintenanceactivity.Skill;
+import exception.AppointmentException;
 import exception.DateException;
 import exception.MaintenanceActivityException;
 import exception.MaterialException;
 import exception.SiteException;
+import exception.SkillException;
 import exception.UsersException;
 import java.time.LocalDate;
 import java.util.List;
 import persistence.maintenanceactivity.EmployeeAppointmentDAO;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAO;
 import persistence.maintenanceactivity.MaintenanceActivityDAO;
+import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAO;
+import persistence.user.MaintainerSkillDAO;
 import persistence.user.UsersDAO;
 
 /**
@@ -27,8 +32,11 @@ import persistence.user.UsersDAO;
 public class Planner extends User {
     private MaintenanceActivityDAO maintenanceActivityDao;
     private RequiredMaterialForMaintenanceDAO requiredMaterialsDao;
+    private RequiredSkillForMaintenanceDAO requiredSkillsDao;
     private UsersDAO userDao;
     private EmployeeAppointmentDAO employeeAppointmentDao;
+    private MaintainerSkillDAO maintainerSkillDao; 
+    //private 
     
     
     /**
@@ -58,12 +66,14 @@ public class Planner extends User {
     
     public Planner(String username, String password, MaintenanceActivityDAO maintenanceActivityDao, 
             RequiredMaterialForMaintenanceDAO requiredMaterialsDao, 
-            UsersDAO userDao, EmployeeAppointmentDAO employeeAppointmentDao) {
+            UsersDAO userDao, EmployeeAppointmentDAO employeeAppointmentDao, 
+            RequiredSkillForMaintenanceDAO requiredSkillForMaintenanceDao) {
         super(username, password);
         this.maintenanceActivityDao = maintenanceActivityDao;
         this.requiredMaterialsDao = requiredMaterialsDao;
         this.userDao = userDao;
         this.employeeAppointmentDao = employeeAppointmentDao;
+        this.requiredSkillsDao = requiredSkillForMaintenanceDao;
     }
     
     /**
@@ -116,7 +126,7 @@ public class Planner extends User {
                         MaintenanceActivityFactory.Typology.PLANNED : MaintenanceActivityFactory.Typology.valueOf(typologyOfUnplannedActivity);
 
             MaintenanceActivity newActivity = MaintenanceActivityFactory.make(type, activityId, branchOffice, area, null, typology, activityDescription, 
-                    estimatedInterventionTime, date, null, null, interruptibleActivity);
+                    estimatedInterventionTime, date, null, null, null,interruptibleActivity);
 
             return maintenanceActivityDao.modifyMaintenaceActivity(newActivity);
         }catch(IllegalArgumentException ex){
@@ -130,8 +140,8 @@ public class Planner extends User {
     }
     
     public boolean makeMaintenanceActivity(int activityId, String branchOffice, String area, String workspaceNotes, String typology, String activityDescription, int estimatedInterventionTime, 
-            String date, String smp, List<Material> materials, boolean interruptibleActivity,
-            boolean plannedActivity, boolean extraActivity, boolean ewo) throws MaintenanceActivityException, MaterialException{
+            String date, String smp, List<Material> materials, List<Skill> skills, boolean interruptibleActivity,
+            boolean plannedActivity, boolean extraActivity, boolean ewo) throws MaintenanceActivityException, MaterialException, SkillException{
         MaintenanceActivityFactory.Typology type = null;
         if (plannedActivity)
             type = MaintenanceActivityFactory.Typology.PLANNED;
@@ -140,10 +150,14 @@ public class Planner extends User {
         else
             type = MaintenanceActivityFactory.Typology.EWO;
         MaintenanceActivity activity = MaintenanceActivityFactory.make(type, activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime,
-                date, smp, materials, interruptibleActivity);
-        if (materials!=null)
+                date, smp, materials, skills, interruptibleActivity);
+        if (materials!=null && skills!=null)
+            return maintenanceActivityDao.addMaintenanceActivity(activity) && requiredMaterialsDao.addRequiredMaterial(activityId, materials) && requiredSkillsDao.addRequiredSkill(activityId, skills);
+        else if (materials!=null)
             return maintenanceActivityDao.addMaintenanceActivity(activity) && requiredMaterialsDao.addRequiredMaterial(activityId, materials);
-        else
+        else if (skills!=null)
+            return maintenanceActivityDao.addMaintenanceActivity(activity) && requiredSkillsDao.addRequiredSkill(activityId, skills);
+        else 
             return maintenanceActivityDao.addMaintenanceActivity(activity);
     }
 
@@ -168,18 +182,23 @@ public class Planner extends User {
         List<LocalDate> date = WeekConverter.getStartEndDate(week, year);
         LocalDate startDateOfWeek = date.get(0);
         LocalDate endDateOfWeek = date.get(1);
-        return maintenanceActivityDao.retrieveMaintenanceActivityFromRange(startDateOfWeek, endDateOfWeek);
+        List<MaintenanceActivity> listOfMaintenanceActivity = maintenanceActivityDao.retrieveMaintenanceActivityFromRange(startDateOfWeek, endDateOfWeek);
+//        for(MaintenanceActivity maintainenceActivity: listOfMaintenanceActivity){
+//            maintainenceActivity.setSkills();
+//        }
+        return listOfMaintenanceActivity;
     }
     
     //Developed by Antonio Gorrasi
-    public List<Maintainer> viewEmployeeAvailability(int week, int year) throws UsersException, DateException{
+    public List<Maintainer> viewEmployeeAvailability(int week, int year) throws UsersException, DateException, AppointmentException, SkillException{
         List<Maintainer> maintainers = userDao.readMaintainers();
         List<LocalDate> date = WeekConverter.getStartEndDate(week, year);
         LocalDate startDateOfWeek = date.get(0);
         LocalDate endDateOfWeek = date.get(1);
-//        for(Maintainer maintainer: maintainers){
-//            maintainer.setAppointmentsInWeek(EmployeeAppointmentDAOImpl.getEmployeeAvailability(maintainer.getUsername(),startDateOfWeek,endDateOfWeek)); 
-//        }
+        for(Maintainer maintainer: maintainers){
+            maintainer.setAppointmentsInWeek(employeeAppointmentDao.getEmployeeAvailability(maintainer.getUsername(),startDateOfWeek,endDateOfWeek)); 
+            maintainer.setSkills(maintainerSkillDao.getMaintainerSkills(maintainer.getUsername()));
+        }
         return maintainers;
     }
 }

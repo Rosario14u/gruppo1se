@@ -12,8 +12,6 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import persistence.database.ConnectionDB;
 /**
  *
@@ -125,7 +123,7 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
                 return MaintenanceActivityFactory.make(type, rs.getInt("activityId"), site.getBranchOffice(), site.getArea(),site.getWorkSpaceNotes(), 
                             rs.getString("typologyName"), rs.getString("activityDescription"), 
                             rs.getInt("estimatedInterventionTime"), rs.getString("dateActivity"),
-                            rs.getString("smp"), null,rs.getBoolean("interruptibleActivity"));
+                            rs.getString("smp"), null, null,rs.getBoolean("interruptibleActivity"));
             }
             throw new SiteException(); 
         } catch (SQLException ex) {

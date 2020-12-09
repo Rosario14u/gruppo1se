@@ -32,12 +32,13 @@ public abstract class MaintenanceActivityFactory {
      * @param date date of maintenance activity that needs to be Instantiate
      * @param smp smp of MaintenanceProcedure
      * @param materials materials of Maintenance Activity that needs to be Instantiate
+     * @param skills skills of Maintenance Activity that needs to be instantiated
      * @param interruptibleActivity interruptible activity of Maintenance Activity that needs to be Instantiate
      * @return the required instance of maintenance activity
      */
     public static MaintenanceActivity make(Typology type, int activityId, String branchOffice, String area,
             String workspaceNotes,String typology, String activityDescription, int estimatedInterventionTime, String date,
-            String smp, List<Material> materials, boolean interruptibleActivity){
+            String smp, List<Material> materials, List<Skill> skills, boolean interruptibleActivity){
         MaintenanceActivityFactory factory = null;
         if (type == Typology.PLANNED){
             factory = new PlannedActivityFactory();
@@ -45,7 +46,7 @@ public abstract class MaintenanceActivityFactory {
             factory = new UnplannedActivityFactory();
         }
         return factory.build(type,activityId, branchOffice, area, workspaceNotes,typology, activityDescription,
-                estimatedInterventionTime, date, smp, materials, interruptibleActivity);
+                estimatedInterventionTime, date, smp, materials, skills, interruptibleActivity);
     }
     
     
@@ -62,17 +63,18 @@ public abstract class MaintenanceActivityFactory {
      * @param date date of maintenance activity that needs to be Instantiate
      * @param smp smp of MaintenanceProcedure
      * @param materials materials of Maintenance Activity that needs to be Instantiate
+     * @param skills skills of Maintenance Activity that needs to be instantiated 
      * @param interruptibleActivity interruptible activity of Maintenance Activity that needs to be Instantiate
      * @return the required instance of maintenance activity
      */
     private MaintenanceActivity build(Typology type, int activityId, String branchOffice, String area,
             String workspaceNotes,String typology, String activityDescription, int estimatedInterventionTime, String date,
-            String smp, List<Material> materials, boolean interruptibleActivity) {
+            String smp, List<Material> materials, List<Skill> skills, boolean interruptibleActivity) {
         Site site = new Site(branchOffice, area, workspaceNotes);
         LocalDate localDate = LocalDate.parse(date);
         MaintenanceProcedure procedure = new MaintenanceProcedure(smp);
         return this.selectMaintenanceActivity(type, activityId, site, typology, activityDescription,
-                estimatedInterventionTime, localDate, procedure, materials, interruptibleActivity);
+                estimatedInterventionTime, localDate, procedure, materials, skills, interruptibleActivity);
     }
     
     
@@ -93,6 +95,6 @@ public abstract class MaintenanceActivityFactory {
      */
     protected abstract MaintenanceActivity selectMaintenanceActivity(Typology type, int activityId, Site site,
             String typology, String activityDescription, int estimatedInterventionTime,
-            LocalDate date, MaintenanceProcedure maintenanceProcedure, List<Material> materials,
+            LocalDate date, MaintenanceProcedure maintenanceProcedure, List<Material> materials, List<Skill> skills,
             boolean interruptibleActivity);
 }

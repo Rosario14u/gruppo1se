@@ -10,9 +10,9 @@ import java.util.Objects;
 
 /**
  *
- * @author gorra
+ * @author rosar
  */
-public class Appointment {
+public class Appointment implements Comparable<Appointment> {
     private final int activityId;
     private final LocalDateTime startDateAndTime;
     private final int duration;
@@ -23,12 +23,24 @@ public class Appointment {
         this.duration = duration;
     }
 
+    public int getActivityId() {
+        return activityId;
+    }
+
+    public LocalDateTime getStartDateAndTime() {
+        return startDateAndTime;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 79 * hash + this.activityId;
-        hash = 79 * hash + Objects.hashCode(this.startDateAndTime);
-        hash = 79 * hash + this.duration;
+        int hash = 5;
+        hash = 17 * hash + this.activityId;
+        hash = 17 * hash + Objects.hashCode(this.startDateAndTime);
+        hash = 17 * hash + this.duration;
         return hash;
     }
 
@@ -55,16 +67,16 @@ public class Appointment {
         }
         return true;
     }
+
+    @Override
+    public int compareTo(Appointment o) {
+        return this.getActivityId() - o.getActivityId();
+    }
+
+    @Override
+    public String toString() {
+        return "Appointment{" + "activityId=" + activityId + ", startDateAndTime=" + startDateAndTime + ", duration=" + duration + '}';
+    }
     
-    public int getActivityId() {
-        return activityId;
-    }
-
-    public LocalDateTime getStartDateAndTime() {
-        return startDateAndTime;
-    }
-
-    public int getDuration() {
-        return duration;
-    } 
+    
 }

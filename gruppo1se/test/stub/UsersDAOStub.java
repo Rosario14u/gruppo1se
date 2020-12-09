@@ -12,10 +12,7 @@ import business.user.User;
 import exception.UsersException;
 import java.util.ArrayList;
 import java.util.List;
-import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
-import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
-import persistence.maintenanceactivity.SiteDaoImpl;
 import persistence.user.UsersDAO;
 import persistence.user.UsersDAOImpl;
 
@@ -29,7 +26,9 @@ public class UsersDAOStub implements UsersDAO {
     public List<User> readUsers() throws UsersException {
         List<User> users = new ArrayList<>();
         users.add(new Maintainer("UserMaintainer","PwdMaintainer"));
-        users.add(new Planner("UserPlanner","PwdPlanner", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),new RequiredMaterialForMaintenanceDAOImpl()));
+        users.add(new Planner("UserPlanner","PwdPlanner", new MaintenanceActivityDAOStub(),
+            new RequiredMaterialForMaintenanceDAOStub(), new UsersDAOStub(),
+            new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub()));
         users.add(new SystemAdministrator("UserSystemAdministrator","PwdSystemAdministrator",new MaintenanceProcedureDAOImpl(),new UsersDAOImpl()));
         return users;
     }
@@ -75,51 +74,7 @@ public class UsersDAOStub implements UsersDAO {
             throw new UsersException();
         }
     }
-    
-    
-//    @Override
-//    public boolean updateUser(String oldUsername, User newUser) throws UsersException{
-//        if(oldUsername.equals("oldUsername1") && newUser.getUsername().equals("newUsername1") 
-//                && newUser.getPassword().equals("newPassword1") && newUser instanceof Planner){  
-//            System.out.println(1);
-//            return true;
-//        } else if(oldUsername.equals("oldUsername2") && newUser.getUsername().equals("newUsername2") 
-//                && newUser.getPassword().equals("newPassword2") && newUser instanceof Planner){
-//            System.out.println(2);
-//            return false;
-//        } else if(oldUsername.equals("oldUsername3") && newUser.getUsername().equals("newUsername3") 
-//                && newUser.getPassword().equals("newPassword3") && newUser instanceof Planner){
-//            System.out.println(3);
-//            throw new UsersException();
-//        } else if(oldUsername.equals("oldUsername4") && newUser.getUsername().equals("newUsername4") 
-//                && newUser.getPassword().equals("newPassword4") && newUser instanceof Maintainer){
-//            System.out.println(4);
-//            return true;
-//        } else if(oldUsername.equals("oldUsername5") && newUser.getUsername().equals("newUsername5") 
-//                && newUser.getPassword().equals("newPassword5") && newUser instanceof Maintainer){
-//            System.out.println(5);
-//            return false;
-//        } else if(oldUsername.equals("oldUsername6") && newUser.getUsername().equals("newUsername6") 
-//                && newUser.getPassword().equals("newPassword6") && newUser instanceof Maintainer){
-//            System.out.println(6);
-//            throw new UsersException();
-//        } else if(oldUsername.equals("oldUsername7") && newUser.getUsername().equals("newUsername7") 
-//                && newUser.getPassword().equals("newPassword7") && newUser instanceof SystemAdministrator){
-//            System.out.println(7);
-//            return true;
-//        } else if(oldUsername.equals("oldUsername8") && newUser.getUsername().equals("newUsername8") 
-//                && newUser.getPassword().equals("newPassword8") && newUser instanceof SystemAdministrator){
-//            System.out.println(8);
-//            return false;
-//        } else if(oldUsername.equals("oldUsername9") && newUser.getUsername().equals("newUsername9") 
-//                && newUser.getPassword().equals("newPassword9") && newUser instanceof SystemAdministrator){
-//            System.out.println(9);
-//            throw new UsersException();
-//        } else {
-//            System.out.println(10);
-//            throw new UsersException();
-//        }
-//    }
+   
 
     @Override
     public List<Maintainer> readMaintainers() throws UsersException {

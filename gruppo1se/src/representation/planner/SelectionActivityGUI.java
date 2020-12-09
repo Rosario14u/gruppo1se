@@ -19,9 +19,12 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
+import persistence.maintenanceactivity.EmployeeAppointmentDAOImpl;
 import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
+import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.SiteDaoImpl;
+import persistence.user.UsersDAOImpl;
 
 /**
  *
@@ -35,7 +38,8 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
      */
     public SelectionActivityGUI() {
         planner = new Planner("admin","admin", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
-                new RequiredMaterialForMaintenanceDAOImpl());
+                new RequiredMaterialForMaintenanceDAOImpl(), new UsersDAOImpl(),
+                new EmployeeAppointmentDAOImpl(), new RequiredSkillForMaintenanceDAOImpl());
         initComponents();
         inizializeField();
     }

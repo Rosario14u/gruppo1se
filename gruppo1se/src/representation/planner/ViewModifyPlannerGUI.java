@@ -28,9 +28,12 @@ import java.util.Locale;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import persistence.maintenanceactivity.EmployeeAppointmentDAOImpl;
 import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
+import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.SiteDaoImpl;
+import persistence.user.UsersDAOImpl;
 
 /**
  *
@@ -47,7 +50,8 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
     public ViewModifyPlannerGUI() {
         listModel = new DefaultListModel<>();
         planner = new Planner("admin","admin", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
-                new RequiredMaterialForMaintenanceDAOImpl());
+                new RequiredMaterialForMaintenanceDAOImpl(), new UsersDAOImpl(),
+                new EmployeeAppointmentDAOImpl(), new RequiredSkillForMaintenanceDAOImpl());
         initComponents();
         initializeField(false);
         weekTextField.setEnabled(false);

@@ -9,14 +9,20 @@ import business.maintenanceactivity.Material;
 import business.user.Planner;
 import exception.MaintenanceActivityException;
 import exception.MaterialException;
+import exception.SkillException;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import persistence.maintenanceactivity.EmployeeAppointmentDAOImpl;
 import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
+import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.SiteDaoImpl;
+import persistence.user.UsersDAOImpl;
 
 /**
  *
@@ -423,7 +429,7 @@ public class CreateActivity extends javax.swing.JFrame {
             boolean plannedActivity = jPlanned.isSelected();
             boolean extraActivity = jExtra.isSelected();
             boolean ewo = jEwo.isSelected();
-            planner.makeMaintenanceActivity(activityId, branchOffice, area, "", typology, activityDescription, estimatedInterventionTime, date, "", materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            planner.makeMaintenanceActivity(activityId, branchOffice, area, "", typology, activityDescription, estimatedInterventionTime, date, "", materials, null,interruptibleActivity, plannedActivity, extraActivity, ewo);
             jActivityId.setText("");
             jBranchOffice.setText("");
             jArea.setText("");
@@ -439,6 +445,8 @@ public class CreateActivity extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error inserting into MaintenanceActivity table", "ERRORE", JOptionPane.ERROR_MESSAGE);
         } catch (MaterialException ex) {
             JOptionPane.showMessageDialog(this, "Error inserting into RequiredMaterial table", "ERRORE", JOptionPane.ERROR_MESSAGE);
+        } catch (SkillException ex) {
+            JOptionPane.showMessageDialog(this, "Error inserting into RequiredSkill table", "ERRORE", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jCreateActionPerformed
 
@@ -517,7 +525,8 @@ public class CreateActivity extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
         Planner planner = new Planner("admin","admin", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
-                new RequiredMaterialForMaintenanceDAOImpl());
+                new RequiredMaterialForMaintenanceDAOImpl(), new UsersDAOImpl(), new EmployeeAppointmentDAOImpl(),
+                new RequiredSkillForMaintenanceDAOImpl());
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
             new CreateActivity(planner).setVisible(true);

@@ -5,29 +5,23 @@
  */
 package business.user;
 
-import business.maintenanceactivity.MaintenanceProcedure;
 import exception.ProcedureException;
 import exception.UsersException;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import persistence.database.ConnectionDB;
-import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
-import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
-import persistence.maintenanceactivity.SiteDaoImpl;
 import persistence.user.UsersDAOImpl;
+import stub.EmployeeAppointmentDAOStub;
+import stub.MaintenanceActivityDAOStub;
 import stub.MaintenanceProcedureDAOStub;
+import stub.RequiredMaterialForMaintenanceDAOStub;
+import stub.RequiredSkillForMaintenanceDAOStub;
 import stub.UsersDAOStub;
 
 /**
@@ -36,6 +30,9 @@ import stub.UsersDAOStub;
  */
 public class SystemAdministratorTest {
     private SystemAdministrator admin;
+    private User planner;
+    private User maintainer;
+    private User systemAdministrator;
     private final SystemAdministrator instance = new SystemAdministrator("systemAdministratorUsername","systemAdministratorPassword",
             new MaintenanceProcedureDAOStub(),
             new UsersDAOStub());
@@ -44,6 +41,11 @@ public class SystemAdministratorTest {
     
     public SystemAdministratorTest() {
         admin = new SystemAdministrator("admin","admin",new MaintenanceProcedureDAOStub(),new UsersDAOStub());
+        planner =  new Planner("newUsername", "newPassword", new MaintenanceActivityDAOStub(),
+                new RequiredMaterialForMaintenanceDAOStub(), new UsersDAOStub(),
+                new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub());
+        maintainer = new Maintainer("newUsername", "newPassword");
+        systemAdministrator = new SystemAdministrator("newUsername", "newPassword");
     }
     
     @BeforeClass
@@ -163,7 +165,9 @@ public class SystemAdministratorTest {
         System.out.println("viewUser");
         List<User> expected = new ArrayList<>();
         expected.add(new Maintainer("UserMaintainer","PwdMaintainer"));
-        expected.add(new Planner("UserPlanner","PwdPlanner", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),new RequiredMaterialForMaintenanceDAOImpl()));
+        expected.add(new Planner("UserPlanner","PwdPlanner", new MaintenanceActivityDAOStub(),
+                new RequiredMaterialForMaintenanceDAOStub(), new UsersDAOStub(),
+                new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub()));
         expected.add(new SystemAdministrator("UserSystemAdministrator","PwdSystemAdministrator",new MaintenanceProcedureDAOImpl(),new UsersDAOImpl()));
         List<User> users = instance.viewUsers();
         assertEquals(true,expected.equals(users));
@@ -218,7 +222,6 @@ public class SystemAdministratorTest {
     @Test
     public void testModifyUserSuccessfulUpdateToPlanner(){
         try{
-            User planner = new Planner("newUsername", "newPassword", null, null);
             assertTrue(admin.modifyUser("oldUsername1", planner));
         } catch(UsersException ex){
             fail("UsersException");
@@ -240,7 +243,6 @@ public class SystemAdministratorTest {
     
     public void testModifyUserUnsuccessfulUpdateToPlanner(){
         try{
-            User planner = new Planner("newUsername", "newPassword", null, null);
             assertFalse(admin.modifyUser("oldUsername2", planner));
         } catch(UsersException ex){
             fail("UsersException");
@@ -280,14 +282,12 @@ public class SystemAdministratorTest {
     
     @Test(expected = UsersException.class)
     public void testModifyUserUpdateToPlannerException() throws UsersException{
-        User planner = new Planner("newUsername", "newPassword", null, null);
         admin.modifyUser("oldUsername3", planner);
     }
     
     @Test
     public void testModifyUserSuccessfulUpdateToMaintainer(){
         try{
-            User maintainer = new Maintainer("newUsername", "newPassword");
             assertTrue(admin.modifyUser("oldUsername1", maintainer));
         } catch(UsersException ex){
             fail("UsersException");
@@ -297,7 +297,6 @@ public class SystemAdministratorTest {
     @Test
     public void testModifyUserUnsuccessfulUpdateToMaintainer(){
         try{
-            User maintainer = new Maintainer("newUsername", "newPassword");
             assertFalse(admin.modifyUser("oldUsername2", maintainer));
         } catch(UsersException ex){
             fail("UsersException");
@@ -306,14 +305,12 @@ public class SystemAdministratorTest {
     
     @Test(expected = UsersException.class)
     public void testModifyUserUpdateToMaintainerException() throws UsersException{
-        User maintainer = new Maintainer("newUsername", "newPassword");
         admin.modifyUser("oldUsername3", maintainer);
     }
     
     @Test
     public void testModifyUserSuccessfulUpdateTo(){
         try{
-            User systemAdministrator = new SystemAdministrator("newUsername", "newPassword");
             assertTrue(admin.modifyUser("oldUsername1", systemAdministrator));
         } catch(UsersException ex){
             fail("UsersException");
@@ -323,7 +320,6 @@ public class SystemAdministratorTest {
     @Test
     public void testModifyUserUnsuccessfulUpdateToSystemAdministrator(){
         try{
-            User systemAdministrator = new SystemAdministrator("newUsername", "newPassword");
             assertFalse(admin.modifyUser("oldUsername2", systemAdministrator));
         } catch(UsersException ex){
             fail("UsersException");
@@ -332,19 +328,17 @@ public class SystemAdministratorTest {
     
     @Test(expected = UsersException.class)
     public void testModifyUserUpdateToSystemAdministratorException() throws UsersException{
-        User systemAdministrator = new SystemAdministrator("newUsername", "newPassword");
         admin.modifyUser("oldUsername3 ", systemAdministrator);
     }
     
     @Test(expected = UsersException.class)
     public void testModifyUserOldUsernameNull() throws UsersException{
-        User systemAdministrator = new SystemAdministrator("newUsername", "newPassword");
         admin.modifyUser("null", systemAdministrator);        
     }
     
     @Test(expected = UsersException.class)
     public void testModifyUserNewUsernameNull() throws UsersException {
-        User systemAdministrator = new SystemAdministrator(null, "newPassword");        
-        admin.modifyUser("oldUsername1", systemAdministrator);
+        User administrator = new SystemAdministrator(null, "newPassword");        
+        admin.modifyUser("oldUsername1", administrator);
     }
 }

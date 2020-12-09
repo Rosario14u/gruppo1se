@@ -13,9 +13,9 @@ import java.util.List;
 
 /**
  *
- * @author gorra
+ * @author rosar
  */
 public interface EmployeeAppointmentDAO {
     public List<Appointment> getEmployeeAvailability(String username, LocalDate startDate, LocalDate endDate)
-            throws AppointmentException, DateException;
+            throws AppointmentException,DateException;
 }
