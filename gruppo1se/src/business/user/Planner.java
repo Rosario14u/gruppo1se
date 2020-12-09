@@ -27,7 +27,7 @@ import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAO;
 public class Planner extends User {
     private MaintenanceActivityDAO maintenanceActivityDao;
     private RequiredMaterialForMaintenanceDAO requiredMaterialsDao;
-    private final RequiredSkillForMaintenanceDAO requiredSkillsDao;
+    private RequiredSkillForMaintenanceDAO requiredSkillsDao;
     
     
     /**
