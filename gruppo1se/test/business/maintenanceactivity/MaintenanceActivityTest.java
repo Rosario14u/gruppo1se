@@ -25,10 +25,9 @@ public class MaintenanceActivityTest {
     MaintenanceActivity instance;
     public MaintenanceActivityTest() {
         List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
-        List<Skill> listSkill = createListSkill("Skill1","Skill2","Skill3");
         instance = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
                 "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
-                new MaintenanceProcedure("Provasmp"),listMaterial,listSkill,true);
+                new MaintenanceProcedure("Provasmp"),listMaterial,true);
     }
     
     @BeforeClass
@@ -201,10 +200,9 @@ public class MaintenanceActivityTest {
     @Test
     public void testEqualsSameAttributes() {
         List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
-        List<Skill> listSkill = createListSkill("Skill1","Skill2","Skill3");
         MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
                 "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
-                new MaintenanceProcedure("Provasmp"),listMaterial,listSkill,true);
+                new MaintenanceProcedure("Provasmp"),listMaterial,true);
         assertTrue(instance.equals(activity));
     }
     
@@ -214,10 +212,9 @@ public class MaintenanceActivityTest {
     @Test
     public void testEqualsDifferentAttributes1() {
         List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
-        List<Skill> listSkill = createListSkill("Skill1","Skill2","Skill3");
         MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
                 "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
-                new MaintenanceProcedure("Provasmp"),listMaterial,listSkill,true);
+                new MaintenanceProcedure("Provasmp"),listMaterial,true);
         assertTrue( instance.equals(activity));
     }
     
@@ -227,10 +224,9 @@ public class MaintenanceActivityTest {
     @Test
     public void testEqualsDifferentAttributes2() {
         List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
-        List<Skill> listSkill = createListSkill("Skill1","Skill2","Skill3");
         MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea2","ProvaWorkspaceNotes"),
                 "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
-                new MaintenanceProcedure("Provasmp"),listMaterial,listSkill,true);
+                new MaintenanceProcedure("Provasmp"),listMaterial,true);
         assertFalse(instance.equals(activity));
     }
     
@@ -240,10 +236,9 @@ public class MaintenanceActivityTest {
     @Test
     public void testEqualsDifferentAttributes3() {
         List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
-        List<Skill> listSkill = createListSkill("Skill1","Skill2","Skill3");
         MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes2"),
                 "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
-                new MaintenanceProcedure("Provasmp"),listMaterial,listSkill,true);
+                new MaintenanceProcedure("Provasmp"),listMaterial,true);
         assertFalse(instance.equals(activity));
     }
     
@@ -253,10 +248,9 @@ public class MaintenanceActivityTest {
     @Test
     public void testEqualsDifferentAttributes4() {
         List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
-        List<Skill> listSkill = createListSkill("Skill1","Skill2","Skill3");
         MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
                 "ProvaTipologia2","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
-                new MaintenanceProcedure("Provasmp"),listMaterial,listSkill,true);
+                new MaintenanceProcedure("Provasmp"),listMaterial,true);
         assertFalse(instance.equals(activity));
     }
     
@@ -266,10 +260,9 @@ public class MaintenanceActivityTest {
     @Test
     public void testEqualsDifferentAttributes5() {
         List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
-        List<Skill> listSkill = createListSkill("Skill1","Skill2","Skill3");
         MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
                 "ProvaTipologia","ProvaDescrizione2",120,LocalDate.parse("2021-11-20"),
-                new MaintenanceProcedure("Provasmp"),listMaterial,listSkill,true);
+                new MaintenanceProcedure("Provasmp"),listMaterial,true);
         assertFalse(instance.equals(activity));
     }
     
@@ -279,10 +272,9 @@ public class MaintenanceActivityTest {
     @Test
     public void testEqualsDifferentAttributes6() {
         List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
-        List<Skill> listSkill = createListSkill("Skill1","Skill2","Skill3");
         MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
                 "ProvaTipologia","ProvaDescrizione",121,LocalDate.parse("2021-11-20"),
-                new MaintenanceProcedure("Provasmp"),listMaterial,listSkill,true);
+                new MaintenanceProcedure("Provasmp"),listMaterial,true);
         assertFalse(instance.equals(activity));
     }
     
@@ -292,10 +284,9 @@ public class MaintenanceActivityTest {
     @Test
     public void testEqualsDifferentAttributes7() {
         List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
-        List<Skill> listSkill = createListSkill("Skill1","Skill2","Skill3");
         MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
                 "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-21"),
-                new MaintenanceProcedure("Provasmp"),listMaterial,listSkill,true);
+                new MaintenanceProcedure("Provasmp"),listMaterial,true);
         assertFalse(instance.equals(activity));
     }
     
@@ -305,10 +296,9 @@ public class MaintenanceActivityTest {
     @Test
     public void testEqualsDifferentAttributes8() {
         List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
-        List<Skill> listSkill = createListSkill("Skill1","Skill2","Skill3");
         MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
                 "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
-                new MaintenanceProcedure("Provasmp2"),listMaterial,listSkill,true);
+                new MaintenanceProcedure("Provasmp2"),listMaterial,true);
         assertFalse(instance.equals(activity));
     }
     
@@ -318,10 +308,9 @@ public class MaintenanceActivityTest {
     @Test
     public void testEqualsDifferentAttributes9() {
         List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale4");
-        List<Skill> listSkill = createListSkill("Skill1","Skill2","Skill3");
         MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
                 "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
-                new MaintenanceProcedure("Provasmp"),listMaterial,listSkill,true);
+                new MaintenanceProcedure("Provasmp"),listMaterial,true);
         assertFalse(instance.equals(activity));
     }
     
@@ -331,10 +320,9 @@ public class MaintenanceActivityTest {
     @Test
     public void testEqualsDifferentAttributes10() {
         List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
-        List<Skill> listSkill = createListSkill("Skill1","Skill2","Skill3");
         MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
                 "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
-                new MaintenanceProcedure("Provasmp"),listMaterial,listSkill,false);
+                new MaintenanceProcedure("Provasmp"),listMaterial,false);
         assertFalse(instance.equals(activity));
     }
     
@@ -344,10 +332,9 @@ public class MaintenanceActivityTest {
     @Test
     public void testEqualsListMaterials() {
         List<Material> listMaterial = createListMaterial("Materiale2","Materiale1","Materiale3");
-        List<Skill> listSkill = createListSkill("Skill2","Skill1","Skill3");
         MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
                 "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
-                new MaintenanceProcedure("Provasmp"),listMaterial,listSkill,true);
+                new MaintenanceProcedure("Provasmp"),listMaterial,true);
         assertTrue(instance.equals(activity));
     }
     
@@ -358,20 +345,12 @@ public class MaintenanceActivityTest {
             add(new Material(materialElement3));    
         }};
     }
-    
-    private List<Skill> createListSkill(String skillElement1, String skillElement2, String skillElement3){
-        return new ArrayList<>() {{
-            add(new Skill(skillElement1));
-            add(new Skill(skillElement1));
-            add(new Skill(skillElement1));    
-        }};
-    }
 
     public class MaintenanceActivityImpl extends MaintenanceActivity {
 
         public MaintenanceActivityImpl(int activityId, Site site, String typology, String activityDescription,
             int estimatedInterventionTime, LocalDate date, MaintenanceProcedure maintenanceProcedure,
-            List<Material> materials, List<Skill> skills,boolean interruptibleActivity) {
+            List<Material> materials,boolean interruptibleActivity) {
             super(activityId, site, typology, activityDescription, estimatedInterventionTime,
                     date, maintenanceProcedure, materials,interruptibleActivity);
         }

@@ -77,7 +77,6 @@ public class UnplannedActivityFactoryTest {
         LocalDate date = LocalDate.parse("2020-12-01");
         MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("Smp2");
         List<Material> materials = createListMaterial("Material4","Material5","Material6");
-        List<Skill> skills = createListSkill("Skill4","Skill5","Skill6");
         boolean interruptibleActivity = true;
         ExtraActivity expResult = new ExtraActivity(activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity);
         MaintenanceActivity result = instance.selectMaintenanceActivity(type, activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity);
@@ -90,14 +89,5 @@ public class UnplannedActivityFactoryTest {
             add(new Material(materialElement2));
             add(new Material(materialElement3));    
         }};
-    }
-    
-    private List<Skill> createListSkill(String skillElement1, String skillElement2, String skillElement3){
-        return new ArrayList<>() {{
-            add(new Skill(skillElement1));
-            add(new Skill(skillElement1));
-            add(new Skill(skillElement1));    
-        }};
-    }
-    
+    }    
 }
