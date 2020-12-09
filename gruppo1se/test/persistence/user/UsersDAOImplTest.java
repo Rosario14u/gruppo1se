@@ -84,6 +84,10 @@ public class UsersDAOImplTest{
         stmt.executeUpdate(delete);
     }
     
+    private void deleteAllUsersDefault(Statement stmt) throws SQLException{
+        String delete = "DELETE FROM USERS";
+        stmt.executeUpdate(delete);
+    }
     private ResultSet selectUserDefault(Statement stmt, String username) throws SQLException{
         String select = "SELECT * FROM USERS WHERE username = '" + username + "'";
         return stmt.executeQuery(select);
@@ -171,6 +175,7 @@ public class UsersDAOImplTest{
     public void testReadUsers() throws UsersException, SQLException{
         System.out.println("readUsers");
         Statement stm = conn.createStatement();
+        deleteAllUsersDefault(stm);
         List<User> expectedList = new ArrayList<>();
         expectedList.add(new Planner("Planner1","PwdPlanner1", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
                     new RequiredMaterialForMaintenanceDAOImpl(),new RequiredSkillForMaintenanceDAOImpl()));

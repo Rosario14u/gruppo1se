@@ -66,12 +66,13 @@ public class Planner extends User {
      */
     /*Method developed by Rosario Gaeta*/
     public MaintenanceActivity viewMaintenanceActivity(int activityId) throws SiteException, 
-            MaintenanceActivityException, MaterialException{
+            MaintenanceActivityException, MaterialException, SkillException{
         /*this method uses MaintenanceActivityDaoImpl and RequiredMaterialForMaintenanceDaoImpl objects to
         retrieve the required MaintenanceActivity object if exists*/
         MaintenanceActivity activity = maintenanceActivityDao.retrieveMaintenanceActivityDao(activityId);
         if(activity != null){
             activity.setMaterials(requiredMaterialsDao.retrieveMaterialsByActivityId(activityId));
+            activity.setSkills(requiredSkillsDao.retrieveSkillsByActivityId(activityId));
         }
         return activity;
     }

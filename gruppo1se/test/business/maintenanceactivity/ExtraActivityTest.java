@@ -18,6 +18,7 @@ import org.junit.*;
 public class ExtraActivityTest {
 
     private final LinkedList<Material> materials = new LinkedList<>();
+    private final LinkedList<Skill> skills = new LinkedList<>();
     private final MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
     private final Site site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
     private final LocalDate date = LocalDate.of(2050, 11, 9);
@@ -25,7 +26,8 @@ public class ExtraActivityTest {
     
     public ExtraActivityTest() {
         materials.add(new Material("material1"));
-        instance = new ExtraActivity(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
+        skills.add(new Skill("skill1"));
+        instance = new ExtraActivity(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials,skills, true);
     }
     
     
@@ -117,7 +119,18 @@ public class ExtraActivityTest {
         List<Material> result = instance.getMaterials();
         assertEquals(expResult, result);
     }
-
+    
+    /**
+     * Test of getSkills method, of class ExtraActivity.
+     */
+    @Test
+    public void testGetSkills() {
+        System.out.println("getSkills");
+        List<Skill> expResult = skills;
+        List<Skill> result = instance.getSkills();
+        assertEquals(expResult, result);
+    }
+    
     /**
      * Test of isInterruptibleActivity method, of class ExtraActivity.
      */
@@ -141,6 +154,19 @@ public class ExtraActivityTest {
         assertEquals(instance.getMaterials(), materialsAdd);
     }
     
+    /**
+     * Test of setSkills method, of class ExtraActivity.
+     */
+    @Test
+    public void testSetSkills() {
+        System.out.println("setSkills");
+        List<Skill> skillsAdd = new LinkedList<>();
+        skillsAdd.add(new Skill("skills2"));
+        instance.setSkills(skillsAdd);
+        assertEquals(instance.getSkills(), skillsAdd);
+    }
+    
+    
     @Test
     public void isInstanceOfExtraActivity(){
         System.out.println("instance is an instance of ExtraActivity");
@@ -151,7 +177,7 @@ public class ExtraActivityTest {
     @Test
     public void testEqualsExtraActivity() {
         System.out.println("test Equals Extra Activity");
-        ExtraActivity extra = new ExtraActivity(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
+        ExtraActivity extra = new ExtraActivity(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials,skills, true);
         boolean result = instance.equals(extra);
         assertEquals(result,true);
     }
@@ -159,7 +185,7 @@ public class ExtraActivityTest {
     @Test
     public void testNotEqualsExtraActivity() {
         System.out.println("test Not Equals Extra Activity");
-        ExtraActivity extra = new ExtraActivity(2, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
+        ExtraActivity extra = new ExtraActivity(2, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials,skills, true);
         boolean result = instance.equals(extra);
         assertEquals(result,false);
     }
