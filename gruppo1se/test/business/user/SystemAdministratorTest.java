@@ -16,12 +16,14 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
+import persistence.maintenanceactivity.TypologyDAOImpl;
 import persistence.user.UsersDAOImpl;
 import stub.EmployeeAppointmentDAOStub;
 import stub.MaintenanceActivityDAOStub;
 import stub.MaintenanceProcedureDAOStub;
 import stub.RequiredMaterialForMaintenanceDAOStub;
 import stub.RequiredSkillForMaintenanceDAOStub;
+import stub.TypologyDAOStub;
 import stub.UsersDAOStub;
 
 /**
@@ -35,12 +37,12 @@ public class SystemAdministratorTest {
     private User systemAdministrator;
     private final SystemAdministrator instance = new SystemAdministrator("systemAdministratorUsername","systemAdministratorPassword",
             new MaintenanceProcedureDAOStub(),
-            new UsersDAOStub());
+            new UsersDAOStub(),new TypologyDAOStub());
     private final String username = "maintainerUsername"; 
     private final String password = "maintainerPassword";
     
     public SystemAdministratorTest() {
-        admin = new SystemAdministrator("admin","admin",new MaintenanceProcedureDAOStub(),new UsersDAOStub());
+        admin = new SystemAdministrator("admin","admin",new MaintenanceProcedureDAOStub(),new UsersDAOStub(),new TypologyDAOStub());
         planner =  new Planner("newUsername", "newPassword", new MaintenanceActivityDAOStub(),
                 new RequiredMaterialForMaintenanceDAOStub(), new UsersDAOStub(),
                 new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub());
@@ -168,7 +170,7 @@ public class SystemAdministratorTest {
         expected.add(new Planner("UserPlanner","PwdPlanner", new MaintenanceActivityDAOStub(),
                 new RequiredMaterialForMaintenanceDAOStub(), new UsersDAOStub(),
                 new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub()));
-        expected.add(new SystemAdministrator("UserSystemAdministrator","PwdSystemAdministrator",new MaintenanceProcedureDAOImpl(),new UsersDAOImpl()));
+        expected.add(new SystemAdministrator("UserSystemAdministrator","PwdSystemAdministrator",new MaintenanceProcedureDAOImpl(),new UsersDAOImpl(),new TypologyDAOImpl()));
         List<User> users = instance.viewUsers();
         assertEquals(true,expected.equals(users));
     }

@@ -18,6 +18,7 @@ import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.SiteDaoImpl;
+import persistence.maintenanceactivity.TypologyDAOImpl;
 
 /**
  *
@@ -69,7 +70,7 @@ public class UsersDAOImpl implements UsersDAO {
         try {
             while (set.next()){
                 if (set.getString("role").equals("System Administrator"))
-                    users.add(new SystemAdministrator(set.getString("username"), set.getString("password"), new MaintenanceProcedureDAOImpl(), new UsersDAOImpl()));
+                    users.add(new SystemAdministrator(set.getString("username"), set.getString("password"), new MaintenanceProcedureDAOImpl(), new UsersDAOImpl(),new TypologyDAOImpl()));
                 else if (set.getString("role").equals("Maintainer"))
                     users.add(new Maintainer(set.getString("username"), set.getString("password")));
                 else

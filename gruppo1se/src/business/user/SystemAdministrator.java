@@ -7,6 +7,7 @@ package business.user;
 
 import business.maintenanceactivity.MaintenanceProcedure;
 import exception.ProcedureException;
+import exception.TypologyException;
 import exception.UsersException;
 import java.util.List;
 import persistence.maintenanceactivity.EmployeeAppointmentDAOImpl;
@@ -16,6 +17,8 @@ import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.SiteDaoImpl;
+import persistence.maintenanceactivity.TypologyDAO;
+import persistence.maintenanceactivity.TypologyDAOImpl;
 import persistence.user.UsersDAO;
 import persistence.user.UsersDAOImpl;
 
@@ -26,18 +29,20 @@ import persistence.user.UsersDAOImpl;
 public class SystemAdministrator extends User {
     private MaintenanceProcedureDAO procedureDao;
     private UsersDAO usersDAO;
-    
+    private TypologyDAO typologyDao; 
     
     public SystemAdministrator(String username, String password){
         super(username, password);
         this.procedureDao = null;
+        this.typologyDao = null;
         this.usersDAO = null;
     }
     
     
-    public SystemAdministrator(String username, String password,MaintenanceProcedureDAO procedureDao, UsersDAO usersDAO) {
+    public SystemAdministrator(String username, String password,MaintenanceProcedureDAO procedureDao, UsersDAO usersDAO, TypologyDAO typologyDao) {
         super(username, password);
-        this.procedureDao = procedureDao; 
+        this.procedureDao = procedureDao;
+        this.typologyDao = typologyDao;
         this.usersDAO = usersDAO;
     }
     
@@ -66,7 +71,7 @@ public class SystemAdministrator extends User {
     public boolean makeUser(String username, String password, String role) throws UsersException{
         User user;
         if (role.equals("System Administrator"))
-            user = new SystemAdministrator(username, password, new MaintenanceProcedureDAOImpl(), new UsersDAOImpl());
+            user = new SystemAdministrator(username, password, new MaintenanceProcedureDAOImpl(), new UsersDAOImpl(),new TypologyDAOImpl());
         else if (role.equals("Maintainer"))
             user = new Maintainer(username, password);
         else
@@ -89,5 +94,9 @@ public class SystemAdministrator extends User {
             throw new UsersException("Invalid parameters");
         }
         return usersDAO.updateUser(oldUsername, newUser);
+    }
+
+    public boolean makeTypology(String typology) throws TypologyException{
+        return typologyDao.addTypology(typology);
     }
 }

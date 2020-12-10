@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
+import persistence.maintenanceactivity.TypologyDAOImpl;
 import persistence.user.UsersDAOImpl;
 /**
  *
@@ -35,7 +36,7 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
      */
     public CreateProcedureGUI() {
         fileChoosen = null;
-        admin = new SystemAdministrator("admin","admin", new MaintenanceProcedureDAOImpl(),new UsersDAOImpl());
+        admin = new SystemAdministrator("admin","admin", new MaintenanceProcedureDAOImpl(),new UsersDAOImpl(),new TypologyDAOImpl());
         initComponents();
         setField(false);
     }

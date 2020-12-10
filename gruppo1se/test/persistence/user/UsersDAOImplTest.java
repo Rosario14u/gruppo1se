@@ -20,6 +20,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import persistence.database.ConnectionDB;
 import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
+import persistence.maintenanceactivity.TypologyDAOImpl;
 import stub.EmployeeAppointmentDAOStub;
 import stub.MaintenanceActivityDAOStub;
 import stub.RequiredMaterialForMaintenanceDAOStub;
@@ -38,6 +39,7 @@ public class UsersDAOImplTest{
     private static final String SELECT_USERS = "SELECT * FROM Users WHERE username=?";
     private final UsersDAOImpl instance = new UsersDAOImpl();
     private final UsersDAOImpl instance2 = new UsersDAOImpl();
+    private final TypologyDAOImpl typology = new TypologyDAOImpl();
     private final MaintenanceProcedureDAOImpl maintenanceProcedure = new MaintenanceProcedureDAOImpl();
     
     public UsersDAOImplTest() {
@@ -181,13 +183,13 @@ public class UsersDAOImplTest{
         expectedList.add(new Planner("Planner1","PwdPlanner1", new MaintenanceActivityDAOStub(),
             new RequiredMaterialForMaintenanceDAOStub(), new UsersDAOStub(),
             new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub()));
-        expectedList.add(new SystemAdministrator("SystemAdministrator1","PwdSystemAdministrator1",maintenanceProcedure, instance2));
+        expectedList.add(new SystemAdministrator("SystemAdministrator1","PwdSystemAdministrator1",maintenanceProcedure, instance2,typology));
         expectedList.add(new Maintainer("Maintainer1","PwdMaintainer1"));
         List<User> plannerList = new ArrayList<>();
         insertUserDefault(stm,new Planner("Planner1","PwdPlanner1", new MaintenanceActivityDAOStub(),
             new RequiredMaterialForMaintenanceDAOStub(), new UsersDAOStub(),
             new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub()));
-        insertUserDefault(stm,new SystemAdministrator("SystemAdministrator1","PwdSystemAdministrator1",maintenanceProcedure,instance2));
+        insertUserDefault(stm,new SystemAdministrator("SystemAdministrator1","PwdSystemAdministrator1",maintenanceProcedure,instance2,typology));
         insertUserDefault(stm,new Maintainer("Maintainer1","PwdMaintainer1"));
         plannerList = instance.readUsers();
         assertEquals(true,plannerList.equals(expectedList));
@@ -229,7 +231,7 @@ public class UsersDAOImplTest{
         }else if(role.equals("Maintainer")){
             return new Maintainer(username, password);
         }else{
-            return new SystemAdministrator(username, password, null, null);
+            return new SystemAdministrator(username, password, null, null,null);
         }
     }
     

@@ -13,6 +13,7 @@ import exception.UsersException;
 import java.util.ArrayList;
 import java.util.List;
 import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
+import persistence.maintenanceactivity.TypologyDAOImpl;
 import persistence.user.UsersDAO;
 import persistence.user.UsersDAOImpl;
 
@@ -29,7 +30,7 @@ public class UsersDAOStub implements UsersDAO {
         users.add(new Planner("UserPlanner","PwdPlanner", new MaintenanceActivityDAOStub(),
             new RequiredMaterialForMaintenanceDAOStub(), new UsersDAOStub(),
             new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub()));
-        users.add(new SystemAdministrator("UserSystemAdministrator","PwdSystemAdministrator",new MaintenanceProcedureDAOImpl(),new UsersDAOImpl()));
+        users.add(new SystemAdministrator("UserSystemAdministrator","PwdSystemAdministrator",new MaintenanceProcedureDAOImpl(),new UsersDAOImpl(),new TypologyDAOImpl()));
         return users;
     }
     

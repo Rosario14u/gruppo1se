@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
+import persistence.maintenanceactivity.TypologyDAOImpl;
 import persistence.user.UsersDAOImpl;
 
 /**
@@ -308,7 +309,7 @@ public class CreateUser extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CreateUser(new SystemAdministrator("user","pass", new MaintenanceProcedureDAOImpl(), new UsersDAOImpl())).setVisible(true);
+                new CreateUser(new SystemAdministrator("user","pass", new MaintenanceProcedureDAOImpl(), new UsersDAOImpl(), new TypologyDAOImpl())).setVisible(true);
             }
         });
     }
