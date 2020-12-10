@@ -12,6 +12,7 @@ import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.SiteDaoImpl;
+import persistence.user.MaintainerSkillDAOImpl;
 import persistence.user.UsersDAOImpl;
 
 /**
@@ -122,13 +123,13 @@ public class MenuPlanner extends javax.swing.JFrame {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         new DeleteActivity(new Planner("admin","admin", new MaintenanceActivityDAOImpl(new SiteDaoImpl()), 
                 new RequiredMaterialForMaintenanceDAOImpl(), new UsersDAOImpl(), new EmployeeAppointmentDAOImpl(),
-                new RequiredSkillForMaintenanceDAOImpl())).setVisible(true);
+                new RequiredSkillForMaintenanceDAOImpl(),new MaintainerSkillDAOImpl())).setVisible(true);
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         new CreateActivity(new Planner("admin","admin", new MaintenanceActivityDAOImpl(new SiteDaoImpl()), 
                 new RequiredMaterialForMaintenanceDAOImpl(), new UsersDAOImpl(), new EmployeeAppointmentDAOImpl(),
-                new RequiredSkillForMaintenanceDAOImpl())).setVisible(true);
+                new RequiredSkillForMaintenanceDAOImpl(),new MaintainerSkillDAOImpl())).setVisible(true);
     }//GEN-LAST:event_addButtonActionPerformed
 
     /**

@@ -6,6 +6,7 @@
 package persistence.maintenanceactivity;
 
 import exception.TypologyException;
+import java.util.List;
 
 /**
  *
@@ -13,4 +14,5 @@ import exception.TypologyException;
  */
 public interface TypologyDAO {
     public boolean addTypology(String typology) throws TypologyException;
+    public List<String> viewTypologies() throws TypologyException;
 }

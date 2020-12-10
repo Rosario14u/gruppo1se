@@ -11,6 +11,7 @@ import business.user.WeekConverter;
 import exception.DateException;
 import exception.MaintenanceActivityException;
 import exception.SiteException;
+import exception.SkillException;
 import java.awt.Dimension;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
@@ -19,11 +20,13 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import persistence.maintenanceactivity.EmployeeAppointmentDAOImpl;
 import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.SiteDaoImpl;
+import persistence.user.MaintainerSkillDAOImpl;
 import persistence.user.UsersDAOImpl;
 
 /**
@@ -31,17 +34,20 @@ import persistence.user.UsersDAOImpl;
  * @author gorra
  */
 public class SelectionActivityGUI extends javax.swing.JFrame {
-    List<MaintenanceActivity> list;
-    Planner planner;
+    private List<MaintenanceActivity> list;
+    private Planner planner;
+    private DefaultTableModel tableModel;
     /**
      * Creates new form SelectionActivityGUI
      */
     public SelectionActivityGUI() {
         planner = new Planner("admin","admin", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
                 new RequiredMaterialForMaintenanceDAOImpl(), new UsersDAOImpl(),
-                new EmployeeAppointmentDAOImpl(), new RequiredSkillForMaintenanceDAOImpl());
+                new EmployeeAppointmentDAOImpl(), new RequiredSkillForMaintenanceDAOImpl(),new MaintainerSkillDAOImpl());
         initComponents();
+        tableModel = (DefaultTableModel) maintenanceActivityTable.getModel();
         inizializeField();
+        
     }
 
     /**
@@ -171,9 +177,14 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int row = maintenanceActivityTable.getSelectedRow();
-        if(row<0){
+        int[] row = maintenanceActivityTable.getSelectedRows();
+        if(row.length<0){
             infoMessage("No row selected");
+        }else if(row.length > 1){
+            infoMessage("Select one row!");
+        }else{
+            VerifyActivity verifyActivity = new VerifyActivity(list.get(row[0]));
+            verifyActivity.setVisible(true);
         }
         //Chiamata alla GUI di visualizzazione
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -221,6 +232,7 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
     
     
     
+    
     private void inizializeField() {
         LocalDate date = LocalDate.now();
         int weekNumber = WeekConverter.getWeek(date);
@@ -232,21 +244,21 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
     
     
     public void populateTable(int weekNumber, int year){
-        DefaultTableModel model = (DefaultTableModel) maintenanceActivityTable.getModel();
-        model.setRowCount(0);
-        
+        tableModel.setRowCount(0);
         try {
             list = planner.viewMaintenanceActivityByWeek(weekNumber, year);
             for (MaintenanceActivity ma : list) {
-               model.addRow(new Object[]{ma.getActivityId(), ma.getSite().getArea(), ma.getTypology(), ma.getEstimatedInterventionTime()});
+               tableModel.addRow(new Object[]{ma.getActivityId(), ma.getSite().getArea(), ma.getTypology(), ma.getEstimatedInterventionTime()});
             }
 
         } catch (MaintenanceActivityException ex) {
-            System.out.println("Exception");
+            System.out.println("MaintenanceActivityException");
         } catch (SiteException ex) {
-            System.out.println("Exception");
+            System.out.println("SiteException");
         } catch (DateException ex) {
-            System.out.println("Exception");
+            System.out.println("DateException");
+        } catch (SkillException ex) {
+            System.out.println("SkillException");
         }
     }
     

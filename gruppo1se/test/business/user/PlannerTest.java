@@ -38,6 +38,7 @@ import static org.junit.Assert.*;
 import persistence.database.ConnectionDB;
 import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.SiteDaoImpl;
+import persistence.user.MaintainerSkillDAOImpl;
 import stub.EmployeeAppointmentDAOStub;
 import stub.MaintenanceActivityDAOStub;
 import stub.RequiredMaterialForMaintenanceDAOStub;
@@ -68,7 +69,7 @@ public class PlannerTest {
     private MaintenanceActivityDAOImpl instance = new MaintenanceActivityDAOImpl(new SiteDaoImpl());
     private final Planner planner = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(),
             new RequiredMaterialForMaintenanceDAOStub(), new UsersDAOStub(),
-            new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub());
+            new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub(),new MaintainerSkillDAOImpl());
     private final Site site = new Site(branchOffice,area,workspaceNotes);
     private final MaintenanceProcedure mProc = new MaintenanceProcedure(maintenanceProcedure);
     
@@ -633,18 +634,18 @@ public class PlannerTest {
     //===========================================================================================================================
     
     @Test(expected = MaintenanceActivityException.class)
-    public void viewMaintenanceActivityByWeekMaintenanceActivityException() throws MaintenanceActivityException, SiteException, DateException{
+    public void viewMaintenanceActivityByWeekMaintenanceActivityException() throws MaintenanceActivityException, SiteException, DateException, SkillException{
         planner.viewMaintenanceActivityByWeek(1, 2021);
     } 
     
     
     @Test(expected = SiteException.class)
-    public void viewMaintenanceActivityByWeekSiteException() throws MaintenanceActivityException, SiteException, DateException{
+    public void viewMaintenanceActivityByWeekSiteException() throws MaintenanceActivityException, SiteException, DateException, SkillException{
         planner.viewMaintenanceActivityByWeek(2, 2021);
     }
     
     @Test(expected = DateException.class)
-    public void viewMaintenanceActivityByWeekDateException() throws MaintenanceActivityException, SiteException, DateException{
+    public void viewMaintenanceActivityByWeekDateException() throws MaintenanceActivityException, SiteException, DateException, SkillException{
         planner.viewMaintenanceActivityByWeek(3, 2021);
     }
     
@@ -673,6 +674,8 @@ public class PlannerTest {
             fail("SiteException");
         }catch(DateException ex){
             fail("DateException");
+        } catch (SkillException ex) {
+            Logger.getLogger(PlannerTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -681,7 +684,7 @@ public class PlannerTest {
     @Test
     public void testViewEmployeeAvailabilityWrongDate() {
         try {
-            List<Maintainer> list = planner.viewEmployeeAvailability(20, 20);
+            List<Maintainer> list = planner.viewEmployeeAvailability(20, 2020);
             assertEquals(2, list.size());
         } catch (UsersException ex) {
             fail("UsersException");
@@ -691,6 +694,7 @@ public class PlannerTest {
             fail("AppointmentException");
         } catch (SkillException ex) {
             fail("SkillException");
-        }
+        } 
+        
     }
 }

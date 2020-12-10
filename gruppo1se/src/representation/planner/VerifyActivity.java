@@ -27,6 +27,9 @@ import javax.swing.JOptionPane;
 public class VerifyActivity extends javax.swing.JFrame {
     private final MaintenanceActivity activity;
     private String oldWorkspaceNotes;
+    private final static String PROJECT_PATH = System.getProperty("user.dir");
+    private final static String RELATIVE_PROJECT_PATH = "/src/smp/";
+    private final static String FILE_EXTENSION = ".pdf";
     /**
      * Creates new form VerifyActivity
      * @param activity
@@ -47,8 +50,13 @@ public class VerifyActivity extends javax.swing.JFrame {
         jInterventionDescription.setText(activity.getActivityDescription());
         jActivityToAssign.setText(Integer.toString(activity.getActivityId())+" - "+activity.getSite().getArea()
                 +" - "+activity.getTypology()+" - "+ Integer.toString(activity.getEstimatedInterventionTime())+"'");
-        StringBuilder builder2 = new StringBuilder();
-        jSkillsNeeded.setText(builder2.toString());
+        if (activity.getMaintenanceProcedure().getSkills() != null){
+            StringBuilder builder2 = new StringBuilder();
+            for(Skill skill : activity.getMaintenanceProcedure().getSkills()){
+                builder2.append(skill.toString() + "\n");
+            }
+            jSkillsNeeded.setText(builder2.toString());
+        }
         
     }
     /**
@@ -341,7 +349,8 @@ public class VerifyActivity extends javax.swing.JFrame {
     private void jPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPDFActionPerformed
         if (Desktop.isDesktopSupported()) {
             try {
-                File myFile = new File(activity.getMaintenanceProcedure().getSmp());
+                File myFile = new File(PROJECT_PATH.concat(RELATIVE_PROJECT_PATH.concat(
+                        activity.getMaintenanceProcedure().getSmp().concat(FILE_EXTENSION))));
                 Desktop.getDesktop().open(myFile);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this,"There are no associated application to open a PDF file!","Error Message", JOptionPane.ERROR_MESSAGE);
@@ -354,7 +363,7 @@ public class VerifyActivity extends javax.swing.JFrame {
     private void jForwardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jForwardActionPerformed
         if(!jWorkspaceNotes.getText().equals(oldWorkspaceNotes))
             activity.getSite().setWorkSpaceNotes(jWorkspaceNotes.getText());
-        JOptionPane.showMessageDialog(this,"Functionality yet to be implemented!","Error Message", JOptionPane.ERROR_MESSAGE);
+        new MaintainerAvailability(activity).setVisible(true);
     }//GEN-LAST:event_jForwardActionPerformed
 
     /**

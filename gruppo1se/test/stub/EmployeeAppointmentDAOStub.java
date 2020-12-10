@@ -30,13 +30,13 @@ public class EmployeeAppointmentDAOStub implements EmployeeAppointmentDAO {
         else if(username == null || username.equals(""))
             throw new AppointmentException();
         else if(username.equals("username1")){
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-gg HH:mm:ss");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             return new ArrayList<>(){{
                 add(new Appointment(1, LocalDateTime.parse("2020-12-28 00:00:00", formatter), 20));
                 add(new Appointment(2, LocalDateTime.parse("2020-12-29 00:00:00", formatter), 40));
             }};
         }else if(username.equals("username2")){
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-gg HH:mm:ss");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             return new ArrayList<>(){{
                 add(new Appointment(3, LocalDateTime.parse("2020-12-30 00:00:00", formatter), 60));
                 add(new Appointment(4, LocalDateTime.parse("2020-12-31 00:00:00", formatter), 80));
