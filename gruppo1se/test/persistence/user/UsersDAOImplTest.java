@@ -112,7 +112,7 @@ public class UsersDAOImplTest{
      * @throws exception.UsersException
      * @throws java.sql.SQLException
      */
-    //@Test
+    @Test
     public void testAddUserPlanner() throws UsersException, SQLException{
         System.out.println("addUserPlanner");
         User user = new Planner("ProvaUsername","ProvaPassword",new MaintenanceActivityDAOStub(),
@@ -130,7 +130,7 @@ public class UsersDAOImplTest{
      * @throws exception.UsersException
      * @throws java.sql.SQLException
      */
-    //@Test
+    @Test
     public void testAddUserMaintainer() throws UsersException, SQLException{
         System.out.println("addUserMaintainer");
         User user = new Maintainer("ProvaUsername","ProvaPassword");
@@ -146,7 +146,7 @@ public class UsersDAOImplTest{
      * @throws exception.UsersException
      * @throws java.sql.SQLException
      */
-    //@Test
+    @Test
     public void testAddUserSystemAdministrator() throws UsersException, SQLException{
         System.out.println("addUserSystemAdministrator");
         User user = new SystemAdministrator("ProvaUsername","ProvaPassword");
@@ -168,13 +168,11 @@ public class UsersDAOImplTest{
             insert+=",'Maintainer');";
         stm.executeUpdate(insert);
     }    
-    /**
-     * Test of readUser method, of class UsersDAO.
-     */
+    
     /**
      * Test of readUser method, of class UsersDAOImpl.
      */
-    //@Test
+    @Test
     public void testReadUsers() throws UsersException, SQLException{
         System.out.println("readUsers");
         Statement stm = conn.createStatement();
@@ -266,7 +264,7 @@ public class UsersDAOImplTest{
     
     //======================================= TEST MODIFY ====================================================================================
 
-    //@Test
+    @Test
     public void testUpdateUserPlannerToMaintainer() {        
         try {
             String username = "username";
@@ -283,7 +281,7 @@ public class UsersDAOImplTest{
         }
     }
     
-    //@Test
+    @Test
     public void testUpdateUserPlannerToSystemAdministrator() {        
         try {
             String username = "username";
@@ -300,7 +298,7 @@ public class UsersDAOImplTest{
         }
     }
     
-    //@Test
+    @Test
     public void testUpdateUserMaintainerToPlanner() {        
         try {
             String username = "username";
@@ -317,7 +315,7 @@ public class UsersDAOImplTest{
         }
     }
     
-    //@Test
+    @Test
     public void testUpdateUserMaintainerToSystemAdministrator() {        
         try {
             String username = "username";
@@ -334,7 +332,7 @@ public class UsersDAOImplTest{
         }
     }
     
-    //@Test
+    @Test
     public void testUpdateUserSystemAdministratorToPlanner() {        
         try {
             String username = "username";
@@ -351,7 +349,7 @@ public class UsersDAOImplTest{
         }
     }
     
-    //@Test
+    @Test
     public void testUpdateUserSystemAdministratorToMaintainer() {        
         try {
             String username = "username";
@@ -368,7 +366,7 @@ public class UsersDAOImplTest{
         }
     }
     
-    //@Test
+    @Test
     public void testModifyActivityNotPresent(){
         try {
             String username = "username";
@@ -387,7 +385,7 @@ public class UsersDAOImplTest{
     /**
      * this method assert that deleteUsers correctly delete the rows in database
      */
-    //@Test
+    @Test
     public void testDeleteUsers(){
         try {
             List<String> usernameList = new ArrayList<>(){{
@@ -417,7 +415,7 @@ public class UsersDAOImplTest{
     /**
      * this method assert that deleteUsers correctly return 0 if there aren't the searched username in database
      */
-    //@Test
+    @Test
     public void testDeleteUsersZero(){
         try {
             List<String> usernameList = new ArrayList<>(){{
@@ -441,7 +439,7 @@ public class UsersDAOImplTest{
     /**
      * this method assert that deleteUsers correctly return 0 if an empty list is passed
      */
-    //@Test
+    @Test
     public void testDeleteUsersZero2(){
         try {
             List<String> usernameList = new ArrayList<>();
