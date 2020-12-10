@@ -6,6 +6,7 @@
 package business.user;
 
 import exception.DateException;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.WeekFields;
@@ -55,4 +56,8 @@ public class WeekConverter {
         calendar.set(Calendar.YEAR, year);   
         return calendar.getWeeksInWeekYear();
     }
+    
+    public static LocalDate getDayOfWeek(LocalDate date, DayOfWeek day){
+        return date.with(day);
+    } 
 }

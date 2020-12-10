@@ -14,6 +14,7 @@ import business.maintenanceactivity.Site;
 import business.maintenanceactivity.Skill;
 import business.user.Maintainer;
 import business.user.Planner;
+import business.user.WeekConverter;
 import exception.AppointmentException;
 import exception.DateException;
 import exception.SkillException;
@@ -21,6 +22,7 @@ import exception.UsersException;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
@@ -48,7 +50,7 @@ public class MaintainerAvailability extends javax.swing.JFrame {
     private MaintenanceActivity activity;
     private Planner planner;
     private DefaultTableModel tableModel;
-    private static final int NUM_COLUMN_TABLE = 9;
+    private List<Maintainer> maintainerList;
     /**
      * Creates new form MaintainerAvailability
      */
@@ -56,9 +58,9 @@ public class MaintainerAvailability extends javax.swing.JFrame {
         this.planner = new Planner("planner", "planner",new  MaintenanceActivityDAOImpl(new SiteDaoImpl()),
                 new RequiredMaterialForMaintenanceDAOImpl(), new UsersDAOImpl(),new EmployeeAppointmentDAOImpl(),
                 new RequiredSkillForMaintenanceDAOImpl(), new MaintainerSkillDAOImpl());
+        this.activity = activity;
         initComponents();
         tableModel = (DefaultTableModel) maintainerAvailabilityTable.getModel();
-        this.activity = activity;
         initializeFields();
         PercentageCellRenderer renderer = new PercentageCellRenderer();
         maintainerAvailabilityTable.setDefaultRenderer(Object.class, renderer);
@@ -87,7 +89,7 @@ public class MaintainerAvailability extends javax.swing.JFrame {
     private void populateTable(int weekNumber){
         try {
             int numProcedureSkill = activity.getMaintenanceProcedure().getSkills().size();
-            List<Maintainer> maintainerList = planner.viewEmployeeAvailability(weekNumber, activity.getDate().getYear());
+            maintainerList = planner.viewEmployeeAvailability(weekNumber, activity.getDate().getYear());
             for (Maintainer maintainer : maintainerList){
                 String[] rowTable = new String[] {"","","100%","100%","100%","100%","100%","100%","100%"};
                 float totalPercentage = 100;
@@ -109,7 +111,7 @@ public class MaintainerAvailability extends javax.swing.JFrame {
     }
     
     
-    
+ 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -165,7 +167,7 @@ public class MaintainerAvailability extends javax.swing.JFrame {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -185,6 +187,18 @@ public class MaintainerAvailability extends javax.swing.JFrame {
         maintainerAvailabilityTable.setRowHeight(35);
         maintainerAvailabilityTable.setBackground(new Color(255,204,153));
         maintainerAvailabilityTable.getTableHeader().setBackground(new Color(255,170,0));
+        maintainerAvailabilityTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = maintainerAvailabilityTable.rowAtPoint(evt.getPoint());
+                int col = maintainerAvailabilityTable.columnAtPoint(evt.getPoint());
+                LocalDate newDate = null;
+                if(col>=2 && col<=9){
+                    newDate = WeekConverter.getDayOfWeek(activity.getDate(), DayOfWeek.values()[col-2]);
+                    new ActivityAssignment(activity, newDate, maintainerList.get(row)).setVisible(true);
+                }
+            }
+        });
 
         jLabel3.setBackground(new java.awt.Color(250, 250, 250));
         jLabel3.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -218,13 +232,13 @@ public class MaintainerAvailability extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 566, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 567, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(4, 4, 4)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(activityInfoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE)))
+                        .addComponent(activityInfoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(25, 25, 25))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -245,14 +259,14 @@ public class MaintainerAvailability extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(44, 44, 44))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(99, 99, 99)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(281, Short.MAX_VALUE)))
+                    .addContainerGap(312, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -263,7 +277,7 @@ public class MaintainerAvailability extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
