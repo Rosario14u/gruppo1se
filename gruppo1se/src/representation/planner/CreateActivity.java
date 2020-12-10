@@ -6,21 +6,16 @@
 package representation.planner;
 
 import business.maintenanceactivity.Material;
-import business.maintenanceactivity.Skill;
 import business.user.Planner;
 import exception.MaintenanceActivityException;
 import exception.MaterialException;
-import exception.SkillException;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
-import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.SiteDaoImpl;
 
 /**
@@ -415,7 +410,6 @@ public class CreateActivity extends javax.swing.JFrame {
             String date = jDate.getText();
             
             LinkedList<Material> materials = new LinkedList<>();
-            LinkedList<Skill> skills = new LinkedList<>();
             String materialString = jMaterials.getText();
             if (!materialString.equals("")){
                 String[] materialStringList = materialString.split(",");
