@@ -16,6 +16,7 @@ import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.SiteDaoImpl;
+import persistence.user.MaintainerSkillDAOImpl;
 import persistence.user.UsersDAO;
 import persistence.user.UsersDAOImpl;
 
@@ -72,7 +73,7 @@ public class SystemAdministrator extends User {
         else
             user = new Planner(username, password, new MaintenanceActivityDAOImpl(new SiteDaoImpl()), 
                     new RequiredMaterialForMaintenanceDAOImpl(), new UsersDAOImpl(), 
-                    new EmployeeAppointmentDAOImpl(), new RequiredSkillForMaintenanceDAOImpl());
+                    new EmployeeAppointmentDAOImpl(), new RequiredSkillForMaintenanceDAOImpl(),new MaintainerSkillDAOImpl());
         return usersDAO.addUser(user);
     }
     

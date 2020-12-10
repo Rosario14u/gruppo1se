@@ -5,6 +5,7 @@
  */
 package presentation.administrator;
 
+import business.maintenanceactivity.MaintenanceActivity;
 import business.user.Maintainer;
 import business.user.Planner;
 import business.user.SystemAdministrator;
@@ -36,7 +37,6 @@ public class ViewUsers extends javax.swing.JFrame {
     private List<User> list = new ArrayList<>();
     private final DefaultTableModel tableModel;
     private final TableRowSorter<TableModel> rowSorter,userSorter;
-    
     
     /**
      * Creates new form ViewUser

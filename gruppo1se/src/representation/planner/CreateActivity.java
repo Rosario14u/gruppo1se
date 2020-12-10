@@ -443,6 +443,8 @@ public class CreateActivity extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error inserting into MaintenanceActivity table", "ERRORE", JOptionPane.ERROR_MESSAGE);
         } catch (MaterialException ex) {
             JOptionPane.showMessageDialog(this, "Error inserting into RequiredMaterial table", "ERRORE", JOptionPane.ERROR_MESSAGE);
+        } catch (SkillException ex) {
+            JOptionPane.showMessageDialog(this, "Error inserting into RequiredProcedureSkill table", "ERRORE", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jCreateActionPerformed
 

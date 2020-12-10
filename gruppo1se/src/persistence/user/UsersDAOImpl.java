@@ -77,7 +77,7 @@ public class UsersDAOImpl implements UsersDAO {
                             new MaintenanceActivityDAOImpl(new SiteDaoImpl()) ,
                             new RequiredMaterialForMaintenanceDAOImpl(), 
                             new UsersDAOImpl(), new EmployeeAppointmentDAOImpl(),
-                            new RequiredSkillForMaintenanceDAOImpl()));
+                            new RequiredSkillForMaintenanceDAOImpl(),new MaintainerSkillDAOImpl()));
             }
             return users;
         } catch (SQLException ex) {

@@ -115,7 +115,7 @@ public class UsersDAOImplTest{
         System.out.println("addUserPlanner");
         User user = new Planner("ProvaUsername","ProvaPassword",new MaintenanceActivityDAOStub(),
             new RequiredMaterialForMaintenanceDAOStub(), new UsersDAOStub(),
-            new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub());
+            new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub(),new MaintainerSkillDAOImpl());
         Statement stmt = conn.createStatement();
         deleteUserDefault(stmt, user.getUsername());
         instance.addUser(user);
@@ -180,13 +180,13 @@ public class UsersDAOImplTest{
         List<User> expectedList = new ArrayList<>();
         expectedList.add(new Planner("Planner1","PwdPlanner1", new MaintenanceActivityDAOStub(),
             new RequiredMaterialForMaintenanceDAOStub(), new UsersDAOStub(),
-            new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub()));
+            new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub(),new MaintainerSkillDAOImpl()));
         expectedList.add(new SystemAdministrator("SystemAdministrator1","PwdSystemAdministrator1",maintenanceProcedure, instance2));
         expectedList.add(new Maintainer("Maintainer1","PwdMaintainer1"));
         List<User> plannerList = new ArrayList<>();
         insertUserDefault(stm,new Planner("Planner1","PwdPlanner1", new MaintenanceActivityDAOStub(),
             new RequiredMaterialForMaintenanceDAOStub(), new UsersDAOStub(),
-            new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub()));
+            new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub(),new MaintainerSkillDAOImpl()));
         insertUserDefault(stm,new SystemAdministrator("SystemAdministrator1","PwdSystemAdministrator1",maintenanceProcedure,instance2));
         insertUserDefault(stm,new Maintainer("Maintainer1","PwdMaintainer1"));
         plannerList = instance.readUsers();
@@ -225,7 +225,7 @@ public class UsersDAOImplTest{
         if(role.equals("Planner")){
             return new Planner(username, password, new MaintenanceActivityDAOStub(),
             new RequiredMaterialForMaintenanceDAOStub(), new UsersDAOStub(),
-            new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub());
+            new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub(),new MaintainerSkillDAOImpl());
         }else if(role.equals("Maintainer")){
             return new Maintainer(username, password);
         }else{

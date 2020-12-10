@@ -16,6 +16,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
+import persistence.user.MaintainerSkillDAOImpl;
 import persistence.user.UsersDAOImpl;
 import stub.EmployeeAppointmentDAOStub;
 import stub.MaintenanceActivityDAOStub;
@@ -43,7 +44,7 @@ public class SystemAdministratorTest {
         admin = new SystemAdministrator("admin","admin",new MaintenanceProcedureDAOStub(),new UsersDAOStub());
         planner =  new Planner("newUsername", "newPassword", new MaintenanceActivityDAOStub(),
                 new RequiredMaterialForMaintenanceDAOStub(), new UsersDAOStub(),
-                new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub());
+                new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub(),new MaintainerSkillDAOImpl());
         maintainer = new Maintainer("newUsername", "newPassword");
         systemAdministrator = new SystemAdministrator("newUsername", "newPassword");
     }
@@ -167,7 +168,7 @@ public class SystemAdministratorTest {
         expected.add(new Maintainer("UserMaintainer","PwdMaintainer"));
         expected.add(new Planner("UserPlanner","PwdPlanner", new MaintenanceActivityDAOStub(),
                 new RequiredMaterialForMaintenanceDAOStub(), new UsersDAOStub(),
-                new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub()));
+                new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub(),new MaintainerSkillDAOImpl()));
         expected.add(new SystemAdministrator("UserSystemAdministrator","PwdSystemAdministrator",new MaintenanceProcedureDAOImpl(),new UsersDAOImpl()));
         List<User> users = instance.viewUsers();
         assertEquals(true,expected.equals(users));

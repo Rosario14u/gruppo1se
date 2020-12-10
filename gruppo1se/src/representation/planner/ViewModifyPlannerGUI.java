@@ -34,6 +34,7 @@ import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.SiteDaoImpl;
+import persistence.user.MaintainerSkillDAOImpl;
 import persistence.user.UsersDAOImpl;
 
 /**
@@ -52,7 +53,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         listModel = new DefaultListModel<>();
         planner = new Planner("admin","admin", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
                 new RequiredMaterialForMaintenanceDAOImpl(), new UsersDAOImpl(),
-                new EmployeeAppointmentDAOImpl(), new RequiredSkillForMaintenanceDAOImpl());
+                new EmployeeAppointmentDAOImpl(), new RequiredSkillForMaintenanceDAOImpl(),new MaintainerSkillDAOImpl());
         initComponents();
         initializeField(false);
         weekTextField.setEnabled(false);

@@ -7,6 +7,7 @@ package business.user;
 
 import business.maintenanceactivity.MaintenanceActivity;
 import business.maintenanceactivity.MaintenanceActivityFactory;
+import business.maintenanceactivity.MaintenanceProcedure;
 import business.maintenanceactivity.Material;
 import business.maintenanceactivity.Skill;
 import exception.AppointmentException;
@@ -18,6 +19,7 @@ import exception.SkillException;
 import exception.UsersException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 import persistence.maintenanceactivity.EmployeeAppointmentDAO;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAO;
 import persistence.maintenanceactivity.MaintenanceActivityDAO;
@@ -67,13 +69,14 @@ public class Planner extends User {
     public Planner(String username, String password, MaintenanceActivityDAO maintenanceActivityDao, 
             RequiredMaterialForMaintenanceDAO requiredMaterialsDao, 
             UsersDAO userDao, EmployeeAppointmentDAO employeeAppointmentDao, 
-            RequiredSkillForMaintenanceDAO requiredSkillForMaintenanceDao) {
+            RequiredSkillForMaintenanceDAO requiredSkillForMaintenanceDao,MaintainerSkillDAO maintainerSkillDao) {
         super(username, password);
         this.maintenanceActivityDao = maintenanceActivityDao;
         this.requiredMaterialsDao = requiredMaterialsDao;
         this.userDao = userDao;
         this.employeeAppointmentDao = employeeAppointmentDao;
         this.requiredSkillsDao = requiredSkillForMaintenanceDao;
+        this.maintainerSkillDao = maintainerSkillDao;
     }
     
     /**
@@ -174,15 +177,24 @@ public class Planner extends User {
     }
     
     //Developed by Antonio Gorrasi
-    public List<MaintenanceActivity> viewMaintenanceActivityByWeek(int week, int year) throws MaintenanceActivityException, SiteException, DateException{
+    public List<MaintenanceActivity> viewMaintenanceActivityByWeek(int week, int year) throws MaintenanceActivityException, SiteException, DateException, SkillException{
         List<LocalDate> date = WeekConverter.getStartEndDate(week, year);
         LocalDate startDateOfWeek = date.get(0);
         LocalDate endDateOfWeek = date.get(1);
-        List<MaintenanceActivity> listOfMaintenanceActivity = maintenanceActivityDao.retrieveMaintenanceActivityFromRange(startDateOfWeek, endDateOfWeek);
-//        for(MaintenanceActivity maintainenceActivity: listOfMaintenanceActivity){
-//            maintainenceActivity.setSkills();
-//        }
+        List<MaintenanceActivity> listOfMaintenanceActivity = maintenanceActivityDao.
+                retrieveMaintenanceActivityFromRange(startDateOfWeek, endDateOfWeek);
+        listOfMaintenanceActivity = filterActivityWithoutProcedure(listOfMaintenanceActivity);
+        for(MaintenanceActivity maintainenceActivity: listOfMaintenanceActivity){
+            MaintenanceProcedure procedure = maintainenceActivity.getMaintenanceProcedure();
+            if (!procedure.getSmp().trim().replaceAll("  +", " ").equals("")){
+                procedure.setSkills(requiredSkillsDao.retrieveSkillsBySmp(procedure.getSmp()));
+            }
+        }
         return listOfMaintenanceActivity;
+    }
+    
+    private List<MaintenanceActivity> filterActivityWithoutProcedure(List<MaintenanceActivity> listActivity) {
+        return listActivity.stream().filter(activity -> activity.getMaintenanceProcedure().getSmp()!=null).collect(Collectors.toList());
     }
     
     //Developed by Antonio Gorrasi
