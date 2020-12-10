@@ -6,6 +6,7 @@
 package business.user;
 
 import exception.ProcedureException;
+import exception.TypologyException;
 import exception.UsersException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,10 +32,10 @@ import stub.UsersDAOStub;
  * @author rosar
  */
 public class SystemAdministratorTest {
-    private SystemAdministrator admin;
-    private User planner;
-    private User maintainer;
-    private User systemAdministrator;
+    private final SystemAdministrator admin;
+    private final User planner;
+    private final User maintainer;
+    private final User systemAdministrator;
     private final SystemAdministrator instance = new SystemAdministrator("systemAdministratorUsername","systemAdministratorPassword",
             new MaintenanceProcedureDAOStub(),
             new UsersDAOStub(),new TypologyDAOStub());
@@ -153,10 +154,6 @@ public class SystemAdministratorTest {
     }
     
 //=========================================================================================================================================
-        /**
-     * Test of viewUser method, of class SystemAdministrator.
-     */
-    
     /**
      * Test of viewUser method, of class SystemAdministrator.
      * @throws exception.UsersException
@@ -173,6 +170,52 @@ public class SystemAdministratorTest {
         expected.add(new SystemAdministrator("UserSystemAdministrator","PwdSystemAdministrator",new MaintenanceProcedureDAOImpl(),new UsersDAOImpl(),new TypologyDAOImpl()));
         List<User> users = instance.viewUsers();
         assertEquals(true,expected.equals(users));
+    }
+    
+    /**
+     * Test of makeTypology method, of class SystemAdministrator.
+     * @throws exception.TypologyException
+     */
+    
+    @Test
+    public void testMakeTypology() throws TypologyException{
+       System.out.println("makeTypology");
+       String typology = " ";
+       boolean result = instance.makeTypology(typology);
+       assertEquals(true,result);
+    }
+    
+    @Test(expected = TypologyException.class)
+    public void testMakeTypologyException() throws TypologyException{
+       System.out.println("makeTypologyException");
+       String typology = "exception";
+       instance.makeTypology(typology);
+    }
+    
+    
+    @Test
+    public void testMakeTypologyFalse() throws TypologyException{
+       System.out.println("makeTypologyFalse");
+       String typology = "false";
+       boolean result = instance.makeTypology(typology);
+       assertEquals(false,result);
+    }
+    
+    /**
+     * Test of readTypologies method, of class SystemAdministrator.
+     * @throws exception.TypologyException
+     */
+    
+    @Test 
+    public void testReadTypologies() throws TypologyException{
+        System.out.println("readTypologiesTest");
+        List<String> expected = new ArrayList<>();
+        expected.add("Typology1");
+        expected.add("Typology2");
+        expected.add("Typology3");
+        List<String> typologies = instance.readTypologies();
+        assertEquals(true,expected.equals(typologies));
+        
     }
 //=========================================================================================================================================
     

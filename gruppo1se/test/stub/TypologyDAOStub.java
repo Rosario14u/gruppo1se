@@ -6,6 +6,8 @@
 package stub;
 
 import exception.TypologyException;
+import java.util.ArrayList;
+import java.util.List;
 import persistence.maintenanceactivity.TypologyDAO;
 
 /**
@@ -22,6 +24,16 @@ public class TypologyDAOStub implements TypologyDAO {
             return false;
         else 
             return true;
+    }
+    
+    
+    @Override
+    public List<String> viewTypologies() throws TypologyException {
+        List<String> typology = new ArrayList<>();
+        typology.add("Typology1");
+        typology.add("Typology2");
+        typology.add("Typology3");
+        return typology;
     }
     
 }

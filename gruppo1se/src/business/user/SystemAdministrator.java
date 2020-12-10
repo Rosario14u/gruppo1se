@@ -99,4 +99,8 @@ public class SystemAdministrator extends User {
     public boolean makeTypology(String typology) throws TypologyException{
         return typologyDao.addTypology(typology);
     }
+    
+    public List<String> readTypologies() throws TypologyException{
+        return typologyDao.viewTypologies();
+    }
 }
