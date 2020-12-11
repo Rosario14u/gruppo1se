@@ -215,8 +215,36 @@ public class SystemAdministratorTest {
         expected.add("Typology2");
         expected.add("Typology3");
         List<String> typologies = instance.readTypologies();
-        assertEquals(true,expected.equals(typologies));
-        
+        assertEquals(true,expected.equals(typologies));  
+    }
+    
+    /**
+     * Tests of updateTypology method, of class SystemAdministrator.
+     * @throws exception.TypologyException
+     */
+    
+    @Test 
+    public void testUpdateTypology() throws TypologyException {
+        System.out.println("correct updateTypologyTest");
+        String oldTypology = "oldTypology";
+        String newTypology = "newTypology";
+        assertEquals(true,instance.updateTypology(oldTypology, newTypology));
+    }
+    
+    @Test 
+    public void testUpdateTypologyFalse() throws TypologyException {
+        System.out.println("incorrect updateTypologyTest");
+        String oldTypology = "oldTypology";
+        String newTypology = "oldTypology";
+        assertEquals(false,instance.updateTypology(oldTypology, newTypology));
+    }
+    
+    @Test(expected = TypologyException.class) 
+    public void testUpdateTypologyException() throws TypologyException {
+        System.out.println("updateTypologyExceptionTest");
+        String oldTypology = "oldTypology";
+        String newTypology = "Typology Exception";
+        instance.updateTypology(oldTypology, newTypology);
     }
 //=========================================================================================================================================
     
@@ -387,4 +415,5 @@ public class SystemAdministratorTest {
         User administrator = new SystemAdministrator(null, "newPassword");        
         admin.modifyUser("oldUsername1", administrator);
     }
+    
 }

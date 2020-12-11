@@ -7,6 +7,7 @@ package persistence.maintenanceactivity;
 
 import exception.TypologyException;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -90,6 +91,11 @@ public class TypologyDAOImplTest{
         stm.executeUpdate(insert);
     }   
     
+    private ResultSet selectTypologyDefault(Statement stm) throws SQLException{
+        String select = "SELECT * FROM Typology";
+        return stm.executeQuery(select);
+    }
+    
     @Test
     public void testViewTypologies() throws TypologyException, SQLException{
         System.out.println("viewTypologies");
@@ -106,6 +112,21 @@ public class TypologyDAOImplTest{
         typologyList = instance.viewTypologies();
         assertEquals(true,typologyList.equals(expectedList));
         conn.rollback();
+    }
+    
+    @Test
+    public void testModifyTypology() throws TypologyException, SQLException{
+        System.out.println("modifyTypology");
+        Statement stm = conn.createStatement();
+        deleteAllTypologiesDefault(stm);
+        insertTypologyDefault(stm, "ProvaTypology");
+        boolean result = instance.modifyTypology("ProvaTypology", "UpdatedTypology");
+        ResultSet set = selectTypologyDefault(stm);
+        if(set.next()){
+            String typology = "UpdatedTypology";
+            assertEquals(set.getString("typologyName"),typology);
+            assertEquals(true, result);
+        }
     }
     
 }

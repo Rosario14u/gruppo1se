@@ -35,5 +35,15 @@ public class TypologyDAOStub implements TypologyDAO {
         typology.add("Typology3");
         return typology;
     }
+
+    @Override
+    public boolean modifyTypology(String oldTypology, String newTypology) throws TypologyException {
+        if(oldTypology.equals(newTypology))
+            return false;
+        else if(newTypology.equals("Typology Exception"))
+            throw new TypologyException();
+        else
+            return true;
+    }
     
 }
