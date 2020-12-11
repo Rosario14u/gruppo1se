@@ -172,7 +172,7 @@
                     <Column editable="false" title="&lt;html&gt;Availab&lt;br&gt;Sun&lt;/html&gt;" type="java.lang.String"/>
                   </Table>
                 </Property>
-                <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor" postCode="int width = maintainerAvailabilityTable.getSize().width;&#xa;maintainerAvailabilityTable.setFillsViewportHeight(true);&#xa;maintainerAvailabilityTable.getTableHeader().setOpaque(false);&#xa;maintainerAvailabilityTable.getTableHeader().setPreferredSize(new Dimension(width,40));&#xa;maintainerAvailabilityTable.setRowHeight(35);&#xa;maintainerAvailabilityTable.setBackground(new Color(255,204,153));&#xa;maintainerAvailabilityTable.getTableHeader().setBackground(new Color(255,170,0));&#xa;maintainerAvailabilityTable.addMouseListener(new java.awt.event.MouseAdapter() {&#xa;            @Override&#xa;            public void mouseClicked(java.awt.event.MouseEvent evt) {&#xa;                int row = maintainerAvailabilityTable.rowAtPoint(evt.getPoint());&#xa;                int col = maintainerAvailabilityTable.columnAtPoint(evt.getPoint());&#xa;                LocalDate newDate = null;&#xa;                if(col&gt;=2 &amp;&amp; col&lt;=9){&#xa;                    newDate = WeekConverter.getDayOfWeek(activity.getDate(), DayOfWeek.values()[col-2]);&#xa;                    new ActivityAssignment(activity, newDate, maintainerList.get(row)).setVisible(true);&#xa;                }&#xa;            }&#xa;        });">
+                <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor" postCode="int width = maintainerAvailabilityTable.getSize().width;&#xa;maintainerAvailabilityTable.setFillsViewportHeight(true);&#xa;maintainerAvailabilityTable.getTableHeader().setOpaque(false);&#xa;maintainerAvailabilityTable.getTableHeader().setPreferredSize(new Dimension(width,40));&#xa;maintainerAvailabilityTable.setRowHeight(35);&#xa;maintainerAvailabilityTable.setBackground(new Color(255,204,153));&#xa;maintainerAvailabilityTable.getTableHeader().setBackground(new Color(255,170,0));">
                   <TableColumnModel selectionModel="0">
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
@@ -221,10 +221,16 @@
                     </Column>
                   </TableColumnModel>
                 </Property>
+                <Property name="selectionForeground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="0" red="0" type="rgb"/>
+                </Property>
                 <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                   <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="maintainerAvailabilityTableMouseClicked"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

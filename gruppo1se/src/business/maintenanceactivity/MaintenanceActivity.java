@@ -21,7 +21,7 @@ public abstract class MaintenanceActivity implements Comparable<MaintenanceActiv
     private final String typology;
     private final String activityDescription;
     private final int estimatedInterventionTime;
-    private final LocalDate date;
+    private LocalDate date;
     private final MaintenanceProcedure maintenanceProcedure;
     private List<Material> materials;
     private final boolean interruptibleActivity;
@@ -142,7 +142,10 @@ public abstract class MaintenanceActivity implements Comparable<MaintenanceActiv
     public void setMaterials(List<Material> materials) {
         this.materials = materials;
     }
-    
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
     
     
     /**

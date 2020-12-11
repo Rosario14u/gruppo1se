@@ -5,7 +5,7 @@
  */
 package presentation.administrator;
 
-import business.maintenanceactivity.MaintenanceActivity;
+
 import business.user.Maintainer;
 import business.user.Planner;
 import business.user.SystemAdministrator;
@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.event.DocumentEvent;
