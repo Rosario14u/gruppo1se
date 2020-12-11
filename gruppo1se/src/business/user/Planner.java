@@ -214,8 +214,11 @@ public class Planner extends User {
     
     public boolean saveAppointments(String username, MaintenanceActivity activity, List<Appointment> appointments)
             throws AppointmentException, MaintenanceActivityException{
-        if(username==null || username.trim().replaceAll("  +", " ").equals("") || activity == null || appointments == null)
+        if(username==null || username.trim().replaceAll("  +", " ").equals("") ||  appointments == null)
             throw new AppointmentException("Error in saving appointment");
+        if(activity == null){
+            throw new MaintenanceActivityException("Error in saving new activity date");
+        }
         boolean addBoolean = employeeAppointmentDao.addEmployeeAvailability(username, appointments);
         if(addBoolean != false)
             return maintenanceActivityDao.modifyMaintenaceActivity(activity);
