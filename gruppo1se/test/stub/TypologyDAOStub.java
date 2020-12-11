@@ -35,5 +35,10 @@ public class TypologyDAOStub implements TypologyDAO {
         typology.add("Typology3");
         return typology;
     }
+
+    @Override
+    public boolean modifyTypology(String oldTypology, String newTypology) throws TypologyException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
