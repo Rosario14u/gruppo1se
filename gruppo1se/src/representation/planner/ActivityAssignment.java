@@ -8,61 +8,92 @@ package representation.planner;
 import business.maintenanceactivity.Appointment;
 import business.maintenanceactivity.MaintenanceActivity;
 import business.user.Maintainer;
+import business.user.Planner;
 import business.user.WeekConverter;
+import exception.AppointmentException;
+import exception.MaintenanceActivityException;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import persistence.maintenanceactivity.EmployeeAppointmentDAOImpl;
+import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
+import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
+import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
+import persistence.maintenanceactivity.SiteDaoImpl;
+import persistence.user.MaintainerSkillDAOImpl;
+import persistence.user.UsersDAOImpl;
 
 /**
  *
  * @author gorra
  */
-public class ActivityAssignment extends javax.swing.JFrame {
+public class ActivityAssignment extends javax.swing.JDialog {
+
     private MaintenanceActivity activity;
     private LocalDate newDate;
     private Maintainer maintainer;
     private DefaultTableModel tableModel;
+    private MinuteCellRenderer renderer;
+    private List<Appointment> appointmentList;
+    private int remainEstimatedInterventionTime;
+    private Planner planner;
+    private Frame parent;
 
     /**
-     * Creates new form ActivityAssign
+     * Creates new form ActivityAssignment
      */
-    public ActivityAssignment(MaintenanceActivity activity, LocalDate newDate, Maintainer mantainer) {
+    public ActivityAssignment(java.awt.Frame parent, boolean modal, MaintenanceActivity activity, LocalDate newDate, Maintainer mantainer) {
+        super(parent, modal);
         this.activity = activity;
         this.newDate = newDate;
         this.maintainer = mantainer;
+        this.appointmentList = new ArrayList<>();
+        this.parent = parent;
+        this.remainEstimatedInterventionTime = activity.getEstimatedInterventionTime();
+        this.planner = new Planner("planner", "planner", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
+                new RequiredMaterialForMaintenanceDAOImpl(), new UsersDAOImpl(), new EmployeeAppointmentDAOImpl(),
+                new RequiredSkillForMaintenanceDAOImpl(), new MaintainerSkillDAOImpl());
         initComponents();
+        this.setLocationRelativeTo(null);
         tableModel = (DefaultTableModel) maintainerAvailabilityDayTable.getModel();
-        MinuteCellRenderer renderer = new MinuteCellRenderer();
+        renderer = new MinuteCellRenderer();
         maintainerAvailabilityDayTable.setDefaultRenderer(Object.class, renderer);
         initializeFields();
     }
 
-    
-    private void initializeFields(){
+    private void initializeFields() {
         int weekNumber = WeekConverter.getWeek(newDate);
-        weekLabel.setText(Integer.toString(weekNumber));
+        weekLabelDialog.setText(Integer.toString(weekNumber));
         dayLabel.setText(newDate.getDayOfWeek().name());
         dayLabelNumber.setText(String.valueOf(newDate.getDayOfMonth()));
         maintainerLabel.setText("Availability " + maintainer.getUsername());
-        activityInfoLabel.setText(Integer.toString(activity.getActivityId())+" - "+activity.getSite().getArea()
-                +" - "+activity.getTypology()+" - "+ Integer.toString(activity.getEstimatedInterventionTime())+"'");
+        sendButton.setEnabled(false);
+        activityInfoLabelDialog.setText(Integer.toString(activity.getActivityId()) + " - " + activity.getSite().getArea()
+                + " - " + activity.getTypology() + " - " + Integer.toString(activity.getEstimatedInterventionTime()) + "'");
         workspaceNotesTextArea.setText(activity.getSite().getWorkSpaceNotes());
         populateTable(weekNumber);
     }
-    
-    private void populateTable(int weekNumber){
+
+    private void populateTable(int weekNumber) {
         int numProcedureSkill = activity.getMaintenanceProcedure().getSkills().size();
-        String[] rowTable = new String[] {"", "", "60 min", "60 min", "60 min", "60 min", "60 min", "60 min", "60 min"};
+        String[] rowTable = new String[]{"", "", "60 min", "60 min", "60 min", "60 min", "60 min", "60 min", "60 min"};
         rowTable[0] = maintainer.getUsername();
         maintainer.getSkills().retainAll(activity.getMaintenanceProcedure().getSkills());
-        rowTable[1] =  maintainer.getSkills().size() + "/" + numProcedureSkill;
-        for(Appointment appointment: maintainer.getAppointmentsInWeek()){
+        rowTable[1] = maintainer.getSkills().size() + "/" + numProcedureSkill;
+        for (Appointment appointment : maintainer.getAppointmentsInWeek()) {
             LocalDateTime dateTime = appointment.getStartDateAndTime();
-            if(dateTime.toLocalDate().equals(newDate)){
-                switch(dateTime.getHour()){
+            if (dateTime.toLocalDate().equals(newDate)) {
+                switch (dateTime.getHour()) {
                     case 8:
                         rowTable[2] = String.valueOf(Integer.valueOf(rowTable[2].split(" ")[0]) - appointment.getDuration()) + " min";
                         break;
@@ -84,22 +115,21 @@ public class ActivityAssignment extends javax.swing.JFrame {
                     case 16:
                         rowTable[8] = String.valueOf(Integer.valueOf(rowTable[8].split(" ")[0]) - appointment.getDuration()) + " min";
                         break;
-                }                        
-            }                    
+                }
+            }
         }
         System.out.println(rowTable.toString());
-        tableModel.addRow(rowTable);           
+        tableModel.addRow(rowTable);
     }
-    
-    
-    private void errorMessage(String message){
+
+    private void errorMessage(String message) {
         JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.ERROR_MESSAGE);
     }
-    
-    private void infoMessage(String message){
+
+    private void infoMessage(String message) {
         JOptionPane.showMessageDialog(this, message, "INFO", JOptionPane.INFORMATION_MESSAGE);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -111,20 +141,22 @@ public class ActivityAssignment extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         maintainerLabel = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        workspaceNotesLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         workspaceNotesTextArea = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         maintainerAvailabilityDayTable = new javax.swing.JTable();
-        jLabel3 = new javax.swing.JLabel();
-        activityInfoLabel = new javax.swing.JLabel();
+        activityToAssignLabel = new javax.swing.JLabel();
+        activityInfoLabelDialog = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        weekLabel = new javax.swing.JLabel();
+        weekLabelDialog = new javax.swing.JLabel();
         dayLabel = new javax.swing.JLabel();
         dayLabelNumber = new javax.swing.JLabel();
         availabilityLabel = new javax.swing.JLabel();
+        sendButton = new javax.swing.JButton();
+        clearButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 153, 0));
         jPanel1.setForeground(new java.awt.Color(255, 153, 0));
@@ -134,11 +166,11 @@ public class ActivityAssignment extends javax.swing.JFrame {
         maintainerLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         maintainerLabel.setOpaque(true);
 
-        jLabel2.setBackground(new java.awt.Color(200, 153, 0));
-        jLabel2.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Workspace Notes");
-        jLabel2.setOpaque(true);
+        workspaceNotesLabel.setBackground(new java.awt.Color(200, 153, 0));
+        workspaceNotesLabel.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        workspaceNotesLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        workspaceNotesLabel.setText("Workspace Notes");
+        workspaceNotesLabel.setOpaque(true);
 
         workspaceNotesTextArea.setEditable(false);
         workspaceNotesTextArea.setColumns(20);
@@ -169,6 +201,11 @@ public class ActivityAssignment extends javax.swing.JFrame {
             }
         });
         maintainerAvailabilityDayTable.getTableHeader().setReorderingAllowed(false);
+        maintainerAvailabilityDayTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                maintainerAvailabilityDayTableMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(maintainerAvailabilityDayTable);
         int width = maintainerAvailabilityDayTable.getSize().width;
         maintainerAvailabilityDayTable.setFillsViewportHeight(true);
@@ -177,14 +214,14 @@ public class ActivityAssignment extends javax.swing.JFrame {
         maintainerAvailabilityDayTable.setBackground(new Color(255,153,0));
         maintainerAvailabilityDayTable.getTableHeader().setBackground(new Color(255,170,0));
 
-        jLabel3.setBackground(new java.awt.Color(250, 250, 250));
-        jLabel3.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("<html>Activity to<br>assign<html>");
-        jLabel3.setOpaque(true);
+        activityToAssignLabel.setBackground(new java.awt.Color(250, 250, 250));
+        activityToAssignLabel.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        activityToAssignLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        activityToAssignLabel.setText("<html>Activity to<br>assign<html>");
+        activityToAssignLabel.setOpaque(true);
 
-        activityInfoLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        activityInfoLabel.setOpaque(true);
+        activityInfoLabelDialog.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        activityInfoLabelDialog.setOpaque(true);
 
         jLabel5.setBackground(new java.awt.Color(250, 250, 250));
         jLabel5.setFont(new java.awt.Font("Dialog", 0, 20)); // NOI18N
@@ -192,8 +229,8 @@ public class ActivityAssignment extends javax.swing.JFrame {
         jLabel5.setText("Week n°");
         jLabel5.setOpaque(true);
 
-        weekLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        weekLabel.setOpaque(true);
+        weekLabelDialog.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        weekLabelDialog.setOpaque(true);
 
         dayLabel.setBackground(new java.awt.Color(250, 250, 250));
         dayLabel.setFont(new java.awt.Font("Dialog", 0, 20)); // NOI18N
@@ -208,6 +245,20 @@ public class ActivityAssignment extends javax.swing.JFrame {
         availabilityLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         availabilityLabel.setOpaque(true);
 
+        sendButton.setText("SEND");
+        sendButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sendButtonActionPerformed(evt);
+            }
+        });
+
+        clearButton.setText("CLEAR");
+        clearButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -218,13 +269,20 @@ public class ActivityAssignment extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(29, 29, 29)
+                            .addComponent(workspaceNotesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(maintainerLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(76, 76, 76))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE)))
+                                .addGap(29, 29, 29)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(maintainerLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGap(76, 76, 76))
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(sendButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(availabilityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -233,15 +291,15 @@ public class ActivityAssignment extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(weekLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(weekLabelDialog, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(dayLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(dayLabelNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(33, 33, 33)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(activityToAssignLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(activityInfoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(activityInfoLabelDialog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(25, 25, 25))
         );
         jPanel1Layout.setVerticalGroup(
@@ -249,11 +307,11 @@ public class ActivityAssignment extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(activityInfoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(activityToAssignLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(activityInfoLabelDialog, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(weekLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(weekLabelDialog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -262,17 +320,19 @@ public class ActivityAssignment extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(workspaceNotesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(maintainerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(availabilityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(23, 23, 23)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
-                        .addGap(27, 27, 27))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(sendButton)
+                            .addComponent(clearButton)))
+                    .addComponent(jScrollPane1))
+                .addGap(27, 27, 27))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -283,11 +343,74 @@ public class ActivityAssignment extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void maintainerAvailabilityDayTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_maintainerAvailabilityDayTableMouseClicked
+        Pattern p = Pattern.compile("[0-9]?[0-9]:[0-9][0-9] - [0-9]?[0-9]:[0-9][0-9]");
+        int row = maintainerAvailabilityDayTable.rowAtPoint(evt.getPoint());
+        int col = maintainerAvailabilityDayTable.columnAtPoint(evt.getPoint());
+        if (col >= 2 && col <= 8 && row != -1) {
+            String availabilityValue = String.valueOf(maintainerAvailabilityDayTable.getValueAt(row, col)).split(" ")[0];
+            int availableMinutes = Integer.valueOf(availabilityValue);
+            System.out.println("Available minutes in the selected cell --> " + availableMinutes);
+            if (availableMinutes == 0) {
+                infoMessage("Busy Maintainer");
+            } else {
+                if (remainEstimatedInterventionTime <= 0) {
+                    infoMessage("Activity already assign");
+                } else {
+                    int duration = remainEstimatedInterventionTime > availableMinutes ? availableMinutes : remainEstimatedInterventionTime;
+                    remainEstimatedInterventionTime = remainEstimatedInterventionTime - duration;
+                    System.out.println("remainEstimatedInterventionTime --> " + remainEstimatedInterventionTime);
+                    tableModel.setValueAt(availableMinutes - duration + " min", row, col);
+                    if (remainEstimatedInterventionTime == 0) {
+                        sendButton.setEnabled(true);
+                    }
+                    System.out.println("remainEstimatedInterventionTime" + remainEstimatedInterventionTime);
+                    String colName = maintainerAvailabilityDayTable.getColumnName(col);
+
+                    Matcher matcher = p.matcher(colName);
+                    int hour;
+                    if (matcher.find()) {
+                        hour = Integer.valueOf(matcher.group(0).split(" - ")[0].split(":")[0]);
+                        appointmentList.add(new Appointment(activity.getActivityId(), newDate.atTime(hour, 00), duration));
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_maintainerAvailabilityDayTableMouseClicked
+
+    private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
+        try {
+            activity.setDate(newDate);
+            if (!planner.saveAppointments(maintainer.getUsername(), activity, appointmentList)) {
+                System.out.println("if");
+                errorMessage("Saving failed");
+            } else {
+                System.out.println("else");
+                this.dispose();
+            }
+        } catch (AppointmentException ex) {
+
+        } catch (MaintenanceActivityException ex) {
+
+        }
+    }//GEN-LAST:event_sendButtonActionPerformed
+
+    private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
+        appointmentList.clear();
+        tableModel.removeRow(0);
+        remainEstimatedInterventionTime = activity.getEstimatedInterventionTime();
+        sendButton.setEnabled(false);
+        int weekNumber = WeekConverter.getWeek(newDate);
+        populateTable(weekNumber);
+    }//GEN-LAST:event_clearButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -315,30 +438,38 @@ public class ActivityAssignment extends javax.swing.JFrame {
 //            java.util.logging.Logger.getLogger(ActivityAssignment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        }
 //        //</editor-fold>
-//        //</editor-fold>
 //
-//        /* Create and display the form */
+//        /* Create and display the dialog */
 //        java.awt.EventQueue.invokeLater(new Runnable() {
 //            public void run() {
-//                new ActivityAssignment().setVisible(true);
+//                ActivityAssignment dialog = new ActivityAssignment(new javax.swing.JFrame(), true);
+//                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+//                    @Override
+//                    public void windowClosing(java.awt.event.WindowEvent e) {
+//                        System.exit(0);
+//                    }
+//                });
+//                dialog.setVisible(true);
 //            }
 //        });
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel activityInfoLabel;
+    private javax.swing.JLabel activityInfoLabelDialog;
+    private javax.swing.JLabel activityToAssignLabel;
     private javax.swing.JLabel availabilityLabel;
+    private javax.swing.JButton clearButton;
     private javax.swing.JLabel dayLabel;
     private javax.swing.JLabel dayLabelNumber;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable maintainerAvailabilityDayTable;
     private javax.swing.JLabel maintainerLabel;
-    private javax.swing.JLabel weekLabel;
+    private javax.swing.JButton sendButton;
+    private javax.swing.JLabel weekLabelDialog;
+    private javax.swing.JLabel workspaceNotesLabel;
     private javax.swing.JTextArea workspaceNotesTextArea;
     // End of variables declaration//GEN-END:variables
 }

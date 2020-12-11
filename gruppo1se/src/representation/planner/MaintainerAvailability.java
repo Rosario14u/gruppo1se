@@ -22,6 +22,8 @@ import exception.UsersException;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
@@ -47,16 +49,19 @@ import persistence.user.UsersDAOImpl;
  * @author gorra
  */
 public class MaintainerAvailability extends javax.swing.JFrame {
+
     private MaintenanceActivity activity;
     private Planner planner;
     private DefaultTableModel tableModel;
     private List<Maintainer> maintainerList;
+    private ActivityAssignment jDialogGUI;
+
     /**
      * Creates new form MaintainerAvailability
      */
     public MaintainerAvailability(MaintenanceActivity activity) {
-        this.planner = new Planner("planner", "planner",new  MaintenanceActivityDAOImpl(new SiteDaoImpl()),
-                new RequiredMaterialForMaintenanceDAOImpl(), new UsersDAOImpl(),new EmployeeAppointmentDAOImpl(),
+        this.planner = new Planner("planner", "planner", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
+                new RequiredMaterialForMaintenanceDAOImpl(), new UsersDAOImpl(), new EmployeeAppointmentDAOImpl(),
                 new RequiredSkillForMaintenanceDAOImpl(), new MaintainerSkillDAOImpl());
         this.activity = activity;
         initComponents();
@@ -65,19 +70,18 @@ public class MaintainerAvailability extends javax.swing.JFrame {
         PercentageCellRenderer renderer = new PercentageCellRenderer();
         maintainerAvailabilityTable.setDefaultRenderer(Object.class, renderer);
     }
-    
-    
-    private void initializeFields(){
+
+    private void initializeFields() {
         LocalDate date = activity.getDate();
-        WeekFields weekFields = WeekFields.of(Locale.getDefault()); 
+        WeekFields weekFields = WeekFields.of(Locale.getDefault());
         int weekNumber = date.get(weekFields.weekOfWeekBasedYear());
         weekLabel.setText(Integer.toString(weekNumber));
         this.activity = activity;
-        activityInfoLabel.setText(Integer.toString(activity.getActivityId())+" - "+activity.getSite().getArea()
-                +" - "+activity.getTypology()+" - "+ Integer.toString(activity.getEstimatedInterventionTime())+"'");
-        if (activity.getMaintenanceProcedure().getSkills() != null){
+        activityInfoLabel.setText(Integer.toString(activity.getActivityId()) + " - " + activity.getSite().getArea()
+                + " - " + activity.getTypology() + " - " + Integer.toString(activity.getEstimatedInterventionTime()) + "'");
+        if (activity.getMaintenanceProcedure().getSkills() != null) {
             StringBuilder builder2 = new StringBuilder();
-            for(Skill skill : activity.getMaintenanceProcedure().getSkills()){
+            for (Skill skill : activity.getMaintenanceProcedure().getSkills()) {
                 builder2.append(skill.toString() + "\n");
             }
             skillTextArea.setText(builder2.toString());
@@ -85,23 +89,25 @@ public class MaintainerAvailability extends javax.swing.JFrame {
         }
         populateTable(weekNumber);
     }
-    
-    private void populateTable(int weekNumber){
+
+    private void populateTable(int weekNumber) {
         try {
+            
             int numProcedureSkill = activity.getMaintenanceProcedure().getSkills().size();
             maintainerList = planner.viewEmployeeAvailability(weekNumber, activity.getDate().getYear());
-            for (Maintainer maintainer : maintainerList){
-                String[] rowTable = new String[] {"","","100%","100%","100%","100%","100%","100%","100%"};
+            for (Maintainer maintainer : maintainerList) {
+                String[] rowTable = new String[]{"", "", "100%", "100%", "100%", "100%", "100%", "100%", "100%"};
                 float totalPercentage = 100;
                 rowTable[0] = maintainer.getUsername();
                 maintainer.getSkills().retainAll(activity.getMaintenanceProcedure().getSkills());
-                rowTable[1] =  maintainer.getSkills().size() + "/" + numProcedureSkill;
-                for(Appointment appointment: maintainer.getAppointmentsInWeek()){
+                rowTable[1] = maintainer.getSkills().size() + "/" + numProcedureSkill;
+                for (Appointment appointment : maintainer.getAppointmentsInWeek()) {
+                    System.out.println(maintainer.getUsername() + " " + appointment.toString());
                     int index = appointment.getStartDateAndTime().getDayOfWeek().getValue();
                     //int integerPartPercentage = Integer.valueOf(rowTable[index+1].replaceAll("%", ""));
-                    totalPercentage = (totalPercentage - ((float)appointment.getDuration()*100)/420);
-                    rowTable[index+1] = Math.round(totalPercentage) + "%";
-                    
+                    totalPercentage = (totalPercentage - ((float) appointment.getDuration() * 100) / 420);
+                    rowTable[index + 1] = Math.round(totalPercentage) + "%";
+
                 }
                 tableModel.addRow(rowTable);
             }
@@ -109,9 +115,7 @@ public class MaintainerAvailability extends javax.swing.JFrame {
             errorMessage("Error in table loading");
         }
     }
-    
-    
- 
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -178,7 +182,13 @@ public class MaintainerAvailability extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        maintainerAvailabilityTable.setSelectionForeground(new java.awt.Color(0, 0, 0));
         maintainerAvailabilityTable.getTableHeader().setReorderingAllowed(false);
+        maintainerAvailabilityTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                maintainerAvailabilityTableMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(maintainerAvailabilityTable);
         int width = maintainerAvailabilityTable.getSize().width;
         maintainerAvailabilityTable.setFillsViewportHeight(true);
@@ -187,18 +197,6 @@ public class MaintainerAvailability extends javax.swing.JFrame {
         maintainerAvailabilityTable.setRowHeight(35);
         maintainerAvailabilityTable.setBackground(new Color(255,204,153));
         maintainerAvailabilityTable.getTableHeader().setBackground(new Color(255,170,0));
-        maintainerAvailabilityTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                int row = maintainerAvailabilityTable.rowAtPoint(evt.getPoint());
-                int col = maintainerAvailabilityTable.columnAtPoint(evt.getPoint());
-                LocalDate newDate = null;
-                if(col>=2 && col<=9){
-                    newDate = WeekConverter.getDayOfWeek(activity.getDate(), DayOfWeek.values()[col-2]);
-                    new ActivityAssignment(activity, newDate, maintainerList.get(row)).setVisible(true);
-                }
-            }
-        });
 
         jLabel3.setBackground(new java.awt.Color(250, 250, 250));
         jLabel3.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -283,6 +281,32 @@ public class MaintainerAvailability extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void maintainerAvailabilityTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_maintainerAvailabilityTableMouseClicked
+        int row = maintainerAvailabilityTable.rowAtPoint(evt.getPoint());
+        int col = maintainerAvailabilityTable.columnAtPoint(evt.getPoint());
+        LocalDate newDate = null;
+        if (col >= 2 && col <= 9 && row != -1) {
+            newDate = WeekConverter.getDayOfWeek(activity.getDate(), DayOfWeek.values()[col - 2]);
+            if (newDate.isBefore(LocalDate.now())) {
+                infoMessage("Invalid date!");
+            } //new ActivityAssignment(this, activity, newDate, maintainerList.get(row)).setVisible(true);
+            else {
+                jDialogGUI = new ActivityAssignment(this, true, activity, newDate, maintainerList.get(row));
+                jDialogGUI.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        LocalDate date = activity.getDate();
+                        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+                        int weekNumber = date.get(weekFields.weekOfWeekBasedYear());
+                        tableModel.setRowCount(0);
+                        populateTable(weekNumber);
+                    }
+                });
+                jDialogGUI.setVisible(true);
+            }
+        }
+    }//GEN-LAST:event_maintainerAvailabilityTableMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -317,18 +341,18 @@ public class MaintainerAvailability extends javax.swing.JFrame {
                 skills.add(new Skill("Java Knowledge"));
                 skills.add(new Skill("English Knowledge"));
                 skills.add(new Skill("SQL Knowledge"));
-                MaintenanceActivity activity =  new PlannedMaintenanceActivity(1, new Site("ProvaArea","ProvaBranchOffice","ProvaWorkspaceNotes"),
-                        "ProvaTypology","ProvaActivityDescription",90,LocalDate.of(2020,12,22),new MaintenanceProcedure("FilePDF"),new ArrayList<Material>(), true);
+                MaintenanceActivity activity = new PlannedMaintenanceActivity(1, new Site("ProvaArea", "ProvaBranchOffice", "ProvaWorkspaceNotes"),
+                        "ProvaTypology", "ProvaActivityDescription", 90, LocalDate.of(2020, 12, 22), new MaintenanceProcedure("FilePDF"), new ArrayList<Material>(), true);
                 new MaintainerAvailability(activity).setVisible(true);
             }
         });
     }
-    
-    private void errorMessage(String message){
+
+    private void errorMessage(String message) {
         JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.ERROR_MESSAGE);
     }
-    
-    private void infoMessage(String message){
+
+    private void infoMessage(String message) {
         JOptionPane.showMessageDialog(this, message, "INFO", JOptionPane.INFORMATION_MESSAGE);
     }
 

@@ -104,4 +104,8 @@ public class SystemAdministrator extends User {
     public List<String> readTypologies() throws TypologyException{
         return typologyDao.viewTypologies();
     }
+    
+    public boolean updateTypology(String oldTypology, String newTypology) throws TypologyException{
+        return typologyDao.modifyTypology(oldTypology, newTypology);
+    }
 }

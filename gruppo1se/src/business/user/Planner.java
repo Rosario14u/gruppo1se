@@ -10,7 +10,6 @@ import business.maintenanceactivity.MaintenanceActivity;
 import business.maintenanceactivity.MaintenanceActivityFactory;
 import business.maintenanceactivity.MaintenanceProcedure;
 import business.maintenanceactivity.Material;
-import business.maintenanceactivity.Skill;
 import exception.AppointmentException;
 import exception.DateException;
 import exception.MaintenanceActivityException;
@@ -223,5 +222,15 @@ public class Planner extends User {
         if(addBoolean != false)
             return maintenanceActivityDao.modifyMaintenaceActivity(activity);
         return false;
+    }
+    
+    
+    //Developed by Antonio Gorrasi
+    public boolean verifyActivityAssignment(int activityId, int estimatedInterventionTime) throws MaintenanceActivityException{
+        if(activityId <=0 )
+            throw new MaintenanceActivityException();
+        //int totalTimeAssigned = employeeAppointmentDao.getDurationOfAssignedActivity(activityId);
+        //return totalTimeAssigned==estimatedInterventionTime;
+        return true;
     }
 }
