@@ -5,6 +5,7 @@
  */
 package business.user;
 
+import business.maintenanceactivity.Appointment;
 import business.maintenanceactivity.MaintenanceActivity;
 import business.maintenanceactivity.MaintenanceActivityFactory;
 import business.maintenanceactivity.MaintenanceProcedure;
@@ -208,5 +209,16 @@ public class Planner extends User {
             maintainer.setSkills(maintainerSkillDao.getMaintainerSkills(maintainer.getUsername()));
         }
         return maintainers;
+    }
+    
+    
+    public boolean saveAppointments(String username, MaintenanceActivity activity, List<Appointment> appointments)
+            throws AppointmentException, MaintenanceActivityException{
+        if(username==null || username.trim().replaceAll("  +", " ").equals("") || activity == null || appointments == null)
+            throw new AppointmentException("Error in saving appointment");
+        boolean addBoolean = employeeAppointmentDao.addEmployeeAvailability(username, appointments);
+        if(addBoolean != false)
+            return maintenanceActivityDao.modifyMaintenaceActivity(activity);
+        return false;
     }
 }

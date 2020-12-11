@@ -27,10 +27,11 @@ import persistence.database.ConnectionDB;
 public class EmployeeAppointmentDAOImpl implements EmployeeAppointmentDAO {
     private static final String SELECT_EMPLOYEE_AVAILABILITY = "SELECT * FROM EmployeeAppointment where"
             + " username = ? and startDateTime between ? and ?";
+    private static final String INSERT_EMPLOYEE_AVAILABILITY = "INSERT INTO EmployeeAppointment"
+            + "(activityId,username,startDateTime,duration) VALUES(?,?,?,?)";
     @Override
     public List<Appointment> getEmployeeAvailability(String username, LocalDate startDate, LocalDate endDate)
             throws AppointmentException,DateException {
-        
         if (startDate.isAfter(endDate))
             throw new DateException("startDate and endDate not valid");
         if(username == null || username.trim().replaceAll("  +", " ").equals(""))
@@ -50,10 +51,29 @@ public class EmployeeAppointmentDAOImpl implements EmployeeAppointmentDAO {
             return appointmentList;
         } catch (SQLException ex) {
             throw new AppointmentException("Error in retrieving appointment");
-        }
-        
-        
-        
+        }        
+    }
+
+    @Override
+    public boolean addEmployeeAvailability(String username, List<Appointment> listAppointment) throws AppointmentException {
+        if(username == null || username.trim().replaceAll("  +", "").equals("") || listAppointment == null)
+            throw new AppointmentException();
+        if(listAppointment.isEmpty())
+            return false;
+        try {
+            Connection conn = ConnectionDB.getInstanceConnection().getConnection();
+            for(Appointment appointment: listAppointment){
+                PreparedStatement pstm = conn.prepareStatement(INSERT_EMPLOYEE_AVAILABILITY);
+                pstm.setInt(1, appointment.getActivityId());
+                pstm.setString(2,username);
+                pstm.setTimestamp(3,Timestamp.valueOf(appointment.getStartDateAndTime()));
+                pstm.setInt(4, appointment.getDuration());
+                pstm.executeUpdate();
+            }
+            return true;
+        } catch (SQLException ex) {
+            throw new AppointmentException("Error in inserting appointment");
+        }  
     }
     
     

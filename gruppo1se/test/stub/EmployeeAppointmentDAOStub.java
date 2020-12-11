@@ -45,5 +45,10 @@ public class EmployeeAppointmentDAOStub implements EmployeeAppointmentDAO {
         else
             return new ArrayList<>();
     }
+
+    @Override
+    public boolean addEmployeeAvailability(String username, List<Appointment> listAppointment) throws AppointmentException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
         
 }

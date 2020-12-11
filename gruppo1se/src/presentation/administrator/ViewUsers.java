@@ -80,6 +80,7 @@ public class ViewUsers extends javax.swing.JFrame {
                 selectRole();
             }
         });
+        jTable.setRowSorter(rowSorter);
         addRowsToTable();
     }
     
@@ -124,21 +125,18 @@ public class ViewUsers extends javax.swing.JFrame {
     }
     
     private void filterRole(String filter){
-        TableRowSorter<DefaultTableModel> rowSorter = new TableRowSorter<>(tableModel);
-        jTable.setRowSorter(rowSorter);
         if(!filter.equals(" "))
             rowSorter.setRowFilter(RowFilter.regexFilter(filter,2));
         else
-            jTable.setRowSorter(rowSorter);      
+            rowSorter.setRowFilter(null);      
     }
     
     private void filterUser(){
-        jTable.setRowSorter(userSorter);
         String text = jUsername.getText();
         if(text.trim().length() == 0)
-            userSorter.setRowFilter(null);
+            rowSorter.setRowFilter(null);
         else 
-            userSorter.setRowFilter(RowFilter.regexFilter("^(?i)"+text,0));
+            rowSorter.setRowFilter(RowFilter.regexFilter("^(?i)"+text,0));
     }
     
 
@@ -409,14 +407,17 @@ public class ViewUsers extends javax.swing.JFrame {
             int[] selectedIndex = jTable.getSelectedRows();
             User user = null;
             List<String> usernameList = new ArrayList<>();
-            for(int i = 0; i < selectedIndex.length; i++)    
-                usernameList.add(String.valueOf(tableModel.getValueAt(i, 0)));
+            for(int i : selectedIndex){
+                usernameList.add(String.valueOf(jTable.getValueAt(i, 0)));
+            }
             if(!usernameList.isEmpty()){
                 int dialogResult = confirmMessage("Are you sure you wish to delete these users");
                 if(dialogResult == JOptionPane.YES_OPTION){
-                    systemAdministrator.removeUsers(usernameList);
-                    for(int i = 0; i < selectedIndex.length; i++)    
-                        tableModel.removeRow(i);
+                    System.out.println(usernameList);
+                    int retVal = systemAdministrator.removeUsers(usernameList);
+                    for(int i: selectedIndex){
+                        tableModel.removeRow(jTable.convertRowIndexToModel(i));
+                    }
                 }
                 jTable.clearSelection();
             }else{
