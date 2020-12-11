@@ -61,7 +61,6 @@ public class ViewUsers extends javax.swing.JFrame {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 filterUser();
-                jTable.repaint();
             }
             
             @Override
@@ -71,7 +70,7 @@ public class ViewUsers extends javax.swing.JFrame {
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                filterUser();
             }
         });
         jRole.addActionListener(new ActionListener(){
@@ -450,12 +449,12 @@ public class ViewUsers extends javax.swing.JFrame {
             roleComboBox.setSelectedItem(String.valueOf(tableModel.getValueAt(indexOfSelectedRow[0], 2)));
             jDialog1.setVisible(true);
         }else{
-            infoMessage(indexOfSelectedRow.length < 1 ? "Select one row" : "Too row selected");
+            infoMessage(indexOfSelectedRow.length < 1 ? "Select one row" : "Too many rows selected");
         }
     }//GEN-LAST:event_modifyButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        int result = confirmRequest("Ara you sure? All modified will be lost", "CANCEL");
+        int result = confirmRequest("Are you sure? All modifies will be lost", "CANCEL");
         if (result==EXIT_ON_CLOSE)
             jDialog1.dispose();       
     }//GEN-LAST:event_cancelButtonActionPerformed

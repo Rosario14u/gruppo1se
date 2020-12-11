@@ -38,7 +38,12 @@ public class TypologyDAOStub implements TypologyDAO {
 
     @Override
     public boolean modifyTypology(String oldTypology, String newTypology) throws TypologyException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(oldTypology.equals(newTypology))
+            return false;
+        else if(newTypology.equals("Typology Exception"))
+            throw new TypologyException();
+        else
+            return true;
     }
     
 }
