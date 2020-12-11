@@ -443,10 +443,13 @@ public class ViewUsers extends javax.swing.JFrame {
     
     private void modifyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyButtonActionPerformed
         int[] indexOfSelectedRow = jTable.getSelectedRows();
+        int index;
         if(indexOfSelectedRow.length==1){
-            usernameTextField.setText(String.valueOf(tableModel.getValueAt(indexOfSelectedRow[0], 0))); 
-            passwordTextField.setText(String.valueOf(tableModel.getValueAt(indexOfSelectedRow[0], 1))); 
-            roleComboBox.setSelectedItem(String.valueOf(tableModel.getValueAt(indexOfSelectedRow[0], 2)));
+            //Tradurre indice
+            index = jTable.convertRowIndexToModel(indexOfSelectedRow[0]);
+            usernameTextField.setText(String.valueOf(tableModel.getValueAt(index, 0))); 
+            passwordTextField.setText(String.valueOf(tableModel.getValueAt(index, 1))); 
+            roleComboBox.setSelectedItem(String.valueOf(tableModel.getValueAt(index, 2)));
             jDialog1.setVisible(true);
         }else{
             infoMessage(indexOfSelectedRow.length < 1 ? "Select one row" : "Too row selected");
@@ -464,23 +467,25 @@ public class ViewUsers extends javax.swing.JFrame {
         if (result==EXIT_ON_CLOSE){
             try {
                 int[] indexOfSelectedRow = jTable.getSelectedRows();
-                String oldUsername = String.valueOf(tableModel.getValueAt(indexOfSelectedRow[0], 0));
-                String oldPassword = String.valueOf(tableModel.getValueAt(indexOfSelectedRow[0], 1));
-                String oldRole = String.valueOf(tableModel.getValueAt(indexOfSelectedRow[0], 2));
+                int index = jTable.convertRowIndexToModel(indexOfSelectedRow[0]);
+                String oldUsername = String.valueOf(tableModel.getValueAt(index, 0));
+                String oldPassword = String.valueOf(tableModel.getValueAt(index, 1));
+                String oldRole = String.valueOf(tableModel.getValueAt(index, 2));
                 
                 String newUsername = usernameTextField.getText();
                 String newPassword = passwordTextField.getText();
                 String newRole = String.valueOf(roleComboBox.getSelectedItem());
                 
                 if(checkIfModified(oldUsername, oldPassword, oldRole, newUsername, newPassword, newRole)){
-                    System.out.println(systemAdministrator.modifyUser(oldUsername, makeUser(newUsername, newPassword, newRole)));
-                    tableModel.setValueAt(newUsername, indexOfSelectedRow[0], 0);
-                    tableModel.setValueAt(newPassword, indexOfSelectedRow[0], 1);
-                    System.out.println(newRole);
-                    tableModel.setValueAt(newRole, indexOfSelectedRow[0], 2);
+                    if(systemAdministrator.modifyUser(oldUsername, makeUser(newUsername, newPassword, newRole))){
+                        tableModel.setValueAt(newUsername, index, 0);
+                        tableModel.setValueAt(newPassword, index, 1);
+                        System.out.println(newRole);
+                        tableModel.setValueAt(newRole, index, 2);
+                    }
                 }       
             } catch (UsersException ex) {
-                JOptionPane.showMessageDialog(this, "Error while trying to create this user", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error while trying to modify this user", "Error", JOptionPane.ERROR_MESSAGE);
             }
             jDialog1.dispose();
         }
