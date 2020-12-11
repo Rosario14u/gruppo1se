@@ -18,4 +18,6 @@ import java.util.List;
 public interface EmployeeAppointmentDAO {
     public List<Appointment> getEmployeeAvailability(String username, LocalDate startDate, LocalDate endDate)
             throws AppointmentException,DateException;
+    public boolean addEmployeeAvailability(String username, List<Appointment> listAppointment)
+            throws AppointmentException;
 }

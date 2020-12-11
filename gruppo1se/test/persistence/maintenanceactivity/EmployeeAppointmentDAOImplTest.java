@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
+import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -38,6 +39,8 @@ public class EmployeeAppointmentDAOImplTest {
             + "(activityId,username,startDateTime,duration) VALUES(?,?,?,?)";
     private static final String DELETE_APPOINTMENT = "DELETE FROM EmployeeAppointment"
             + " WHERE startDateTime between ? and ?";
+    private static final String SELECT_APPOINTMENT = "SELECT * FROM EmployeeAppointment where"
+            + " username = ? and startDateTime between ? and ? order by activityId";
     private final EmployeeAppointmentDAO employeeAppointmentDAO;
     private final DateTimeFormatter formatter; 
     public EmployeeAppointmentDAOImplTest() {
@@ -82,7 +85,7 @@ public class EmployeeAppointmentDAOImplTest {
     public void testGetEmployeeAvailabilitySuccessfulRetrieve() {
         try{
             List<Appointment> expectedList = initializeList("2050-12-11 00:00:00",
-                    "2050-12-12 00:00:00","2050-12-13 00:00:00");
+                    "2050-12-12 00:00:00","2050-12-13 23:59:59");
             initializeDeleteInsert(expectedList);
             List<Appointment> resultedList = employeeAppointmentDAO.getEmployeeAvailability("username",
                     LocalDate.parse("2050-12-11"), LocalDate.parse("2050-12-13"));
@@ -102,9 +105,9 @@ public class EmployeeAppointmentDAOImplTest {
     public void testGetEmployeeAvailabilityNotIncluded() {
         try{
             List<Appointment> expectedList = initializeList("2050-12-11 00:00:00",
-                    "2050-12-12 00:00:00","2050-12-13 00:00:00");
+                    "2050-12-12 00:00:00","2050-12-13 23:59:59");
             delete_appointment(LocalDateTime.parse("2020-12-11 00:00:00",formatter),
-                    LocalDateTime.parse("2020-12-13 00:00:00",formatter));
+                    LocalDateTime.parse("2020-12-13 23:59:59",formatter));
             List<Appointment> resultedList = employeeAppointmentDAO.getEmployeeAvailability("username",
                     LocalDate.parse("2050-12-11"), LocalDate.parse("2050-12-13"));
             assertTrue("getEmployeeAvailabiltyNotIncluded error", resultedList.isEmpty());
@@ -122,7 +125,7 @@ public class EmployeeAppointmentDAOImplTest {
     public void testGetEmployeeAvailabilityWrongStartAndStop() throws DateException {
         try{
             List<Appointment> expectedList = initializeList("2050-12-11 00:00:00",
-                    "2050-12-12 00:00:00","2050-12-13 00:00:00");
+                    "2050-12-12 00:00:00","2050-12-13 23:59:59");
             initializeDeleteInsert(expectedList);
             List<Appointment> resultedList = employeeAppointmentDAO.getEmployeeAvailability("username",
                     LocalDate.parse("2050-12-13"), LocalDate.parse("2050-12-11"));
@@ -137,7 +140,7 @@ public class EmployeeAppointmentDAOImplTest {
     public void testGetEmployeeAvailabilityUsernameNull() throws AppointmentException {
         try{
             List<Appointment> expectedList = initializeList("2050-12-11 00:00:00",
-                    "2050-12-12 00:00:00","2050-12-13 00:00:00");
+                    "2050-12-12 00:00:00","2050-12-13 23:59:59");
             initializeDeleteInsert(expectedList);
             List<Appointment> resultedList = employeeAppointmentDAO.getEmployeeAvailability(null,
                     LocalDate.parse("2050-12-11"), LocalDate.parse("2050-12-13"));
@@ -152,7 +155,7 @@ public class EmployeeAppointmentDAOImplTest {
     public void testGetEmployeeAvailabilityUsernameEmpty() throws AppointmentException {
         try{
             List<Appointment> expectedList = initializeList("2050-12-11 00:00:00",
-                    "2050-12-12 00:00:00","2050-12-13 00:00:00");
+                    "2050-12-12 00:00:00","2050-12-13 23:59:59");
             initializeDeleteInsert(expectedList);
             List<Appointment> resultedList = employeeAppointmentDAO.getEmployeeAvailability(" ",
                     LocalDate.parse("2050-12-11"), LocalDate.parse("2050-12-13"));
@@ -163,7 +166,81 @@ public class EmployeeAppointmentDAOImplTest {
         }
     }
     
+    //=============================================testSetEmployeeAvailability=================================================================
     
+    @Test
+    public void testAddEmployeeAvailabilitySuccessful() {
+        try{
+            List<Appointment> expectedList = initializeList("2050-12-11 00:00:00",
+                    "2050-12-12 00:00:00","2050-12-13 23:59:59");
+            delete_appointment(LocalDateTime.parse("2050-12-11 00:00:00",formatter),
+                    LocalDateTime.parse("2050-12-13 23:59:59",formatter));
+            boolean retVal = employeeAppointmentDAO.addEmployeeAvailability("username", expectedList);
+            assert_appointment("username", expectedList);
+        }catch(SQLException ex){
+           Logger.getLogger(EmployeeAppointmentDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (AppointmentException ex) {
+            fail("AppointmentException");
+        }
+    }
+    
+    
+    @Test
+    public void testAddEmployeeAvailabilityUnsuccessfulEmpty() {
+        try{
+            boolean retVal = employeeAppointmentDAO.addEmployeeAvailability("username", new ArrayList<>());
+            assertFalse("Error SuccessfulEmpty",retVal);
+        }catch (AppointmentException ex) {
+            fail("AppointmentException");
+        }
+    }
+    
+    @Test(expected = AppointmentException.class)
+    public void testAddEmployeeAvailabilityUnsuccessful() throws AppointmentException {
+        try{
+            List<Appointment> expectedList = initializeList("2050-12-11 00:00:00",
+                    "2050-12-12 00:00:00","2050-12-13 23:59:59");
+            initializeDeleteInsert(expectedList);
+            boolean retVal = employeeAppointmentDAO.addEmployeeAvailability("username", expectedList);
+        }catch(SQLException ex){
+            fail("SQLException");
+        }
+    }
+    
+    @Test(expected = AppointmentException.class)
+    public void testAddEmployeeAvailabilityAppointmentNull() throws AppointmentException {
+        employeeAppointmentDAO.addEmployeeAvailability("username", null);
+    }
+    
+     
+    @Test(expected = AppointmentException.class)
+    public void testAddEmployeeAvailabilityUsernameNull() throws AppointmentException {
+        try{
+            List<Appointment> expectedList = initializeList("2050-12-11 00:00:00",
+                    "2050-12-12 00:00:00","2050-12-13 23:59:59");
+            delete_appointment(LocalDateTime.parse("2050-12-11 00:00:00",formatter),
+                    LocalDateTime.parse("2050-12-13 23:59:59",formatter));
+            employeeAppointmentDAO.addEmployeeAvailability(null,expectedList);
+        }catch(SQLException ex){
+            fail("SQLException");
+        }
+    }
+    
+    @Test(expected = AppointmentException.class)
+    public void testAddEmployeeAvailabilityUsernameEmpty() throws AppointmentException {
+        try{
+            List<Appointment> expectedList = initializeList("2050-12-11 00:00:00",
+                    "2050-12-12 00:00:00","2050-12-13 23:59:59");
+            delete_appointment(LocalDateTime.parse("2050-12-11 00:00:00",formatter),
+                    LocalDateTime.parse("2050-12-13 23:59:59",formatter));
+            employeeAppointmentDAO.addEmployeeAvailability(" ",expectedList);
+            
+        }catch(SQLException ex){
+            fail("SQLException");
+        }
+    }
+    
+    //=============================================function of utility=================================================================
     
     private void insert_appointment(int activityId, String username, LocalDateTime startDateTime,int duration) throws SQLException{
         PreparedStatement pstm = conn.prepareStatement(INSERT_APPOINTMENT);
@@ -188,6 +265,27 @@ public class EmployeeAppointmentDAOImplTest {
                 add(new Appointment(2,LocalDateTime.parse(dateTime2,formatter),42));
                 add(new Appointment(3,LocalDateTime.parse(dateTime3,formatter),43));
             }};  
+    }
+    
+    private void assert_appointment(String username, List<Appointment> expectedList) throws SQLException{
+        PreparedStatement pstm = conn.prepareStatement(SELECT_APPOINTMENT);
+        pstm.setString(1, username);
+        pstm.setTimestamp(2, Timestamp.valueOf(expectedList.get(0).getStartDateAndTime()));
+        pstm.setTimestamp(3, Timestamp.valueOf(expectedList.get(2).getStartDateAndTime()));
+        ResultSet rs = pstm.executeQuery();
+        boolean isEmpty = true;
+        int i = 0;
+        while(rs.next() && i < expectedList.size()){
+            isEmpty = false;
+            assertEquals("assert appointment username error",username, rs.getString("username"));
+            assertEquals("assert appointment activityId error",expectedList.get(i).getActivityId(), rs.getInt("activityId"));
+            assertEquals("assert appointment startDateTime error",Timestamp.valueOf(expectedList.get(i).getStartDateAndTime()), rs.getTimestamp("startDateTime"));
+            assertEquals("assert appointment duration error",expectedList.get(i).getDuration(), rs.getInt("duration"));
+            i++;
+        }
+        assertEquals("not equal", i, expectedList.size());
+        assertFalse("isEmpty",isEmpty);
+        assertTrue("is after last",rs.isAfterLast());
     }
     
     private void initializeDeleteInsert(List<Appointment> expectedList) throws SQLException{
