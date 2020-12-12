@@ -5,6 +5,7 @@
  */
 package business.user;
 
+import business.maintenanceactivity.Appointment;
 import business.maintenanceactivity.Ewo;
 import business.maintenanceactivity.ExtraActivity;
 import business.maintenanceactivity.MaintenanceActivity;
@@ -23,6 +24,7 @@ import exception.UsersException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -696,5 +698,147 @@ public class PlannerTest {
             fail("SkillException");
         } 
         
+    }
+    
+    //=================================================testSaveAppointments================================================================
+    
+    @Test
+    public void testSaveAppointmentsBothDAOReturnTrue(){
+        try {
+            MaintenanceActivity activity = new PlannedMaintenanceActivity(1, new Site("branchOffice1","area1",null),
+                    "typology1", "description1", 1, LocalDate.now(), null, null, true);
+            String username = "username1";
+            List<Appointment> listAppointment = new ArrayList<>(){{
+                add(new Appointment(1, LocalDateTime.now(),50));
+            }};
+            boolean retVal = planner.saveAppointments(username, activity, listAppointment);
+            assertTrue(retVal);
+        } catch (AppointmentException ex) {
+            fail("AppointmentException");
+        } catch (MaintenanceActivityException ex) {
+            fail("MaintenanceActivityException");
+        }
+    }
+    
+    @Test(expected = AppointmentException.class)
+    public void testSaveAppointmentsEmployeeActivityDAOThrowsException() throws AppointmentException{
+        try {
+            MaintenanceActivity activity = new PlannedMaintenanceActivity(1, new Site("branchOffice1","area1",null),
+                    "typology1", "description1", 1, LocalDate.now(), null, null, true);
+            String username = "username2";
+            List<Appointment> listAppointment = new ArrayList<>(){{
+                add(new Appointment(1, LocalDateTime.now(),50));
+            }};
+            boolean retVal = planner.saveAppointments(username, activity, listAppointment);
+        }catch (MaintenanceActivityException ex) {
+            fail("MaintenanceActivityException");
+        }
+    }
+    
+    @Test(expected = AppointmentException.class)
+    public void testSaveAppointmentsUsernameNull()throws AppointmentException{
+        try {
+            MaintenanceActivity activity = new PlannedMaintenanceActivity(1, new Site("branchOffice1","area1",null),
+                    "typology1", "description1", 1, LocalDate.now(), null, null, true);
+            String username = null;
+            List<Appointment> listAppointment = new ArrayList<>(){{
+                add(new Appointment(1, LocalDateTime.now(),50));
+            }};
+            boolean retVal = planner.saveAppointments(username, activity, listAppointment);
+        } catch (MaintenanceActivityException ex) {
+            fail("MaintenanceActivityException");
+        }
+    }
+    
+    @Test(expected = AppointmentException.class)
+    public void testSaveAppointmentsUsernameEmpty()throws AppointmentException{
+        try {
+            MaintenanceActivity activity = new PlannedMaintenanceActivity(1, new Site("branchOffice1","area1",null),
+                    "typology1", "description1", 1, LocalDate.now(), null, null, true);
+            String username = " ";
+            List<Appointment> listAppointment = new ArrayList<>(){{
+                add(new Appointment(1, LocalDateTime.now(),50));
+            }};
+            boolean retVal = planner.saveAppointments(username, activity, listAppointment);
+        }catch (MaintenanceActivityException ex) {
+            fail("MaintenanceActivityException");
+        }
+    }
+    
+    @Test(expected = MaintenanceActivityException.class)
+    public void testSaveAppointmentsActivityNull() throws MaintenanceActivityException{
+        try {
+            MaintenanceActivity activity = null;
+            String username = "username1";
+            List<Appointment> listAppointment = new ArrayList<>(){{
+                add(new Appointment(1, LocalDateTime.now(),50));
+            }};
+            boolean retVal = planner.saveAppointments(username, activity, listAppointment);
+        } catch (AppointmentException ex) {
+            fail("AppointmentException");
+        }
+    }
+    
+    @Test(expected = AppointmentException.class)
+    public void testSaveAppointmentsListAppointmentNull()throws AppointmentException{
+        try {
+            MaintenanceActivity activity = new PlannedMaintenanceActivity(1, new Site("branchOffice1","area1",null),
+                    "typology1", "description1", 1, LocalDate.now(), null, null, true);
+            String username = "username1";
+            List<Appointment> listAppointment = null;
+            boolean retVal = planner.saveAppointments(username, activity, listAppointment);
+        } catch (MaintenanceActivityException ex) {
+            fail("MaintenanceActivityException");
+        }
+    }
+    
+    @Test
+    public void testSaveAppointmentsEmployeeActivityDAOListEmpty(){
+        try {
+            MaintenanceActivity activity = new PlannedMaintenanceActivity(1, new Site("branchOffice1","area1",null),
+                    "typology1", "description1", 1, LocalDate.now(), null, null, true);
+            String username = "username1";
+            List<Appointment> listAppointment = new ArrayList<>();
+            boolean retVal = planner.saveAppointments(username, activity, listAppointment);
+            assertFalse(retVal);
+        } catch (AppointmentException ex) {
+            fail("AppointmentException");
+        } catch (MaintenanceActivityException ex) {
+            fail("MaintenanceActivityException");
+        }
+    }
+    
+    
+    @Test
+    public void testSaveAppointmentsMaintenanceActivityDAOReturnsFalse(){
+        try {
+            MaintenanceActivity activity = new PlannedMaintenanceActivity(2, new Site("branchOffice2","area2",null),
+                    "typology2", "description2", 2, LocalDate.now(), null, null, true);
+            String username = "username1";
+            List<Appointment> listAppointment = new ArrayList<>(){{
+                add(new Appointment(1, LocalDateTime.now(),50));
+            }};
+            boolean retVal = planner.saveAppointments(username, activity, listAppointment);
+            assertFalse(retVal);
+        } catch (AppointmentException ex) {
+            fail("AppointmentException");
+        } catch (MaintenanceActivityException ex) {
+            fail("MaintenanceActivityException");
+        }
+    }
+    
+    @Test(expected = MaintenanceActivityException.class)
+    public void testSaveAppointmentsMaintenanceActivityDAOThrowsException() throws MaintenanceActivityException{
+        try {
+            MaintenanceActivity activity = new PlannedMaintenanceActivity(3, new Site("branchOffice3","area3",null),
+                    "typology3", "description3", 3, LocalDate.now(), null, null, true);
+            String username = "username1";
+            List<Appointment> listAppointment = new ArrayList<>(){{
+                add(new Appointment(1, LocalDateTime.now(),50));
+            }};
+            boolean retVal = planner.saveAppointments(username, activity, listAppointment);
+        } catch (AppointmentException ex) {
+            fail("AppointmentException");
+        }
     }
 }

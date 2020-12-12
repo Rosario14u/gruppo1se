@@ -18,6 +18,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import persistence.database.ConnectionDB;
 
 /**
@@ -29,6 +31,10 @@ public class EmployeeAppointmentDAOImpl implements EmployeeAppointmentDAO {
             + " username = ? and startDateTime between ? and ?";
     private static final String INSERT_EMPLOYEE_AVAILABILITY = "INSERT INTO EmployeeAppointment"
             + "(activityId,username,startDateTime,duration) VALUES(?,?,?,?)";
+    private static final String SELECT_EMPLOYEE = "SELECT sum(duration) as sumduration FROM EmployeeAppointment where"
+            + " activityId = ?";
+    
+    
     @Override
     public List<Appointment> getEmployeeAvailability(String username, LocalDate startDate, LocalDate endDate)
             throws AppointmentException,DateException {
@@ -51,6 +57,7 @@ public class EmployeeAppointmentDAOImpl implements EmployeeAppointmentDAO {
             return appointmentList;
         } catch (SQLException ex) {
             throw new AppointmentException("Error in retrieving appointment");
+            
         }        
     }
 
@@ -74,6 +81,25 @@ public class EmployeeAppointmentDAOImpl implements EmployeeAppointmentDAO {
         } catch (SQLException ex) {
             throw new AppointmentException("Error in inserting appointment");
         }  
+    }
+
+    @Override
+    public int getDurationOfAssignedActivity(int activityId) throws AppointmentException {
+        if(activityId <= 0)
+           throw new AppointmentException("Error in retrieving duration of activity assigned");
+        int sum = 0;
+        try {
+            Connection conn = ConnectionDB.getInstanceConnection().getConnection();
+            PreparedStatement pstm = conn.prepareStatement(SELECT_EMPLOYEE);
+            pstm.setInt(1, activityId);
+            ResultSet rs = pstm.executeQuery();
+            while(rs.next()){
+                sum = rs.getInt("sumduration");
+            }
+            return sum;
+        } catch (SQLException ex) {
+            throw new AppointmentException("Error in retrieving duration of activity assigned");
+        }
     }
     
     

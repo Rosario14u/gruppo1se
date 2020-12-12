@@ -97,19 +97,23 @@ public class MaintainerAvailability extends javax.swing.JFrame {
             maintainerList = planner.viewEmployeeAvailability(weekNumber, activity.getDate().getYear());
             for (Maintainer maintainer : maintainerList) {
                 String[] rowTable = new String[]{"", "", "100%", "100%", "100%", "100%", "100%", "100%", "100%"};
-                float totalPercentage = 100;
+                //float[] rowTable = new float[] {100,100,100,100,100,100,100};
                 rowTable[0] = maintainer.getUsername();
                 maintainer.getSkills().retainAll(activity.getMaintenanceProcedure().getSkills());
                 rowTable[1] = maintainer.getSkills().size() + "/" + numProcedureSkill;
                 for (Appointment appointment : maintainer.getAppointmentsInWeek()) {
                     System.out.println(maintainer.getUsername() + " " + appointment.toString());
                     int index = appointment.getStartDateAndTime().getDayOfWeek().getValue();
-                    //int integerPartPercentage = Integer.valueOf(rowTable[index+1].replaceAll("%", ""));
-                    totalPercentage = (totalPercentage - ((float) appointment.getDuration() * 100) / 420);
-                    rowTable[index + 1] = Math.round(totalPercentage) + "%";
-
+                    float totalCellPercentage=  Float.valueOf(rowTable[index+1].replaceAll("%", ""));
+                    totalCellPercentage = (totalCellPercentage - ((float) appointment.getDuration() * 100) / 420);
+                    rowTable[index+1] = totalCellPercentage + "%";
                 }
+                for(int index=2; index < 9; index++){
+                    rowTable[index] = Math.round(Float.valueOf(rowTable[index].replaceAll("%", ""))) + "%";
+                }
+                
                 tableModel.addRow(rowTable);
+                
             }
         } catch (UsersException | DateException | AppointmentException | SkillException ex) {
             errorMessage("Error in table loading");

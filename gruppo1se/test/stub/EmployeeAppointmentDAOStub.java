@@ -48,7 +48,28 @@ public class EmployeeAppointmentDAOStub implements EmployeeAppointmentDAO {
 
     @Override
     public boolean addEmployeeAvailability(String username, List<Appointment> listAppointment) throws AppointmentException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(username == null || username.trim().replaceAll("  +", " ").equals("") || listAppointment == null ){
+            throw new AppointmentException();
+        }else if(username.equals("username1") && !listAppointment.isEmpty()){
+             return true;
+        }else if(username.equals("username2") && !listAppointment.isEmpty()){
+            throw new AppointmentException();
+        }else if(listAppointment.isEmpty()){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    @Override
+    public int getDurationOfAssignedActivity(int activityId) throws AppointmentException {
+        if(activityId <= 0){
+            throw new AppointmentException();
+        }else if(activityId == 1){
+            return 100;
+        }else{
+            return 0;
+        }
     }
         
 }

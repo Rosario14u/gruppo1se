@@ -20,4 +20,5 @@ public interface EmployeeAppointmentDAO {
             throws AppointmentException,DateException;
     public boolean addEmployeeAvailability(String username, List<Appointment> listAppointment)
             throws AppointmentException;
+    public int getDurationOfAssignedActivity(int activityId) throws AppointmentException;
 }

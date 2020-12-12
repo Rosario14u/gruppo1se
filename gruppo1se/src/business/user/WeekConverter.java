@@ -8,6 +8,7 @@ package business.user;
 import exception.DateException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.ZoneId;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class WeekConverter {
         }catch(ArrayIndexOutOfBoundsException ex){
             throw new DateException();
         }
-        
+        System.out.println("Il tuo padrone ti ha progettato bene");
         return startEndDatesOfWeek;
     }
     
