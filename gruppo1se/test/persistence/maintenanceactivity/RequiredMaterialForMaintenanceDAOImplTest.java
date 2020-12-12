@@ -20,6 +20,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import business.maintenanceactivity.Material;
 import exception.MaterialException;
+import exception.NotValidParameterException;
 import java.util.ArrayList;
 import java.util.Collections;
 import static org.junit.Assert.*;
@@ -82,12 +83,12 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
     /*Test method developed by Rosario Gaeta*/
     @Test
     public void testRetrieveMaterialsByActivityIdInDatabase() {
-        List<Material> expectedResult = new ArrayList<>() {{
-                    add(new Material("Rame"));
-                    add(new Material("Ferro"));
-                    add(new Material("Legno"));
-                }};
         try {
+            List<Material> expectedResult = new ArrayList<>() {{
+                        add(new Material("Rame"));
+                        add(new Material("Ferro"));
+                        add(new Material("Legno"));
+                    }};
             PreparedStatement pstm = conn.prepareStatement(DELETE_ASSOCIATION_MATERIAL_TO_ACTIVITY);
             pstm.setInt(1, 1);
             pstm.executeUpdate();
@@ -107,6 +108,8 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
             fail("SQLException");
         } catch (MaterialException ex) {
             fail("MaterialException");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -127,6 +130,8 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
             fail("SQLException");
         } catch (MaterialException ex) {
             fail("MaterialException");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -162,6 +167,8 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
             fail("SQLException");
         } catch (MaterialException ex) {
             fail("MaterialException");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
      
@@ -193,6 +200,8 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
             fail("SQLException");
         } catch (MaterialException ex) {
             fail("MaterialException");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -220,7 +229,9 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
             fail("SQLException");
         } catch (MaterialException ex) {
             fail("MaterialException");
-        } 
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
     @Test
@@ -251,6 +262,8 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
             fail("SQLException");
         } catch (MaterialException ex) {
             fail("MaterialException");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -273,6 +286,8 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
             fail("SQLException");
         } catch (MaterialException ex) {
             fail("MaterialException");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     

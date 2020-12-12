@@ -5,6 +5,7 @@
  */
 package business.maintenanceactivity;
 
+import exception.NotValidParameterException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class UnplannedActivityFactory extends MaintenanceActivityFactory{
     @Override
     protected MaintenanceActivity selectMaintenanceActivity(MaintenanceActivityFactory.Typology type, int activityId, Site site, String typology,
             String activityDescription, int estimatedInterventionTime, LocalDate date, 
-            MaintenanceProcedure maintenanceProcedure, List<Material> materials, boolean interruptibleActivity) {
+            MaintenanceProcedure maintenanceProcedure, List<Material> materials, boolean interruptibleActivity) throws NotValidParameterException {
         if (type == MaintenanceActivityFactory.Typology.EWO){
             return new Ewo(activityId, site, typology, activityDescription,
                 estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity);

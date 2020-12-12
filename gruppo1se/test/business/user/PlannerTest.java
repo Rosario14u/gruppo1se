@@ -9,6 +9,8 @@ import business.maintenanceactivity.Appointment;
 import business.maintenanceactivity.Ewo;
 import business.maintenanceactivity.ExtraActivity;
 import business.maintenanceactivity.MaintenanceActivity;
+import business.maintenanceactivity.MaintenanceActivityFactory;
+import business.maintenanceactivity.MaintenanceActivityFactory.Typology;
 import business.maintenanceactivity.MaintenanceProcedure;
 import business.maintenanceactivity.Material;
 import business.maintenanceactivity.PlannedMaintenanceActivity;
@@ -18,6 +20,7 @@ import exception.AppointmentException;
 import exception.DateException;
 import exception.MaintenanceActivityException;
 import exception.MaterialException;
+import exception.NotValidParameterException;
 import exception.SiteException;
 import exception.SkillException;
 import exception.UsersException;
@@ -114,10 +117,12 @@ public class PlannerTest {
     public void testSuccessfulModifyPlannedMaintenanceActivity(){
         try{
             assertTrue(planner.modifyMaintenanceActivity(1, "branchOffice1", "area1", "typology1",
-                    "description1", 1, LocalDate.now().toString(), true, "PLANNED", null));
+                    "description1", 1, LocalDate.now().toString(), true, Typology.PLANNED));
         }catch(MaintenanceActivityException ex){
             fail("MaintenanceActivityException");     
-        }   
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }  
     }
     
     
@@ -128,9 +133,11 @@ public class PlannerTest {
     public void testUnsuccessfulModifyPlannedMaintenanceActivity() {
         try{
             assertFalse(planner.modifyMaintenanceActivity(2, "branchOffice2", "area2", "typology2",
-                    "description2", 2, LocalDate.now().toString(), true, "PLANNED", null));
+                    "description2", 2, LocalDate.now().toString(), true, Typology.PLANNED));
         }catch(MaintenanceActivityException ex){
             fail("MaintenanceActivityException");     
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -140,8 +147,12 @@ public class PlannerTest {
      */
     @Test(expected = MaintenanceActivityException.class)
     public void testExceptionModifyPlannedMaintenanceActivity() throws MaintenanceActivityException{
-        planner.modifyMaintenanceActivity(3, "branchOffice3", "area3", "typology3",
-                "description3", 3, LocalDate.now().toString(), true, "PLANNED", null);  
+        try {
+            planner.modifyMaintenanceActivity(3, "branchOffice3", "area3", "typology3",  
+                    "description3", 3, LocalDate.now().toString(), true, Typology.PLANNED);
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
   
     
@@ -152,10 +163,12 @@ public class PlannerTest {
     public void testSuccessfulModifyEwoMaintenanceActivity() {
         try{
             assertTrue(planner.modifyMaintenanceActivity(4, "branchOffice4", "area4", "typology4",
-                    "description4", 4, LocalDate.now().toString(), true, "UNPLANNED", "EWO"));
+                    "description4", 4, LocalDate.now().toString(), true, Typology.EWO));
         }catch(MaintenanceActivityException ex){
             fail("MaintenanceActivityException");     
-        }   
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }  
     }
     
     
@@ -166,9 +179,11 @@ public class PlannerTest {
     public void testUnsuccessfulModifyEwoMaintenanceActivity() {
         try{
             assertFalse(planner.modifyMaintenanceActivity(5, "branchOffice5", "area5", "typology5",
-                    "description5", 5, LocalDate.now().toString(), true, "UNPLANNED", "EWO"));
+                    "description5", 5, LocalDate.now().toString(), true, Typology.EWO));
         }catch(MaintenanceActivityException ex){
             fail("MaintenanceActivityException");     
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -178,8 +193,12 @@ public class PlannerTest {
      */
     @Test(expected = MaintenanceActivityException.class)
     public void testExceptionModifyEwoMaintenanceActivity() throws MaintenanceActivityException{
-        planner.modifyMaintenanceActivity(6, "branchOffice6", "area6", "typology6",
-                "description6", 6, LocalDate.now().toString(), true, "UNPLANNED", "EWO");
+        try {
+            planner.modifyMaintenanceActivity(6, "branchOffice6", "area6", "typology6",
+                    "description6", 6, LocalDate.now().toString(), true, Typology.EWO);
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
     /**
@@ -189,10 +208,12 @@ public class PlannerTest {
     public void testSuccessfulModifyExtraMaintenanceActivity() {
         try{
             assertTrue(planner.modifyMaintenanceActivity(7, "branchOffice7", "area7", "typology7",
-                    "description7", 7, LocalDate.now().toString(), true, "UNPLANNED", "EXTRA"));
+                    "description7", 7, LocalDate.now().toString(), true, Typology.EXTRA));
         }catch(MaintenanceActivityException ex){
             fail("MaintenanceActivityException");     
-        }  
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        } 
     }
     
     
@@ -203,10 +224,12 @@ public class PlannerTest {
     public void testUnsuccessfulModifyExtraMaintenanceActivity() {
         try{
             assertFalse(planner.modifyMaintenanceActivity(8, "branchOffice8", "area8", "typology8",
-                    "description8", 8, LocalDate.now().toString(), true, "UNPLANNED", "EXTRA"));
+                    "description8", 8, LocalDate.now().toString(), true, Typology.EXTRA));
         }catch(MaintenanceActivityException ex){
             fail("MaintenanceActivityException");     
-        }  
+        }  catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
     
@@ -215,27 +238,34 @@ public class PlannerTest {
      */
     @Test(expected = MaintenanceActivityException.class)
     public void testExceptionModifyExtraMaintenanceActivity() throws MaintenanceActivityException{
-        planner.modifyMaintenanceActivity(9, "branchOffice9", "area9", "typology9",
-                "description9", 9, LocalDate.now().toString(), true, "UNPLANNED", "EXTRA"); 
+        try {
+            planner.modifyMaintenanceActivity(9, "branchOffice9", "area9", "typology9", 
+                    "description9", 9, LocalDate.now().toString(), true, Typology.EXTRA);
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
     /**
      * 
      * @throws MaintenanceActivityException 
      */
+    /*
     @Test(expected = MaintenanceActivityException.class)
     public void testExceptionInvalidTypologyOfActivity() throws MaintenanceActivityException{
         planner.modifyMaintenanceActivity(10, "branchOffice10", "area10", "typology10", "description10", 10, LocalDate.now().toString(), true, "UNPLANNED", "INVALID_VALUE");
     }
-    
+    */
     /**
      * 
      * @throws MaintenanceActivityException 
      */
+    /*
     @Test(expected = MaintenanceActivityException.class)
     public void testExceptionInvalidTypologyOfActivity2() throws MaintenanceActivityException{
         planner.modifyMaintenanceActivity(11, "branchOffice11", "area11", "typology11", "description11", 11, LocalDate.now().toString(), true, "INVALID_VALUE", "INVALID_VALUE");
     }
+    */
     
     /*============================================================================================================================*/
     @Test
@@ -292,6 +322,8 @@ public class PlannerTest {
             assertEquals(expectedMaterialList, actualMaterialList);
         } catch (MaterialException ex) {
             fail("MaterialException");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
         
@@ -303,12 +335,18 @@ public class PlannerTest {
             assertEquals(expectedMaterialList, actualMaterialList);
         } catch (MaterialException ex) {
             fail("MaterialException");
-        }       
+        }  catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }      
     }
     
     @Test(expected = MaterialException.class)
     public void testUnsuccessfulRetrieveAvaliableMaterialToAdd() throws MaterialException{
-        planner.retrieveAvaliableMaterialToAdd(8);   
+        try{
+            planner.retrieveAvaliableMaterialToAdd(8); 
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
     /*===========================================================================================================================*/
@@ -321,11 +359,14 @@ public class PlannerTest {
         try {
             System.out.println("makeMaintenanceActivity");
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription,
+                    estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, Typology.PLANNED);
             assertEquals(true, result);
             conn.rollback();
         } catch (SQLException ex) {
             System.out.println("Error on: connection rollback");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
 
@@ -336,10 +377,13 @@ public class PlannerTest {
             activityId = 2;
             date = "2020-11-24";
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription,
+                    estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, Typology.PLANNED);
             conn.rollback();
         } catch (SQLException ex) {
             System.out.println("Error on: connection rollback");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -350,11 +394,15 @@ public class PlannerTest {
             extraActivity = true;
             plannedActivity = false;
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes,
+                    typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials,
+                    interruptibleActivity, Typology.EXTRA);
             assertEquals(true, result);
             conn.rollback();
         } catch (SQLException ex) {
             System.out.println("Error on: connection rollback");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -367,10 +415,14 @@ public class PlannerTest {
             extraActivity = true;
             date = "2020-11-24";
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes,
+                    typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials,
+                    interruptibleActivity, Typology.EXTRA);
             conn.rollback();
         } catch (SQLException ex) {
             System.out.println("Error on: connection rollback");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -381,11 +433,15 @@ public class PlannerTest {
             plannedActivity = false;
             ewo = true;
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area,
+                    workspaceNotes, typology, activityDescription, estimatedInterventionTime, date,
+                    maintenanceProcedure, materials, interruptibleActivity, Typology.EWO);
             assertEquals(true, result);
             conn.rollback();
         } catch (SQLException ex) {
             System.out.println("Error on: connection rollback");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -398,10 +454,14 @@ public class PlannerTest {
             plannedActivity = false;
             date = "2020-11-24";
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes,
+                    typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials,
+                    interruptibleActivity, Typology.EWO);
             conn.rollback();
         } catch (SQLException ex) {
             System.out.println("Error on: connection rollback");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -468,6 +528,8 @@ public class PlannerTest {
             fail("MaintenanceActivityException");
         } catch (MaterialException ex) {
             fail("MaterialException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     /**
@@ -490,6 +552,8 @@ public class PlannerTest {
             fail("MaintenanceActivityException");
         } catch (MaterialException ex) {
             fail("MaterialException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     /**
@@ -512,6 +576,8 @@ public class PlannerTest {
             fail("MaintenanceActivityException");
         } catch (MaterialException ex) {
             fail("MaterialException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -529,6 +595,8 @@ public class PlannerTest {
             fail("MaintenanceActivityException");
         } catch (MaterialException ex) {
             fail("MaterialException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -543,6 +611,8 @@ public class PlannerTest {
             fail("MaintenanceActivityException");
         } catch (MaterialException ex) {
             fail("MaterialException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     /**
@@ -556,6 +626,8 @@ public class PlannerTest {
             fail("SiteException");
         } catch (MaterialException ex) {
             fail("MaterialException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     /**
@@ -574,6 +646,8 @@ public class PlannerTest {
             fail("MaintenanceActivityException");
         } catch (MaterialException ex) {
             fail("MaterialException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     /**
@@ -587,6 +661,8 @@ public class PlannerTest {
             fail("SiteException");
         } catch (MaintenanceActivityException ex) {
             fail("MaintenanceActivityException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -637,18 +713,30 @@ public class PlannerTest {
     
     @Test(expected = MaintenanceActivityException.class)
     public void viewMaintenanceActivityByWeekMaintenanceActivityException() throws MaintenanceActivityException, SiteException, DateException, SkillException{
-        planner.viewMaintenanceActivityByWeek(1, 2021);
+        try {
+            planner.viewMaintenanceActivityByWeek(1, 2021);
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     } 
     
     
     @Test(expected = SiteException.class)
     public void viewMaintenanceActivityByWeekSiteException() throws MaintenanceActivityException, SiteException, DateException, SkillException{
-        planner.viewMaintenanceActivityByWeek(2, 2021);
+        try {
+            planner.viewMaintenanceActivityByWeek(2, 2021);
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
     @Test(expected = DateException.class)
     public void viewMaintenanceActivityByWeekDateException() throws MaintenanceActivityException, SiteException, DateException, SkillException{
-        planner.viewMaintenanceActivityByWeek(3, 2021);
+        try {
+            planner.viewMaintenanceActivityByWeek(3, 2021);
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
 //    @Test
@@ -678,6 +766,8 @@ public class PlannerTest {
             fail("DateException");
         } catch (SkillException ex) {
             Logger.getLogger(PlannerTest.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -696,13 +786,15 @@ public class PlannerTest {
             fail("AppointmentException");
         } catch (SkillException ex) {
             fail("SkillException");
-        } 
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
         
     }
     
     //=================================================testSaveAppointments================================================================
     
-    @Test
+  @Test
     public void testSaveAppointmentsBothDAOReturnTrue(){
         try {
             MaintenanceActivity activity = new PlannedMaintenanceActivity(1, new Site("branchOffice1","area1",null),
@@ -717,6 +809,8 @@ public class PlannerTest {
             fail("AppointmentException");
         } catch (MaintenanceActivityException ex) {
             fail("MaintenanceActivityException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -732,6 +826,8 @@ public class PlannerTest {
             boolean retVal = planner.saveAppointments(username, activity, listAppointment);
         }catch (MaintenanceActivityException ex) {
             fail("MaintenanceActivityException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -747,6 +843,8 @@ public class PlannerTest {
             boolean retVal = planner.saveAppointments(username, activity, listAppointment);
         } catch (MaintenanceActivityException ex) {
             fail("MaintenanceActivityException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -762,6 +860,8 @@ public class PlannerTest {
             boolean retVal = planner.saveAppointments(username, activity, listAppointment);
         }catch (MaintenanceActivityException ex) {
             fail("MaintenanceActivityException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -776,6 +876,8 @@ public class PlannerTest {
             boolean retVal = planner.saveAppointments(username, activity, listAppointment);
         } catch (AppointmentException ex) {
             fail("AppointmentException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -789,6 +891,8 @@ public class PlannerTest {
             boolean retVal = planner.saveAppointments(username, activity, listAppointment);
         } catch (MaintenanceActivityException ex) {
             fail("MaintenanceActivityException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -805,6 +909,8 @@ public class PlannerTest {
             fail("AppointmentException");
         } catch (MaintenanceActivityException ex) {
             fail("MaintenanceActivityException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -824,6 +930,8 @@ public class PlannerTest {
             fail("AppointmentException");
         } catch (MaintenanceActivityException ex) {
             fail("MaintenanceActivityException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -839,6 +947,8 @@ public class PlannerTest {
             boolean retVal = planner.saveAppointments(username, activity, listAppointment);
         } catch (AppointmentException ex) {
             fail("AppointmentException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
 }

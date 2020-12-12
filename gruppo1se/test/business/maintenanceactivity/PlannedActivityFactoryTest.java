@@ -5,9 +5,12 @@
  */
 package business.maintenanceactivity;
 
+import exception.NotValidParameterException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -46,23 +49,27 @@ public class PlannedActivityFactoryTest {
      */
     @Test
     public void testSelectMaintenanceActivity() {
-        MaintenanceActivityFactory.Typology type = MaintenanceActivityFactory.Typology.PLANNED;
-        int activityId = 1;
-        Site site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
-        String typology = "ProvaTipologia";
-        String activityDescription = "ProvaDescrizione";
-        int estimatedInterventionTime = 120;
-        LocalDate date = LocalDate.parse("2020-11-30");
-        MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("Smp");
-        List<Material> listMaterial = createListMaterial("Materiale2","Materiale1","Materiale3");
-        List<Skill> listSkill = createListSkill("Skill2","Skill1","Skill3");
-        boolean interruptibleActivity = false;
-        MaintenanceActivity expResult = new PlannedMaintenanceActivity(activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, listMaterial, interruptibleActivity);
-        MaintenanceActivity result = instance.selectMaintenanceActivity(type, activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, listMaterial, interruptibleActivity);
-        assertEquals(expResult, result);
+        try {
+            MaintenanceActivityFactory.Typology type = MaintenanceActivityFactory.Typology.PLANNED;
+            int activityId = 1;
+            Site site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
+            String typology = "ProvaTipologia";
+            String activityDescription = "ProvaDescrizione";
+            int estimatedInterventionTime = 120;
+            LocalDate date = LocalDate.parse("2020-11-30");
+            MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("Smp");
+            List<Material> listMaterial = createListMaterial("Materiale2","Materiale1","Materiale3");
+            List<Skill> listSkill = createListSkill("Skill2","Skill1","Skill3");
+            boolean interruptibleActivity = false;
+            MaintenanceActivity expResult = new PlannedMaintenanceActivity(activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, listMaterial, interruptibleActivity);
+            MaintenanceActivity result = instance.selectMaintenanceActivity(type, activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, listMaterial, interruptibleActivity);
+            assertEquals(expResult, result);
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
-    private List<Material> createListMaterial(String materialElement1, String materialElement2, String materialElement3){
+    private List<Material> createListMaterial(String materialElement1, String materialElement2, String materialElement3) throws NotValidParameterException{
         return new ArrayList<>() {{
             add(new Material(materialElement1));
             add(new Material(materialElement2));
@@ -70,7 +77,7 @@ public class PlannedActivityFactoryTest {
         }};
     }
     
-    private List<Skill> createListSkill(String skillElement1, String skillElement2, String skillElement3){
+    private List<Skill> createListSkill(String skillElement1, String skillElement2, String skillElement3) throws NotValidParameterException{
         return new ArrayList<>() {{
             add(new Skill(skillElement1));
             add(new Skill(skillElement1));

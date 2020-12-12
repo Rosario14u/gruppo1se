@@ -8,6 +8,7 @@ package persistence.maintenanceactivity;
 import business.maintenanceactivity.Appointment;
 import exception.AppointmentException;
 import exception.DateException;
+import exception.NotValidParameterException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
@@ -102,6 +103,8 @@ public class EmployeeAppointmentDAOImplTest {
             fail("AppointmentException");
         } catch (DateException ex) {
             fail("DateException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -123,6 +126,8 @@ public class EmployeeAppointmentDAOImplTest {
             fail("AppointmentException");
         } catch (DateException ex) {
             fail("DateException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -141,7 +146,9 @@ public class EmployeeAppointmentDAOImplTest {
             fail("SQLException");
         } catch (AppointmentException ex) {
             fail("AppointmentException");
-        } 
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
     @Test(expected = AppointmentException.class)
@@ -158,6 +165,8 @@ public class EmployeeAppointmentDAOImplTest {
             fail("SQLException");
         } catch (DateException ex) {
             fail("DateException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -175,6 +184,8 @@ public class EmployeeAppointmentDAOImplTest {
             fail("SQLException");
         } catch (DateException ex) {
             fail("DateException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -195,6 +206,8 @@ public class EmployeeAppointmentDAOImplTest {
            Logger.getLogger(EmployeeAppointmentDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
         } catch (AppointmentException ex) {
             fail("AppointmentException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -220,6 +233,8 @@ public class EmployeeAppointmentDAOImplTest {
             boolean retVal = employeeAppointmentDAO.addEmployeeAvailability("username", expectedList);
         }catch(SQLException ex){
             fail("SQLException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -241,6 +256,8 @@ public class EmployeeAppointmentDAOImplTest {
             employeeAppointmentDAO.addEmployeeAvailability(null,expectedList);
         }catch(SQLException ex){
             fail("SQLException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -257,6 +274,8 @@ public class EmployeeAppointmentDAOImplTest {
             
         }catch(SQLException ex){
             fail("SQLException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -281,6 +300,8 @@ public class EmployeeAppointmentDAOImplTest {
            Logger.getLogger(EmployeeAppointmentDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
         } catch (AppointmentException ex) {
             fail("AppointmentException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -301,6 +322,8 @@ public class EmployeeAppointmentDAOImplTest {
            Logger.getLogger(EmployeeAppointmentDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
         } catch (AppointmentException ex) {
             fail("AppointmentException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     

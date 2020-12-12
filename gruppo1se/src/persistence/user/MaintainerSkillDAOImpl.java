@@ -6,6 +6,7 @@
 package persistence.user;
 
 import business.maintenanceactivity.Skill;
+import exception.NotValidParameterException;
 import exception.SkillException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ public class MaintainerSkillDAOImpl implements MaintainerSkillDAO{
 
     
     @Override
-    public List<Skill> getMaintainerSkills(String username) throws SkillException{
+    public List<Skill> getMaintainerSkills(String username) throws SkillException, NotValidParameterException{
         if (username == null || username.trim().replace("  +", " ").equals(""))
             throw new SkillException("Error in skills loading");
         try {

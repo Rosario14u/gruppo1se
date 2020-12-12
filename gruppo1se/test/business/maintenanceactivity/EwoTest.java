@@ -5,10 +5,14 @@
  */
 package business.maintenanceactivity;
 
+import exception.NotValidParameterException;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import org.junit.Test;
 /**
  *
@@ -23,7 +27,7 @@ public class EwoTest {
     private final LocalDate date = LocalDate.of(2050, 11, 9);
     private MaintenanceActivity instance = null;
     
-    public EwoTest() {
+    public EwoTest() throws NotValidParameterException {
         materials.add(new Material("material1"));
         skills.add(new Skill("skill1"));
         instance = new Ewo(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials,true);
@@ -136,11 +140,15 @@ public class EwoTest {
      */
     @Test
     public void testSetMaterials() {
-        System.out.println("setMaterials");
-        List<Material> materialsAdd = new LinkedList<>();
-        materialsAdd.add(new Material("materials2"));
-        instance.setMaterials(materialsAdd);
-        assertEquals(instance.getMaterials(), materialsAdd);
+        try {
+            System.out.println("setMaterials");
+            List<Material> materialsAdd = new LinkedList<>();
+            materialsAdd.add(new Material("materials2"));
+            instance.setMaterials(materialsAdd);
+            assertEquals(instance.getMaterials(), materialsAdd);
+        }  catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
     
@@ -153,18 +161,26 @@ public class EwoTest {
     
     @Test
     public void testEqualsEwo() {
-        System.out.println("test Equals Ewo");
-        Ewo ewo = new Ewo(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
-        boolean result = instance.equals(ewo);
-        assertEquals(result,true);
+        try {
+            System.out.println("test Equals Ewo");
+            Ewo ewo = new Ewo(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
+            boolean result = instance.equals(ewo);
+            assertEquals(result,true);
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
     @Test
     public void testNotEqualsEwo() {
-        System.out.println("test Not Equals Ewo");
-        Ewo ewo = new Ewo(2, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
-        boolean result = instance.equals(ewo);
-        assertEquals(result,false);
+        try {
+            System.out.println("test Not Equals Ewo");
+            Ewo ewo = new Ewo(2, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
+            boolean result = instance.equals(ewo);
+            assertEquals(result,false);
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
 }

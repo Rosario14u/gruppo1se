@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import business.maintenanceactivity.Skill;
+import exception.NotValidParameterException;
 import exception.SkillException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -77,31 +78,34 @@ public class RequiredSkillForMaintenanceDAOImplTest {
      */
     @Test
     public void testRetrieveSkillsByActivityIdInDatabase() {
-        List<Skill> expectedResult = new ArrayList<>() {{
-                    add(new Skill("Java knowledge"));
-                    add(new Skill("English knowledge"));
-                    add(new Skill("SQL knowledge"));
-                }};
         try {
-            PreparedStatement pstm = conn.prepareStatement(DELETE_ASSOCIATION_SKILL_BY_SMP);
-            pstm.setString(1, "smp");
-            pstm.executeUpdate();
-            pstm = conn.prepareStatement(ASSOCIATE_SKILL_TO_PROCEDURE);
-            pstm.setString(1, "smp");
-            pstm.setString(2, expectedResult.get(0).getName());
-            pstm.setString(3, "smp");
-            pstm.setString(4, expectedResult.get(1).getName());
-            pstm.setString(5, "smp");
-            pstm.setString(6, expectedResult.get(2).getName());
-            pstm.executeUpdate();
-            List<Skill> result= skillForMaintenanceDao.retrieveSkillsBySmp("smp");
-            Collections.sort(expectedResult);
-            Collections.sort(result);
-            assertEquals("retrieveSkillsByActivityIdInDatabase error",expectedResult, result);
+            List<Skill> expectedResult = new ArrayList<>() {{
+                        add(new Skill("Java knowledge"));
+                        add(new Skill("English knowledge"));
+                        add(new Skill("SQL knowledge"));
+                    }};
+
+                PreparedStatement pstm = conn.prepareStatement(DELETE_ASSOCIATION_SKILL_BY_SMP);
+                pstm.setString(1, "smp");
+                pstm.executeUpdate();
+                pstm = conn.prepareStatement(ASSOCIATE_SKILL_TO_PROCEDURE);
+                pstm.setString(1, "smp");
+                pstm.setString(2, expectedResult.get(0).getName());
+                pstm.setString(3, "smp");
+                pstm.setString(4, expectedResult.get(1).getName());
+                pstm.setString(5, "smp");
+                pstm.setString(6, expectedResult.get(2).getName());
+                pstm.executeUpdate();
+                List<Skill> result= skillForMaintenanceDao.retrieveSkillsBySmp("smp");
+                Collections.sort(expectedResult);
+                Collections.sort(result);
+                assertEquals("retrieveSkillsByActivityIdInDatabase error",expectedResult, result);
         } catch (SQLException ex) {
             fail("SQLException");
         } catch (SkillException ex) {
             fail("SkillException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -121,6 +125,8 @@ public class RequiredSkillForMaintenanceDAOImplTest {
             fail("SQLException");
         } catch (SkillException ex) {
             fail("SkillException");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -156,6 +162,8 @@ public class RequiredSkillForMaintenanceDAOImplTest {
             fail("SQLException");
         } catch (SkillException ex) {
             fail("SkillException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
      
@@ -187,6 +195,8 @@ public class RequiredSkillForMaintenanceDAOImplTest {
             fail("SQLException");
         } catch (SkillException ex) {
             fail("SkillException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -214,7 +224,9 @@ public class RequiredSkillForMaintenanceDAOImplTest {
             fail("SQLException");
         } catch (SkillException ex) {
             fail("SkillException");
-        } 
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
     @Test
@@ -245,6 +257,8 @@ public class RequiredSkillForMaintenanceDAOImplTest {
             fail("SQLException");
         } catch (SkillException ex) {
             fail("SkillException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -267,6 +281,8 @@ public class RequiredSkillForMaintenanceDAOImplTest {
             fail("SQLException");
         } catch (SkillException ex) {
             fail("SkillException");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     

@@ -8,12 +8,14 @@ package business.user;
 import business.maintenanceactivity.Appointment;
 import business.maintenanceactivity.MaintenanceActivity;
 import business.maintenanceactivity.MaintenanceActivityFactory;
+import business.maintenanceactivity.MaintenanceActivityFactory.Typology;
 import business.maintenanceactivity.MaintenanceProcedure;
 import business.maintenanceactivity.Material;
 import exception.AppointmentException;
 import exception.DateException;
 import exception.MaintenanceActivityException;
 import exception.MaterialException;
+import exception.NotValidParameterException;
 import exception.SiteException;
 import exception.SkillException;
 import exception.UsersException;
@@ -90,7 +92,7 @@ public class Planner extends User {
      */
     /*Method developed by Rosario Gaeta*/
     public MaintenanceActivity viewMaintenanceActivity(int activityId) throws SiteException, 
-            MaintenanceActivityException, MaterialException{
+            MaintenanceActivityException, MaterialException, NotValidParameterException{
         /*this method uses MaintenanceActivityDaoImpl and RequiredMaterialForMaintenanceDaoImpl objects to
         retrieve the required MaintenanceActivity object if exists*/
         MaintenanceActivity activity = maintenanceActivityDao.retrieveMaintenanceActivityDao(activityId);
@@ -119,22 +121,12 @@ public class Planner extends User {
     //Developed by Antonio Gorrasi
     public boolean modifyMaintenanceActivity(int activityId, String branchOffice, String area, String typology, String activityDescription, 
             int estimatedInterventionTime, String date, boolean interruptibleActivity, 
-            String typologyOfActivity, String typologyOfUnplannedActivity) throws MaintenanceActivityException{
-        
-        typologyOfActivity = typologyOfActivity.toUpperCase();
-        typologyOfUnplannedActivity = typologyOfUnplannedActivity == null ? null : typologyOfUnplannedActivity.toUpperCase();
-        
-        try{
-            MaintenanceActivityFactory.Typology type = typologyOfActivity.compareTo("PLANNED")==0 ? 
-                        MaintenanceActivityFactory.Typology.PLANNED : MaintenanceActivityFactory.Typology.valueOf(typologyOfUnplannedActivity);
+            Typology typologyOfActivity) throws MaintenanceActivityException, NotValidParameterException{
 
-            MaintenanceActivity newActivity = MaintenanceActivityFactory.make(type, activityId, branchOffice, area, null, typology, activityDescription, 
+            MaintenanceActivity newActivity = MaintenanceActivityFactory.make(typologyOfActivity, activityId, branchOffice, area, null, typology, activityDescription, 
                     estimatedInterventionTime, date, null, null,interruptibleActivity);
 
             return maintenanceActivityDao.modifyMaintenaceActivity(newActivity);
-        }catch(IllegalArgumentException ex){
-            throw new MaintenanceActivityException("Typology of Activity not valid");
-        }
     }
     
     
@@ -144,15 +136,8 @@ public class Planner extends User {
     
     public boolean makeMaintenanceActivity(int activityId, String branchOffice, String area, String workspaceNotes, String typology, String activityDescription, int estimatedInterventionTime, 
             String date, String smp, List<Material> materials, boolean interruptibleActivity,
-            boolean plannedActivity, boolean extraActivity, boolean ewo) throws MaintenanceActivityException, MaterialException{
-        MaintenanceActivityFactory.Typology type = null;
-        if (plannedActivity)
-            type = MaintenanceActivityFactory.Typology.PLANNED;
-        else if(extraActivity)
-            type = MaintenanceActivityFactory.Typology.EXTRA;
-        else
-            type = MaintenanceActivityFactory.Typology.EWO;
-        MaintenanceActivity activity = MaintenanceActivityFactory.make(type, activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime,
+            Typology typologyOfActivity) throws MaintenanceActivityException, MaterialException, NotValidParameterException{
+        MaintenanceActivity activity = MaintenanceActivityFactory.make(typologyOfActivity, activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime,
                 date, smp, materials, interruptibleActivity);
         if (materials!=null)
             return maintenanceActivityDao.addMaintenanceActivity(activity) && requiredMaterialsDao.addRequiredMaterial(activityId, materials);
@@ -172,12 +157,12 @@ public class Planner extends User {
     }
     
     //Developed by Antonio Gorrasi
-    public List<Material> retrieveAvaliableMaterialToAdd(int activityId) throws MaterialException{
+    public List<Material> retrieveAvaliableMaterialToAdd(int activityId) throws MaterialException, NotValidParameterException{
         return requiredMaterialsDao.retrieveAvailableMaterialToAdd(activityId);
     }
     
     //Developed by Antonio Gorrasi
-    public List<MaintenanceActivity> viewMaintenanceActivityByWeek(int week, int year) throws MaintenanceActivityException, SiteException, DateException, SkillException{
+    public List<MaintenanceActivity> viewMaintenanceActivityByWeek(int week, int year) throws MaintenanceActivityException, SiteException, DateException, SkillException, NotValidParameterException{
         List<LocalDate> date = WeekConverter.getStartEndDate(week, year);
         LocalDate startDateOfWeek = date.get(0);
         LocalDate endDateOfWeek = date.get(1);
@@ -198,7 +183,7 @@ public class Planner extends User {
     }
     
     //Developed by Antonio Gorrasi
-    public List<Maintainer> viewEmployeeAvailability(int week, int year) throws UsersException, DateException, AppointmentException, SkillException{
+    public List<Maintainer> viewEmployeeAvailability(int week, int year) throws UsersException, DateException, AppointmentException, SkillException, NotValidParameterException{
         List<Maintainer> maintainers = userDao.readMaintainers();
         List<LocalDate> date = WeekConverter.getStartEndDate(week, year);
         LocalDate startDateOfWeek = date.get(0);

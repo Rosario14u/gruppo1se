@@ -5,6 +5,7 @@
  */
 package business.maintenanceactivity;
 
+import exception.NotValidParameterException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class PlannedActivityFactory extends MaintenanceActivityFactory{
     protected MaintenanceActivity selectMaintenanceActivity(MaintenanceActivityFactory.Typology type, int activityId,
             Site site, String typology, String activityDescription,int estimatedInterventionTime, 
             LocalDate date, MaintenanceProcedure maintenanceProcedure, 
-            List<Material> materials, boolean interruptibleActivity) {
+            List<Material> materials, boolean interruptibleActivity) throws NotValidParameterException{
         return new PlannedMaintenanceActivity( activityId, site, typology, activityDescription,
             estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity);
     }

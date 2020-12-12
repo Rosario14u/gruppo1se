@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.Date;
 import exception.AppointmentException;
 import exception.DateException;
+import exception.NotValidParameterException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -37,7 +38,7 @@ public class EmployeeAppointmentDAOImpl implements EmployeeAppointmentDAO {
     
     @Override
     public List<Appointment> getEmployeeAvailability(String username, LocalDate startDate, LocalDate endDate)
-            throws AppointmentException,DateException {
+            throws AppointmentException,DateException, NotValidParameterException {
         if (startDate.isAfter(endDate))
             throw new DateException("startDate and endDate not valid");
         if(username == null || username.trim().replaceAll("  +", " ").equals(""))

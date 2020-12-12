@@ -7,6 +7,7 @@ package persistence.maintenanceactivity;
 import business.maintenanceactivity.*;
 import exception.DateException;
 import exception.MaintenanceActivityException;
+import exception.NotValidParameterException;
 import exception.SiteException;
 import java.sql.*;
 import java.time.LocalDate;
@@ -79,7 +80,7 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
      */
     /*Method developed by Rosario Gaeta*/
     @Override
-    public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId) throws SiteException, MaintenanceActivityException{
+    public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId) throws SiteException, MaintenanceActivityException, NotValidParameterException{
         try {
             MaintenanceActivity ma = null;
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
@@ -106,7 +107,7 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     * @throws exception.MaintenanceActivityException
     */
     /*Method developed by Rosario Gaeta*/
-    private MaintenanceActivity makeMaintenanceActivity(ResultSet rs) throws SQLException, SiteException, MaintenanceActivityException{
+    private MaintenanceActivity makeMaintenanceActivity(ResultSet rs) throws SQLException, SiteException, MaintenanceActivityException, NotValidParameterException{
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             String typologyOfActivity = rs.getString("typologyOfActivity").toUpperCase();
@@ -163,7 +164,7 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
      */
     @Override
     public List<MaintenanceActivity> retrieveMaintenanceActivityFromRange(LocalDate startDate, LocalDate stopDate)
-            throws MaintenanceActivityException, SiteException, DateException{
+            throws MaintenanceActivityException, SiteException, DateException, NotValidParameterException{
         if (startDate==null || stopDate==null || startDate.isAfter(stopDate))
             throw new DateException("Maintenance Activity retriving error");
         try {

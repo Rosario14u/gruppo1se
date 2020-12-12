@@ -8,6 +8,7 @@ package persistence.maintenanceactivity;
 import business.maintenanceactivity.Appointment;
 import exception.AppointmentException;
 import exception.DateException;
+import exception.NotValidParameterException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -17,7 +18,7 @@ import java.util.List;
  */
 public interface EmployeeAppointmentDAO {
     public List<Appointment> getEmployeeAvailability(String username, LocalDate startDate, LocalDate endDate)
-            throws AppointmentException,DateException;
+            throws AppointmentException, DateException, NotValidParameterException;
     public boolean addEmployeeAvailability(String username, List<Appointment> listAppointment)
             throws AppointmentException;
     public int getDurationOfAssignedActivity(int activityId) throws AppointmentException;

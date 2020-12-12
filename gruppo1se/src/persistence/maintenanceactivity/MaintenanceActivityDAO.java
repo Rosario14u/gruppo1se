@@ -8,6 +8,7 @@ package persistence.maintenanceactivity;
 import business.maintenanceactivity.MaintenanceActivity;
 import exception.DateException;
 import exception.MaintenanceActivityException;
+import exception.NotValidParameterException;
 import exception.SiteException;
 import java.time.LocalDate;
 import java.util.List;
@@ -19,8 +20,8 @@ import java.util.List;
 public interface MaintenanceActivityDAO{
     public boolean addMaintenanceActivity(MaintenanceActivity activity) throws MaintenanceActivityException;
     public boolean deleteMaintenanceActivity(int activityId) throws MaintenanceActivityException;
-    public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId) throws SiteException ,MaintenanceActivityException;    
+    public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId) throws SiteException ,MaintenanceActivityException, NotValidParameterException;    
     public boolean modifyMaintenaceActivity(MaintenanceActivity newActivity) throws MaintenanceActivityException;
     public List<MaintenanceActivity> retrieveMaintenanceActivityFromRange(LocalDate startDate, LocalDate stopDate) 
-            throws MaintenanceActivityException, SiteException, DateException;
+            throws MaintenanceActivityException, SiteException, DateException, NotValidParameterException;
 }

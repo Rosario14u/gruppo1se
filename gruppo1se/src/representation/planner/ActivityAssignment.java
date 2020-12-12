@@ -12,6 +12,7 @@ import business.user.Planner;
 import business.user.WeekConverter;
 import exception.AppointmentException;
 import exception.MaintenanceActivityException;
+import exception.NotValidParameterException;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -19,6 +20,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JFrame;
@@ -379,7 +382,11 @@ public class ActivityAssignment extends javax.swing.JDialog {
                     int hour;
                     if (matcher.find()) {
                         hour = Integer.valueOf(matcher.group(0).split(" - ")[0].split(":")[0]);
-                        appointmentList.add(new Appointment(activity.getActivityId(), newDate.atTime(hour, 00), duration));
+                        try {
+                            appointmentList.add(new Appointment(activity.getActivityId(), newDate.atTime(hour, 00), duration));
+                        } catch (NotValidParameterException ex) {
+                            errorMessage(ex.getMessage());
+                        }
                     }
                 }
             }
@@ -411,7 +418,9 @@ public class ActivityAssignment extends javax.swing.JDialog {
         int weekNumber = WeekConverter.getWeek(newDate);
         populateTable(weekNumber);
     }//GEN-LAST:event_clearButtonActionPerformed
-
+    
+    
+    
     /**
      * @param args the command line arguments
      */

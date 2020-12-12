@@ -5,11 +5,15 @@
  */
 package representation.planner;
 
+import business.maintenanceactivity.MaintenanceActivityFactory.Typology;
 import business.maintenanceactivity.Material;
 import business.user.Planner;
 import exception.MaintenanceActivityException;
 import exception.MaterialException;
+import exception.NotValidParameterException;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
@@ -418,10 +422,19 @@ public class CreateActivity extends javax.swing.JFrame {
             }else materials = null;
             boolean interruptibleActivity;
             interruptibleActivity = jInterruptibleTrue.isSelected();
+            Typology typologyOfActivity = null;
+            if(jPlanned.isSelected()){
+                typologyOfActivity = Typology.PLANNED;
+            }else if(jEwo.isSelected()){
+                typologyOfActivity = Typology.EWO;
+            }else{
+                typologyOfActivity = Typology.EXTRA;
+            }
             boolean plannedActivity = jPlanned.isSelected();
             boolean extraActivity = jExtra.isSelected();
             boolean ewo = jEwo.isSelected();
-            planner.makeMaintenanceActivity(activityId, branchOffice, area, "", typology, activityDescription, estimatedInterventionTime, date, " ", materials, interruptibleActivity, plannedActivity, extraActivity, ewo);
+            planner.makeMaintenanceActivity(activityId, branchOffice, area, "", typology, activityDescription,
+                    estimatedInterventionTime, date, " ", materials, interruptibleActivity, typologyOfActivity);
             jActivityId.setText("");
             jBranchOffice.setText("");
             jArea.setText("");
@@ -433,10 +446,8 @@ public class CreateActivity extends javax.swing.JFrame {
             buttonGroupInterruptible.clearSelection();
             buttonGroupTypeOfActivity.clearSelection();
             jCreate.setEnabled(false);
-        } catch (MaintenanceActivityException ex) {
-            JOptionPane.showMessageDialog(this, "Error inserting into MaintenanceActivity table", "ERRORE", JOptionPane.ERROR_MESSAGE);
-        } catch (MaterialException ex) {
-            JOptionPane.showMessageDialog(this, "Error inserting into RequiredMaterial table", "ERRORE", JOptionPane.ERROR_MESSAGE);
+        } catch (MaintenanceActivityException | MaterialException | NotValidParameterException ex) {
+            errorMessage(ex.getMessage());
         }
     }//GEN-LAST:event_jCreateActionPerformed
 
@@ -520,6 +531,11 @@ public class CreateActivity extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> {
             new CreateActivity(planner).setVisible(true);
         });
+    }
+    
+    
+    private void errorMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.ERROR_MESSAGE);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

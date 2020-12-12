@@ -6,6 +6,7 @@
 package persistence.maintenanceactivity;
 
 import business.maintenanceactivity.Skill;
+import exception.NotValidParameterException;
 import exception.SkillException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -36,7 +37,7 @@ private final static String SELECT_REQUIRED_SKILL_BY_SMP = "SELECT * FROM Requir
      * @throws exception.SkillException
      */
     @Override
-    public List<Skill> retrieveSkillsBySmp(String smp) throws SkillException{
+    public List<Skill> retrieveSkillsBySmp(String smp) throws SkillException, NotValidParameterException{
         List<Skill> listSkills = new ArrayList<>();
         if(smp == null || smp.trim().replaceAll("  +", " ").equals("")){
             throw new SkillException("Retrieving skill failed");
@@ -101,7 +102,7 @@ private final static String SELECT_REQUIRED_SKILL_BY_SMP = "SELECT * FROM Requir
     
     
     @Override
-    public List<Skill> retrieveAvailableSkillToAdd(String smp) throws SkillException{
+    public List<Skill> retrieveAvailableSkillToAdd(String smp) throws SkillException, NotValidParameterException{
         List<Skill> listSkills = new ArrayList<>();
         if(smp == null || smp.trim().replaceAll("  +", " ").equals(""))
             throw new SkillException("Retrieving avaliable skill to use in Maintenance Activity failed");

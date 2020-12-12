@@ -6,6 +6,7 @@
 package persistence.maintenanceactivity;
 
 import business.maintenanceactivity.Skill;
+import exception.NotValidParameterException;
 import exception.SkillException;
 import java.util.List;
 
@@ -14,8 +15,8 @@ import java.util.List;
  * @author aless
  */
 public interface RequiredSkillForMaintenanceDAO {
-    public List<Skill> retrieveSkillsBySmp(String smp) throws SkillException;
+    public List<Skill> retrieveSkillsBySmp(String smp) throws SkillException, NotValidParameterException;
     public boolean addRequiredSkill(String smp, List<Skill> requiredSkill) throws SkillException;
     public boolean removeRequiredSkill(String smp, List<Skill> requiredSkill) throws SkillException;
-    public List<Skill> retrieveAvailableSkillToAdd(String smp) throws SkillException;
+    public List<Skill> retrieveAvailableSkillToAdd(String smp) throws SkillException, NotValidParameterException;
 }

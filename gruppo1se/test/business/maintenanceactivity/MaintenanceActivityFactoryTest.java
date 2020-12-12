@@ -5,10 +5,13 @@
  */
 package business.maintenanceactivity;
 
+import exception.NotValidParameterException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -47,15 +50,19 @@ public class MaintenanceActivityFactoryTest {
      */
     @Test
     public void testMakePlannedActivity() {
-        MaintenanceActivity expectedActivity = createMaintenanceActivity("Planned",1, "branchOfficeProva", "areaProva", "workspaceNotesProva",
-                "tipologiaProva", "DescrizioneProva", 500, "2020-12-30", "smpProva", true);
-        MaintenanceActivity returnedActivity = MaintenanceActivityFactory.make(MaintenanceActivityFactory.Typology.PLANNED,1,
-                expectedActivity.getSite().getBranchOffice(), expectedActivity.getSite().getArea(), expectedActivity.getSite().getWorkSpaceNotes(),
-                expectedActivity.getTypology(), expectedActivity.getActivityDescription(),
-                expectedActivity.getEstimatedInterventionTime(), String.valueOf(expectedActivity.getDate()),
-                expectedActivity.getMaintenanceProcedure().getSmp(), expectedActivity.getMaterials(), 
-                expectedActivity.isInterruptibleActivity());
-        assertMaintenanceActivity(expectedActivity,returnedActivity);
+        try {
+            MaintenanceActivity expectedActivity = createMaintenanceActivity("Planned",1, "branchOfficeProva", "areaProva", "workspaceNotesProva",
+                    "tipologiaProva", "DescrizioneProva", 500, "2020-12-30", "smpProva", true);
+            MaintenanceActivity returnedActivity = MaintenanceActivityFactory.make(MaintenanceActivityFactory.Typology.PLANNED,1,
+                    expectedActivity.getSite().getBranchOffice(), expectedActivity.getSite().getArea(), expectedActivity.getSite().getWorkSpaceNotes(),
+                    expectedActivity.getTypology(), expectedActivity.getActivityDescription(),
+                    expectedActivity.getEstimatedInterventionTime(), String.valueOf(expectedActivity.getDate()),
+                    expectedActivity.getMaintenanceProcedure().getSmp(), expectedActivity.getMaterials(),
+                    expectedActivity.isInterruptibleActivity());
+            assertMaintenanceActivity(expectedActivity,returnedActivity);
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
         
     }
     
@@ -64,14 +71,18 @@ public class MaintenanceActivityFactoryTest {
      */
     @Test
     public void testMakeEwoActivity() {
-        MaintenanceActivity expectedActivity = createMaintenanceActivity("Ewo",1, "branchOfficeProva", "areaProva", "workspaceNotesProva",
-                "tipologiaProva", "DescrizioneProva", 500, "2020-12-30", "smpProva", true);
-        MaintenanceActivity returnedActivity = MaintenanceActivityFactory.make(MaintenanceActivityFactory.Typology.EWO,1, expectedActivity.getSite().getBranchOffice(), 
-                expectedActivity.getSite().getArea(),expectedActivity.getSite().getWorkSpaceNotes(), expectedActivity.getTypology(), expectedActivity.getActivityDescription(),
-                expectedActivity.getEstimatedInterventionTime(), String.valueOf(expectedActivity.getDate()),
-                expectedActivity.getMaintenanceProcedure().getSmp(), expectedActivity.getMaterials(),
-                expectedActivity.isInterruptibleActivity());
-        assertMaintenanceActivity(expectedActivity,returnedActivity);
+        try {
+            MaintenanceActivity expectedActivity = createMaintenanceActivity("Ewo",1, "branchOfficeProva", "areaProva", "workspaceNotesProva",
+                    "tipologiaProva", "DescrizioneProva", 500, "2020-12-30", "smpProva", true);
+            MaintenanceActivity returnedActivity = MaintenanceActivityFactory.make(MaintenanceActivityFactory.Typology.EWO,1, expectedActivity.getSite().getBranchOffice(),
+                    expectedActivity.getSite().getArea(),expectedActivity.getSite().getWorkSpaceNotes(), expectedActivity.getTypology(), expectedActivity.getActivityDescription(),
+                    expectedActivity.getEstimatedInterventionTime(), String.valueOf(expectedActivity.getDate()),
+                    expectedActivity.getMaintenanceProcedure().getSmp(), expectedActivity.getMaterials(),
+                    expectedActivity.isInterruptibleActivity());
+            assertMaintenanceActivity(expectedActivity,returnedActivity);
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
         
     }
     
@@ -80,14 +91,18 @@ public class MaintenanceActivityFactoryTest {
      */
     @Test
     public void testMakeExtraActivity() {
-        MaintenanceActivity expectedActivity = createMaintenanceActivity("Extra",1, "branchOfficeProva", "areaProva", "workspaceNotesProva",
-                "tipologiaProva", "DescrizioneProva", 500, "2020-12-30", "smpProva", true);
-        MaintenanceActivity returnedActivity = MaintenanceActivityFactory.make(MaintenanceActivityFactory.Typology.EXTRA,1, expectedActivity.getSite().getBranchOffice(), 
-                expectedActivity.getSite().getArea(), expectedActivity.getSite().getWorkSpaceNotes(), expectedActivity.getTypology(), expectedActivity.getActivityDescription(),
-                expectedActivity.getEstimatedInterventionTime(), String.valueOf(expectedActivity.getDate()),
-                expectedActivity.getMaintenanceProcedure().getSmp(), expectedActivity.getMaterials(),
-                expectedActivity.isInterruptibleActivity());
-        assertMaintenanceActivity(expectedActivity,returnedActivity);   
+        try {
+            MaintenanceActivity expectedActivity = createMaintenanceActivity("Extra",1, "branchOfficeProva", "areaProva", "workspaceNotesProva",
+                    "tipologiaProva", "DescrizioneProva", 500, "2020-12-30", "smpProva", true);
+            MaintenanceActivity returnedActivity = MaintenanceActivityFactory.make(MaintenanceActivityFactory.Typology.EXTRA,1, expectedActivity.getSite().getBranchOffice(),
+                    expectedActivity.getSite().getArea(), expectedActivity.getSite().getWorkSpaceNotes(), expectedActivity.getTypology(), expectedActivity.getActivityDescription(),
+                    expectedActivity.getEstimatedInterventionTime(), String.valueOf(expectedActivity.getDate()),
+                    expectedActivity.getMaintenanceProcedure().getSmp(), expectedActivity.getMaterials(),
+                    expectedActivity.isInterruptibleActivity());   
+            assertMaintenanceActivity(expectedActivity,returnedActivity);
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
     private void assertMaintenanceActivity(MaintenanceActivity expectedActivity, MaintenanceActivity returnedActivity){
@@ -105,7 +120,7 @@ public class MaintenanceActivityFactoryTest {
     
     private MaintenanceActivity createMaintenanceActivity(String role, int activityId, String branchOffice,String area, 
             String workspaceNotes, String typology, String activityDescription, int estimatedInterventionTime, String dateString,
-            String smp, boolean interruptibleActivity){
+            String smp, boolean interruptibleActivity) throws NotValidParameterException{
         MaintenanceActivity activity = null;
         List<Material> listMaterial = createListMaterial("MaterialeProva1", "MaterialeProva2", "MaterialeProva3");
         List<Skill> listSkill = createListSkill("SkillProva1", "SkillProva2", "SkillProva3");
@@ -125,7 +140,7 @@ public class MaintenanceActivityFactoryTest {
         return activity;
     }
     
-    private List<Material> createListMaterial(String materialElement1, String materialElement2, String materialElement3){
+    private List<Material> createListMaterial(String materialElement1, String materialElement2, String materialElement3) throws NotValidParameterException{
         return new ArrayList<>() {{
             add(new Material(materialElement1));
             add(new Material(materialElement2));
@@ -133,7 +148,7 @@ public class MaintenanceActivityFactoryTest {
         }};
     }
     
-    private List<Skill> createListSkill(String skillElement1, String skillElement2, String skillElement3){
+    private List<Skill> createListSkill(String skillElement1, String skillElement2, String skillElement3) throws NotValidParameterException{
         return new ArrayList<>() {{
             add(new Skill(skillElement1));
             add(new Skill(skillElement1));
