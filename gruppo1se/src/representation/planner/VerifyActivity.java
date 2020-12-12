@@ -11,6 +11,7 @@ import business.maintenanceactivity.Material;
 import business.maintenanceactivity.PlannedMaintenanceActivity;
 import business.maintenanceactivity.Site;
 import business.maintenanceactivity.Skill;
+import exception.NotValidParameterException;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +19,8 @@ import java.time.LocalDate;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -399,12 +402,16 @@ public class VerifyActivity extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ArrayList<Skill> skills = new ArrayList<>();
-                skills.add(new Skill("Java Knowledge"));
-                skills.add(new Skill("English Knowledge"));
-                skills.add(new Skill("SQL Knowledge"));
-                MaintenanceActivity activity =  new PlannedMaintenanceActivity(1, new Site("ProvaArea","ProvaBranchOffice","ProvaWorkspaceNotes"),"ProvaTypology","ProvaActivityDescription",90,LocalDate.of(2020,12,22),new MaintenanceProcedure("FilePDF"),new ArrayList<Material>(), true);
-                new VerifyActivity(activity).setVisible(true);
+                try {
+                    ArrayList<Skill> skills = new ArrayList<>();
+                    skills.add(new Skill("Java Knowledge"));
+                    skills.add(new Skill("English Knowledge"));
+                    skills.add(new Skill("SQL Knowledge"));
+                    MaintenanceActivity activity =  new PlannedMaintenanceActivity(1, new Site("ProvaArea","ProvaBranchOffice","ProvaWorkspaceNotes"),"ProvaTypology","ProvaActivityDescription",90,LocalDate.of(2020,12,22),new MaintenanceProcedure("FilePDF"),new ArrayList<Material>(), true);
+                    new VerifyActivity(activity).setVisible(true);
+                } catch (NotValidParameterException ex) {
+                    Logger.getLogger(VerifyActivity.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

@@ -14,6 +14,7 @@ import exception.AppointmentException;
 import exception.DateException;
 import exception.MaintenanceActivityException;
 import exception.MaterialException;
+import exception.NotValidParameterException;
 import exception.SiteException;
 import exception.SkillException;
 import exception.UsersException;
@@ -90,7 +91,7 @@ public class Planner extends User {
      */
     /*Method developed by Rosario Gaeta*/
     public MaintenanceActivity viewMaintenanceActivity(int activityId) throws SiteException, 
-            MaintenanceActivityException, MaterialException{
+            MaintenanceActivityException, MaterialException, NotValidParameterException{
         /*this method uses MaintenanceActivityDaoImpl and RequiredMaterialForMaintenanceDaoImpl objects to
         retrieve the required MaintenanceActivity object if exists*/
         MaintenanceActivity activity = maintenanceActivityDao.retrieveMaintenanceActivityDao(activityId);
@@ -119,7 +120,7 @@ public class Planner extends User {
     //Developed by Antonio Gorrasi
     public boolean modifyMaintenanceActivity(int activityId, String branchOffice, String area, String typology, String activityDescription, 
             int estimatedInterventionTime, String date, boolean interruptibleActivity, 
-            String typologyOfActivity, String typologyOfUnplannedActivity) throws MaintenanceActivityException{
+            String typologyOfActivity, String typologyOfUnplannedActivity) throws MaintenanceActivityException, NotValidParameterException{
         
         typologyOfActivity = typologyOfActivity.toUpperCase();
         typologyOfUnplannedActivity = typologyOfUnplannedActivity == null ? null : typologyOfUnplannedActivity.toUpperCase();
@@ -144,7 +145,7 @@ public class Planner extends User {
     
     public boolean makeMaintenanceActivity(int activityId, String branchOffice, String area, String workspaceNotes, String typology, String activityDescription, int estimatedInterventionTime, 
             String date, String smp, List<Material> materials, boolean interruptibleActivity,
-            boolean plannedActivity, boolean extraActivity, boolean ewo) throws MaintenanceActivityException, MaterialException{
+            boolean plannedActivity, boolean extraActivity, boolean ewo) throws MaintenanceActivityException, MaterialException, NotValidParameterException{
         MaintenanceActivityFactory.Typology type = null;
         if (plannedActivity)
             type = MaintenanceActivityFactory.Typology.PLANNED;
@@ -177,12 +178,14 @@ public class Planner extends User {
     }
     
     //Developed by Antonio Gorrasi
-    public List<MaintenanceActivity> viewMaintenanceActivityByWeek(int week, int year) throws MaintenanceActivityException, SiteException, DateException, SkillException{
+    public List<MaintenanceActivity> viewMaintenanceActivityByWeek(int week, int year) throws MaintenanceActivityException, SiteException, DateException, SkillException, NotValidParameterException{
         List<LocalDate> date = WeekConverter.getStartEndDate(week, year);
         LocalDate startDateOfWeek = date.get(0);
         LocalDate endDateOfWeek = date.get(1);
+        
         List<MaintenanceActivity> listOfMaintenanceActivity = maintenanceActivityDao.
                 retrieveMaintenanceActivityFromRange(startDateOfWeek, endDateOfWeek);
+        
         listOfMaintenanceActivity = filterActivityWithoutProcedure(listOfMaintenanceActivity);
         for(MaintenanceActivity maintainenceActivity: listOfMaintenanceActivity){
             MaintenanceProcedure procedure = maintainenceActivity.getMaintenanceProcedure();

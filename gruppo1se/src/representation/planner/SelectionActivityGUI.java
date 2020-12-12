@@ -10,17 +10,15 @@ import business.user.Planner;
 import business.user.WeekConverter;
 import exception.DateException;
 import exception.MaintenanceActivityException;
+import exception.NotValidParameterException;
 import exception.SiteException;
 import exception.SkillException;
 import java.awt.Dimension;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.time.LocalDate;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import persistence.maintenanceactivity.EmployeeAppointmentDAOImpl;
 import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
@@ -178,7 +176,7 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int[] row = maintenanceActivityTable.getSelectedRows();
-        if(row.length<0){
+        if(row.length<=0){
             infoMessage("No row selected");
         }else if(row.length > 1){
             infoMessage("Select one row!");
@@ -186,7 +184,6 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
             VerifyActivity verifyActivity = new VerifyActivity(list.get(row[0]));
             verifyActivity.setVisible(true);
         }
-        //Chiamata alla GUI di visualizzazione
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void weekComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_weekComboBoxActionPerformed
@@ -236,9 +233,11 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
     private void inizializeField() {
         LocalDate date = LocalDate.now();
         int weekNumber = WeekConverter.getWeek(date);
+        int year = WeekConverter.getYear(date);
+        
         weekComboBox.setSelectedIndex(weekNumber-1);
 
-        populateTable(weekNumber, date.getYear());
+        populateTable(weekNumber, year);
     }
     
     
@@ -259,12 +258,20 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
             System.out.println("DateException");
         } catch (SkillException ex) {
             System.out.println("SkillException");
+        } catch (NotValidParameterException ex) {
+            errorMessage(ex.getMessage());
+            System.out.println("NotValidParameterException");
+            
         }
     }
     
     
     private void infoMessage(String message){
         JOptionPane.showMessageDialog(this, message, "INFO", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    private void errorMessage(String message){
+        JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.INFORMATION_MESSAGE);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

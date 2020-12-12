@@ -9,7 +9,10 @@ import business.maintenanceactivity.Material;
 import business.user.Planner;
 import exception.MaintenanceActivityException;
 import exception.MaterialException;
+import exception.NotValidParameterException;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
@@ -437,6 +440,8 @@ public class CreateActivity extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error inserting into MaintenanceActivity table", "ERRORE", JOptionPane.ERROR_MESSAGE);
         } catch (MaterialException ex) {
             JOptionPane.showMessageDialog(this, "Error inserting into RequiredMaterial table", "ERRORE", JOptionPane.ERROR_MESSAGE);
+        } catch (NotValidParameterException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "ERRORE", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jCreateActionPerformed
 

@@ -9,8 +9,11 @@ import business.maintenanceactivity.*;
 import business.user.Planner;
 import exception.MaintenanceActivityException;
 import exception.MaterialException;
+import exception.NotValidParameterException;
 import exception.SiteException;
 import exception.SkillException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -192,6 +195,8 @@ public class DeleteActivity extends javax.swing.JFrame {
             else
                 jMaintenanceActivity.setText("The activity with ActivityID: "+jActivityID.getText()+" isn't in the database!");
         } catch (SiteException | MaintenanceActivityException | MaterialException ex) {
+            errorMessage(ex.getMessage());
+        } catch (NotValidParameterException ex) {
             errorMessage(ex.getMessage());
         }
     }//GEN-LAST:event_jSearchActionPerformed

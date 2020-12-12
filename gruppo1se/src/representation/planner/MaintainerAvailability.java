@@ -17,6 +17,7 @@ import business.user.Planner;
 import business.user.WeekConverter;
 import exception.AppointmentException;
 import exception.DateException;
+import exception.NotValidParameterException;
 import exception.SkillException;
 import exception.UsersException;
 import java.awt.Color;
@@ -342,13 +343,17 @@ public class MaintainerAvailability extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ArrayList<Skill> skills = new ArrayList<>();
-                skills.add(new Skill("Java Knowledge"));
-                skills.add(new Skill("English Knowledge"));
-                skills.add(new Skill("SQL Knowledge"));
-                MaintenanceActivity activity = new PlannedMaintenanceActivity(1, new Site("ProvaArea", "ProvaBranchOffice", "ProvaWorkspaceNotes"),
-                        "ProvaTypology", "ProvaActivityDescription", 90, LocalDate.of(2020, 12, 22), new MaintenanceProcedure("FilePDF"), new ArrayList<Material>(), true);
-                new MaintainerAvailability(activity).setVisible(true);
+                try {
+                    ArrayList<Skill> skills = new ArrayList<>();
+                    skills.add(new Skill("Java Knowledge"));
+                    skills.add(new Skill("English Knowledge"));
+                    skills.add(new Skill("SQL Knowledge"));
+                    MaintenanceActivity activity = new PlannedMaintenanceActivity(1, new Site("ProvaArea", "ProvaBranchOffice", "ProvaWorkspaceNotes"),
+                            "ProvaTypology", "ProvaActivityDescription", 90, LocalDate.of(2020, 12, 22), new MaintenanceProcedure("FilePDF"), new ArrayList<Material>(), true);
+                    new MaintainerAvailability(activity).setVisible(true);
+                } catch (NotValidParameterException ex) {
+                    Logger.getLogger(MaintainerAvailability.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

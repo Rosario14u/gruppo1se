@@ -15,15 +15,15 @@ import org.junit.Test;
  * @author VincenzaCoppola <v.coppola38@studenti.unisa.it>
  */
 public class EwoTest {
-
     private final LinkedList<Material> materials = new LinkedList<>();
     private final LinkedList<Skill> skills = new LinkedList<>();
-    private final MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
+    private final MaintenanceProcedure maintenanceProcedure;
     private final Site site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
     private final LocalDate date = LocalDate.of(2050, 11, 9);
     private MaintenanceActivity instance = null;
     
     public EwoTest() {
+        maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
         materials.add(new Material("material1"));
         skills.add(new Skill("skill1"));
         instance = new Ewo(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials,true);

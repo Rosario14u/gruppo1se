@@ -14,8 +14,8 @@ import com.toedter.calendar.JTextFieldDateEditor;
 import exception.NumberNotValidException;
 import exception.MaintenanceActivityException;
 import exception.MaterialException;
+import exception.NotValidParameterException;
 import exception.SiteException;
-import exception.SkillException;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
@@ -26,8 +26,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import persistence.maintenanceactivity.EmployeeAppointmentDAOImpl;
 import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
@@ -403,6 +404,8 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
             errorMessage("ID must be an integer");
         } catch (SiteException | MaintenanceActivityException | MaterialException | NumberNotValidException ex) {
             errorMessage(ex.getMessage());
+        } catch (NotValidParameterException ex) {
+            errorMessage(ex.getMessage());
         } 
     }//GEN-LAST:event_viewButtonActionPerformed
 
@@ -484,6 +487,8 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
                 planner.modifyMaintenanceActivity(activityId, branchOffice, area, typology, activityDescrioption, estimatedInterventionTime, 
                         date, interruptibleActivity, typologyOfActivity, typologyOfUnplannedActivity);
             }catch(MaintenanceActivityException ex){
+                errorMessage(ex.getMessage());
+            } catch (NotValidParameterException ex) {
                 errorMessage(ex.getMessage());
             }
     }

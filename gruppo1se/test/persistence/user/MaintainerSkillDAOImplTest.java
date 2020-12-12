@@ -19,7 +19,6 @@ import java.sql.Connection;
 import persistence.database.ConnectionDB;
 import java.sql.PreparedStatement;
 import java.util.List;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import static org.junit.Assert.*;
 import static org.junit.Assert.fail;
@@ -34,9 +33,13 @@ public class MaintainerSkillDAOImplTest {
     private static String DELETE_SKILL = "DELETE FROM maintainerskill WHERE username = ?";
     private static String INSERT_SKILL = "INSERT INTO maintainerskill VALUES (?,?)";
     private static String SELECT_SKILL = "SELECT * FROM maintainerskill WHERE usernname = ?";
+    
+    
+    
     public MaintainerSkillDAOImplTest() {
         maintainerSkill = new MaintainerSkillDAOImpl();
     }
+    
     
     @BeforeClass
     public static void setUpClass() {
@@ -48,6 +51,7 @@ public class MaintainerSkillDAOImplTest {
         }
     }
     
+    
     @AfterClass
     public static void tearDownClass() {
         try {
@@ -58,9 +62,11 @@ public class MaintainerSkillDAOImplTest {
         }
     }
     
+    
     @Before
     public void setUp() {
     }
+    
     
     @After
     public void tearDown() {
@@ -70,10 +76,14 @@ public class MaintainerSkillDAOImplTest {
             Logger.getLogger(UsersDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
 
     /**
      * Test of getMaintainerSkills method, of class MaintainerSkillDAOImpl.
+     * Assert that getMaintainerSkills correctly return a list of Skills 
+     * associated to a Maintainer 
      */
+    //Developed by Antonio Gorrasi
     @Test
     public void testSuccessfulGetMaintainerSkills() {
         try {
@@ -94,14 +104,20 @@ public class MaintainerSkillDAOImplTest {
     }
     
     
+    
+    /**
+     * Test of getMaintainerSkills method, of class MaintainerSkillDAOImpl.
+     * Assert that getMaintainerSkills correctly return a list of Skills 
+     * associated to a Maintainer 
+     */
+    //Developed by Antonio Gorrasi
     @Test
     public void testGetMaintainerSkillsEmptyList() {
         try {
-            List<Skill> expectedSkills = new ArrayList<>();
             deleteSkillOfMaintainer("maintainer");
             List<Skill> actualSkills = maintainerSkill.getMaintainerSkills("maintainer");
             
-            assertEquals(expectedSkills, actualSkills);
+            assertTrue(actualSkills.isEmpty());
         } catch (SQLException ex) {
             fail("SQLException");
         } catch (SkillException ex) {
@@ -110,9 +126,15 @@ public class MaintainerSkillDAOImplTest {
     }
     
     
+//================================================================================================================================
     
-    //=============================================================================================================
     
+    /**
+     * Delete all skills previously associated with the maintainer
+     * @param username 
+     * @throws SQLException 
+     */
+    //Developed by Antonio Gorrasi
     private void deleteSkillOfMaintainer(String username) throws SQLException{
         PreparedStatement stm = conn.prepareStatement(DELETE_SKILL);
         stm.setString(1, username);
@@ -120,6 +142,13 @@ public class MaintainerSkillDAOImplTest {
     }
     
     
+    /**
+     * Associate a skill with a maintainer
+     * @param username
+     * @param skill
+     * @throws SQLException 
+     */
+    //Developed by Antonio Gorrasi
     private void insertSkillToMaintainer(String username, String skill) throws SQLException{
         PreparedStatement stm = conn.prepareStatement(INSERT_SKILL);
         stm.setString(1, username);
@@ -127,15 +156,23 @@ public class MaintainerSkillDAOImplTest {
         stm.executeUpdate();
     }    
     
-    private List<Skill> selectSkillOfMaintainer(String username) throws SQLException{
-        List<Skill> listOfSkills = new ArrayList<>();
-        PreparedStatement stm = conn.prepareStatement(SELECT_SKILL);
-        stm.setString(1, username);
-        ResultSet set = stm.executeQuery();
-        
-        while(set.next()){
-            listOfSkills.add(new Skill(set.getString("skillname")));
-        }
-        return listOfSkills;
-    }
+    
+//    /**
+//     * 
+//     * @param username
+//     * @return
+//     * @throws SQLException 
+//     */
+//    //Developed by Antonio Gorrasi
+//    private List<Skill> selectSkillOfMaintainer(String username) throws SQLException{
+//        List<Skill> listOfSkills = new ArrayList<>();
+//        PreparedStatement stm = conn.prepareStatement(SELECT_SKILL);
+//        stm.setString(1, username);
+//        ResultSet set = stm.executeQuery();
+//        
+//        while(set.next()){
+//            listOfSkills.add(new Skill(set.getString("skillname")));
+//        }
+//        return listOfSkills;
+//    }
 }

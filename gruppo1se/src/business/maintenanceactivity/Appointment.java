@@ -77,6 +77,4 @@ public class Appointment implements Comparable<Appointment> {
     public String toString() {
         return "Appointment{" + "activityId=" + activityId + ", startDateAndTime=" + startDateAndTime + ", duration=" + duration + '}';
     }
-    
-    
 }

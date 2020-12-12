@@ -20,6 +20,12 @@ public class MaintainerSkillDAOImpl implements MaintainerSkillDAO{
     private static String SELECT_SKILLS_FOR_MAINTAINER = "SELECT skillname FROM maintainerSkill WHERE username = ?";
 
     
+    /**
+    * 
+    * @param username
+    * @return
+    * @throws SkillException 
+    */
     @Override
     public List<Skill> getMaintainerSkills(String username) throws SkillException{
         if (username == null || username.trim().replace("  +", " ").equals(""))
