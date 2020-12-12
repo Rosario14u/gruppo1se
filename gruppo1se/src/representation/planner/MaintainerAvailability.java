@@ -94,7 +94,8 @@ public class MaintainerAvailability extends javax.swing.JFrame {
         try {
             
             int numProcedureSkill = activity.getMaintenanceProcedure().getSkills().size();
-            maintainerList = planner.viewEmployeeAvailability(weekNumber, activity.getDate().getYear());
+            
+            maintainerList = planner.viewEmployeeAvailability(WeekConverter.getWeek(activity.getDate()), WeekConverter.getYear(activity.getDate()));
             for (Maintainer maintainer : maintainerList) {
                 String[] rowTable = new String[]{"", "", "100%", "100%", "100%", "100%", "100%", "100%", "100%"};
                 //float[] rowTable = new float[] {100,100,100,100,100,100,100};
