@@ -32,6 +32,7 @@ import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.SiteDaoImpl;
 import persistence.user.MaintainerSkillDAOImpl;
 import persistence.user.UsersDAOImpl;
+import presentation.manager.MessageManager;
 
 /**
  *
@@ -122,13 +123,7 @@ public class ActivityAssignment extends javax.swing.JDialog {
         tableModel.addRow(rowTable);
     }
 
-    private void errorMessage(String message) {
-        JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.ERROR_MESSAGE);
-    }
 
-    private void infoMessage(String message) {
-        JOptionPane.showMessageDialog(this, message, "INFO", JOptionPane.INFORMATION_MESSAGE);
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -360,10 +355,10 @@ public class ActivityAssignment extends javax.swing.JDialog {
             int availableMinutes = Integer.valueOf(availabilityValue);
             System.out.println("Available minutes in the selected cell --> " + availableMinutes);
             if (availableMinutes == 0) {
-                infoMessage("Busy Maintainer");
+                MessageManager.infoMessage(this,"Busy Maintainer");
             } else {
                 if (remainEstimatedInterventionTime <= 0) {
-                    infoMessage("Activity already assign");
+                    MessageManager.infoMessage(this,"Activity already assign");
                 } else {
                     int duration = remainEstimatedInterventionTime > availableMinutes ? availableMinutes : remainEstimatedInterventionTime;
                     remainEstimatedInterventionTime = remainEstimatedInterventionTime - duration;
@@ -391,13 +386,13 @@ public class ActivityAssignment extends javax.swing.JDialog {
             activity.setDate(newDate);
             if (!planner.saveAppointments(maintainer.getUsername(), activity, appointmentList)) {
                 System.out.println("if");
-                errorMessage("Saving failed");
+                MessageManager.errorMessage(this,"Saving failed");
             } else {
                 System.out.println("else");
                 this.dispose();
             }
         } catch (AppointmentException | MaintenanceActivityException | NotValidParameterException ex) {
-            errorMessage(ex.getMessage());
+            MessageManager.errorMessage(this,ex.getMessage());
         }
     }//GEN-LAST:event_sendButtonActionPerformed
 

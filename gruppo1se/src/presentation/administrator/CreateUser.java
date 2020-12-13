@@ -20,6 +20,7 @@ import javax.swing.event.DocumentListener;
 import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
 import persistence.maintenanceactivity.TypologyDAOImpl;
 import persistence.user.UsersDAOImpl;
+import presentation.manager.MessageManager;
 
 /**
  *
@@ -203,7 +204,7 @@ public class CreateUser extends javax.swing.JFrame {
                 jCreate.setEnabled(false);
             }
         } catch (UsersException | NotValidParameterException ex) {
-            errorMessage(ex.getMessage());
+            MessageManager.errorMessage(this,ex.getMessage());
         }
     }//GEN-LAST:event_jCreateActionPerformed
 
@@ -279,9 +280,6 @@ public class CreateUser extends javax.swing.JFrame {
     }
     
     
-    private void errorMessage(String message){
-        JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.ERROR_MESSAGE);
-    }
     
     /**
      * @param args the command line arguments

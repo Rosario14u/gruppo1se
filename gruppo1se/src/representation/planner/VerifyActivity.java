@@ -20,6 +20,7 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import presentation.manager.MessageManager;
 
 /**
  *
@@ -68,15 +69,11 @@ public class VerifyActivity extends javax.swing.JFrame {
                 jSkillsNeeded.setText(builder2.toString());
             }
         } catch (MaintenanceActivityException | NotValidParameterException | AppointmentException ex) {
-            errorMessage(ex.getMessage());
+            MessageManager.errorMessage(this,ex.getMessage());
         }
         
     }
     
-    
-    private void errorMessage(String message) {
-        JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.ERROR_MESSAGE);
-    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

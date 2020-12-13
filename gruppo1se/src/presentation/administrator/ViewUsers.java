@@ -29,6 +29,7 @@ import javax.swing.table.TableRowSorter;
 import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
 import persistence.maintenanceactivity.TypologyDAOImpl;
 import persistence.user.UsersDAOImpl;
+import presentation.manager.MessageManager;
 
 /**
  *
@@ -304,7 +305,7 @@ public class ViewUsers extends javax.swing.JFrame {
                 usernameList.add(String.valueOf(jTable.getValueAt(i, 0)));
             }
             if(!usernameList.isEmpty()){
-                int dialogResult = confirmMessage("Are you sure you wish to delete these users");
+                int dialogResult = MessageManager.confirmMessage(this,"Are you sure you wish to delete these users");
                 if(dialogResult == JOptionPane.YES_OPTION){
                     System.out.println(usernameList);
                     int retVal = systemAdministrator.removeUsers(usernameList);
@@ -314,25 +315,13 @@ public class ViewUsers extends javax.swing.JFrame {
                 }
                 jTable.clearSelection();
             }else{
-                infoMessage("There aren't user selected");
+                MessageManager.infoMessage(this,"There aren't user selected");
             }
         } catch (UsersException | NotValidParameterException ex) {
-            errorMessage(ex.getMessage());
+            MessageManager.errorMessage(this,ex.getMessage());
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
-   
-    
-    private void errorMessage(String message){
-        JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.ERROR_MESSAGE);
-    }
-    
-    private void infoMessage(String message){
-        JOptionPane.showMessageDialog(this, message, "INFO", JOptionPane.INFORMATION_MESSAGE);
-    }
-    
-    private int confirmMessage(String message){
-        return JOptionPane.showConfirmDialog(this, message, "Confirm", JOptionPane.YES_NO_OPTION);
-    }
+  
     //================================================================================================================================
     
     private void modifyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyButtonActionPerformed
@@ -345,7 +334,7 @@ public class ViewUsers extends javax.swing.JFrame {
             String oldRole = String.valueOf(tableModel.getValueAt(index, 2));
             new ModifyUser(this, true, oldUsername, oldPassword, oldRole, tableModel, index, systemAdministrator).setVisible(true);
         }else{
-            infoMessage(indexOfSelectedRow.length < 1 ? "Select one row" : "Too many rows selected");
+            MessageManager.infoMessage(this,indexOfSelectedRow.length < 1 ? "Select one row" : "Too many rows selected");
         }
     }//GEN-LAST:event_modifyButtonActionPerformed
 

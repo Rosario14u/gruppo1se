@@ -15,12 +15,9 @@ import exception.DateException;
 import exception.NotValidParameterException;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import persistence.database.ConnectionDB;
 
 /**
@@ -35,7 +32,18 @@ public class EmployeeAppointmentDAOImpl implements EmployeeAppointmentDAO {
     private static final String SELECT_EMPLOYEE = "SELECT sum(duration) as sumduration FROM EmployeeAppointment where"
             + " activityId = ?";
     
-    
+    /**
+     * This method returns the list of appointments that the maintainer has in a certain<br>
+     * range of date. Returns an Empty list if there aren't appointments in that range of date
+     * @param username username of the maintainer
+     * @param startDate start date of the range
+     * @param endDate end date of the range
+     * @return {@code List<Appointment>} appointments of the maintainer
+     * @throws AppointmentException if there are problems in the retrieving of the appointments<br>
+     * or username is not valid
+     * @throws DateException if startdate is after end date 
+     */
+    /*Developed by Rosario Gaeta*/
     @Override
     public List<Appointment> getEmployeeAvailability(String username, LocalDate startDate, LocalDate endDate)
             throws AppointmentException,DateException, NotValidParameterException {
@@ -61,7 +69,16 @@ public class EmployeeAppointmentDAOImpl implements EmployeeAppointmentDAO {
             
         }        
     }
-
+    
+    /**
+     * This method allows to associate a list of appointments to a maintainer with the specified username 
+     * @param username Username of the maintainer
+     * @param listAppointment list of appointments to be added
+     * @return {@code boolean} returns true if the operation is successful
+     * @throws AppointmentException if the listAppointment is empty or if there is a problem in saving data<br>
+     * in the system
+     */
+    /*Developed by Rosario Gaeta*/
     @Override
     public boolean addEmployeeAvailability(String username, List<Appointment> listAppointment) throws AppointmentException {
         if(username == null || username.trim().replaceAll("  +", "").equals("") || listAppointment == null)
@@ -83,7 +100,13 @@ public class EmployeeAppointmentDAOImpl implements EmployeeAppointmentDAO {
             throw new AppointmentException("Error in inserting appointment");
         }  
     }
-
+    /**
+     * This method get sum of the durations maintenance appointments assigned to an activity
+     * @param activityId activity id of the maintenance activity 
+     * @return {@code int} total duration of maintenance appointments of the activity
+     * @throws AppointmentException if activity id is not valid
+     */
+    /*Developed by Rosario Gaeta*/
     @Override
     public int getDurationOfAssignedActivity(int activityId) throws AppointmentException {
         if(activityId <= 0)
