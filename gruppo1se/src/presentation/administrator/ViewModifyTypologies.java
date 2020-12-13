@@ -19,9 +19,6 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
-import persistence.maintenanceactivity.TypologyDAOImpl;
-import persistence.user.UsersDAOImpl;
 
 /**
  *
@@ -37,7 +34,7 @@ public class ViewModifyTypologies extends javax.swing.JFrame {
      * @param systemAdministrator
      * @throws exception.TypologyException
      */
-    public ViewModifyTypologies(SystemAdministrator systemAdministrator) throws TypologyException{
+    public ViewModifyTypologies(SystemAdministrator systemAdministrator){
         this.systemAdministrator = systemAdministrator;
         initComponents();
         tableModel = (DefaultTableModel) jTable.getModel();
@@ -71,7 +68,7 @@ public class ViewModifyTypologies extends javax.swing.JFrame {
             rowSorter.setRowFilter(RowFilter.regexFilter("^(?i)"+text,0));
     }
     
-    public void addRowsToTable() throws TypologyException{
+    public void addRowsToTable() {
         try {
             list = systemAdministrator.readTypologies();
             Object[] rows = new Object[1];
@@ -79,9 +76,9 @@ public class ViewModifyTypologies extends javax.swing.JFrame {
                 rows[0] = list.get(i);
                 tableModel.addRow(rows);
             }
-        } catch (NotValidParameterException ex) {
+        } catch (NotValidParameterException | TypologyException ex) {
             errorMessage(ex.getMessage());
-        }
+        } 
     }
     
     
@@ -286,45 +283,45 @@ public class ViewModifyTypologies extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ViewModifyTypologies.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ViewModifyTypologies.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ViewModifyTypologies.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ViewModifyTypologies.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new ViewModifyTypologies(new SystemAdministrator("ProvaUsername","ProvaPassword",new MaintenanceProcedureDAOImpl(),
-                            new UsersDAOImpl(),new TypologyDAOImpl())).setVisible(true);
-                } catch (TypologyException ex) {
-                    Logger.getLogger(ViewModifyTypologies.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(ViewModifyTypologies.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(ViewModifyTypologies.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(ViewModifyTypologies.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(ViewModifyTypologies.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//        //</editor-fold>
+//        //</editor-fold>
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                try {
+//                    new ViewModifyTypologies(new SystemAdministrator("ProvaUsername","ProvaPassword",new MaintenanceProcedureDAOImpl(),
+//                            new UsersDAOImpl(),new TypologyDAOImpl())).setVisible(true);
+//                } catch (TypologyException ex) {
+//                    Logger.getLogger(ViewModifyTypologies.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jConfirm;

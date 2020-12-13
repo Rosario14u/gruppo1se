@@ -44,8 +44,9 @@ public class ViewUsers extends javax.swing.JFrame {
      * Creates new form ViewUser
      * @param systemAdministrator
      * @throws exception.UsersException
+     * @throws exception.NotValidParameterException
      */
-    public ViewUsers(SystemAdministrator systemAdministrator) throws UsersException, NotValidParameterException {
+    public ViewUsers(SystemAdministrator systemAdministrator) {
         initComponents();
         tableModel = (DefaultTableModel) jTable.getModel();
         rowSorter = new TableRowSorter<>(tableModel);
@@ -84,19 +85,23 @@ public class ViewUsers extends javax.swing.JFrame {
         addRowsToTable();
     }
     
-    public void addRowsToTable() throws UsersException, NotValidParameterException{
-        list = systemAdministrator.viewUsers();
-        Object[] rows = new Object[3];
-        for(int i = 0; i < list.size(); i++) {
-            rows[0] = list.get(i).getUsername();
-            rows[1] = list.get(i).getPassword();
-            if(Planner.class.isInstance(list.get(i)))
-                rows[2] = "Planner";
-            else if (Maintainer.class.isInstance(list.get(i)))
-                rows[2] = "Maintainer";
-            else 
-                rows[2] = "System Administrator";
-            tableModel.addRow(rows);
+    public void addRowsToTable() {
+        try {
+            list = systemAdministrator.viewUsers();
+            Object[] rows = new Object[3];
+            for(int i = 0; i < list.size(); i++) {
+                rows[0] = list.get(i).getUsername();
+                rows[1] = list.get(i).getPassword();
+                if(Planner.class.isInstance(list.get(i)))
+                    rows[2] = "Planner";
+                else if (Maintainer.class.isInstance(list.get(i)))
+                    rows[2] = "Maintainer";
+                else
+                    rows[2] = "System Administrator";
+                tableModel.addRow(rows);
+            }
+        } catch (UsersException | NotValidParameterException ex) {
+            errorMessage(ex.getMessage());
         }
     }
     
@@ -356,44 +361,44 @@ public class ViewUsers extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ViewUsers.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ViewUsers.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ViewUsers.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ViewUsers.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new ViewUsers(new SystemAdministrator("Username","Password",new MaintenanceProcedureDAOImpl(), new UsersDAOImpl(), new TypologyDAOImpl())).setVisible(true);
-                } catch (UsersException ex) {
-                    Logger.getLogger(ViewUsers.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (NotValidParameterException ex) {
-                    Logger.getLogger(ViewUsers.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(ViewUsers.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(ViewUsers.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(ViewUsers.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(ViewUsers.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                try {
+//                    new ViewUsers(new SystemAdministrator("Username","Password",new MaintenanceProcedureDAOImpl(), new UsersDAOImpl(), new TypologyDAOImpl())).setVisible(true);
+//                } catch (UsersException ex) {
+//                    Logger.getLogger(ViewUsers.class.getName()).log(Level.SEVERE, null, ex);
+//                } catch (NotValidParameterException ex) {
+//                    Logger.getLogger(ViewUsers.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton deleteButton;

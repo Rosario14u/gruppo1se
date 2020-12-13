@@ -46,22 +46,19 @@ import persistence.user.UsersDAOImpl;
 
 public class ViewModifyPlannerGUI extends javax.swing.JFrame {
     private final DefaultListModel<Material> listModel;
-    private final Planner planner;
+    private final Planner planner = null;
     /**
      * Creates new form ViewModifyPlannerGUI1
      */
     //Method developed by Rosario Gaeta
-    public ViewModifyPlannerGUI() {
+    public ViewModifyPlannerGUI(Planner planner) {
         listModel = new DefaultListModel<>();
-        planner = new Planner("admin","admin", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
-                new RequiredMaterialForMaintenanceDAOImpl(), new UsersDAOImpl(),
-                new EmployeeAppointmentDAOImpl(), new RequiredSkillForMaintenanceDAOImpl(),new MaintainerSkillDAOImpl());
+        planner = planner;
         initComponents();
         initializeField(false);
         weekTextField.setEnabled(false);
         weekTextField.setText("");
         workspaceNoteTextArea.setEnabled(false);
-
     }
 
     /**
@@ -135,11 +132,6 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         areaLabel.setText("Area:");
 
         activityIdTextField.setFont(new java.awt.Font("Rockwell", 2, 14)); // NOI18N
-        activityIdTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                activityIdTextFieldActionPerformed(evt);
-            }
-        });
         activityIdTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 activityIdTextFieldKeyPressed(evt);
@@ -408,10 +400,6 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_viewButtonActionPerformed
 
-    private void activityIdTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_activityIdTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_activityIdTextFieldActionPerformed
-
     private void modifyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyButtonActionPerformed
         getField();
         clearField();
@@ -520,38 +508,38 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ViewModifyPlannerGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ViewModifyPlannerGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ViewModifyPlannerGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ViewModifyPlannerGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ViewModifyPlannerGUI().setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(ViewModifyPlannerGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(ViewModifyPlannerGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(ViewModifyPlannerGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(ViewModifyPlannerGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new ViewModifyPlannerGUI().setVisible(true);
+//            }
+//        });
+//    }
     
     private void initializeField(boolean enabled) {
         activityDescriptionTextArea.setEnabled(enabled);

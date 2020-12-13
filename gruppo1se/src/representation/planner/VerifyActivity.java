@@ -45,30 +45,20 @@ public class VerifyActivity extends javax.swing.JFrame {
     }
     
     private void fillFields(){
-        try {
-            if(planner.verifyActivityAssignment(activity.getActivityId(), activity.getEstimatedInterventionTime())){
-                jForward.setEnabled(false);
-                jLabel6.setVisible(true);
-            }else{
-                jLabel6.setVisible(false);
+        LocalDate date = activity.getDate();
+        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+        int weekNumber = date.get(weekFields.weekOfWeekBasedYear());
+        jWeek.setText(Integer.toString(weekNumber));
+        jWorkspaceNotes.setText(oldWorkspaceNotes);
+        jInterventionDescription.setText(activity.getActivityDescription());
+        jActivityToAssign.setText(Integer.toString(activity.getActivityId())+" - "+activity.getSite().getArea()
+                +" - "+activity.getTypology()+" - "+ Integer.toString(activity.getEstimatedInterventionTime())+"'");
+        if (activity.getMaintenanceProcedure().getSkills() != null){
+            StringBuilder builder2 = new StringBuilder();
+            for(Skill skill : activity.getMaintenanceProcedure().getSkills()){
+                builder2.append(skill.toString() + "\n");
             }
-            LocalDate date = activity.getDate();
-            WeekFields weekFields = WeekFields.of(Locale.getDefault());
-            int weekNumber = date.get(weekFields.weekOfWeekBasedYear());
-            jWeek.setText(Integer.toString(weekNumber));
-            jWorkspaceNotes.setText(oldWorkspaceNotes);
-            jInterventionDescription.setText(activity.getActivityDescription());
-            jActivityToAssign.setText(Integer.toString(activity.getActivityId())+" - "+activity.getSite().getArea()
-                    +" - "+activity.getTypology()+" - "+ Integer.toString(activity.getEstimatedInterventionTime())+"'");
-            if (activity.getMaintenanceProcedure().getSkills() != null){
-                StringBuilder builder2 = new StringBuilder();
-                for(Skill skill : activity.getMaintenanceProcedure().getSkills()){
-                    builder2.append(skill.toString() + "\n");
-                }
-                jSkillsNeeded.setText(builder2.toString());
-            }
-        } catch (MaintenanceActivityException | NotValidParameterException | AppointmentException ex) {
-            errorMessage(ex.getMessage());
+            jSkillsNeeded.setText(builder2.toString());
         }
         
     }
@@ -77,6 +67,8 @@ public class VerifyActivity extends javax.swing.JFrame {
     private void errorMessage(String message) {
         JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.ERROR_MESSAGE);
     }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -108,7 +100,6 @@ public class VerifyActivity extends javax.swing.JFrame {
         jForward = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jSkillsNeeded = new javax.swing.JTextArea();
-        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -283,12 +274,6 @@ public class VerifyActivity extends javax.swing.JFrame {
         jSkillsNeeded.setRows(5);
         jScrollPane3.setViewportView(jSkillsNeeded);
 
-        jLabel6.setBackground(new java.awt.Color(0, 200, 0));
-        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("ASSEGNATA");
-        jLabel6.setOpaque(true);
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -317,14 +302,11 @@ public class VerifyActivity extends javax.swing.JFrame {
                             .addComponent(jScrollPane2)
                             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jForward, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(jForward, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(37, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -353,11 +335,8 @@ public class VerifyActivity extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jForward, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(jForward, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -392,7 +371,7 @@ public class VerifyActivity extends javax.swing.JFrame {
     private void jForwardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jForwardActionPerformed
         if(!jWorkspaceNotes.getText().equals(oldWorkspaceNotes))
             activity.getSite().setWorkSpaceNotes(jWorkspaceNotes.getText());
-        new MaintainerAvailability(activity).setVisible(true);
+        new MaintainerAvailability(activity, planner).setVisible(true);
     }//GEN-LAST:event_jForwardActionPerformed
 
 //    /**
@@ -447,7 +426,6 @@ public class VerifyActivity extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JButton jPDF;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
