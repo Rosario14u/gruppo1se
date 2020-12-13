@@ -9,6 +9,7 @@ import business.maintenanceactivity.Appointment;
 import business.maintenanceactivity.Ewo;
 import business.maintenanceactivity.ExtraActivity;
 import business.maintenanceactivity.MaintenanceActivity;
+import business.maintenanceactivity.MaintenanceActivityFactory;
 import business.maintenanceactivity.MaintenanceActivityFactory.Typology;
 import business.maintenanceactivity.MaintenanceProcedure;
 import business.maintenanceactivity.Material;
