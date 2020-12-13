@@ -29,7 +29,14 @@ public class SystemAdministrator extends User {
     private TypologyDAO typologyDao; 
    
     
-    
+    /**
+     * Constructor System Administrator
+     * @param username username of System Administrator
+     * @param password password of System Administrator
+     * @param procedureDao Dao object of Procedure
+     * @param usersDao Dao object of User
+     * @param typologyDao Dao object of Typology
+     */
     public SystemAdministrator(String username, String password, MaintenanceProcedureDAO procedureDao,
             UsersDAO usersDao, TypologyDAO typologyDao) {
         super(username, password);
@@ -38,23 +45,30 @@ public class SystemAdministrator extends User {
         this.usersDao = usersDao;
     }
     
-    
+    /**
+     * This method allows to save a procedure in the system. Returns true if the operation is successful, false otherwise.<br>
+     * ProcedureDao object required
+     * @param newSmp new smp to save
+     * @param oldSmp old smp to subscribe (if exists)
+     * @return {@code boolean} successfulOperation
+     * @throws ProcedureException if new smp is not valid or there are problems in saving precedure
+     * @throws NotValidParameterException  if required dao (ProcedureDao) is not correctly initialized
+     */
+    /*Developed by Rosario Gaeta*/
     public boolean saveSmpProcedure(String newSmp,String oldSmp) throws ProcedureException, NotValidParameterException{
         if(procedureDao == null){
             throw new NotValidParameterException("Error in saving procedure");
         }
-        
         boolean retVal = false;
         if (newSmp == null || newSmp.trim().replaceAll("  +", " ").equals("")){
             throw new ProcedureException("Problem in saving smp");
         }
         MaintenanceProcedure procedure = new MaintenanceProcedure(newSmp);
-        
         if (oldSmp != null && !oldSmp.trim().replaceAll("  +", " ").equals("")){
-            retVal = procedureDao.updateSmp(procedure,oldSmp);
+            retVal = procedureDao.updateSmp(procedure,oldSmp); // This method tries to update the smp only if there was a ridenomination of smp
         }
         if (retVal == false){
-            procedureDao.addSmp(procedure);
+            procedureDao.addSmp(procedure); // Saving of the procedure in the system 
         }
         return true;
     }
@@ -81,6 +95,15 @@ public class SystemAdministrator extends User {
         return usersDao.addUser(user);
     }
     
+    /**
+     * this method allows to remove users from the database. Returns the number of deleted users
+     * UsersDao object required
+     * @param usernameList List of users to delete
+     * @return {@code int} number of deleted rows
+     * @throws UsersException if there are problems in deleting users
+     * @throws NotValidParameterException if required dao (UsersDao) is not correctly initialized
+     */
+    /*Developed by Rosario Gaeta*/
     public int removeUsers(List<String> usernameList) throws UsersException, NotValidParameterException{
         if(usersDao == null){
             throw new NotValidParameterException("Error in removing users");

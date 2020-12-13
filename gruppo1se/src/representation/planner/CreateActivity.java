@@ -9,18 +9,14 @@ import business.maintenanceactivity.MaintenanceActivityFactory.Typology;
 import business.maintenanceactivity.Material;
 import business.user.Planner;
 import exception.MaintenanceActivityException;
-import exception.MaterialException;
 import exception.NotValidParameterException;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
-import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
-import persistence.maintenanceactivity.SiteDaoImpl;
+import presentation.manager.MessageManager;
+
 
 /**
  *
@@ -447,7 +443,7 @@ public class CreateActivity extends javax.swing.JFrame {
             buttonGroupTypeOfActivity.clearSelection();
             jCreate.setEnabled(false);
         } catch (MaintenanceActivityException | NotValidParameterException ex) {
-            errorMessage(ex.getMessage());
+            MessageManager.errorMessage(this,ex.getMessage());
         }
     }//GEN-LAST:event_jCreateActionPerformed
 
@@ -535,10 +531,6 @@ public class CreateActivity extends javax.swing.JFrame {
         });
     }
     */
-    
-    private void errorMessage(String message) {
-        JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.ERROR_MESSAGE);
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroupInterruptible;

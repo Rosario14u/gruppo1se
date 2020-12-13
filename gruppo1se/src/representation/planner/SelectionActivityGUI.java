@@ -8,11 +8,8 @@ package representation.planner;
 import business.maintenanceactivity.MaintenanceActivity;
 import business.user.Planner;
 import business.user.WeekConverter;
-import exception.DateException;
 import exception.MaintenanceActivityException;
 import exception.NotValidParameterException;
-import exception.SiteException;
-import exception.SkillException;
 import java.awt.Dimension;
 import java.time.LocalDate;
 import java.util.List;
@@ -26,6 +23,7 @@ import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.SiteDaoImpl;
 import persistence.user.MaintainerSkillDAOImpl;
 import persistence.user.UsersDAOImpl;
+import presentation.manager.MessageManager;
 
 /**
  *
@@ -178,9 +176,9 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int[] row = maintenanceActivityTable.getSelectedRows();
         if(row.length<=0){
-            infoMessage("No row selected");
+            MessageManager.infoMessage(this,"No row selected");
         }else if(row.length > 1){
-            infoMessage("Select one row!");
+            MessageManager.infoMessage(this,"Select one row!");
         }else{
             VerifyActivity verifyActivity = new VerifyActivity(list.get(row[0]), planner);
             verifyActivity.setVisible(true);
@@ -252,18 +250,11 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
             }
 
         } catch (MaintenanceActivityException | NotValidParameterException ex) {
-            errorMessage(ex.getMessage());
+            MessageManager.errorMessage(this,ex.getMessage());
         }
     }
     
     
-    private void infoMessage(String message){
-        JOptionPane.showMessageDialog(this, message, "INFO", JOptionPane.INFORMATION_MESSAGE);
-    }
-    
-    private void errorMessage(String message) {
-        JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.ERROR_MESSAGE);
-    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

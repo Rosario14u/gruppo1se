@@ -8,7 +8,6 @@ package persistence.maintenanceactivity;
 import business.maintenanceactivity.Site;
 import exception.SiteException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

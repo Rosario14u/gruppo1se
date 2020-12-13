@@ -11,6 +11,9 @@ import exception.MaintenanceActivityException;
 import exception.MaterialException;
 import exception.NotValidParameterException;
 import exception.SiteException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -21,6 +24,7 @@ import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.SiteDaoImpl;
 import persistence.user.MaintainerSkillDAOImpl;
 import persistence.user.UsersDAOImpl;
+import presentation.manager.MessageManager;
 /**
  *
  * @author VincenzaCoppola <v.coppola38@studenti.unisa.it>
@@ -169,43 +173,59 @@ public class DeleteActivity extends javax.swing.JFrame {
             int activityId = Integer.parseInt(jActivityID.getText());
             MaintenanceActivity activity = planner.viewMaintenanceActivity(activityId);
             StringBuilder builder = new StringBuilder();
-            StringBuilder builder2 = new StringBuilder();
+            List<Material> materials = activity.getMaterials();
             if (activity!= null){
                 jDelete.setEnabled(true);
-                for(Material m : activity.getMaterials()){
-                    builder.append(m.getName());
-                    builder.append(",");
-                }
-                jMaintenanceActivity.setText("\n"+" ActivityID: "+ Integer.toString(activity.getActivityId())+"\n\n"+
-                        " Branch Office: "+ activity.getSite().getBranchOffice()+"\n\n"+
-                        " Area: "+ activity.getSite().getArea()+"\n\n"+
-                        " Workspace Notes: "+activity.getSite().getWorkSpaceNotes()+"\n\n"+
-                        " Typology: "+activity.getTypology()+"\n\n"+
-                        " Activity Description: "+activity.getActivityDescription()+"\n\n"+
-                        " Estimated Intervention Time: "+ Integer.toString(activity.getEstimatedInterventionTime())+"\n\n"+
-                        " Date: "+activity.getDate().toString()+"\n\n"+
-                        " Materials: "+builder.toString().substring(0,builder.length()-1)+ "\n\n"+
-                        " Skills: "+builder2.toString().substring(0,builder2.length()-1)+ "\n\n"+
-                        " Interruptible Activity: "+Boolean.toString(activity.isInterruptibleActivity())+"\n\n"+
-                        " Activity: "+activity.getClass().getSimpleName());
+                if (materials != null)
+                    for(Material m : activity.getMaterials()){
+                        builder.append(m.getName());
+                        builder.append(",");
+                    }
+                if(builder.toString().isEmpty())
+                    jMaintenanceActivity.setText("\n"+" ActivityID: "+ Integer.toString(activity.getActivityId())+"\n\n"+
+                            " Branch Office: "+ activity.getSite().getBranchOffice()+"\n\n"+
+                            " Area: "+ activity.getSite().getArea()+"\n\n"+
+                            " Workspace Notes: "+activity.getSite().getWorkSpaceNotes()+"\n\n"+
+                            " Typology: "+activity.getTypology()+"\n\n"+
+                            " Activity Description: "+activity.getActivityDescription()+"\n\n"+
+                            " Estimated Intervention Time: "+ Integer.toString(activity.getEstimatedInterventionTime())+"\n\n"+
+                            " Date: "+activity.getDate().toString()+"\n\n"+
+                            " Materials: \n\n"+
+                            " Interruptible Activity: "+Boolean.toString(activity.isInterruptibleActivity())+"\n\n"+
+                            " Activity: "+activity.getClass().getSimpleName());
+                else 
+                    jMaintenanceActivity.setText("\n"+" ActivityID: "+ Integer.toString(activity.getActivityId())+"\n\n"+
+                            " Branch Office: "+ activity.getSite().getBranchOffice()+"\n\n"+
+                            " Area: "+ activity.getSite().getArea()+"\n\n"+
+                            " Workspace Notes: "+activity.getSite().getWorkSpaceNotes()+"\n\n"+
+                            " Typology: "+activity.getTypology()+"\n\n"+
+                            " Activity Description: "+activity.getActivityDescription()+"\n\n"+
+                            " Estimated Intervention Time: "+ Integer.toString(activity.getEstimatedInterventionTime())+"\n\n"+
+                            " Date: "+activity.getDate().toString()+"\n\n"+
+                            " Materials: " + builder.toString().substring(0, builder.length()-1) +  "\n\n"+
+                            " Interruptible Activity: "+Boolean.toString(activity.isInterruptibleActivity())+"\n\n"+
+                            " Activity: "+activity.getClass().getSimpleName());
             }
             else
                 jMaintenanceActivity.setText("The activity with ActivityID: "+jActivityID.getText()+" isn't in the database!");
         } catch (MaintenanceActivityException | NotValidParameterException ex) {
-            errorMessage(ex.getMessage());
+            MessageManager.errorMessage(this,ex.getMessage());
         }
     }//GEN-LAST:event_jSearchActionPerformed
 
     private void jDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDeleteActionPerformed
         try {
             int activityId = Integer.parseInt(jActivityID.getText());
+            MaintenanceActivity activity = planner.viewMaintenanceActivity(activityId);
+            List<Material> materials = planner.getRequiredMaterialsDao().retrieveMaterialsByActivityId(activityId);
+            planner.getRequiredMaterialsDao().removeRequiredMaterial(activityId, materials);
             planner.removeMaintenanceActivity(activityId);
             jActivityID.setText("");
             jMaintenanceActivity.setText("");
             jSearch.setEnabled(false);
             jDelete.setEnabled(false);
-        } catch (MaintenanceActivityException | NotValidParameterException ex) {
-            errorMessage(ex.getMessage());
+        } catch (MaintenanceActivityException | NotValidParameterException | MaterialException ex) {
+            MessageManager.errorMessage(this,ex.getMessage());
         }
     }//GEN-LAST:event_jDeleteActionPerformed
 
@@ -237,9 +257,7 @@ public class DeleteActivity extends javax.swing.JFrame {
         }
     }    
    
-    private void errorMessage(String message){
-        JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.ERROR_MESSAGE);
-    }
+
     
     public static void main(String args[]) {
         Planner planner = new Planner("admin","admin", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),

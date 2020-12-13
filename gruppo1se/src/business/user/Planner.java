@@ -42,8 +42,19 @@ public class Planner extends User {
     private UsersDAO userDao;
     private EmployeeAppointmentDAO employeeAppointmentDao;
     private MaintainerSkillDAO maintainerSkillDao;
-    //private 
-
+    
+    
+    /**
+     * Constructor of Planner
+     * @param username username of Planner
+     * @param password password of Planner
+     * @param maintenanceActivityDao Dao object of Maintenance Activity
+     * @param requiredMaterialsDao  Dao object to access the material associated with activity
+     * @param userDao Dao object of Users
+     * @param employeeAppointmentDao Dao object to access the appointments of activity
+     * @param requiredSkillForMaintenanceDao Dao object to access the required skill of a maintenance
+     * @param maintainerSkillDao Dao object to access the skills of a maintainer
+     */
     public Planner(String username, String password, MaintenanceActivityDAO maintenanceActivityDao,
             RequiredMaterialForMaintenanceDAO requiredMaterialsDao,
             UsersDAO userDao, EmployeeAppointmentDAO employeeAppointmentDao,
@@ -57,16 +68,19 @@ public class Planner extends User {
         this.maintainerSkillDao = maintainerSkillDao;
     }
 
+    public RequiredMaterialForMaintenanceDAO getRequiredMaterialsDao() {
+        return requiredMaterialsDao;
+    }
+    
     /**
      * This method returns Maintenance Activity with the passed activityId if
-     * exists, null otherwise
-     *
+     * exists, null otherwise<br>
+     * MaintenanceActivityDao and RequiredMaterialsDao are required
      * @param activityId activity id of the Maintenance Activity to visualize
      * @return {@code MaintenanceActivity} MaintenanceActivity
-     * @throws exception.SiteException
-     * @throws exception.MaintenanceActivityException
-     * @throws exception.MaterialException
-     * @throws exception.NotValidParameterException
+     * @throws exception.MaintenanceActivityException it there is a problem in retrieving the activity
+     * @throws exception.NotValidParameterException if the required DAO (MaintenanceActivityDao and RequiredMaterialsDao)<br> 
+     * objects are not correctly initialized
      */
     /*Method developed by Rosario Gaeta*/
     public MaintenanceActivity viewMaintenanceActivity(int activityId) throws MaintenanceActivityException, NotValidParameterException {
@@ -217,13 +231,26 @@ public class Planner extends User {
             throw new UsersException(ex.getMessage());
         }
     }
-
+    
+    /**
+     * This method allows to save appointments of a maintainer associated with a maintenance activity and<br>
+     * updates the maintenance activity date. Returns true if the operation is successful, false otherwise.<br>
+     * EmployeeAppointmentDao and MaintenanceActivityDao are required
+     * @param username Username of the maintainer
+     * @param activity Maintenance activity to be assigned to the maintainer
+     * @param appointments Appointments to save
+     * @return {@code boolean} successfulOperation
+     * @throws AppointmentException if username is not valid or appointemnts list is null
+     * @throws MaintenanceActivityException if activity passed is null
+     * @throws NotValidParameterException if required dao ( EmployeeAppointmentDao and MaintenanceActivityDao) <br>
+     * are not correctly initialized
+     */
+    /*Developed by Rosario Gaeta*/
     public boolean saveAppointments(String username, MaintenanceActivity activity, List<Appointment> appointments)
             throws AppointmentException, MaintenanceActivityException, NotValidParameterException {
         if (employeeAppointmentDao == null || maintenanceActivityDao == null) {
             throw new NotValidParameterException("Failure to save appointments relating to Maintainer");
         }
-        
         if (username == null || username.trim().replaceAll("  +", " ").equals("") || appointments == null) {
             throw new AppointmentException("Error in saving appointment");
         }

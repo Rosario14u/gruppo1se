@@ -59,7 +59,11 @@ public class WeekConverter {
     public static LocalDate getDayOfWeek(LocalDate date, DayOfWeek day){
         return date.with(day);
     } 
-    
+    /**
+     * This method returns the year based on the week in which the date is
+     * @param date date passed as parameter
+     * @return {@code int} year based on week
+     */
     public static int getYear(LocalDate date){  
         Locale userLocale = Locale.ITALY;
         WeekFields weekNumbering = WeekFields.of(userLocale);

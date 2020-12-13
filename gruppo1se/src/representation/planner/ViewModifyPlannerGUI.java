@@ -38,6 +38,7 @@ import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.SiteDaoImpl;
 import persistence.user.MaintainerSkillDAOImpl;
 import persistence.user.UsersDAOImpl;
+import presentation.manager.MessageManager;
 
 /**
  *
@@ -391,12 +392,12 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
                 setAvailableMaterialToAdd(id);
             }else{
                 clearField();
-                infoMessage("Id non presente");
+                MessageManager.infoMessage(this,"Id non presente");
             }        
         }catch(NumberFormatException ex){
-            errorMessage("ID must be an integer");
+            MessageManager.errorMessage(this,"ID must be an integer");
         } catch (MaintenanceActivityException | NumberNotValidException | NotValidParameterException ex) {
-            errorMessage(ex.getMessage());
+            MessageManager.errorMessage(this,ex.getMessage());
         }
     }//GEN-LAST:event_viewButtonActionPerformed
 
@@ -419,10 +420,10 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
                 planner.addRequiredMaterial(activityId, listMaterialsToAdd);
                 listModel.addElement(material);
             }catch(MaterialException | NumberNotValidException | NotValidParameterException ex){
-                errorMessage(ex.getMessage());
+                MessageManager.errorMessage(this,ex.getMessage());
             }
         }else
-            infoMessage("No material selected");
+            MessageManager.infoMessage(this,"No material selected");
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
@@ -435,13 +436,13 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
             materialComboBox.addItem(material);
         }
         if(selectedIndex.length <= 0){
-            infoMessage("Select Material to delete");
+            MessageManager.infoMessage(this,"Select Material to delete");
         }else{
             try {
                 int activityId = getCheckedNumberParameter(activityIdTextField.getText());
                 planner.removeRequiredMaterial(activityId, listMaterialsToDelete);
             } catch (MaterialException | NumberNotValidException | NotValidParameterException ex) {
-                errorMessage(ex.getMessage());
+                MessageManager.errorMessage(this,ex.getMessage());
             }
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
@@ -471,7 +472,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
                     planner.modifyMaintenanceActivity(activityId, branchOffice, area, typology, activityDescrioption, estimatedInterventionTime,
                             date, interruptibleActivity, typologyOfActivity);
                 }catch(MaintenanceActivityException | NotValidParameterException ex){
-                    errorMessage(ex.getMessage());
+                    MessageManager.errorMessage(this, ex.getMessage());
                 }
         } catch (NumberNotValidException ex) {
             Logger.getLogger(ViewModifyPlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -500,7 +501,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
             for(Material material:list)
                 materialComboBox.addItem(material);
         } catch (MaterialException | NotValidParameterException  ex) {
-            errorMessage(ex.getMessage());
+            MessageManager.errorMessage(this,ex.getMessage());
         } 
     }
     
@@ -602,15 +603,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         return date.get(weekNumbering.weekOfWeekBasedYear());
     }
     
-    //=============================== ERROR/INFO MESSAGES ===============================
-    
-    private void errorMessage(String message){
-        JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.ERROR_MESSAGE);
-    }
-    
-    private void infoMessage(String message){
-        JOptionPane.showMessageDialog(this, message, "INFO", JOptionPane.INFORMATION_MESSAGE);
-    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<Typology> activityComboBox;

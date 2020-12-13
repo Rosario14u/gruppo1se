@@ -7,37 +7,31 @@ package representation.planner;
 
 import business.maintenanceactivity.Appointment;
 import business.maintenanceactivity.MaintenanceActivity;
-import business.maintenanceactivity.MaintenanceProcedure;
-import business.maintenanceactivity.Material;
-import business.maintenanceactivity.PlannedMaintenanceActivity;
-import business.maintenanceactivity.Site;
+
 import business.maintenanceactivity.Skill;
-import business.user.Maintainer;
+
 import business.user.Planner;
 import business.user.WeekConverter;
 import dto.MaintainerDTO;
-import exception.AppointmentException;
-import exception.DateException;
-import exception.MaintenanceActivityException;
+
 import exception.NotValidParameterException;
-import exception.SkillException;
+
 import exception.UsersException;
 import java.awt.Color;
-import java.awt.Component;
+
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
+
 import persistence.maintenanceactivity.EmployeeAppointmentDAOImpl;
 import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
@@ -46,6 +40,7 @@ import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.SiteDaoImpl;
 import persistence.user.MaintainerSkillDAOImpl;
 import persistence.user.UsersDAOImpl;
+import presentation.manager.MessageManager;
 
 /**
  *
@@ -121,7 +116,7 @@ public class MaintainerAvailability extends javax.swing.JFrame {
                 
             }
         } catch (UsersException | NotValidParameterException ex) {
-            errorMessage(ex.getMessage());
+            MessageManager.errorMessage(this,ex.getMessage());
         }
     }
 
@@ -309,7 +304,7 @@ public class MaintainerAvailability extends javax.swing.JFrame {
         if (col >= 2 && col <= 9 && row != -1) {
             newDate = WeekConverter.getDayOfWeek(activity.getDate(), DayOfWeek.values()[col - 2]);
             if (newDate.isBefore(LocalDate.now())) {
-                infoMessage("Invalid date!");
+                MessageManager.infoMessage(this,"Invalid date!");
             } //new ActivityAssignment(this, activity, newDate, maintainerList.get(row)).setVisible(true);
             else {
                 jDialogGUI = new ActivityAssignment(this, true, activity, newDate, maintainerList.get(row));
@@ -385,13 +380,7 @@ public class MaintainerAvailability extends javax.swing.JFrame {
 //        });
 //    }
     
-    private void errorMessage(String message) {
-        JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.ERROR_MESSAGE);
-    }
 
-    private void infoMessage(String message) {
-        JOptionPane.showMessageDialog(this, message, "INFO", JOptionPane.INFORMATION_MESSAGE);
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel activityInfoLabel;

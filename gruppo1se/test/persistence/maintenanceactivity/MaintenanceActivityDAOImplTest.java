@@ -313,7 +313,7 @@ public class MaintenanceActivityDAOImplTest {
      * This method assert that modifyMaintenaceActivity method correctly updates 
      * Planned Maintenance activity to Unplanned Extra Maintenance actiity
      */
-    @Test
+  @Test
     public void testModifyPlannedToExtraMaintenaceActivity(){
         try{
             Statement stm = conn.createStatement();
@@ -326,7 +326,7 @@ public class MaintenanceActivityDAOImplTest {
         }catch(SQLException ex){
             fail("SQLException was thrown");
         }catch(MaintenanceActivityException ex){
-            fail("MaterialException was thrown");
+            fail("MaintenanceActivityException was thrown");
         } catch (NotValidParameterException ex) {
             fail("NotValidParameterException");
         }

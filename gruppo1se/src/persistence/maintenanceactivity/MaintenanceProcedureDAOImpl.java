@@ -10,8 +10,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import exception.ProcedureException;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import persistence.database.ConnectionDB;
 
 /**
@@ -22,6 +20,14 @@ public class MaintenanceProcedureDAOImpl implements MaintenanceProcedureDAO{
     private final static String INSERT_PROCEDURE = "INSERT INTO MaintenanceProcedure values(?)";
     private final static String UPDATE_PROCEDURE = "UPDATE MaintenanceProcedure SET smp=? WHERE smp=?";
     
+    /**
+     * This method allows to save a smp file in the system. <br>
+     * Returns true if the method correctly save the smp file
+     * @param procedure Procedure to be saved
+     * @return {@code boolean} successfulAdding
+     * @throws ProcedureException if there is a problem in saving smp file
+     */
+    /*Method developed by Rosario Gaeta*/
     @Override
     public boolean addSmp(MaintenanceProcedure procedure) throws ProcedureException {
         if (procedure == null)
@@ -34,10 +40,16 @@ public class MaintenanceProcedureDAOImpl implements MaintenanceProcedureDAO{
             return true;
         } catch (SQLException ex) {
             throw new ProcedureException("Error in storing procedure");
-        }
-        
+        }    
     }
-    
+    /**
+     * This method allows to update an existing smp file stored in the system
+     * @param newProcedure Procedure to add
+     * @param oldSmp smp to update
+     * @return {@boolean} SuccessfulUpdating
+     * @throws ProcedureException if there is a problem in updating smp file
+     */
+    /*Method developed by Rosario Gaeta*/
     @Override
     public boolean updateSmp(MaintenanceProcedure newProcedure, String oldSmp) throws ProcedureException {
         if (newProcedure == null || newProcedure.getSmp().trim().replaceAll("  +", " ").equals("") || oldSmp == null

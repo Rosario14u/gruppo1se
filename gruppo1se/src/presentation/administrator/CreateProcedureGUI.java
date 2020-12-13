@@ -10,12 +10,12 @@ import exception.NotValidParameterException;
 import exception.ProcedureException;
 import java.io.File;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
 import persistence.maintenanceactivity.TypologyDAOImpl;
 import persistence.user.UsersDAOImpl;
+import presentation.manager.MessageManager;
 /**
  *
  * @author rosar
@@ -141,15 +141,15 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
 
     private void fileChooserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileChooserButtonActionPerformed
         StringBuilder builder = new StringBuilder();
+        String newName = null;
+        String oldName = null;
         String inputFileName = procedureTextField.getText().trim().replaceAll("  +", " ");
         if (inputFileName.lastIndexOf('.')!=-1)
-            inputFileName = inputFileName.substring(0, inputFileName.lastIndexOf('.'));
+            inputFileName = inputFileName.substring(0, inputFileName.lastIndexOf('.')); // getting the name of input file without extention
         String oldFileName = fileChoosen.getName();
         if (oldFileName.lastIndexOf('.')!=-1)
-            oldFileName = oldFileName.substring(0, oldFileName.lastIndexOf('.'));
+            oldFileName = oldFileName.substring(0, oldFileName.lastIndexOf('.'));       // getting the old name of file without extention
         try {
-            String newName = null;
-            String oldName = null;
             if (inputFileName.equals("") || inputFileName.equals(" ") || inputFileName.equals(oldFileName)){
                 newName = oldFileName;
             }else{
@@ -157,20 +157,18 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
                 oldName = oldFileName;
             }
             builder.append(PROJECT_PATH).append(RELATIVE_PROJECT_PATH).append(newName).append(FILE_EXTENSION);
-            boolean choosen = fileChoosen.renameTo(new File(builder.toString()));
+            boolean choosen = fileChoosen.renameTo(new File(builder.toString()));       // renaming of file
             if (choosen == true){
-                administrator.saveSmpProcedure(newName,oldName);
-                infoMessage("Procedura aggiunta con successo");
-                setField(false);
+                admin.saveSmpProcedure(newName,oldName); // if the file is successfully renamed, the smp file is stored in the system 
+                MessageManager.infoMessage(this,"Procedura aggiunta con successo");
+                setField(false); 
                 procedureTextField.setText("");
             }else{
-                errorMessage("Nome file già esistente");
+                MessageManager.errorMessage(this,"Nome file già esistente");
             }
         } catch (ProcedureException | NotValidParameterException ex) {
-            errorMessage(ex.getMessage());
+            MessageManager.errorMessage(this, ex.getMessage());
         }
-        
-     
     }//GEN-LAST:event_fileChooserButtonActionPerformed
 
     private void chooserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooserButtonActionPerformed
@@ -229,13 +227,6 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
         RenameLabel.setVisible(enable);
     }
     
-    private void errorMessage(String message){
-        JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.ERROR_MESSAGE);
-    }
-    
-    private void infoMessage(String message){
-        JOptionPane.showMessageDialog(this, message, "INFO", JOptionPane.INFORMATION_MESSAGE);
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ProcedurePanel;

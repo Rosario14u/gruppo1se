@@ -23,8 +23,8 @@ import persistence.database.ConnectionDB;
 public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     private static final String INSERT_ACTIVITY = "INSERT INTO MaintenanceActivity (activityDescription,"
             + " estimatedInterventionTime, dateActivity, interruptibleActivity, typologyOfActivity,"
-            + " typologyOfUnplannedActivity, typologyName, branchOffice, area, activityId) "
-            + "VALUES (?,?,?,?,?,?,?,?,?,?)";
+            + " typologyOfUnplannedActivity, typologyName, branchOffice, area, activityId, smp) "
+            + "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
     private static final String DELETE_ACTIVITY = "DELETE FROM MAINTENANCEACTIVITY WHERE ACTIVITYID=?";
     private static final String SELECT_ACTIVITY = "SELECT * FROM MaintenanceActivity WHERE activityId = ?";
     private static final String UPDATE_ACTIVITY = "UPDATE MaintenanceActivity SET activityDescription=?, "
@@ -35,7 +35,10 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     
     private final SiteDao siteDao;
     
-    
+    /**
+     * Constructor of MaintenanceActivityDAOImpl
+     * @param siteDao 
+     */
     public MaintenanceActivityDAOImpl(SiteDao siteDao) {
         this.siteDao = siteDao;
     }
@@ -75,12 +78,13 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     
     /**
      * 
-     * This method recover from a database the maintenance activity if exists, according to activityId parameter.
+     * This method recover from a database the maintenance activity if exists, according to activityId parameter.<br>
+     * SiteDAO required
      * @param activityId activity id of the maintenance activity to retrieve
      * @return {@code MaintenanceActivity} MaintenanceActivity if exists a maintenance activity
      * with corresponding id in database, null otherwise.
-     * @throws exception.SiteException
-     * @throws exception.MaintenanceActivityException
+     * @throws exception.MaintenanceActivityException it there are problems in retrieving activity
+     * @throws exception.NotValidParameterException if sitedao object is not correctly
      */
     /*Method developed by Rosario Gaeta*/
     @Override
@@ -110,8 +114,8 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     * @return {@code MaintenaceActivity} MaintenanceActivity according to the content of resultSet,
     * null if Result set is empty or there is an error
     * @throws SQLException
-    * @throws exception.SiteException
-    * @throws exception.MaintenanceActivityException
+    * @throws exception.SiteException if there is a problem in retrieving site of the activity
+    * @throws exception.MaintenanceActivityException if there are problem in conversion of unplanned typology
     */
     /*Method developed by Rosario Gaeta*/
     private MaintenanceActivity makeMaintenanceActivity(ResultSet rs) throws SQLException, SiteException, MaintenanceActivityException{
@@ -147,6 +151,7 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
      * @param newActivity intance of Mintenance activity that contains the new fields to set
      * @return {@code true} if the the change is successful, false otherwise
      * @throws exception.MaintenanceActivityException
+     * @throws exception.NotValidParameterException
      */
     /*Developed by Antonio Gorrasi*/
     @Override
@@ -163,12 +168,12 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     }
     /**
      * This method retrieve a list of MaintenanceActivity according to startDate and stopDate
-     * @param startDate
-     * @param stopDate
-     * @return
-     * @throws MaintenanceActivityException
-     * @throws SiteException 
-     * @throws exception.DateException 
+     * SiteDAO required
+     * @param startDate start date of the range
+     * @param stopDate stop date of the range
+     * @return {@code List<MaintenanceActivity>} listOfMainteananceActivity
+     * @throws MaintenanceActivityException if there is a problem in retrieving maintenance activity
+     * @throws exception.NotValidParameterException if required sitedao is not correctly initialized
      */
     @Override
     public List<MaintenanceActivity> retrieveMaintenanceActivityFromRange(LocalDate startDate, LocalDate stopDate)
@@ -213,6 +218,7 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
         preparedStatement.setString(8, activity.getSite().getBranchOffice());
         preparedStatement.setString(9, activity.getSite().getArea());
         preparedStatement.setInt(10, activity.getActivityId());
+        preparedStatement.setString(11, activity.getMaintenanceProcedure().getSmp());
     }
     
     private void checkDao(SiteDao siteDao, String message) throws NotValidParameterException{

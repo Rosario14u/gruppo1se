@@ -8,6 +8,7 @@ package presentation.administrator;
 import business.user.SystemAdministrator;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import presentation.manager.MessageManager;
 
 /**
  *
@@ -159,13 +160,13 @@ public class ModifyUser extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        int result = confirmRequest("Are you sure? All modifies will be lost", "CANCEL");
+        int result = MessageManager.confirmRequest(this,"Are you sure? All modifies will be lost", "CANCEL");
         if (result == EXIT_ON_CLOSE)
             this.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
-        int result = confirmRequest("Are you sure you want to modify this user?", "CONFIRM");
+        int result = MessageManager.confirmRequest(this,"Are you sure you want to modify this user?", "CONFIRM");
         if (result == EXIT_ON_CLOSE) {
             //try {
                 String newUsername = usernameTextField.getText();
@@ -209,18 +210,7 @@ public class ModifyUser extends javax.swing.JDialog {
 //    }
     
     
-    private int confirmRequest(String msg, String title) {
-        switch (JOptionPane.showConfirmDialog(this, msg, title, JOptionPane.YES_NO_OPTION)) {
-            case JOptionPane.YES_OPTION:
-                return EXIT_ON_CLOSE;
-            case JOptionPane.NO_OPTION:
-                return DO_NOTHING_ON_CLOSE;
-            case JOptionPane.CLOSED_OPTION:
-                return DO_NOTHING_ON_CLOSE;
-            default:
-                return DO_NOTHING_ON_CLOSE;
-        }
-    }
+
 
     private boolean checkIfModified(String oldUsername, String oldPassword, String oldRole, String newUsername, String newPassword, String newRole) {
         return !(oldUsername.equals(newUsername)

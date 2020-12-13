@@ -11,6 +11,7 @@ import exception.NotValidParameterException;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import presentation.manager.MessageManager;
 
 
 
@@ -116,7 +117,7 @@ public class CreateTypology extends javax.swing.JFrame {
             systemAdministrator.makeTypology(typology);
             jTypology.setText("");
         } catch (TypologyException | NotValidParameterException ex) {
-            errorMessage("Typology already existing!");
+            MessageManager.errorMessage(this,"Typology already existing!");
         }
         
     }//GEN-LAST:event_jCreateActionPerformed
@@ -147,9 +148,7 @@ public class CreateTypology extends javax.swing.JFrame {
         }
     }    
      
-    private void errorMessage(String message){
-        JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.ERROR_MESSAGE);
-    }
+
     
     
     /**

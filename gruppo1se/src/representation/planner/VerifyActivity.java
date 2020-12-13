@@ -20,6 +20,7 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import presentation.manager.MessageManager;
 
 /**
  *
@@ -58,16 +59,26 @@ public class VerifyActivity extends javax.swing.JFrame {
             for(Skill skill : activity.getMaintenanceProcedure().getSkills()){
                 builder2.append(skill.toString() + "\n");
             }
-            jSkillsNeeded.setText(builder2.toString());
+            LocalDate date = activity.getDate();
+            WeekFields weekFields = WeekFields.of(Locale.getDefault());
+            int weekNumber = date.get(weekFields.weekOfWeekBasedYear());
+            jWeek.setText(Integer.toString(weekNumber));
+            jWorkspaceNotes.setText(oldWorkspaceNotes);
+            jInterventionDescription.setText(activity.getActivityDescription());
+            jActivityToAssign.setText(Integer.toString(activity.getActivityId())+" - "+activity.getSite().getArea()
+                    +" - "+activity.getTypology()+" - "+ Integer.toString(activity.getEstimatedInterventionTime())+"'");
+            if (activity.getMaintenanceProcedure().getSkills() != null){
+                StringBuilder builder2 = new StringBuilder();
+                for(Skill skill : activity.getMaintenanceProcedure().getSkills()){
+                    builder2.append(skill.toString() + "\n");
+                }
+                jSkillsNeeded.setText(builder2.toString());
+            }
+        } catch (MaintenanceActivityException | NotValidParameterException | AppointmentException ex) {
+            MessageManager.errorMessage(this,ex.getMessage());
         }
         
     }
-    
-    
-    private void errorMessage(String message) {
-        JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.ERROR_MESSAGE);
-    }
-    
     
     /**
      * This method is called from within the constructor to initialize the form.

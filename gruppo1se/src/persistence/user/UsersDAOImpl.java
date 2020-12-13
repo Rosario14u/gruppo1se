@@ -7,7 +7,6 @@ package persistence.user;
 
 
 import persistence.database.ConnectionDB;
-import business.user.*;
 import dto.MaintainerDTO;
 import dto.PlannerDTO;
 import dto.SystemAdministratorDTO;
@@ -17,13 +16,7 @@ import java.sql.*;
 import exception.UsersException;
 import java.util.ArrayList;
 import java.util.List;
-import persistence.maintenanceactivity.EmployeeAppointmentDAOImpl;
-import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
-import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
-import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
-import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
-import persistence.maintenanceactivity.SiteDaoImpl;
-import persistence.maintenanceactivity.TypologyDAOImpl;
+
 
 /**
  *
@@ -86,7 +79,12 @@ public class UsersDAOImpl implements UsersDAO {
             throw new UsersException("Error on select query");
         }
     }
-    
+    /**
+     * This method allows to delete Users passed as parameter
+     * @param usernameList list of users to delete
+     * @return {@code int} number of users deleted 
+     * @throws UsersException if there are problems in deleting users
+     */
     @Override
     public int deleteUsers(List<String> usernameList) throws UsersException{
         try{

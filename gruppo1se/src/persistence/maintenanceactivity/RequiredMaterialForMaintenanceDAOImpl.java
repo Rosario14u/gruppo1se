@@ -30,11 +30,12 @@ public class RequiredMaterialForMaintenanceDAOImpl implements RequiredMaterialFo
             + "WHERE (activityid = ?) and (materialname = ?)";
     private final static String SELECT_AVAILABLE_MATERIAL = "SELECT * FROM material EXCEPT "
             + "SELECT materialname FROM requiredmaterial WHERE activityid=?";
+    
     /**
      * This method retrieve a list materials associated to the maintenance activity identified by the activityId.
      * @param activityId of the MaintenanceActivity
      * @return {@code List<String>} listMaterials, null otherwise
-     * @throws exception.MaterialException
+     * @throws exception.MaterialException it ther is an error in retrieving material associated <br> to this activity id
      */
     /*Method developed by Rosario Gaeta*/
     @Override
