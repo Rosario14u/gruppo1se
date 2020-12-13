@@ -122,4 +122,12 @@ public class SystemAdministrator extends User {
         }
         return typologyDao.modifyTypology(oldTypology, newTypology);
     }
+        
+    public boolean removeTypology(String typology) throws TypologyException, NotValidParameterException{
+        if(typologyDao == null){
+            throw new NotValidParameterException("Error in retrieving users");
+        }
+        return typologyDao.deleteTypology(typology);
+    }
 }
+

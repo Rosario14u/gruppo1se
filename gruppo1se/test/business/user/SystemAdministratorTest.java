@@ -15,8 +15,6 @@ import exception.TypologyException;
 import exception.UsersException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -284,6 +282,33 @@ public class SystemAdministratorTest {
         String oldTypology = "oldTypology";
         String newTypology = "Typology Exception";
         instance.updateTypology(oldTypology, newTypology);
+    }
+    
+    /**
+     * Tests of removeTypology method, of class SystemAdministrator.
+     * @throws exception.TypologyException
+     * @throws exception.NotValidParameterException
+     */
+    
+    @Test
+    public void testRemoveTypology() throws TypologyException, NotValidParameterException {
+        System.out.println("removeTypologyTest");
+        String typology = "TypologyTrue";
+        assertEquals(true,instance.removeTypology(typology));
+    }
+    
+    @Test
+    public void testRemoveTypologyFalse() throws TypologyException, NotValidParameterException {
+        System.out.println("removeTypologyFalseTest");
+        String typology = "TypologyFalse";
+        assertEquals(false,instance.removeTypology(typology));
+    }
+    
+    @Test(expected = TypologyException.class)
+    public void testRemoveTypologyException() throws TypologyException, NotValidParameterException {
+        System.out.println("removeTypologyExceptionTest");
+        String typology = "TypologyException";
+        instance.removeTypology(typology);
     }
 //=========================================================================================================================================
     

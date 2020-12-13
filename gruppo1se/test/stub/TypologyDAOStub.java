@@ -18,12 +18,14 @@ public class TypologyDAOStub implements TypologyDAO {
 
     @Override
     public boolean addTypology(String typology) throws TypologyException {
-        if(typology.equals("exception"))
-            throw new TypologyException();
-        else if (typology.equals("false"))
-            return false;
-        else 
-            return true;
+        switch (typology) {
+            case "exception":
+                throw new TypologyException();
+            case "false":
+                return false;
+            default:
+                return true;
+        }
     }
     
     
@@ -44,6 +46,18 @@ public class TypologyDAOStub implements TypologyDAO {
             throw new TypologyException();
         else
             return true;
+    }
+    
+    @Override
+    public boolean deleteTypology(String typology) throws TypologyException {
+        switch (typology) {
+            case "TypologyFalse":
+                return false;
+            case "TypologyException":
+                throw new TypologyException();
+            default:
+                return true;
+        }
     }
 
 }
