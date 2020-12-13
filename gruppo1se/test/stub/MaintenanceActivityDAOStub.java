@@ -14,6 +14,7 @@ import business.maintenanceactivity.PlannedMaintenanceActivity;
 import business.maintenanceactivity.Site;
 import exception.DateException;
 import exception.MaintenanceActivityException;
+import exception.NotValidParameterException;
 import exception.SiteException;
 import java.time.LocalDate;
 import java.time.Month;
@@ -84,33 +85,37 @@ public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
 
     @Override
     public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId) throws SiteException, MaintenanceActivityException {
-        switch (activityId) {
-            case 1:
-                return new PlannedMaintenanceActivity(activityId, new Site("ProvaBranchOffice1", "ProvaArea1", "ProvaWorkspaceNotes1"),
-                        "ProvaTypology1", "ProvaDescription1", 121, LocalDate.parse("2020-12-21"), 
-                        new MaintenanceProcedure("ProvaSmp1"), null,true);
-            case 2:
-                return new Ewo(activityId, new Site("ProvaBranchOffice2", "ProvaArea2", "ProvaWorkspaceNotes2"),
-                        "ProvaTypology2", "ProvaDescription2", 122, LocalDate.parse("2020-12-22"), 
-                        new MaintenanceProcedure("ProvaSmp2"), null, false);
-            case 3:
-                return new ExtraActivity(activityId, new Site("ProvaBranchOffice3", "ProvaArea3", "ProvaWorkspaceNotes3"),
-                        "ProvaTypology3", "ProvaDescription3", 123, LocalDate.parse("2020-12-23"),
-                        new MaintenanceProcedure("ProvaSmp3"), null, false);
-            case 4:
-                return null;
-            case 5:
-                throw new SiteException("SiteException");
-            case 6:
-                throw new MaintenanceActivityException("MaintenanceActivityException");
-            case 7:
-                return new PlannedMaintenanceActivity(activityId, new Site("ProvaBranchOffice7", "ProvaArea7", "ProvaWorkspaceNotes7"),
-                        "ProvaTypology7", "ProvaDescription7", 127, LocalDate.parse("2020-12-27"),
-                        null, null,false);
-            default:
-                return new PlannedMaintenanceActivity(activityId, new Site("ProvaBranchOffice8", "ProvaArea8", "ProvaWorkspaceNotes8"),
-                        "ProvaTypology8", "ProvaDescription8", 128, LocalDate.parse("2020-12-28"),
-                        new MaintenanceProcedure("ProvaSmp8"), null,true);
+        try{
+            switch (activityId) {
+                case 1:
+                    return new PlannedMaintenanceActivity(activityId, new Site("ProvaBranchOffice1", "ProvaArea1", "ProvaWorkspaceNotes1"),
+                            "ProvaTypology1", "ProvaDescription1", 121, LocalDate.parse("2020-12-21"), 
+                            new MaintenanceProcedure("ProvaSmp1"), null,true);
+                case 2:
+                    return new Ewo(activityId, new Site("ProvaBranchOffice2", "ProvaArea2", "ProvaWorkspaceNotes2"),
+                            "ProvaTypology2", "ProvaDescription2", 122, LocalDate.parse("2020-12-22"), 
+                            new MaintenanceProcedure("ProvaSmp2"), null, false);
+                case 3:
+                    return new ExtraActivity(activityId, new Site("ProvaBranchOffice3", "ProvaArea3", "ProvaWorkspaceNotes3"),
+                            "ProvaTypology3", "ProvaDescription3", 123, LocalDate.parse("2020-12-23"),
+                            new MaintenanceProcedure("ProvaSmp3"), null, false);
+                case 4:
+                    return null;
+                case 5:
+                    throw new SiteException("SiteException");
+                case 6:
+                    throw new MaintenanceActivityException("MaintenanceActivityException");
+                case 7:
+                    return new PlannedMaintenanceActivity(activityId, new Site("ProvaBranchOffice7", "ProvaArea7", "ProvaWorkspaceNotes7"),
+                            "ProvaTypology7", "ProvaDescription7", 127, LocalDate.parse("2020-12-27"),
+                            null, null,false);
+                default:
+                    return new PlannedMaintenanceActivity(activityId, new Site("ProvaBranchOffice8", "ProvaArea8", "ProvaWorkspaceNotes8"),
+                            "ProvaTypology8", "ProvaDescription8", 128, LocalDate.parse("2020-12-28"),
+                            new MaintenanceProcedure("ProvaSmp8"), null,true);
+            }
+        }catch(NotValidParameterException ex){
+            throw new MaintenanceActivityException();
         }
     }
 
@@ -168,20 +173,24 @@ public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
 
     @Override
     public List<MaintenanceActivity> retrieveMaintenanceActivityFromRange(LocalDate startDate, LocalDate stopDate) throws MaintenanceActivityException, SiteException, DateException {
-        if(startDate.equals(LocalDate.of(2021, Month.JANUARY, 4))){
+        try{
+            if(startDate.equals(LocalDate.of(2021, Month.JANUARY, 4))){
+                throw new MaintenanceActivityException();
+            }else if(startDate.equals(LocalDate.of(2021, Month.JANUARY, 11))){
+                throw new SiteException();
+            }else if(startDate.equals(LocalDate.of(2021, Month.JANUARY, 18))){
+                throw new DateException();
+            }else if(startDate.equals(LocalDate.of(2021, Month.JANUARY, 25))){
+                return new ArrayList<>(){{
+                    add(new PlannedMaintenanceActivity(1, new Site("ProvaBranchOffice1", "ProvaArea1"), "ProvaTypology1", "ProvaDescription1", 1, LocalDate.of(2020, Month.JANUARY, 1), null, null, true));
+                    add(new PlannedMaintenanceActivity(1, new Site("ProvaBranchOffice2", "ProvaArea2"), "ProvaTypology2", "ProvaDescription2", 2, LocalDate.of(2020, Month.JANUARY, 2), null, null,true));
+                    add(new PlannedMaintenanceActivity(1, new Site("ProvaBranchOffice3", "ProvaArea3"), "ProvaTypology3", "ProvaDescription3", 3, LocalDate.of(2020, Month.JANUARY, 3), null, null,true));
+                }};
+            }else{
+                return new ArrayList();
+            }
+        }catch(NotValidParameterException ex){
             throw new MaintenanceActivityException();
-        }else if(startDate.equals(LocalDate.of(2021, Month.JANUARY, 11))){
-            throw new SiteException();
-        }else if(startDate.equals(LocalDate.of(2021, Month.JANUARY, 18))){
-            throw new DateException();
-        }else if(startDate.equals(LocalDate.of(2021, Month.JANUARY, 25))){
-            return new ArrayList<>(){{
-                add(new PlannedMaintenanceActivity(1, new Site("ProvaBranchOffice1", "ProvaArea1"), "ProvaTypology1", "ProvaDescription1", 1, LocalDate.of(2020, Month.JANUARY, 1), null, null, true));
-                add(new PlannedMaintenanceActivity(1, new Site("ProvaBranchOffice2", "ProvaArea2"), "ProvaTypology2", "ProvaDescription2", 2, LocalDate.of(2020, Month.JANUARY, 2), null, null,true));
-                add(new PlannedMaintenanceActivity(1, new Site("ProvaBranchOffice3", "ProvaArea3"), "ProvaTypology3", "ProvaDescription3", 3, LocalDate.of(2020, Month.JANUARY, 3), null, null,true));
-            }};
-        }else{
-            return new ArrayList();
         }
     }
 }

@@ -9,6 +9,11 @@ import business.user.Maintainer;
 import business.user.Planner;
 import business.user.SystemAdministrator;
 import business.user.User;
+import dto.MaintainerDTO;
+import dto.PlannerDTO;
+import dto.SystemAdministratorDTO;
+import dto.UserDTO;
+import exception.NotValidParameterException;
 import exception.UsersException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,18 +29,16 @@ import persistence.user.UsersDAOImpl;
 public class UsersDAOStub implements UsersDAO {
 
     @Override
-    public List<User> readUsers() throws UsersException {
-        List<User> users = new ArrayList<>();
-        users.add(new Maintainer("UserMaintainer","PwdMaintainer"));
-        users.add(new Planner("UserPlanner","PwdPlanner", new MaintenanceActivityDAOStub(),
-            new RequiredMaterialForMaintenanceDAOStub(), new UsersDAOStub(),
-            new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub(),null));
-        users.add(new SystemAdministrator("UserSystemAdministrator","PwdSystemAdministrator",new MaintenanceProcedureDAOImpl(),new UsersDAOImpl(),new TypologyDAOImpl()));
+    public List<UserDTO> readUsers() throws UsersException, NotValidParameterException {
+        List<UserDTO> users = new ArrayList<>();
+        users.add(new MaintainerDTO("UserMaintainer","PwdMaintainer"));
+        users.add(new PlannerDTO("UserPlanner","PwdPlanner"));
+        users.add(new SystemAdministratorDTO("UserSystemAdministrator","PwdSystemAdministrator"));
         return users;
     }
     
     @Override
-    public boolean addUser(User user) throws UsersException {
+    public boolean addUser(UserDTO user) throws UsersException {
         if (user.getUsername() != null && user.getPassword() != null)
             return true;
         else 
@@ -57,7 +60,7 @@ public class UsersDAOStub implements UsersDAO {
         }      
     }
     
-    public boolean updateUser(String oldUsername, User newUser) throws UsersException{
+    public boolean updateUser(String oldUsername, UserDTO newUser) throws UsersException{
         if (oldUsername==null || newUser==null || newUser.getUsername()==null || newUser.getPassword()==null
                 || oldUsername.equals("") || newUser.getUsername().equals("")){
             ////case where the passed parameters are not valid
@@ -78,10 +81,10 @@ public class UsersDAOStub implements UsersDAO {
    
 
     @Override
-    public List<Maintainer> readMaintainers() throws UsersException {
+    public List<MaintainerDTO> readMaintainers() throws UsersException {
         return new ArrayList<>(){{
-            add(new Maintainer("username1", "pwd1"));
-            add(new Maintainer("username2", "pwd2"));
+            add(new MaintainerDTO("username1", "pwd1"));
+            add(new MaintainerDTO("username2", "pwd2"));
         }};
     }
 }

@@ -25,17 +25,6 @@ public class Maintainer extends User{
         this.skills = new ArrayList<>();
     }
 
-//    @Override
-//    public boolean equals(Object obj) {
-//        
-//        
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return super.hashCode();
-//    }
-
     @Override
     public int hashCode() {
         int hash = super.hashCode();

@@ -5,6 +5,7 @@
  */
 package business.maintenanceactivity;
 
+import exception.NotValidParameterException;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,7 +22,8 @@ public class MaintenanceProcedure {
      * Constructor of Maintenance Procedure
      * @param smp Standard maintenance procedure
      */
-    public MaintenanceProcedure(String smp) {
+    public MaintenanceProcedure(String smp) throws NotValidParameterException {
+        validateMaintenanceProcedure(smp);
         this.smp = smp;
         skills = null;
     }
@@ -42,11 +44,15 @@ public class MaintenanceProcedure {
      * Set Standard maintenance procedure
      * @param smp Standard maintenance procedure
      */
-    public void setSmp(String smp) {
+    public void setSmp(String smp) throws NotValidParameterException {
+        if(smp == null || smp.equals(""))
+            throw new NotValidParameterException("Procedure not valid 3");
         this.smp = smp;
     }
 
-    public void setSkills(List<Skill> skills) {
+    public void setSkills(List<Skill> skills) throws NotValidParameterException {
+        if(skills == null || skills.stream().anyMatch(skill -> skill == null))
+            throw new NotValidParameterException("Procedure not valid 2");
         this.skills = skills;
     }
 
@@ -73,6 +79,13 @@ public class MaintenanceProcedure {
             return false;
         }
         return true;
+    }
+    
+    
+    
+    private void validateMaintenanceProcedure(String smp) throws NotValidParameterException{
+        if(smp == null || smp.trim().replaceAll("  +", " ") .equals(""))
+            throw new NotValidParameterException("Procedure not valid 1");
     }
     
 

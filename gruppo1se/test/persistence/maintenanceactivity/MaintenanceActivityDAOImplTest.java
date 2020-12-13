@@ -15,6 +15,7 @@ import business.maintenanceactivity.Site;
 import business.maintenanceactivity.Skill;
 import exception.DateException;
 import exception.MaintenanceActivityException;
+import exception.NotValidParameterException;
 import exception.SiteException;
 import java.sql.Connection;
 import java.sql.Date;
@@ -62,7 +63,7 @@ public class MaintenanceActivityDAOImplTest {
     private final MaintenanceActivityDAOImpl maintenanceActivityDAO;
 
     
-    public MaintenanceActivityDAOImplTest() {
+    public MaintenanceActivityDAOImplTest() throws NotValidParameterException {
         site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
         activityDescription = "ProvaActivityDescription";
         maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
@@ -127,6 +128,8 @@ public class MaintenanceActivityDAOImplTest {
             fail("SiteException");
         } catch (MaintenanceActivityException ex) {
             fail("MaintenanceActivityException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     /**
@@ -148,6 +151,8 @@ public class MaintenanceActivityDAOImplTest {
             fail("SiteException");
         } catch (MaintenanceActivityException ex) {
             fail("MaintenanceActivityException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     /**
@@ -169,6 +174,8 @@ public class MaintenanceActivityDAOImplTest {
             fail("SiteException");
         } catch (MaintenanceActivityException ex) {
             fail("MaintenanceActivityException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -188,7 +195,9 @@ public class MaintenanceActivityDAOImplTest {
             fail("SiteException");
         } catch (MaintenanceActivityException ex) {
             fail("MaintenanceActivityException");
-        }    
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }   
     }
     
     /**
@@ -206,7 +215,9 @@ public class MaintenanceActivityDAOImplTest {
             fail("SQLException");
         } catch (MaintenanceActivityException ex) {
             fail("MaintenanceActivityException");
-        } 
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
     /**
@@ -224,7 +235,9 @@ public class MaintenanceActivityDAOImplTest {
             fail("SQLException");
         } catch (MaintenanceActivityException ex) {
             fail("MaintenanceActivityException");
-        } 
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
     //=======================Utilities to test retrieveMaintenanceActivityDao=========================================
@@ -301,6 +314,8 @@ public class MaintenanceActivityDAOImplTest {
             fail("SQLException was thrown");
         }catch(MaintenanceActivityException ex){
             fail("MaterialException was thrown");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -324,6 +339,8 @@ public class MaintenanceActivityDAOImplTest {
             fail("SQLException was thrown");
         }catch(MaintenanceActivityException ex){
             fail("MaterialException was thrown");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
 //    
@@ -346,6 +363,8 @@ public class MaintenanceActivityDAOImplTest {
             fail("SQLException was thrown");
         }catch(MaintenanceActivityException ex){
             fail("MaterialException was thrown");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -368,7 +387,9 @@ public class MaintenanceActivityDAOImplTest {
             fail("SQLException was thrown");
         }catch(MaintenanceActivityException ex){
             fail("MaterialException was thrown");
-        } 
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
   
      /**
@@ -390,6 +411,8 @@ public class MaintenanceActivityDAOImplTest {
             fail("SQLException was thrown");
         }catch(MaintenanceActivityException ex){
             fail("MaterialException was thrown");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }    
     }
     
@@ -412,7 +435,9 @@ public class MaintenanceActivityDAOImplTest {
             fail("SQLException was thrown");
         }catch(MaintenanceActivityException ex){
             fail("MaterialException was thrown");
-        }   
+        }  catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }  
     }
     
     /**
@@ -431,7 +456,9 @@ public class MaintenanceActivityDAOImplTest {
             fail("SQLException was thrown");
         }catch(MaintenanceActivityException ex){
             fail("MaterialException was thrown");
-        }   
+        }  catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }  
     }
     
     //=================== PRIVATE METHODS OF MODIFY ==============================================================================
@@ -470,7 +497,7 @@ public class MaintenanceActivityDAOImplTest {
         assertFalse(isEmpty);
     }  
     
-     public MaintenanceActivity createMaintenanceActivity(String typeOfActivity, int id) {
+     public MaintenanceActivity createMaintenanceActivity(String typeOfActivity, int id) throws NotValidParameterException {
         if(typeOfActivity.compareTo("Planned")==0){
             return new PlannedMaintenanceActivity(id, new Site("ProvaBranchOfficeMod"+id, "ProvaAreaMod"+id), "typologyNameMod"+id,
                     "ProvaDescrizioneMod"+id, id, LocalDate.now(), null, null,id%2==0);
@@ -480,7 +507,7 @@ public class MaintenanceActivityDAOImplTest {
         }else{
             return new ExtraActivity(id, new Site("ProvaBranchOfficeMod"+id, "ProvaAreaMod"+id), "typologyNameMod"+id,
                     "ProvaDescrizioneMod"+id, id, LocalDate.now(), null, null,id%2==0);
-        }
+        } 
     }
     
   //=======================================================================================================================================
@@ -499,6 +526,8 @@ public class MaintenanceActivityDAOImplTest {
             verify(selectDefaultMaintenanceActivity(1), activity);
         } catch (SQLException ex) {
             System.out.println("Error on: connection rollback");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -511,9 +540,11 @@ public class MaintenanceActivityDAOImplTest {
             maintenanceActivityDAO.addMaintenanceActivity(activity);
         } catch (SQLException ex) {
             System.out.println("Error on: connection rollback");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
-    
+    /*
     @Test(expected = MaintenanceActivityException.class)
     public void testAddMaintenanceActivityWrongActivityID() throws MaintenanceActivityException {
         try {
@@ -523,9 +554,11 @@ public class MaintenanceActivityDAOImplTest {
             maintenanceActivityDAO.addMaintenanceActivity(activity);
         } catch (SQLException ex) {
             System.out.println("Error on: connection rollback");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
-    
+    */
     @Test
     public void testAddMaintenanceActivityUnplanned() throws MaintenanceActivityException {
         try {
@@ -536,6 +569,8 @@ public class MaintenanceActivityDAOImplTest {
             verify(selectDefaultMaintenanceActivity(3), activity);
         } catch (SQLException ex) {
             System.out.println("Error on: connection rollback");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -601,7 +636,9 @@ public class MaintenanceActivityDAOImplTest {
             fail("SiteException");
         } catch (DateException ex) {
             fail("DateException");
-        }    
+        }  catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }   
     }
     
     /**
@@ -625,9 +662,11 @@ public class MaintenanceActivityDAOImplTest {
             fail("MaintenanceActivityException was thrown");
         }catch (SiteException ex) {
             fail("SiteException");
-        } catch (DateException ex) {
+        }catch (DateException ex) {
             fail("DateException");
-        } 
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
         
     }
     
@@ -648,7 +687,9 @@ public class MaintenanceActivityDAOImplTest {
             fail("SiteException");
         } catch (DateException ex) {
             fail("DateException");
-        }     
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }    
     }
     
     /**
@@ -664,7 +705,9 @@ public class MaintenanceActivityDAOImplTest {
             fail("SiteException");
         }catch(MaintenanceActivityException ex){
             fail("MaintenanceActivityException was thrown");
-        } 
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
     /**
@@ -680,6 +723,8 @@ public class MaintenanceActivityDAOImplTest {
             fail("SiteException");
         }catch(MaintenanceActivityException ex){
             fail("MaintenanceActivityException was thrown");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         } 
     }
     
@@ -696,6 +741,8 @@ public class MaintenanceActivityDAOImplTest {
             fail("SiteException");
         }catch(MaintenanceActivityException ex){
             fail("MaintenanceActivityException was thrown");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         } 
     }
     
@@ -712,6 +759,8 @@ public class MaintenanceActivityDAOImplTest {
             fail("MaintenanceActivityException was thrown");
         }   catch (DateException ex) {
             fail("DateException");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }   
     }
     

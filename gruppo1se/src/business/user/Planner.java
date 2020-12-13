@@ -8,8 +8,10 @@ package business.user;
 import business.maintenanceactivity.Appointment;
 import business.maintenanceactivity.MaintenanceActivity;
 import business.maintenanceactivity.MaintenanceActivityFactory;
+import business.maintenanceactivity.MaintenanceActivityFactory.Typology;
 import business.maintenanceactivity.MaintenanceProcedure;
 import business.maintenanceactivity.Material;
+import dto.MaintainerDTO;
 import exception.AppointmentException;
 import exception.DateException;
 import exception.MaintenanceActivityException;
@@ -120,22 +122,12 @@ public class Planner extends User {
     //Developed by Antonio Gorrasi
     public boolean modifyMaintenanceActivity(int activityId, String branchOffice, String area, String typology, String activityDescription, 
             int estimatedInterventionTime, String date, boolean interruptibleActivity, 
-            String typologyOfActivity, String typologyOfUnplannedActivity) throws MaintenanceActivityException, NotValidParameterException{
-        
-        typologyOfActivity = typologyOfActivity.toUpperCase();
-        typologyOfUnplannedActivity = typologyOfUnplannedActivity == null ? null : typologyOfUnplannedActivity.toUpperCase();
-        
-        try{
-            MaintenanceActivityFactory.Typology type = typologyOfActivity.compareTo("PLANNED")==0 ? 
-                        MaintenanceActivityFactory.Typology.PLANNED : MaintenanceActivityFactory.Typology.valueOf(typologyOfUnplannedActivity);
-
-            MaintenanceActivity newActivity = MaintenanceActivityFactory.make(type, activityId, branchOffice, area, null, typology, activityDescription, 
+            Typology typologyOfActivity) throws MaintenanceActivityException, NotValidParameterException{
+            
+            MaintenanceActivity newActivity = MaintenanceActivityFactory.make(typologyOfActivity, activityId, branchOffice, area, null, typology, activityDescription, 
                     estimatedInterventionTime, date, null, null,interruptibleActivity);
-
+            
             return maintenanceActivityDao.modifyMaintenaceActivity(newActivity);
-        }catch(IllegalArgumentException ex){
-            throw new MaintenanceActivityException("Typology of Activity not valid");
-        }
     }
     
     
@@ -145,15 +137,8 @@ public class Planner extends User {
     
     public boolean makeMaintenanceActivity(int activityId, String branchOffice, String area, String workspaceNotes, String typology, String activityDescription, int estimatedInterventionTime, 
             String date, String smp, List<Material> materials, boolean interruptibleActivity,
-            boolean plannedActivity, boolean extraActivity, boolean ewo) throws MaintenanceActivityException, MaterialException, NotValidParameterException{
-        MaintenanceActivityFactory.Typology type = null;
-        if (plannedActivity)
-            type = MaintenanceActivityFactory.Typology.PLANNED;
-        else if(extraActivity)
-            type = MaintenanceActivityFactory.Typology.EXTRA;
-        else
-            type = MaintenanceActivityFactory.Typology.EWO;
-        MaintenanceActivity activity = MaintenanceActivityFactory.make(type, activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime,
+            Typology typologyOfActivity) throws MaintenanceActivityException, MaterialException, NotValidParameterException{
+        MaintenanceActivity activity = MaintenanceActivityFactory.make(typologyOfActivity, activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime,
                 date, smp, materials, interruptibleActivity);
         if (materials!=null)
             return maintenanceActivityDao.addMaintenanceActivity(activity) && requiredMaterialsDao.addRequiredMaterial(activityId, materials);
@@ -173,7 +158,7 @@ public class Planner extends User {
     }
     
     //Developed by Antonio Gorrasi
-    public List<Material> retrieveAvaliableMaterialToAdd(int activityId) throws MaterialException{
+    public List<Material> retrieveAvaliableMaterialToAdd(int activityId) throws MaterialException, NotValidParameterException{
         return requiredMaterialsDao.retrieveAvailableMaterialToAdd(activityId);
     }
     
@@ -201,12 +186,12 @@ public class Planner extends User {
     }
     
     //Developed by Antonio Gorrasi
-    public List<Maintainer> viewEmployeeAvailability(int week, int year) throws UsersException, DateException, AppointmentException, SkillException{
-        List<Maintainer> maintainers = userDao.readMaintainers();
+    public List<MaintainerDTO> viewEmployeeAvailability(int week, int year) throws UsersException, DateException, AppointmentException, SkillException, NotValidParameterException{
+        List<MaintainerDTO> maintainers = userDao.readMaintainers();
         List<LocalDate> date = WeekConverter.getStartEndDate(week, year);
         LocalDate startDateOfWeek = date.get(0);
         LocalDate endDateOfWeek = date.get(1);
-        for(Maintainer maintainer: maintainers){
+        for(MaintainerDTO maintainer: maintainers){
             maintainer.setAppointmentsInWeek(employeeAppointmentDao.getEmployeeAvailability(maintainer.getUsername(),startDateOfWeek,endDateOfWeek)); 
             maintainer.setSkills(maintainerSkillDao.getMaintainerSkills(maintainer.getUsername()));
         }

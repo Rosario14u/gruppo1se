@@ -6,6 +6,7 @@
 package presentation.administrator;
 
 import business.user.SystemAdministrator;
+import exception.NotValidParameterException;
 import exception.ProcedureException;
 import java.io.File;
 import java.nio.file.Path;
@@ -35,10 +36,14 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
      * Creates new form CreateProcedureGUI
      */
     public CreateProcedureGUI() {
-        fileChoosen = null;
-        admin = new SystemAdministrator("admin","admin", new MaintenanceProcedureDAOImpl(),new UsersDAOImpl(),new TypologyDAOImpl());
-        initComponents();
-        setField(false);
+        try {
+            fileChoosen = null;
+            admin = new SystemAdministrator("admin","admin", new MaintenanceProcedureDAOImpl(),new UsersDAOImpl(),new TypologyDAOImpl());
+            initComponents();
+            setField(false);
+        } catch (NotValidParameterException ex) {
+            errorMessage(ex.getMessage());
+        }
     }
 
     /**
@@ -170,6 +175,8 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
                 errorMessage("Nome file già esistente");
             }
         } catch (ProcedureException ex) {
+            errorMessage(ex.getMessage());
+        } catch (NotValidParameterException ex) {
             errorMessage(ex.getMessage());
         }
         

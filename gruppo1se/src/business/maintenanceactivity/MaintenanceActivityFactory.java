@@ -47,10 +47,11 @@ public abstract class MaintenanceActivityFactory {
      * @return the required instance of maintenance activity
      */
     public static MaintenanceActivity make(Typology type, int activityId, String branchOffice, String area,
-            String workspaceNotes, String typology, String activityDescription, int estimatedInterventionTime, String date,
-            String smp, List<Material> materials, boolean interruptibleActivity) throws NotValidParameterException {
+            String workspaceNotes,String typology, String activityDescription, int estimatedInterventionTime, String date,
+            String smp, List<Material> materials, boolean interruptibleActivity) throws NotValidParameterException{
         MaintenanceActivityFactory factory = null;
         if (type == Typology.PLANNED) {
+            System.out.println("sono qua");
             factory = new PlannedActivityFactory();
         } else {
             factory = new UnplannedActivityFactory();
@@ -85,12 +86,14 @@ public abstract class MaintenanceActivityFactory {
      * @return the required instance of maintenance activity
      */
     private MaintenanceActivity build(Typology type, int activityId, String branchOffice, String area,
-            String workspaceNotes, String typology, String activityDescription, int estimatedInterventionTime, String date,
+            String workspaceNotes,String typology, String activityDescription, int estimatedInterventionTime, String date,
             String smp, List<Material> materials, boolean interruptibleActivity) throws NotValidParameterException {
-        
         Site site = new Site(branchOffice, area, workspaceNotes);
         LocalDate localDate = LocalDate.parse(date);
-        MaintenanceProcedure procedure = new MaintenanceProcedure(smp);
+        MaintenanceProcedure procedure = null;
+        if(smp != null){
+            procedure = new MaintenanceProcedure(smp); 
+        }         
         return this.selectMaintenanceActivity(type, activityId, site, typology, activityDescription,
                 estimatedInterventionTime, localDate, procedure, materials, interruptibleActivity);
     }
@@ -119,5 +122,5 @@ public abstract class MaintenanceActivityFactory {
     protected abstract MaintenanceActivity selectMaintenanceActivity(Typology type, int activityId, Site site,
             String typology, String activityDescription, int estimatedInterventionTime,
             LocalDate date, MaintenanceProcedure maintenanceProcedure, List<Material> materials,
-            boolean interruptibleActivity);
+            boolean interruptibleActivity) throws NotValidParameterException;
 }

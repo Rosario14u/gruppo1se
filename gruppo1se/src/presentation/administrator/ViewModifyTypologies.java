@@ -6,6 +6,7 @@
 package presentation.administrator;
 
 import business.user.SystemAdministrator;
+import exception.NotValidParameterException;
 import exception.TypologyException;
 import java.util.ArrayList;
 import java.util.List;
@@ -311,6 +312,8 @@ public class ViewModifyTypologies extends javax.swing.JFrame {
                     new ViewModifyTypologies(new SystemAdministrator("ProvaUsername","ProvaPassword",new MaintenanceProcedureDAOImpl(),
                             new UsersDAOImpl(),new TypologyDAOImpl())).setVisible(true);
                 } catch (TypologyException ex) {
+                    Logger.getLogger(ViewModifyTypologies.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (NotValidParameterException ex) {
                     Logger.getLogger(ViewModifyTypologies.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }

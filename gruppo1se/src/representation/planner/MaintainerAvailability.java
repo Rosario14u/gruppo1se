@@ -15,6 +15,7 @@ import business.maintenanceactivity.Skill;
 import business.user.Maintainer;
 import business.user.Planner;
 import business.user.WeekConverter;
+import dto.MaintainerDTO;
 import exception.AppointmentException;
 import exception.DateException;
 import exception.NotValidParameterException;
@@ -54,7 +55,7 @@ public class MaintainerAvailability extends javax.swing.JFrame {
     private MaintenanceActivity activity;
     private Planner planner;
     private DefaultTableModel tableModel;
-    private List<Maintainer> maintainerList;
+    private List<MaintainerDTO> maintainerList;
     private ActivityAssignment jDialogGUI;
 
     /**
@@ -97,7 +98,7 @@ public class MaintainerAvailability extends javax.swing.JFrame {
             int numProcedureSkill = activity.getMaintenanceProcedure().getSkills().size();
             
             maintainerList = planner.viewEmployeeAvailability(WeekConverter.getWeek(activity.getDate()), WeekConverter.getYear(activity.getDate()));
-            for (Maintainer maintainer : maintainerList) {
+            for (MaintainerDTO maintainer : maintainerList) {
                 String[] rowTable = new String[]{"", "", "100%", "100%", "100%", "100%", "100%", "100%", "100%"};
                 //float[] rowTable = new float[] {100,100,100,100,100,100,100};
                 rowTable[0] = maintainer.getUsername();
@@ -117,8 +118,8 @@ public class MaintainerAvailability extends javax.swing.JFrame {
                 tableModel.addRow(rowTable);
                 
             }
-        } catch (UsersException | DateException | AppointmentException | SkillException ex) {
-            errorMessage("Error in table loading");
+        } catch (UsersException | DateException | AppointmentException | SkillException | NotValidParameterException ex) {
+            errorMessage(ex.getMessage());
         }
     }
 
@@ -316,48 +317,46 @@ public class MaintainerAvailability extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MaintainerAvailability.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MaintainerAvailability.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MaintainerAvailability.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MaintainerAvailability.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    ArrayList<Skill> skills = new ArrayList<>();
-                    skills.add(new Skill("Java Knowledge"));
-                    skills.add(new Skill("English Knowledge"));
-                    skills.add(new Skill("SQL Knowledge"));
-                    MaintenanceActivity activity = new PlannedMaintenanceActivity(1, new Site("ProvaArea", "ProvaBranchOffice", "ProvaWorkspaceNotes"),
-                            "ProvaTypology", "ProvaActivityDescription", 90, LocalDate.of(2020, 12, 22), new MaintenanceProcedure("FilePDF"), new ArrayList<Material>(), true);
-                    new MaintainerAvailability(activity).setVisible(true);
-                } catch (NotValidParameterException ex) {
-                    Logger.getLogger(MaintainerAvailability.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-    }
-
+    
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(MaintainerAvailability.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(MaintainerAvailability.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(MaintainerAvailability.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(MaintainerAvailability.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//    
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                ArrayList<Skill> skills = new ArrayList<>();
+//                skills.add(new Skill("Java Knowledge"));
+//                skills.add(new Skill("English Knowledge"));
+//                skills.add(new Skill("SQL Knowledge"));
+//                MaintenanceActivity activity = new PlannedMaintenanceActivity(1, new Site("ProvaArea", "ProvaBranchOffice", "ProvaWorkspaceNotes"),
+//                        "ProvaTypology", "ProvaActivityDescription", 90, LocalDate.of(2020, 12, 22), new MaintenanceProcedure("FilePDF"), new ArrayList<Material>(), true);
+//                new MaintainerAvailability(activity).setVisible(true);
+//            }
+//        });
+//    }
+    
     private void errorMessage(String message) {
         JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.ERROR_MESSAGE);
     }

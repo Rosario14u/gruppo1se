@@ -5,37 +5,52 @@
  */
 package business.maintenanceactivity;
 
+import java.security.InvalidParameterException;
 import java.util.Objects;
 
 /**
  *
- * @author gorra
- * Developed by Antonio Gorrasi
+ * @author gorra Developed by Antonio Gorrasi
  */
 public class Site {
+
     private final String branchOffice;
     private final String area;
     private String workSpaceNotes;
 
     /**
-     * Constructor of Site 
+     * Constructor of Site
+     *
      * @param branchOffice Branch office
-     * @param area Area 
+     * @param area Area
      */
     public Site(String branchOffice, String area) {
+        if (branchOffice == null || area == null || branchOffice.equals("") || area.equals("")) {
+            throw new InvalidParameterException("Site not valid");
+        }
         this.branchOffice = branchOffice;
         this.area = area;
-        this.workSpaceNotes = null; 
+        this.workSpaceNotes = null;
     }
 
+    /**
+     *
+     * @param branchOffice
+     * @param area
+     * @param workSpaceNotes
+     */
     public Site(String branchOffice, String area, String workSpaceNotes) {
+        if (branchOffice == null || area == null || branchOffice == null
+                || branchOffice.equals("") || area.equals("") || branchOffice.equals("")) {
+            throw new InvalidParameterException("Site not valid");
+        }
         this.branchOffice = branchOffice;
         this.area = area;
         this.workSpaceNotes = workSpaceNotes;
     }
-    
+
     /**
-     * 
+     *
      * @return {@code String} branchOffice
      */
     public String getBranchOffice() {
@@ -43,7 +58,7 @@ public class Site {
     }
 
     /**
-     * 
+     *
      * @return {@code String} Area
      */
     public String getArea() {
@@ -51,7 +66,7 @@ public class Site {
     }
 
     /**
-     * 
+     *
      * @return {@code String} Workspace notes
      */
     public String getWorkSpaceNotes() {
@@ -60,9 +75,13 @@ public class Site {
 
     /**
      * Set Workspace notes
+     *
      * @param workSpaceNotes Workspace notes
      */
     public void setWorkSpaceNotes(String workSpaceNotes) {
+        if (workSpaceNotes == null || workSpaceNotes.equals("")) {
+            throw new InvalidParameterException("Site not valid");
+        }
         this.workSpaceNotes = workSpaceNotes;
     }
 
@@ -101,7 +120,8 @@ public class Site {
 
     /**
      * Return string representation of the Site object
-     * @return {@code String} Workspace notes 
+     *
+     * @return {@code String} Workspace notes
      */
     @Override
     public String toString() {

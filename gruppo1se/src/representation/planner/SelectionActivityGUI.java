@@ -250,18 +250,8 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
                tableModel.addRow(new Object[]{ma.getActivityId(), ma.getSite().getArea(), ma.getTypology(), ma.getEstimatedInterventionTime()});
             }
 
-        } catch (MaintenanceActivityException ex) {
-            System.out.println("MaintenanceActivityException");
-        } catch (SiteException ex) {
-            System.out.println("SiteException");
-        } catch (DateException ex) {
-            System.out.println("DateException");
-        } catch (SkillException ex) {
-            System.out.println("SkillException");
-        } catch (NotValidParameterException ex) {
+        } catch (MaintenanceActivityException | SiteException | DateException | SkillException | NotValidParameterException ex) {
             errorMessage(ex.getMessage());
-            System.out.println("NotValidParameterException");
-            
         }
     }
     
@@ -270,8 +260,8 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, message, "INFO", JOptionPane.INFORMATION_MESSAGE);
     }
     
-    private void errorMessage(String message){
-        JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.INFORMATION_MESSAGE);
+    private void errorMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.ERROR_MESSAGE);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

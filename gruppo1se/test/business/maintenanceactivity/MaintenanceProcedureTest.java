@@ -5,6 +5,9 @@
  */
 package business.maintenanceactivity;
 
+import exception.NotValidParameterException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -19,7 +22,11 @@ import static org.junit.Assert.*;
 public class MaintenanceProcedureTest {
     private MaintenanceProcedure instance;
     public MaintenanceProcedureTest() {
-        instance = new MaintenanceProcedure("Smp");
+        try {
+            instance = new MaintenanceProcedure("Smp");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
     @BeforeClass
@@ -53,9 +60,13 @@ public class MaintenanceProcedureTest {
      */
     @Test
     public void testSetSmp() {
-        String smp = "Smp2";
-        instance.setSmp(smp);
-        assertEquals(instance.getSmp(),smp);
+        try {
+            String smp = "Smp2";
+            instance.setSmp(smp);
+            assertEquals(instance.getSmp(),smp);
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
 
     /**
@@ -74,9 +85,13 @@ public class MaintenanceProcedureTest {
      */
     @Test
     public void testEqualsSameAttributes() {
-        MaintenanceProcedure expProcedure = new MaintenanceProcedure("Smp");
-        boolean result = instance.equals(expProcedure);
-        assertTrue(result);
+        try {
+            MaintenanceProcedure expProcedure = new MaintenanceProcedure("Smp");
+            boolean result = instance.equals(expProcedure);
+            assertTrue(result);
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
     /**
@@ -84,9 +99,13 @@ public class MaintenanceProcedureTest {
      */
     @Test
     public void testEqualsDifferentAttributes() {
-        MaintenanceProcedure expProcedure = new MaintenanceProcedure("Smp2");
-        boolean result = instance.equals(expProcedure);
-        assertFalse(result);
+        try {
+            MaintenanceProcedure expProcedure = new MaintenanceProcedure("Smp2");
+            boolean result = instance.equals(expProcedure);
+            assertFalse(result);
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
 

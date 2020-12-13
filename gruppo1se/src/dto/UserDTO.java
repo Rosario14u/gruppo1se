@@ -3,62 +3,36 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package business.user;
+package dto;
 
 import java.util.Objects;
 
 /**
  *
- * @author rosar
+ * @author gorra
  */
-//Class developed by Rosario Gaeta
-public abstract class User {
+public abstract class UserDTO {
     private final String username;
     private final String password;
-    
-    
-    /**
-     * Constructor of User
-     * @param username username of User
-     * @param password password of User
-     */
-    public User(String username, String password) {
+
+    public UserDTO(String username, String password) {
         this.username = username;
         this.password = password;
     }
-    
-    
-    /**
-     * 
-     * @return {@code String} username
-     */
+
     public String getUsername() {
         return username;
     }
-    
-    
-    /**
-     * 
-     * @return {@code String} password 
-     */
+
     public String getPassword() {
         return password;
-    }
-    
-    
-    /**
-     * 
-     * @return {@code String} representation of User
-     */
-    @Override
-    public String toString() {
-        return "User{" + "username=" + username + ", password=" + password + '}';
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 13 * hash + Objects.hashCode(this.username);
+        int hash = 3;
+        hash = 53 * hash + Objects.hashCode(this.username);
+        hash = 53 * hash + Objects.hashCode(this.password);
         return hash;
     }
 
@@ -73,10 +47,20 @@ public abstract class User {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final User other = (User) obj;
+        final UserDTO other = (UserDTO) obj;
         if (!Objects.equals(this.username, other.username)) {
+            return false;
+        }
+        if (!Objects.equals(this.password, other.password)) {
             return false;
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "UserDTO{" + "username=" + username + ", password=" + password + '}';
+    }
+    
+    
 }

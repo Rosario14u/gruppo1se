@@ -6,6 +6,7 @@
 package stub;
 
 import business.maintenanceactivity.Skill;
+import exception.NotValidParameterException;
 import exception.SkillException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,27 +20,31 @@ public class RequiredSkillForMaintenanceDAOStub implements RequiredSkillForMaint
 
     @Override
     public List<Skill> retrieveSkillsBySmp(String smp) throws SkillException {
-        switch (smp) {
-            case "smp1":
-                return retrieveArrayList("Skill1","Skill2","Skill3");
-            case "smp2":
-                return retrieveArrayList("Skill4","Skill5","Skill6");
-            case "smp3":
-                return retrieveArrayList("Skill7","Skill8","Skill9");
-            case "smp4":
-                return retrieveArrayList("Skil10","Skill1","Skill2");
-            case "smp5":
-                return retrieveArrayList("Skill13","Skill14","Skill5");
-            case "smp6":
-                return retrieveArrayList("Skill16","Skill17","Skill8");
-            case "smp7":
-                return new ArrayList<>();
-            default:
-                throw new SkillException();
+        try{
+            switch (smp) {
+                case "smp1":
+                    return retrieveArrayList("Skill1","Skill2","Skill3");
+                case "smp2":
+                    return retrieveArrayList("Skill4","Skill5","Skill6");
+                case "smp3":
+                    return retrieveArrayList("Skill7","Skill8","Skill9");
+                case "smp4":
+                    return retrieveArrayList("Skil10","Skill1","Skill2");
+                case "smp5":
+                    return retrieveArrayList("Skill13","Skill14","Skill5");
+                case "smp6":
+                    return retrieveArrayList("Skill16","Skill17","Skill8");
+                case "smp7":
+                    return new ArrayList<>();
+                default:
+                    throw new SkillException();
+            }
+        }catch(NotValidParameterException ex){
+            throw new SkillException();
         }
     }
     
-    private List<Skill> retrieveArrayList(String material1,String material2, String material3){
+    private List<Skill> retrieveArrayList(String material1,String material2, String material3) throws NotValidParameterException{
         return new ArrayList<>(){{
                     add(new Skill(material1));
                     add(new Skill(material2));
@@ -74,7 +79,7 @@ public class RequiredSkillForMaintenanceDAOStub implements RequiredSkillForMaint
 
     
     @Override
-    public List<Skill> retrieveAvailableSkillToAdd(String smp) throws SkillException {
+    public List<Skill> retrieveAvailableSkillToAdd(String smp) throws SkillException, NotValidParameterException {
         switch (smp){
             case "smp6":                
                 return new ArrayList<>(){{

@@ -7,6 +7,7 @@ package representation.planner;
 
 import business.maintenanceactivity.Ewo;
 import business.maintenanceactivity.MaintenanceActivity;
+import business.maintenanceactivity.MaintenanceActivityFactory.Typology;
 import business.maintenanceactivity.Material;
 import business.maintenanceactivity.PlannedMaintenanceActivity;
 import business.user.Planner;
@@ -154,7 +155,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         jScrollPane1.setViewportView(workspaceNoteTextArea);
 
         activityComboBox.setFont(new java.awt.Font("Rockwell", 2, 14)); // NOI18N
-        activityComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Planned", "EWO", "Extra"}));
+        activityComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(Typology.values()));
 
         listOfMaterialsLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         listOfMaterialsLabel.setText("List of Materials:");
@@ -402,11 +403,9 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
             }        
         }catch(NumberFormatException ex){
             errorMessage("ID must be an integer");
-        } catch (SiteException | MaintenanceActivityException | MaterialException | NumberNotValidException ex) {
+        } catch (SiteException | MaintenanceActivityException | MaterialException | NumberNotValidException | NotValidParameterException ex) {
             errorMessage(ex.getMessage());
-        } catch (NotValidParameterException ex) {
-            errorMessage(ex.getMessage());
-        } 
+        }
     }//GEN-LAST:event_viewButtonActionPerformed
 
     private void activityIdTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_activityIdTextFieldActionPerformed
@@ -414,15 +413,13 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_activityIdTextFieldActionPerformed
 
     private void modifyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyButtonActionPerformed
-        try {
-            getField();
-            clearField();
-            initializeField(false);
-        } catch (NumberNotValidException ex) {
-            errorMessage(ex.getMessage());
-        }
+        getField();
+        clearField();
+        initializeField(false);       
     }//GEN-LAST:event_modifyButtonActionPerformed
 
+    
+    
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         int selectedIndex = materialComboBox.getSelectedIndex();
         if(selectedIndex != -1){
@@ -468,29 +465,29 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
     
     
     
-    private void getField() throws NumberNotValidException{
-        String area =  areaTextField.getText();
-        String branchOffice = branchOfficeTextField.getText();
-        
-        String value = activityComboBox.getSelectedItem().toString().toUpperCase();
-        String typologyOfActivity = value.compareTo("PLANNED") == 0 ? "PLANNED" : "UNPLANNED";
-        String typologyOfUnplannedActivity = typologyOfActivity.compareTo("UNPLANNED") == 0 ? value : null;
-                       
-        int estimatedInterventionTime = getCheckedNumberParameter(estimatedInterventionTimeTextField.getText());
-        int activityId = getCheckedNumberParameter(activityIdTextField.getText());
-        boolean interruptibleActivity = interruptibleActivityCheckBox.isSelected();
-        String typology = typologyTextField.getText();
-        String activityDescrioption = activityDescriptionTextArea.getText();
-        String date = calendarDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString();
-        if(activityId >= 0 && estimatedInterventionTime >= 0)
-            try{
-                planner.modifyMaintenanceActivity(activityId, branchOffice, area, typology, activityDescrioption, estimatedInterventionTime, 
-                        date, interruptibleActivity, typologyOfActivity, typologyOfUnplannedActivity);
-            }catch(MaintenanceActivityException ex){
-                errorMessage(ex.getMessage());
-            } catch (NotValidParameterException ex) {
-                errorMessage(ex.getMessage());
-            }
+    private void getField(){
+        try {
+            String area =  areaTextField.getText();
+            String branchOffice = branchOfficeTextField.getText();
+            
+            Typology typologyOfActivity = Typology.valueOf(activityComboBox.getSelectedItem().toString());
+            
+            int estimatedInterventionTime = getCheckedNumberParameter(estimatedInterventionTimeTextField.getText());
+            int activityId = getCheckedNumberParameter(activityIdTextField.getText());
+            boolean interruptibleActivity = interruptibleActivityCheckBox.isSelected();
+            String typology = typologyTextField.getText();
+            String activityDescrioption = activityDescriptionTextArea.getText();
+            String date = calendarDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString();
+            if(activityId >= 0 && estimatedInterventionTime >= 0)
+                try{
+                    planner.modifyMaintenanceActivity(activityId, branchOffice, area, typology, activityDescrioption, estimatedInterventionTime,
+                            date, interruptibleActivity, typologyOfActivity);
+                }catch(MaintenanceActivityException | NotValidParameterException ex){
+                    errorMessage(ex.getMessage());
+                }
+        } catch (NumberNotValidException ex) {
+            Logger.getLogger(ViewModifyPlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
          
     
@@ -514,9 +511,9 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
             list = planner.retrieveAvaliableMaterialToAdd(id);
             for(Material material:list)
                 materialComboBox.addItem(material);
-        } catch (MaterialException ex) {
+        } catch (MaterialException | NotValidParameterException  ex) {
             errorMessage(ex.getMessage());
-        }
+        } 
     }
     
     
@@ -628,7 +625,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> activityComboBox;
+    private javax.swing.JComboBox<Typology> activityComboBox;
     private javax.swing.JLabel activityDescriptionLabel;
     private javax.swing.JTextArea activityDescriptionTextArea;
     private javax.swing.JLabel activityIdLabel;

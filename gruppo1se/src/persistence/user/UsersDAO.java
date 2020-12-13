@@ -7,6 +7,9 @@ package persistence.user;
 
 import business.user.Maintainer;
 import business.user.User;
+import dto.MaintainerDTO;
+import dto.UserDTO;
+import exception.NotValidParameterException;
 import exception.UsersException;
 import java.util.List;
 
@@ -15,9 +18,9 @@ import java.util.List;
  * @author VincenzaCoppola <v.coppola38@studenti.unisa.it>
  */
 public interface UsersDAO {
-   public List<User> readUsers() throws UsersException;
-   public boolean addUser(User user) throws UsersException;
+   public List<UserDTO> readUsers() throws UsersException, NotValidParameterException;
+   public boolean addUser(UserDTO user) throws UsersException;
    public int deleteUsers(List<String> usernameList) throws UsersException;
-   public boolean updateUser(String oldUsername, User newUser) throws UsersException;
-   public List<Maintainer> readMaintainers() throws UsersException;
+   public boolean updateUser(String oldUsername, UserDTO newUser) throws UsersException;
+   public List<MaintainerDTO> readMaintainers() throws UsersException;
 }

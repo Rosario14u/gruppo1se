@@ -5,6 +5,7 @@
  */
 package business.maintenanceactivity;
 
+import exception.NotValidParameterException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
  */
 public class PlannedMaintenanceActivity extends MaintenanceActivity{
 
-    public PlannedMaintenanceActivity(int activityId, Site site, String typology, String activityDescription, int estimatedInterventionTime, LocalDate date, MaintenanceProcedure maintenanceProcedure, List<Material> materials, boolean interruptibleActivity) {
+    public PlannedMaintenanceActivity(int activityId, Site site, String typology, String activityDescription, int estimatedInterventionTime, LocalDate date, MaintenanceProcedure maintenanceProcedure, List<Material> materials, boolean interruptibleActivity) throws NotValidParameterException {
         super(activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity);
     }
    

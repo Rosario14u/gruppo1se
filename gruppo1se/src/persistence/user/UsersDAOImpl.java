@@ -8,6 +8,11 @@ package persistence.user;
 
 import persistence.database.ConnectionDB;
 import business.user.*;
+import dto.MaintainerDTO;
+import dto.PlannerDTO;
+import dto.SystemAdministratorDTO;
+import dto.UserDTO;
+import exception.NotValidParameterException;
 import java.sql.*;
 import exception.UsersException;
 import java.util.ArrayList;
@@ -32,15 +37,15 @@ public class UsersDAOImpl implements UsersDAO {
     private final String SQL_UPDATE = "UPDATE users SET username=?, password=?, role=? WHERE username = ?";
     
     @Override
-    public boolean addUser(User user) throws UsersException{
+    public boolean addUser(UserDTO user) throws UsersException{
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             PreparedStatement stmt = conn.prepareStatement(SQL_INSERT);
             stmt.setString(1, user.getUsername());
             stmt.setString(2, user.getPassword());
-            if (Maintainer.class.isInstance(user))
+            if (MaintainerDTO.class.isInstance(user))
                 stmt.setString(3, "Maintainer");
-            else if (Planner.class.isInstance(user))
+            else if (PlannerDTO.class.isInstance(user))
                 stmt.setString(3, "Planner");
             else
                 stmt.setString(3, "System Administrator");
@@ -53,32 +58,28 @@ public class UsersDAOImpl implements UsersDAO {
     
 
     
-    public List<User> readUsers() throws UsersException{
+    public List<UserDTO> readUsers() throws UsersException, NotValidParameterException{
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             Statement stmt = conn.createStatement();
             ResultSet set = stmt.executeQuery(SQL_SELECT);
             return this.makeUsers(set);
-            }
+        }
         catch (SQLException ex) {
             throw new UsersException();
         }
     }
     
-    private List<User> makeUsers(ResultSet set) throws UsersException{
-        List<User> users = new ArrayList<>();
+    private List<UserDTO> makeUsers(ResultSet set) throws UsersException, NotValidParameterException{
+        List<UserDTO> users = new ArrayList<>();
         try {
             while (set.next()){
                 if (set.getString("role").equals("System Administrator"))
-                    users.add(new SystemAdministrator(set.getString("username"), set.getString("password"), new MaintenanceProcedureDAOImpl(), new UsersDAOImpl(),new TypologyDAOImpl()));
+                    users.add(new SystemAdministratorDTO(set.getString("username"), set.getString("password")));
                 else if (set.getString("role").equals("Maintainer"))
-                    users.add(new Maintainer(set.getString("username"), set.getString("password")));
+                    users.add(new MaintainerDTO(set.getString("username"), set.getString("password")));
                 else
-                    users.add(new Planner(set.getString("username"), set.getString("password"),
-                            new MaintenanceActivityDAOImpl(new SiteDaoImpl()) ,
-                            new RequiredMaterialForMaintenanceDAOImpl(), 
-                            new UsersDAOImpl(), new EmployeeAppointmentDAOImpl(),
-                            new RequiredSkillForMaintenanceDAOImpl(),new MaintainerSkillDAOImpl()));
+                    users.add(new PlannerDTO(set.getString("username"), set.getString("password")));
             }
             return users;
         } catch (SQLException ex) {
@@ -114,15 +115,15 @@ public class UsersDAOImpl implements UsersDAO {
     
     
     @Override
-    public boolean updateUser(String oldUsername, User newUser) throws UsersException {       
+    public boolean updateUser(String oldUsername, UserDTO newUser) throws UsersException {       
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             PreparedStatement stm = conn.prepareStatement(SQL_UPDATE);
             stm.setString(1, newUser.getUsername());
             stm.setString(2, newUser.getPassword());
-            if (Maintainer.class.isInstance(newUser))
+            if (MaintainerDTO.class.isInstance(newUser))
                 stm.setString(3, "Maintainer");
-            else if (Planner.class.isInstance(newUser))
+            else if (PlannerDTO.class.isInstance(newUser))
                 stm.setString(3, "Planner");
             else
                 stm.setString(3, "System Administrator");
@@ -135,14 +136,14 @@ public class UsersDAOImpl implements UsersDAO {
     }
     
     @Override
-    public List<Maintainer> readMaintainers() throws UsersException{
-        List<Maintainer> maintainers = new ArrayList<>();
+    public List<MaintainerDTO> readMaintainers() throws UsersException{
+        List<MaintainerDTO> maintainers = new ArrayList<>();
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             Statement stmt = conn.createStatement();
             ResultSet set = stmt.executeQuery(SELECT_MAINTAINER);
             while(set.next()){
-                maintainers.add(new Maintainer(set.getString("username"), set.getString("password")));
+                maintainers.add(new MaintainerDTO(set.getString("username"), set.getString("password")));
             }
             return maintainers;
         }

@@ -6,6 +6,7 @@
 package persistence.maintenanceactivity;
 
 import business.maintenanceactivity.MaintenanceProcedure;
+import exception.NotValidParameterException;
 import exception.ProcedureException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -80,8 +81,9 @@ public class MaintenanceProcedureDAOImplTest {
             fail("SQLEXception");
         } catch (ProcedureException ex) {
             fail("ProcedureException");
-        }
-        
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }       
     }
     
     @Test(expected = ProcedureException.class)
@@ -92,8 +94,9 @@ public class MaintenanceProcedureDAOImplTest {
             procedureDao.addSmp(new MaintenanceProcedure("ProvaSmp2"));
         } catch (SQLException ex) {
             fail("SQLEXception");
-        }
-        
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }     
     }
     
     @Test(expected = ProcedureException.class)
@@ -134,8 +137,8 @@ public class MaintenanceProcedureDAOImplTest {
     
     @Test
     public void updateSmpSuccessfulUpdate() {
-        MaintenanceProcedure procedure = new MaintenanceProcedure("ProvaSmpRin1");
         try {
+            MaintenanceProcedure procedure = new MaintenanceProcedure("ProvaSmpRin1");
             delete_procedure("ProvaSmp1");
             insert_procedure("ProvaSmp1");
             boolean retVal = procedureDao.updateSmp(procedure, "ProvaSmp1");
@@ -145,13 +148,15 @@ public class MaintenanceProcedureDAOImplTest {
             fail("SQLEXception");
         } catch (ProcedureException ex) {
             fail("ProcedureException");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         } 
     }
     
     @Test
     public void updateSmpUnsuccessfulUpdate() {
-        MaintenanceProcedure procedure = new MaintenanceProcedure("ProvaSmpRin1");
         try {
+            MaintenanceProcedure procedure = new MaintenanceProcedure("ProvaSmpRin1");
             delete_procedure("ProvaSmp1");
             boolean retVal = procedureDao.updateSmp(procedure, "ProvaSmp1");
             assertFalse("UnsuccessfulUpdate", retVal);
@@ -159,66 +164,65 @@ public class MaintenanceProcedureDAOImplTest {
             fail("SQLEXception");
         } catch (ProcedureException ex) {
             fail("ProcedureException");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         } 
     }
     
     @Test(expected = ProcedureException.class)
     public void updateSmpUnsuccessfulUpdateException1() throws ProcedureException {
-        MaintenanceProcedure procedure = new MaintenanceProcedure("ProvaSmp1");
         try {
+            MaintenanceProcedure procedure = new MaintenanceProcedure("ProvaSmp1");
             delete_procedure("ProvaSmp1");
             insert_procedure("ProvaSmp1");
             boolean retVal = procedureDao.updateSmp(procedure, null);
         } catch (SQLException ex) {
             fail("SQLEXception");
-        }
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        } 
     }
     
     @Test(expected = ProcedureException.class)
     public void updateSmpUnsuccessfulUpdateException2() throws ProcedureException {
-        MaintenanceProcedure procedure = new MaintenanceProcedure("ProvaSmp1");
         try {
+            MaintenanceProcedure procedure = new MaintenanceProcedure("ProvaSmp1");
             delete_procedure("ProvaSmp1");
             insert_procedure("ProvaSmp1");
             boolean retVal = procedureDao.updateSmp(procedure, " ");
         } catch (SQLException ex) {
             fail("SQLEXception");
-        }
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        } 
     }
     
     @Test(expected = ProcedureException.class)
     public void updateSmpUnsuccessfulUpdateException3() throws ProcedureException {
-        MaintenanceProcedure procedure = new MaintenanceProcedure("ProvaSmp1");
         try {
+            MaintenanceProcedure procedure = new MaintenanceProcedure("ProvaSmp1");
             delete_procedure("ProvaSmp1");
             insert_procedure("ProvaSmp1");
             boolean retVal = procedureDao.updateSmp(null, "ProvaSmp1");
         } catch (SQLException ex) {
             fail("SQLEXception");
-        }
-    }
-    
-    @Test(expected = ProcedureException.class)
-    public void updateSmpUnsuccessfulUpdateException4() throws ProcedureException {
-        MaintenanceProcedure procedure = new MaintenanceProcedure(" ");
-        try {
-            delete_procedure("ProvaSmp1");
-            insert_procedure("ProvaSmp1");
-            boolean retVal = procedureDao.updateSmp(procedure, "ProvaSmp1");
-        } catch (SQLException ex) {
-            fail("SQLEXception");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         } 
     }
     
+    
     @Test(expected = ProcedureException.class)
     public void updateSmpUnsuccessfulUpdateException5() throws ProcedureException {
-        MaintenanceProcedure procedure = new MaintenanceProcedure("ProvaSmp1");
         try {
+            MaintenanceProcedure procedure = new MaintenanceProcedure("ProvaSmp1");
             delete_procedure("ProvaSmp1");
             insert_procedure("ProvaSmp1");
             boolean retVal = procedureDao.updateSmp(procedure, "ProvaSmp1");
         } catch (SQLException ex) {
             fail("SQLEXception");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         } 
     }
 }

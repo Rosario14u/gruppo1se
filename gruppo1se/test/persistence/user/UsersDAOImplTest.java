@@ -6,6 +6,11 @@
 package persistence.user;
 
 import business.user.*;
+import dto.MaintainerDTO;
+import dto.PlannerDTO;
+import dto.SystemAdministratorDTO;
+import dto.UserDTO;
+import exception.NotValidParameterException;
 import exception.UsersException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -19,12 +24,15 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import persistence.database.ConnectionDB;
+import persistence.maintenanceactivity.MaintenanceProcedureDAO;
 import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
 import persistence.maintenanceactivity.TypologyDAOImpl;
 import stub.EmployeeAppointmentDAOStub;
 import stub.MaintenanceActivityDAOStub;
+import stub.MaintenanceProcedureDAOStub;
 import stub.RequiredMaterialForMaintenanceDAOStub;
 import stub.RequiredSkillForMaintenanceDAOStub;
+import stub.TypologyDAOStub;
 import stub.UsersDAOStub;
 
 /**
@@ -94,17 +102,22 @@ public class UsersDAOImplTest{
         return stmt.executeQuery(select);
     }
     
-    private void verify(ResultSet set, User user) throws SQLException{
+    private void verify(ResultSet set, UserDTO user) throws SQLException{
         assertNotNull(set);
         while(set.next()){
             assertEquals(user.getUsername(), set.getString("username"));
             assertEquals(user.getPassword(), set.getString("password"));
-            if(Planner.class.isInstance(user))
+            if(PlannerDTO.class.isInstance(user)){
+                System.out.println("Planner");
                 assertEquals("Planner", set.getString("role"));
-            else if(Maintainer.class.isInstance(user))
+            }
+            else if(MaintainerDTO.class.isInstance(user)){
+                System.out.println("maintainer");
                 assertEquals("Maintainer", set.getString("role"));
-            else
-                assertEquals("System Administrator", set.getString("role"));
+            }
+            else{
+                System.out.println("SA");
+                assertEquals("System Administrator", set.getString("role"));            }
         }
     }
     /**
@@ -115,9 +128,7 @@ public class UsersDAOImplTest{
     @Test
     public void testAddUserPlanner() throws UsersException, SQLException{
         System.out.println("addUserPlanner");
-        User user = new Planner("ProvaUsername","ProvaPassword",new MaintenanceActivityDAOStub(),
-            new RequiredMaterialForMaintenanceDAOStub(), new UsersDAOStub(),
-            new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub(),new MaintainerSkillDAOImpl());
+        UserDTO user = new PlannerDTO("ProvaUsername","ProvaPassword");
         Statement stmt = conn.createStatement();
         deleteUserDefault(stmt, user.getUsername());
         instance.addUser(user);
@@ -133,7 +144,7 @@ public class UsersDAOImplTest{
     @Test
     public void testAddUserMaintainer() throws UsersException, SQLException{
         System.out.println("addUserMaintainer");
-        User user = new Maintainer("ProvaUsername","ProvaPassword");
+        UserDTO user = new MaintainerDTO("ProvaUsername","ProvaPassword");
         Statement stmt = conn.createStatement();
         deleteUserDefault(stmt, user.getUsername());
         instance.addUser(user);
@@ -149,20 +160,21 @@ public class UsersDAOImplTest{
     @Test
     public void testAddUserSystemAdministrator() throws UsersException, SQLException{
         System.out.println("addUserSystemAdministrator");
-        User user = new SystemAdministrator("ProvaUsername","ProvaPassword");
+        UserDTO user = new SystemAdministratorDTO("ProvaUsername","ProvaPassword");
         Statement stmt = conn.createStatement();
         deleteUserDefault(stmt, user.getUsername());
         instance.addUser(user);
         verify(selectUserDefault(stmt, "ProvaUsername"), user);
         conn.rollback();
     }
+    
 //===============================================================================================================================================
     
-    private void insertUserDefault(Statement stm, User user) throws SQLException{
+    private void insertUserDefault(Statement stm, UserDTO user) throws SQLException{
         String insert = "INSERT INTO Users VALUES ('"+user.getUsername()+"','"+user.getPassword()+"'";
-        if (user.getClass().getSimpleName().equals("Planner"))
+        if (user.getClass().getSimpleName().equals("PlannerDTO"))
             insert+=",'Planner');";
-        else if (user.getClass().getSimpleName().equals("SystemAdministrator"))
+        else if (user.getClass().getSimpleName().equals("SystemAdministratorDTO"))
             insert+=",'System Administrator');";
         else 
             insert+=",'Maintainer');";
@@ -172,26 +184,28 @@ public class UsersDAOImplTest{
     /**
      * Test of readUser method, of class UsersDAOImpl.
      */
-    @Test
+  @Test
     public void testReadUsers() throws UsersException, SQLException{
-        System.out.println("readUsers");
-        Statement stm = conn.createStatement();
-        deleteAllUsersDefault(stm);
-        List<User> expectedList = new ArrayList<>();
-        expectedList.add(new Planner("Planner1","PwdPlanner1", new MaintenanceActivityDAOStub(),
-            new RequiredMaterialForMaintenanceDAOStub(), new UsersDAOStub(),
-            new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub(),null));
-        expectedList.add(new SystemAdministrator("SystemAdministrator1","PwdSystemAdministrator1",maintenanceProcedure, instance2,typology));
-        expectedList.add(new Maintainer("Maintainer1","PwdMaintainer1"));
-        List<User> plannerList = new ArrayList<>();
-        insertUserDefault(stm,new Planner("Planner1","PwdPlanner1", new MaintenanceActivityDAOStub(),
-            new RequiredMaterialForMaintenanceDAOStub(), new UsersDAOStub(),
-            new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub(),null));
-        insertUserDefault(stm,new SystemAdministrator("SystemAdministrator1","PwdSystemAdministrator1",maintenanceProcedure,instance2,typology));
-        insertUserDefault(stm,new Maintainer("Maintainer1","PwdMaintainer1"));
-        plannerList = instance.readUsers();
-        assertEquals(true,plannerList.equals(expectedList));
-        conn.rollback();
+        try {
+            System.out.println("readUsers");
+            Statement stm = conn.createStatement();
+            deleteAllUsersDefault(stm);
+            List<UserDTO> expectedList = new ArrayList<>();
+            expectedList.add(new PlannerDTO("Planner1","PwdPlanner1"));
+            expectedList.add(new SystemAdministratorDTO("SystemAdministrator1","PwdSystemAdministrator1"));
+            expectedList.add(new MaintainerDTO("Maintainer1","PwdMaintainer1"));
+            List<UserDTO> plannerList = new ArrayList<>();
+            insertUserDefault(stm,new PlannerDTO("Planner1","PwdPlanner1"));
+            insertUserDefault(stm,new SystemAdministratorDTO("SystemAdministrator1","PwdSystemAdministrator1"));
+            insertUserDefault(stm,new MaintainerDTO("Maintainer1","PwdMaintainer1"));
+            plannerList = instance.readUsers();
+            System.out.println(" --> " + expectedList.toString());
+            System.out.println(plannerList);
+            assertEquals(true,plannerList.equals(expectedList));
+            conn.rollback();
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
     //========================================== MODIFY USER =============================================================================
@@ -221,28 +235,26 @@ public class UsersDAOImplTest{
         return pstm.executeQuery();
     }
     
-    private User createUser(String username, String password, String role){
+    private UserDTO createUser(String username, String password, String role) throws NotValidParameterException{
         if(role.equals("Planner")){
-            return new Planner(username, password, new MaintenanceActivityDAOStub(),
-            new RequiredMaterialForMaintenanceDAOStub(), new UsersDAOStub(),
-            new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub(),new MaintainerSkillDAOImpl());
+            return new PlannerDTO(username, password);
         }else if(role.equals("Maintainer")){
-            return new Maintainer(username, password);
+            return new MaintainerDTO(username, password);
         }else{
-            return new SystemAdministrator(username, password, null, null,null);
+            return new SystemAdministratorDTO(username, password);
         }
     }
     
     
-    private void verifyUser(ResultSet res, User newUser) throws SQLException {
+    private void verifyUser(ResultSet res, UserDTO newUser) throws SQLException {
         boolean isEmpty = true;
         while(res.next()){
             isEmpty = false;
             assertEquals(newUser.getUsername(), res.getString("username"));
             assertEquals(newUser.getPassword(), res.getString("password"));
-            if(newUser instanceof Planner){
+            if(newUser instanceof PlannerDTO){
                 assertEquals("Planner", res.getString("role"));
-            }else if(newUser instanceof Maintainer){
+            }else if(newUser instanceof MaintainerDTO){
                 assertEquals("Maintainer", res.getString("role"));
             }else
                 assertEquals("System Administrator", res.getString("role"));
@@ -270,7 +282,7 @@ public class UsersDAOImplTest{
             String username = "username";
             removeUser(username);
             insertUser(username, "password", "Planner");
-            User modifiedUser = createUser("newUsername", "newPassword", "Maintainer");
+            UserDTO modifiedUser = createUser("newUsername", "newPassword", "Maintainer");
             assertTrue(instance.updateUser(username, modifiedUser));
             verifyUser(selectUser("newUsername"), modifiedUser);
             isEmptyResultSet(username);
@@ -278,6 +290,8 @@ public class UsersDAOImplTest{
             fail("SQLException");
         } catch (UsersException ex){
             fail("UsersException");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -287,7 +301,7 @@ public class UsersDAOImplTest{
             String username = "username";
             removeUser(username);
             insertUser(username, "password", "Planner");
-            User modifiedUser = createUser("newUsername", "newPassword", "System Administrator");
+            UserDTO modifiedUser = createUser("newUsername", "newPassword", "System Administrator");
             assertTrue(instance.updateUser(username, modifiedUser));
             verifyUser(selectUser("newUsername"), modifiedUser); 
             isEmptyResultSet(username);
@@ -295,6 +309,8 @@ public class UsersDAOImplTest{
             fail("SQLException");
         } catch (UsersException ex){
             fail("UsersException");
+        } catch (NotValidParameterException ex) {
+            Logger.getLogger(UsersDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -304,7 +320,7 @@ public class UsersDAOImplTest{
             String username = "username";
             removeUser(username);
             insertUser(username, "password", "Maintainer");
-            User modifiedUser = createUser("newUsername", "newPassword", "Planner");
+            UserDTO modifiedUser = createUser("newUsername", "newPassword", "Planner");
             assertTrue(instance.updateUser(username, modifiedUser));
             verifyUser(selectUser("newUsername"), modifiedUser);   
             isEmptyResultSet(username);
@@ -312,6 +328,8 @@ public class UsersDAOImplTest{
             fail("SQLException");
         } catch (UsersException ex){
             fail("UsersException");
+        } catch (NotValidParameterException ex) {
+            Logger.getLogger(UsersDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -321,7 +339,7 @@ public class UsersDAOImplTest{
             String username = "username";
             removeUser(username);
             insertUser(username, "password", "Maintainer");
-            User modifiedUser = createUser("newUsername", "newPassword", "System Administrator");
+            UserDTO modifiedUser = createUser("newUsername", "newPassword", "System Administrator");
             assertTrue(instance.updateUser(username, modifiedUser));
             verifyUser(selectUser("newUsername"), modifiedUser);   
             isEmptyResultSet(username);
@@ -329,6 +347,8 @@ public class UsersDAOImplTest{
             fail("SQLException");
         } catch (UsersException ex){
             fail("UsersException");
+        } catch (NotValidParameterException ex) {
+            Logger.getLogger(UsersDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -338,7 +358,7 @@ public class UsersDAOImplTest{
             String username = "username";
             removeUser(username);
             insertUser(username, "password", "System Administrator");
-            User modifiedUser = createUser("newUsername", "newPassword", "Planner");
+            UserDTO modifiedUser = createUser("newUsername", "newPassword", "Planner");
             assertTrue(instance.updateUser(username, modifiedUser));
             verifyUser(selectUser("newUsername"), modifiedUser); 
             isEmptyResultSet(username);
@@ -346,6 +366,8 @@ public class UsersDAOImplTest{
             fail("SQLException");
         } catch (UsersException ex){
             fail("UsersException");
+        } catch (NotValidParameterException ex) {
+            Logger.getLogger(UsersDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -355,7 +377,7 @@ public class UsersDAOImplTest{
             String username = "username";
             removeUser(username);
             insertUser(username, "password", "System Administrator");
-            User modifiedUser = createUser("newUsername", "newPassword", "Maintainer");
+            UserDTO modifiedUser = createUser("newUsername", "newPassword", "Maintainer");
             assertTrue(instance.updateUser(username, modifiedUser));
             verifyUser(selectUser("newUsername"), modifiedUser);   
             isEmptyResultSet(username);
@@ -363,6 +385,8 @@ public class UsersDAOImplTest{
             fail("SQLException");
         } catch (UsersException ex){
             fail("UsersException");
+        } catch (NotValidParameterException ex) {
+            Logger.getLogger(UsersDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -371,12 +395,14 @@ public class UsersDAOImplTest{
         try {
             String username = "username";
             removeUser(username);
-            User modifiedUser = createUser("newUsername", "newPassword", "Maintainer");
+            UserDTO modifiedUser = createUser("newUsername", "newPassword", "Maintainer");
             assertFalse(instance.updateUser(username, modifiedUser));            
         } catch (SQLException ex) {
             fail("SQLException");
         } catch (UsersException ex){
             fail("UsersException");
+        } catch (NotValidParameterException ex) {
+            Logger.getLogger(UsersDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     //===============================================================================================================================================
@@ -454,7 +480,7 @@ public class UsersDAOImplTest{
     /**
      * this method assert that deleteUsers correctly return 0 if null is passed
      */
-    //@Test
+    @Test
     public void testDeleteUsersZero3(){
         try {
             int numOfDeletedRow = instance.deleteUsers(null);
@@ -478,10 +504,10 @@ public class UsersDAOImplTest{
             insertUser("username4", "pwd4", "Planner");
             insertUser("username5", "pwd5", "System Administrator");
             
-            List<Maintainer> maintainers = instance.readMaintainers();
+            List<MaintainerDTO> maintainers = instance.readMaintainers();
             
             for(int i=1;i<=maintainers.size();i++){
-                assertTrue(maintainers.get(i-1) instanceof Maintainer);
+                assertTrue(maintainers.get(i-1) instanceof MaintainerDTO);
                 assertEquals("username"+String.valueOf(i), maintainers.get(i-1).getUsername());
                 assertEquals("pwd"+String.valueOf(i), maintainers.get(i-1).getPassword());
             }            
@@ -500,7 +526,7 @@ public class UsersDAOImplTest{
             insertUser("username4", "pwd4", "Planner");
             insertUser("username5", "pwd5", "System Administrator");
             
-            List<Maintainer> maintainers = instance.readMaintainers();
+            List<MaintainerDTO> maintainers = instance.readMaintainers();
             
             assertTrue(maintainers.size()==0);
         } catch (SQLException ex) {

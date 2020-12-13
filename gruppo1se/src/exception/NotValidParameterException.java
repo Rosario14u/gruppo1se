@@ -7,7 +7,7 @@ package exception;
 
 /**
  *
- * @author gorra
+ * @author rosar
  */
 public class NotValidParameterException extends Exception {
 

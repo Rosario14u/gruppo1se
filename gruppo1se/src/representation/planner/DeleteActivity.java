@@ -194,9 +194,7 @@ public class DeleteActivity extends javax.swing.JFrame {
             }
             else
                 jMaintenanceActivity.setText("The activity with ActivityID: "+jActivityID.getText()+" isn't in the database!");
-        } catch (SiteException | MaintenanceActivityException | MaterialException ex) {
-            errorMessage(ex.getMessage());
-        } catch (NotValidParameterException ex) {
+        } catch (SiteException | MaintenanceActivityException | MaterialException | NotValidParameterException ex) {
             errorMessage(ex.getMessage());
         }
     }//GEN-LAST:event_jSearchActionPerformed

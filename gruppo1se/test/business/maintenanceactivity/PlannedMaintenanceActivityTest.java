@@ -5,10 +5,13 @@
  */
 package business.maintenanceactivity;
 
+import exception.NotValidParameterException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static org.junit.Assert.*;
 import org.junit.*;
 
@@ -24,7 +27,7 @@ public class PlannedMaintenanceActivityTest {
     private final LocalDate date = LocalDate.of(2050, 11, 9);
     private MaintenanceActivity instance = null;
     
-    public PlannedMaintenanceActivityTest() {
+    public PlannedMaintenanceActivityTest() throws NotValidParameterException {
         materials.add(new Material("material1"));
         instance = new PlannedMaintenanceActivity(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials,  true);
     }
@@ -134,11 +137,15 @@ public class PlannedMaintenanceActivityTest {
      */
     @Test
     public void testSetMaterials() {
-        System.out.println("setMaterials");
-        List<Material> materialsAdd = new LinkedList<>();
-        materialsAdd.add(new Material("materials2"));
-        instance.setMaterials(materialsAdd);
-        assertEquals(instance.getMaterials(), materialsAdd);
+        try {
+            System.out.println("setMaterials");
+            List<Material> materialsAdd = new LinkedList<>();
+            materialsAdd.add(new Material("materials2"));
+            instance.setMaterials(materialsAdd);
+            assertEquals(instance.getMaterials(), materialsAdd);
+        }  catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
     @Test
@@ -159,10 +166,14 @@ public class PlannedMaintenanceActivityTest {
     
     @Test
     public void testNotEquals(){
-        System.out.println("not equals");
-        PlannedMaintenanceActivity obj = new PlannedMaintenanceActivity(2, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials,  true);
-        boolean result = instance.equals(obj);
-        assertEquals(result, false);
+        try {
+            System.out.println("not equals");
+            PlannedMaintenanceActivity obj = new PlannedMaintenanceActivity(2, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials,  true);
+            boolean result = instance.equals(obj);
+            assertEquals(result, false);
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
     /**
@@ -170,15 +181,19 @@ public class PlannedMaintenanceActivityTest {
      */
     @Test
     public void testToString() {
-        List<Material> listMaterial = new ArrayList<>(){{
-                    add(new Material("material1"));
-                }};
-        String expResult = "PlannedMaintenanceActivity{activityId=1, site=Site{branchOffice=ProvaBranchOffice,"
-                + " area=ProvaArea, workSpaceNotes=ProvaWorkspaceNotes}, typology=ProvaTypology,"
-                + " activityDescription=ProvaActivityDescription, estimatedInterventionTime=30, date=2050-11-09,"
-                + " maintenanceProcedure=MaintenanceProcedure{smp=ProvaPDF}, materials=[material1], interruptibleActivity=true}";
-        String result = instance.toString();
-        assertEquals(expResult, result);
+        try {
+            List<Material> listMaterial = new ArrayList<>(){{
+                        add(new Material("material1"));
+                    }};
+            String expResult = "PlannedMaintenanceActivity{activityId=1, site=Site{branchOffice=ProvaBranchOffice,"
+                    + " area=ProvaArea, workSpaceNotes=ProvaWorkspaceNotes}, typology=ProvaTypology,"
+                    + " activityDescription=ProvaActivityDescription, estimatedInterventionTime=30, date=2050-11-09,"
+                    + " maintenanceProcedure=MaintenanceProcedure{smp=ProvaPDF}, materials=[material1], interruptibleActivity=true}";
+            String result = instance.toString();
+            assertEquals(expResult, result);
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
 
 }

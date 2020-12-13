@@ -6,22 +6,18 @@
 package business.user;
 
 import business.maintenanceactivity.MaintenanceProcedure;
+import dto.MaintainerDTO;
+import dto.PlannerDTO;
+import dto.SystemAdministratorDTO;
+import dto.UserDTO;
+import exception.NotValidParameterException;
 import exception.ProcedureException;
 import exception.TypologyException;
 import exception.UsersException;
 import java.util.List;
-import persistence.maintenanceactivity.EmployeeAppointmentDAOImpl;
-import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.MaintenanceProcedureDAO;
-import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
-import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
-import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
-import persistence.maintenanceactivity.SiteDaoImpl;
-import persistence.user.MaintainerSkillDAOImpl;
 import persistence.maintenanceactivity.TypologyDAO;
-import persistence.maintenanceactivity.TypologyDAOImpl;
 import persistence.user.UsersDAO;
-import persistence.user.UsersDAOImpl;
 
 /**
  *
@@ -29,26 +25,22 @@ import persistence.user.UsersDAOImpl;
  */
 public class SystemAdministrator extends User {
     private MaintenanceProcedureDAO procedureDao;
-    private UsersDAO usersDAO;
+    private UsersDAO usersDao;
     private TypologyDAO typologyDao; 
+   
     
-    public SystemAdministrator(String username, String password){
+    
+    public SystemAdministrator(String username, String password, MaintenanceProcedureDAO procedureDao,
+            UsersDAO usersDao, TypologyDAO typologyDao) throws NotValidParameterException {
         super(username, password);
-        this.procedureDao = null;
-        this.typologyDao = null;
-        this.usersDAO = null;
-    }
-    
-    
-    public SystemAdministrator(String username, String password,MaintenanceProcedureDAO procedureDao, UsersDAO usersDAO, TypologyDAO typologyDao) {
-        super(username, password);
+        validateSystemAdministrator(procedureDao, usersDao, typologyDao);
         this.procedureDao = procedureDao;
         this.typologyDao = typologyDao;
-        this.usersDAO = usersDAO;
+        this.usersDao = usersDao;
     }
     
     
-    public boolean saveSmpProcedure(String newSmp,String oldSmp) throws ProcedureException{
+    public boolean saveSmpProcedure(String newSmp,String oldSmp) throws ProcedureException, NotValidParameterException{
         MaintenanceProcedure procedure;
         boolean retVal = false;
         if (newSmp == null || newSmp.trim().replaceAll("  +", " ").equals("")){
@@ -64,37 +56,35 @@ public class SystemAdministrator extends User {
         return true;
     }
     
-    public List<User> viewUsers() throws UsersException{
-        return usersDAO.readUsers();
+    public List<UserDTO> viewUsers() throws UsersException, NotValidParameterException{
+        return usersDao.readUsers();
     }
     
     
-    public boolean makeUser(String username, String password, String role) throws UsersException{
-        User user;
+    public boolean makeUser(String username, String password, String role) throws UsersException, NotValidParameterException{
+        UserDTO user;
         if (role.equals("System Administrator"))
-            user = new SystemAdministrator(username, password, new MaintenanceProcedureDAOImpl(), new UsersDAOImpl(),new TypologyDAOImpl());
+            user = new SystemAdministratorDTO(username, password);
         else if (role.equals("Maintainer"))
-            user = new Maintainer(username, password);
+            user = new MaintainerDTO(username, password);
         else
-            user = new Planner(username, password, new MaintenanceActivityDAOImpl(new SiteDaoImpl()), 
-                    new RequiredMaterialForMaintenanceDAOImpl(), new UsersDAOImpl(), 
-                    new EmployeeAppointmentDAOImpl(), new RequiredSkillForMaintenanceDAOImpl(),new MaintainerSkillDAOImpl());
-        return usersDAO.addUser(user);
+            user = new PlannerDTO(username, password);
+        return usersDao.addUser(user);
     }
     
     public int removeUsers(List<String> usernameList) throws UsersException{
         if(usernameList == null || usernameList.isEmpty())
             return 0;
-        return usersDAO.deleteUsers(usernameList);
+        return usersDao.deleteUsers(usernameList);
     }
     
     
-    public boolean modifyUser(String oldUsername, User newUser) throws UsersException{
+    public boolean modifyUser(String oldUsername, UserDTO newUser) throws UsersException{
         if(oldUsername==null || newUser==null || newUser.getUsername()==null || newUser.getPassword()==null
                 || oldUsername.equals("") || newUser.getUsername().equals("")){
             throw new UsersException("Invalid parameters");
         }
-        return usersDAO.updateUser(oldUsername, newUser);
+        return usersDao.updateUser(oldUsername, newUser);
     }
 
     public boolean makeTypology(String typology) throws TypologyException{
@@ -107,5 +97,12 @@ public class SystemAdministrator extends User {
     
     public boolean updateTypology(String oldTypology, String newTypology) throws TypologyException{
         return typologyDao.modifyTypology(oldTypology, newTypology);
+    }
+    
+    
+    private void validateSystemAdministrator(MaintenanceProcedureDAO procedureDao, UsersDAO usersDao,
+            TypologyDAO typologyDao) throws NotValidParameterException{
+        if(procedureDao == null || usersDao == null || typologyDao == null)
+            throw new NotValidParameterException();  
     }
 }

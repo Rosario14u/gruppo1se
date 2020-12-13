@@ -6,6 +6,7 @@
 package persistence.user;
 
 import business.maintenanceactivity.Skill;
+import exception.NotValidParameterException;
 import exception.SkillException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -100,6 +101,8 @@ public class MaintainerSkillDAOImplTest {
             fail("SQLException");
         } catch (SkillException ex) {
             fail("SkillException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -122,6 +125,8 @@ public class MaintainerSkillDAOImplTest {
             fail("SQLException");
         } catch (SkillException ex) {
             fail("SkillException");
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -156,23 +161,15 @@ public class MaintainerSkillDAOImplTest {
         stm.executeUpdate();
     }    
     
-    
-//    /**
-//     * 
-//     * @param username
-//     * @return
-//     * @throws SQLException 
-//     */
-//    //Developed by Antonio Gorrasi
-//    private List<Skill> selectSkillOfMaintainer(String username) throws SQLException{
-//        List<Skill> listOfSkills = new ArrayList<>();
-//        PreparedStatement stm = conn.prepareStatement(SELECT_SKILL);
-//        stm.setString(1, username);
-//        ResultSet set = stm.executeQuery();
-//        
-//        while(set.next()){
-//            listOfSkills.add(new Skill(set.getString("skillname")));
-//        }
-//        return listOfSkills;
-//    }
+////    private List<Skill> selectSkillOfMaintainer(String username) throws SQLException, NotValidParameterException{
+////        List<Skill> listOfSkills = new ArrayList<>();
+////        PreparedStatement stm = conn.prepareStatement(SELECT_SKILL);
+////        stm.setString(1, username);
+////        ResultSet set = stm.executeQuery();
+////        
+////        while(set.next()){
+////            listOfSkills.add(new Skill(set.getString("skillname")));
+////        }
+////        return listOfSkills;
+////    }
 }
