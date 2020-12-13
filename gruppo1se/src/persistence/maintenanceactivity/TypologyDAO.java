@@ -12,6 +12,7 @@ import java.util.List;
  *
  * @author aless
  */
+
 public interface TypologyDAO {
     public boolean addTypology(String typology) throws TypologyException;
     public List<String> viewTypologies() throws TypologyException;

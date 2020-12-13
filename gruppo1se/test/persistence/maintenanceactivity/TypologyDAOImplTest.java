@@ -22,6 +22,7 @@ import persistence.database.ConnectionDB;
  *
  * @author aless
  */
+
 public class TypologyDAOImplTest{
     private static Connection conn;
     private final TypologyDAOImpl instance = new TypologyDAOImpl();

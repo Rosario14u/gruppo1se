@@ -15,6 +15,7 @@ import java.util.List;
  *
  * @author aless
  */
+
 public class TypologyDAOImpl implements TypologyDAO{
     private final String SQL_INSERT = "INSERT INTO Typology VALUES (?)";
     private final String SQL_SELECT = "SELECT * FROM Typology";
