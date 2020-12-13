@@ -16,4 +16,5 @@ public interface TypologyDAO {
     public boolean addTypology(String typology) throws TypologyException;
     public List<String> viewTypologies() throws TypologyException;
     public boolean modifyTypology(String oldTypology, String newTypology) throws TypologyException;
+    public boolean deleteTypology(String typology) throws TypologyException;
 }

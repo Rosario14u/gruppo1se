@@ -19,6 +19,7 @@ public class TypologyDAOImpl implements TypologyDAO{
     private final String SQL_INSERT = "INSERT INTO Typology VALUES (?)";
     private final String SQL_SELECT = "SELECT * FROM Typology";
     private final String SQL_UPDATE = "UPDATE Typology SET typologyName = ? WHERE typologyName = ?";
+    private final String SQL_DELETE = "DELETE FROM Typology WHERE typologyName = ?";
     
     @Override
     public boolean addTypology(String typology) throws TypologyException {
@@ -66,6 +67,18 @@ public class TypologyDAOImpl implements TypologyDAO{
             PreparedStatement stmt = conn.prepareStatement(SQL_UPDATE);
             stmt.setString(1, newTypology);
             stmt.setString(2, oldTypology);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            throw new TypologyException();
+        }
+    }
+    
+    @Override
+    public boolean deleteTypology(String typology) throws TypologyException {
+        try {
+            Connection conn = ConnectionDB.getInstanceConnection().getConnection();
+            PreparedStatement stmt = conn.prepareStatement(SQL_DELETE);
+            stmt.setString(1, typology);
             return stmt.executeUpdate() > 0;
         } catch (SQLException ex) {
             throw new TypologyException();

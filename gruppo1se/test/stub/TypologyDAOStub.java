@@ -45,5 +45,5 @@ public class TypologyDAOStub implements TypologyDAO {
         else
             return true;
     }
-    
+
 }

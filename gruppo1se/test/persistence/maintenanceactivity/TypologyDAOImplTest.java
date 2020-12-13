@@ -77,9 +77,6 @@ public class TypologyDAOImplTest{
         }
     }
     
-    /**
-     * Test of viewTypologies method, of class TypologyDAOImpl.
-     */
     
     private void deleteAllTypologiesDefault(Statement stmt) throws SQLException{
         String delete = "DELETE FROM Typology";
@@ -95,6 +92,12 @@ public class TypologyDAOImplTest{
         String select = "SELECT * FROM Typology";
         return stm.executeQuery(select);
     }
+    
+    /**
+     * Test of viewTypologies method, of class TypologyDAOImpl.
+     * @throws exception.TypologyException
+     * @throws java.sql.SQLException
+     */
     
     @Test
     public void testViewTypologies() throws TypologyException, SQLException{
@@ -127,6 +130,35 @@ public class TypologyDAOImplTest{
             assertEquals(set.getString("typologyName"),typology);
             assertEquals(true, result);
         }
+    }
+    
+    /**
+     * Test of deleteTypologies method, of class TypologyDAOImpl.
+     * @throws exception.TypologyException
+     * @throws java.sql.SQLException
+     */
+    
+    @Test
+    public void testDeleteTypology() throws TypologyException, SQLException{
+        System.out.println("deleteTypologyTrue");
+        Statement stm = conn.createStatement();
+        deleteAllTypologiesDefault(stm);
+        String typology = "ProvaTypology";
+        insertTypologyDefault(stm, typology);
+        boolean result = instance.deleteTypology(typology);
+        assertEquals(true, result);
+        conn.rollback();
+    }
+    
+    @Test
+    public void testDeleteTypologyFalse() throws TypologyException, SQLException{
+        System.out.println("deleteTypologyFalse");
+        Statement stm = conn.createStatement();
+        deleteAllTypologiesDefault(stm);
+        String typology = "ProvaTypology";
+        boolean result = instance.deleteTypology(typology);
+        assertEquals(false, result);
+        conn.rollback();
     }
     
 }
