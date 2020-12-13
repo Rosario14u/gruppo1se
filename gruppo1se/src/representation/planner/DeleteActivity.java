@@ -21,6 +21,7 @@ import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.SiteDaoImpl;
 import persistence.user.MaintainerSkillDAOImpl;
 import persistence.user.UsersDAOImpl;
+import presentation.manager.MessageManager;
 /**
  *
  * @author VincenzaCoppola <v.coppola38@studenti.unisa.it>
@@ -192,7 +193,7 @@ public class DeleteActivity extends javax.swing.JFrame {
             else
                 jMaintenanceActivity.setText("The activity with ActivityID: "+jActivityID.getText()+" isn't in the database!");
         } catch (MaintenanceActivityException | NotValidParameterException ex) {
-            errorMessage(ex.getMessage());
+            MessageManager.errorMessage(this,ex.getMessage());
         }
     }//GEN-LAST:event_jSearchActionPerformed
 
@@ -205,7 +206,7 @@ public class DeleteActivity extends javax.swing.JFrame {
             jSearch.setEnabled(false);
             jDelete.setEnabled(false);
         } catch (MaintenanceActivityException | NotValidParameterException ex) {
-            errorMessage(ex.getMessage());
+            MessageManager.errorMessage(this,ex.getMessage());
         }
     }//GEN-LAST:event_jDeleteActionPerformed
 
@@ -237,9 +238,7 @@ public class DeleteActivity extends javax.swing.JFrame {
         }
     }    
    
-    private void errorMessage(String message){
-        JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.ERROR_MESSAGE);
-    }
+
     
     public static void main(String args[]) {
         Planner planner = new Planner("admin","admin", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),

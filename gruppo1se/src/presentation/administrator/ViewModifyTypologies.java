@@ -22,6 +22,7 @@ import javax.swing.table.TableRowSorter;
 import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
 import persistence.maintenanceactivity.TypologyDAOImpl;
 import persistence.user.UsersDAOImpl;
+import presentation.manager.MessageManager;
 
 /**
  *
@@ -251,22 +252,11 @@ public class ViewModifyTypologies extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jModifyActionPerformed
     
-    private int confirmRequest(String msg, String title) {
-        switch (JOptionPane.showConfirmDialog(jDialog1, msg, title, JOptionPane.YES_NO_OPTION)) {           
-            case JOptionPane.YES_OPTION:
-                return EXIT_ON_CLOSE;
-            case JOptionPane.NO_OPTION:
-                return DO_NOTHING_ON_CLOSE;
-            case JOptionPane.CLOSED_OPTION:
-                return DO_NOTHING_ON_CLOSE;
-            default:
-                return DO_NOTHING_ON_CLOSE;
-        }
-    }
+
 
         
     private void jConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jConfirmActionPerformed
-        int result = confirmRequest("Are you sure you want to modify this typology?", "CONFIRM");
+        int result = MessageManager.confirmRequest(this,"Are you sure you want to modify this typology?", "CONFIRM");
         if (result==EXIT_ON_CLOSE){
             try {
                 int[] indexOfSelectedRow = jTable.getSelectedRows();
