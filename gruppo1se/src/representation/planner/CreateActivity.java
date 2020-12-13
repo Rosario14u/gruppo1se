@@ -446,7 +446,7 @@ public class CreateActivity extends javax.swing.JFrame {
             buttonGroupInterruptible.clearSelection();
             buttonGroupTypeOfActivity.clearSelection();
             jCreate.setEnabled(false);
-        } catch (MaintenanceActivityException | MaterialException | NotValidParameterException ex) {
+        } catch (MaintenanceActivityException | NotValidParameterException ex) {
             errorMessage(ex.getMessage());
         }
     }//GEN-LAST:event_jCreateActionPerformed
@@ -524,15 +524,17 @@ public class CreateActivity extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    /*
     public static void main(String args[]) {
-        Planner planner = new Planner("admin","admin", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
-                new RequiredMaterialForMaintenanceDAOImpl());
-        /* Create and display the form */
+        Planner planner = new Planner(username, password, new MaintenanceActivityDAOImpl(new SiteDaoImpl()), 
+                new RequiredMaterialsDaoImpl(), new UserDaoImpl(), new EmployeeAppointmentDaoImpl(),
+                new RequiredSkillForMaintenanceDaoImpl, maintainerSkillDao)
+         Create and display the form 
         java.awt.EventQueue.invokeLater(() -> {
             new CreateActivity(planner).setVisible(true);
         });
     }
-    
+    */
     
     private void errorMessage(String message) {
         JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.ERROR_MESSAGE);

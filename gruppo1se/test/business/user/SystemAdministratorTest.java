@@ -295,7 +295,7 @@ public class SystemAdministratorTest {
     public void testMakeUser() throws UsersException {
         try {
             System.out.println("makeUserTest");
-            boolean result = instance.makeUser(username, password, "Maintainer");
+            boolean result = instance.makeUser(username, password, UserRole.MAINTAINER);
             assertEquals(true, result);
         } catch (NotValidParameterException ex) {
             fail("NotValidParameterException");
@@ -306,7 +306,7 @@ public class SystemAdministratorTest {
     public void testMakeUserException() throws UsersException {
         try {
             System.out.println("makeUserExceptionTest");
-            boolean result = instance.makeUser(username, null, "Maintainer");
+            boolean result = instance.makeUser(username, null, UserRole.MAINTAINER);
         } catch (NotValidParameterException ex) {
             fail("NotValidParameterException");
         }

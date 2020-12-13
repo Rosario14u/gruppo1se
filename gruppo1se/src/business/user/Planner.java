@@ -44,31 +44,6 @@ public class Planner extends User {
     private MaintainerSkillDAO maintainerSkillDao;
     //private 
 
-    /**
-     * Constructor of Planner
-     *
-     * @param username username of Planner
-     * @param password password of Planner
-     */
-    public Planner(String username, String password) {
-        super(username, password);
-    }
-
-    /**
-     * Constructor of Planner
-     *
-     * @param username username of Planner
-     * @param password password of Planner
-     * @param maintenanceActivityDao MaintenanceActivityDao object of Planner
-     * @param requiredMaterialsDao RequiredMaterialDao object of Planner
-     */
-    public Planner(String username, String password, MaintenanceActivityDAO maintenanceActivityDao,
-            RequiredMaterialForMaintenanceDAO requiredMaterialsDao) {
-        super(username, password);
-        this.maintenanceActivityDao = maintenanceActivityDao;
-        this.requiredMaterialsDao = requiredMaterialsDao;
-    }
-
     public Planner(String username, String password, MaintenanceActivityDAO maintenanceActivityDao,
             RequiredMaterialForMaintenanceDAO requiredMaterialsDao,
             UsersDAO userDao, EmployeeAppointmentDAO employeeAppointmentDao,
@@ -94,18 +69,21 @@ public class Planner extends User {
      * @throws exception.NotValidParameterException
      */
     /*Method developed by Rosario Gaeta*/
-    public MaintenanceActivity viewMaintenanceActivity(int activityId) throws SiteException,
-            MaintenanceActivityException, MaterialException, NotValidParameterException {
+    public MaintenanceActivity viewMaintenanceActivity(int activityId) throws MaintenanceActivityException, NotValidParameterException {
         /*this method uses MaintenanceActivityDaoImpl and RequiredMaterialForMaintenanceDaoImpl objects to
         retrieve the required MaintenanceActivity object if exists*/
-        if (maintenanceActivityDao == null || requiredMaterialsDao == null) {
-            throw new NotValidParameterException("Failure to retrieve data relating to maintenance activities");
+        try{
+            if (maintenanceActivityDao == null || requiredMaterialsDao == null) {
+                throw new NotValidParameterException("Failure to retrieve data relating to maintenance activities");
+            }
+            MaintenanceActivity activity = maintenanceActivityDao.retrieveMaintenanceActivityDao(activityId);
+            if (activity != null) {
+                activity.setMaterials(requiredMaterialsDao.retrieveMaterialsByActivityId(activityId));
+            }
+            return activity;
+        }catch(MaterialException ex){
+            throw new MaintenanceActivityException("Error in retrieving activity");
         }
-        MaintenanceActivity activity = maintenanceActivityDao.retrieveMaintenanceActivityDao(activityId);
-        if (activity != null) {
-            activity.setMaterials(requiredMaterialsDao.retrieveMaterialsByActivityId(activityId));
-        }
-        return activity;
     }
 
     /**
@@ -121,6 +99,7 @@ public class Planner extends User {
      * @param typologyOfActivity
      * @return
      * @throws MaintenanceActivityException
+     * @throws exception.NotValidParameterException
      */
     //Developed by Antonio Gorrasi
     public boolean modifyMaintenanceActivity(int activityId, String branchOffice, String area, String typology, String activityDescription,
@@ -146,17 +125,20 @@ public class Planner extends User {
 
     public boolean makeMaintenanceActivity(int activityId, String branchOffice, String area, String workspaceNotes, String typology, String activityDescription, int estimatedInterventionTime,
             String date, String smp, List<Material> materials, boolean interruptibleActivity,
-            Typology typologyOfActivity) throws MaintenanceActivityException, MaterialException, NotValidParameterException {
-        
+            Typology typologyOfActivity) throws MaintenanceActivityException, NotValidParameterException {
         if (maintenanceActivityDao == null) {
             throw new NotValidParameterException("Failure to create data relating to maintenance activities");
-        }        
-        MaintenanceActivity activity = MaintenanceActivityFactory.make(typologyOfActivity, activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime,
-                date, smp, materials, interruptibleActivity);
-        if (materials != null) {
-            return maintenanceActivityDao.addMaintenanceActivity(activity) && requiredMaterialsDao.addRequiredMaterial(activityId, materials);
-        } else {
-            return maintenanceActivityDao.addMaintenanceActivity(activity);
+        } 
+        try{       
+            MaintenanceActivity activity = MaintenanceActivityFactory.make(typologyOfActivity, activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime,
+                    date, smp, materials, interruptibleActivity);
+            if (materials != null) {
+                return maintenanceActivityDao.addMaintenanceActivity(activity) && requiredMaterialsDao.addRequiredMaterial(activityId, materials);
+            } else {
+                return maintenanceActivityDao.addMaintenanceActivity(activity);
+            }
+        }catch(MaterialException ex){
+            throw new MaintenanceActivityException(ex.getMessage());
         }
     }
 
@@ -185,27 +167,31 @@ public class Planner extends User {
     }
 
     //Developed by Antonio Gorrasi
-    public List<MaintenanceActivity> viewMaintenanceActivityByWeek(int week, int year) throws MaintenanceActivityException, SiteException, DateException, SkillException, NotValidParameterException {
+    public List<MaintenanceActivity> viewMaintenanceActivityByWeek(int week, int year) throws MaintenanceActivityException, NotValidParameterException {
+        
         if (maintenanceActivityDao == null || requiredSkillsDao == null) {
             throw new NotValidParameterException("Failure to retrieve data relating to maintenance activities");
         }
-        
-        List<LocalDate> date = WeekConverter.getStartEndDate(week, year);
-        LocalDate startDateOfWeek = date.get(0);
-        LocalDate endDateOfWeek = date.get(1);
-
-        List<MaintenanceActivity> listOfMaintenanceActivity = maintenanceActivityDao.
-                retrieveMaintenanceActivityFromRange(startDateOfWeek, endDateOfWeek);
-
-        listOfMaintenanceActivity = filterActivityWithoutProcedure(listOfMaintenanceActivity);
-        
-        for (MaintenanceActivity maintainenceActivity : listOfMaintenanceActivity) {
-            MaintenanceProcedure procedure = maintainenceActivity.getMaintenanceProcedure();
-            if (!procedure.getSmp().trim().replaceAll("  +", " ").equals("")) {
-                procedure.setSkills(requiredSkillsDao.retrieveSkillsBySmp(procedure.getSmp()));
+        try { 
+            List<LocalDate> date = WeekConverter.getStartEndDate(week, year);
+            LocalDate startDateOfWeek = date.get(0);
+            LocalDate endDateOfWeek = date.get(1);
+            
+            List<MaintenanceActivity> listOfMaintenanceActivity = maintenanceActivityDao.
+                    retrieveMaintenanceActivityFromRange(startDateOfWeek, endDateOfWeek);
+            
+            listOfMaintenanceActivity = filterActivityWithoutProcedure(listOfMaintenanceActivity);
+            
+            for (MaintenanceActivity maintainenceActivity : listOfMaintenanceActivity) {
+                MaintenanceProcedure procedure = maintainenceActivity.getMaintenanceProcedure();
+                if (!procedure.getSmp().trim().replaceAll("  +", " ").equals("")) {
+                    procedure.setSkills(requiredSkillsDao.retrieveSkillsBySmp(procedure.getSmp()));
+                }
             }
+            return listOfMaintenanceActivity;
+        } catch (DateException | SkillException ex) {
+            throw new MaintenanceActivityException(ex.getMessage());
         }
-        return listOfMaintenanceActivity;
     }
 
     private List<MaintenanceActivity> filterActivityWithoutProcedure(List<MaintenanceActivity> listActivity) {
@@ -213,20 +199,23 @@ public class Planner extends User {
     }
 
     //Developed by Antonio Gorrasi
-    public List<MaintainerDTO> viewEmployeeAvailability(int week, int year) throws UsersException, DateException, AppointmentException, SkillException, NotValidParameterException {
+    public List<MaintainerDTO> viewEmployeeAvailability(int week, int year) throws UsersException, NotValidParameterException {
         if (userDao == null || employeeAppointmentDao == null || maintainerSkillDao == null) {
-            throw new NotValidParameterException("Failure to retrieve data relating to Maintainers");
+                throw new NotValidParameterException("Failure to retrieve data relating to Maintainers");
         }
-        
-        List<MaintainerDTO> maintainers = userDao.readMaintainers();
-        List<LocalDate> date = WeekConverter.getStartEndDate(week, year);
-        LocalDate startDateOfWeek = date.get(0);
-        LocalDate endDateOfWeek = date.get(1);
-        for (MaintainerDTO maintainer : maintainers) {
-            maintainer.setAppointmentsInWeek(employeeAppointmentDao.getEmployeeAvailability(maintainer.getUsername(), startDateOfWeek, endDateOfWeek));
-            maintainer.setSkills(maintainerSkillDao.getMaintainerSkills(maintainer.getUsername()));
+        try {
+            List<MaintainerDTO> maintainers = userDao.readMaintainers();
+            List<LocalDate> date = WeekConverter.getStartEndDate(week, year);
+            LocalDate startDateOfWeek = date.get(0);
+            LocalDate endDateOfWeek = date.get(1);
+            for (MaintainerDTO maintainer : maintainers) {
+                maintainer.setAppointmentsInWeek(employeeAppointmentDao.getEmployeeAvailability(maintainer.getUsername(), startDateOfWeek, endDateOfWeek));
+                maintainer.setSkills(maintainerSkillDao.getMaintainerSkills(maintainer.getUsername()));
+            }
+            return maintainers;
+        } catch (DateException | AppointmentException | SkillException ex) {
+            throw new UsersException(ex.getMessage());
         }
-        return maintainers;
     }
 
     public boolean saveAppointments(String username, MaintenanceActivity activity, List<Appointment> appointments)

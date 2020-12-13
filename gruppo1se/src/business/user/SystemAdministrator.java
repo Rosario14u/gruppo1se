@@ -67,14 +67,14 @@ public class SystemAdministrator extends User {
     }
     
     
-    public boolean makeUser(String username, String password, String role) throws UsersException, NotValidParameterException{
+    public boolean makeUser(String username, String password, UserRole role) throws UsersException, NotValidParameterException{
         if(usersDao == null){
             throw new NotValidParameterException("Error in creating user");
         }
         UserDTO user;
-        if (role.equals("System Administrator"))
+        if (UserRole.ADMINISTRATOR == role)
             user = new SystemAdministratorDTO(username, password);
-        else if (role.equals("Maintainer"))
+        else if (UserRole.MAINTAINER == role)
             user = new MaintainerDTO(username, password);
         else
             user = new PlannerDTO(username, password);

@@ -9,10 +9,6 @@ import business.user.SystemAdministrator;
 import exception.NotValidParameterException;
 import exception.ProcedureException;
 import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -170,9 +166,7 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
             }else{
                 errorMessage("Nome file già esistente");
             }
-        } catch (ProcedureException ex) {
-            errorMessage(ex.getMessage());
-        } catch (NotValidParameterException ex) {
+        } catch (ProcedureException | NotValidParameterException ex) {
             errorMessage(ex.getMessage());
         }
         

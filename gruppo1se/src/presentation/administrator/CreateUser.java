@@ -6,6 +6,7 @@
 package presentation.administrator;
 
 import business.user.SystemAdministrator;
+import business.user.UserRole;
 import exception.NotValidParameterException;
 import exception.UsersException;
 import java.awt.event.ActionEvent;
@@ -29,7 +30,7 @@ public class CreateUser extends javax.swing.JFrame {
     private final JTextField[] textFields = new JTextField[2];
     private String username;
     private String password;
-    private String role;
+    private UserRole role;
     private MyDocumentListener myDocumentListener;
     private boolean roleCheck;
 
@@ -114,7 +115,7 @@ public class CreateUser extends javax.swing.JFrame {
         jPassword.setFont(new java.awt.Font("Rockwell", 0, 12));
 
         jRole.setFont(new java.awt.Font("Rockwell", 0, 12));
-        jRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "Maintainer", "Planner", "System Administrator" }));
+        jRole.setModel(new javax.swing.DefaultComboBoxModel<>(UserRole.values()));
 
         jClear.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jClear.setText("Clear");
@@ -192,12 +193,7 @@ public class CreateUser extends javax.swing.JFrame {
         try {
             username = jUsername.getText();
             password = jPassword.getText();
-            if (jRole.getSelectedItem().equals("Planner"))
-                role = "Planner";
-            else if (jRole.getSelectedItem().equals("Maintainer"))
-                role = "Maintainer";
-            else
-                role = "System Administrator";
+            role = UserRole.valueOf(jRole.getSelectedItem().toString());
             int choice = JOptionPane.showConfirmDialog(this, "Are you sure you want to create this user?", "Confirm", JOptionPane.YES_NO_OPTION);
             if (choice == JOptionPane.YES_OPTION){
                 systemAdministrator.makeUser(username, password, role);
@@ -206,9 +202,7 @@ public class CreateUser extends javax.swing.JFrame {
                 jRole.setSelectedIndex(0);
                 jCreate.setEnabled(false);
             }
-        } catch (UsersException ex) {
-            JOptionPane.showMessageDialog(this, "Error while trying to create this user", "Error", JOptionPane.ERROR_MESSAGE);
-        } catch (NotValidParameterException ex) {
+        } catch (UsersException | NotValidParameterException ex) {
             errorMessage(ex.getMessage());
         }
     }//GEN-LAST:event_jCreateActionPerformed
@@ -292,38 +286,38 @@ public class CreateUser extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(CreateUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(CreateUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(CreateUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(CreateUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//        //</editor-fold>
-//
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                new CreateUser(new SystemAdministrator("user","pass", new MaintenanceProcedureDAOImpl(), new UsersDAOImpl(), new TypologyDAOImpl())).setVisible(true);
-//            }
-//        });
-//    }
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(CreateUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(CreateUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(CreateUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(CreateUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new CreateUser(new SystemAdministrator("user","pass", new MaintenanceProcedureDAOImpl(), new UsersDAOImpl(), new TypologyDAOImpl())).setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroupRole;
@@ -336,7 +330,7 @@ public class CreateUser extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jPassword;
-    private javax.swing.JComboBox<String> jRole;
+    private javax.swing.JComboBox<UserRole> jRole;
     private javax.swing.JTextField jUsername;
     // End of variables declaration//GEN-END:variables
 }

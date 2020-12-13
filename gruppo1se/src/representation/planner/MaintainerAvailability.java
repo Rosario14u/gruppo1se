@@ -118,7 +118,7 @@ public class MaintainerAvailability extends javax.swing.JFrame {
                 tableModel.addRow(rowTable);
                 
             }
-        } catch (UsersException | DateException | AppointmentException | SkillException | NotValidParameterException ex) {
+        } catch (UsersException | NotValidParameterException ex) {
             errorMessage(ex.getMessage());
         }
     }

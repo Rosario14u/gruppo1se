@@ -124,10 +124,10 @@ public class MaintenanceActivityDAOImplTest {
                     "Planned",null,"ProvaTypologyName1","ProvaBranch1","ProvaArea1", "ProvaWorkSpaceNotes1","smp1");
         } catch (SQLException ex) {
             fail("SQLException");
-        } catch (SiteException ex) {
-            fail("SiteException");
-        } catch (MaintenanceActivityException ex) {
+        }catch (MaintenanceActivityException ex) {
             fail("MaintenanceActivityException");
+        } catch (NotValidParameterException ex) {
+           fail("NotValidParameterException");
         }
     }
     /**
@@ -145,10 +145,10 @@ public class MaintenanceActivityDAOImplTest {
                     "Unplanned","EWO","ProvaTypologyName2","ProvaBranch2","ProvaArea2", "ProvaWorkSpaceNotes2","smp2");
         } catch (SQLException ex) {
             fail("SQLException");
-        } catch (SiteException ex) {
-            fail("SiteException");
         } catch (MaintenanceActivityException ex) {
             fail("MaintenanceActivityException");
+        } catch (NotValidParameterException ex) {
+           fail("NotValidParameterException");
         }
     }
     /**
@@ -166,10 +166,10 @@ public class MaintenanceActivityDAOImplTest {
                     "Unplanned","Extra","ProvaTypologyName3","ProvaBranch3","ProvaArea3", "ProvaWorkSpaceNotes3","smp3");
         } catch (SQLException ex) {
             fail("SQLException");
-        } catch (SiteException ex) {
-            fail("SiteException");
         } catch (MaintenanceActivityException ex) {
             fail("MaintenanceActivityException");
+        } catch (NotValidParameterException ex) {
+           fail("NotValidParameterException");
         }
     }
     
@@ -185,10 +185,10 @@ public class MaintenanceActivityDAOImplTest {
             assertNull("MaintenanceActivityImpl error", activity);
         } catch (SQLException ex) {
             fail("SQLException");
-        } catch (SiteException ex) {
-            fail("SiteException");
         } catch (MaintenanceActivityException ex) {
             fail("MaintenanceActivityException");
+        } catch (NotValidParameterException ex) {
+           fail("NotValidParameterException");
         }   
     }
     
@@ -196,8 +196,8 @@ public class MaintenanceActivityDAOImplTest {
      * This method asserts that retrieveMaintenanceActivityDao correctly raises a SiteException <br>
      * when SiteDao return Null
      */
-    @Test(expected = SiteException.class)
-    public void testRetrieveMaintenanceActivityDaoSiteExceptionCase1() throws  SiteException {
+    @Test(expected = MaintenanceActivityException.class)
+    public void testRetrieveMaintenanceActivityDaoSiteExceptionCase1() throws MaintenanceActivityException  {
         try {
             deleteMaintenaceActivity(4);
             insertMaintenanceActivity(4,"ProvaDescrizione4",124,"2050-11-24",false, 
@@ -205,8 +205,8 @@ public class MaintenanceActivityDAOImplTest {
             MaintenanceActivity activity = maintenanceActivityDAO.retrieveMaintenanceActivityDao(4);
         } catch (SQLException ex) {
             fail("SQLException");
-        } catch (MaintenanceActivityException ex) {
-            fail("MaintenanceActivityException");
+        }  catch (NotValidParameterException ex) {
+           fail("NotValidParameterException");
         }
     }
     
@@ -214,8 +214,8 @@ public class MaintenanceActivityDAOImplTest {
      * This method asserts that retrieveMaintenanceActivityDao correctly raises a SiteException <br>
      * when SiteDao raises an exception
      */
-    @Test(expected = SiteException.class)
-    public void testRetrieveMaintenanceActivityDaoSiteExceptionCase2() throws   SiteException {
+    @Test(expected = MaintenanceActivityException.class)
+    public void testRetrieveMaintenanceActivityDaoSiteExceptionCase2() throws MaintenanceActivityException  {
         try {
             deleteMaintenaceActivity(5);
             insertMaintenanceActivity(5,"ProvaDescrizione5",125,"2050-11-25",false, 
@@ -223,8 +223,8 @@ public class MaintenanceActivityDAOImplTest {
             MaintenanceActivity activity = maintenanceActivityDAO.retrieveMaintenanceActivityDao(5);
         } catch (SQLException ex) {
             fail("SQLException");
-        } catch (MaintenanceActivityException ex) {
-            fail("MaintenanceActivityException");
+        } catch (NotValidParameterException ex) {
+           fail("NotValidParameterException");
         }
     }
     
@@ -514,6 +514,8 @@ public class MaintenanceActivityDAOImplTest {
             verify(selectDefaultMaintenanceActivity(1), activity);
         } catch (SQLException ex) {
             System.out.println("Error on: connection rollback");
+        } catch (NotValidParameterException ex) {
+           fail("NotValidParameterException");
         }
     }
     
@@ -526,6 +528,8 @@ public class MaintenanceActivityDAOImplTest {
             maintenanceActivityDAO.addMaintenanceActivity(activity);
         } catch (SQLException ex) {
             System.out.println("Error on: connection rollback");
+        } catch (NotValidParameterException ex) {
+           fail("NotValidParameterException");
         }
     }
     /*
@@ -553,6 +557,8 @@ public class MaintenanceActivityDAOImplTest {
             verify(selectDefaultMaintenanceActivity(3), activity);
         } catch (SQLException ex) {
             System.out.println("Error on: connection rollback");
+        } catch (NotValidParameterException ex) {
+           fail("NotValidParameterException");
         }
     }
     
@@ -564,38 +570,54 @@ public class MaintenanceActivityDAOImplTest {
     
     @Test
     public void testDeleteMaintenanceActivity() throws MaintenanceActivityException, SQLException {
-        deleteMaintenaceActivity(1);
-        insertMaintenanceActivity(1,"ProvaDescrizione1",121,"2050-11-21",true, 
+        try {
+            deleteMaintenaceActivity(1); 
+            insertMaintenanceActivity(1,"ProvaDescrizione1",121,"2050-11-21",true,
                     "Planned",null,"ProvaTypologyName1","ProvaBranch1","ProvaArea1",null);
-        boolean result = maintenanceActivityDAO.deleteMaintenanceActivity(1);
-        assertEquals(true, result);    
+            boolean result = maintenanceActivityDAO.deleteMaintenanceActivity(1);
+            assertEquals(true, result);    
+        } catch (NotValidParameterException ex) {
+           fail("NotValidParameterException");
+        }
     }
    
     
     @Test
     public void testDeleteMaintenanceActivityWithWrongId() throws MaintenanceActivityException, SQLException {
-        deleteMaintenaceActivity(2);
-        boolean result = maintenanceActivityDAO.deleteMaintenanceActivity(2);
-        assertEquals(false, result);
+        try {
+            deleteMaintenaceActivity(2);
+            boolean result = maintenanceActivityDAO.deleteMaintenanceActivity(2);
+            assertEquals(false, result);
+        } catch (NotValidParameterException ex) {
+           fail("NotValidParameterException");
+        }
     }
     
     @Test
     public void testDeleteMaintenanceActivityEwo() throws MaintenanceActivityException, SQLException {
-        deleteMaintenaceActivity(3);
-        insertMaintenanceActivity(3,"ProvaDescrizione3",123,"2050-11-23",false, 
+        try {
+            deleteMaintenaceActivity(3); 
+            insertMaintenanceActivity(3,"ProvaDescrizione3",123,"2050-11-23",false,
                     "Unplanned","EWO","ProvaTypologyName3","ProvaBranch3","ProvaArea3",null);
-        boolean result = maintenanceActivityDAO.deleteMaintenanceActivity(3);
-        assertEquals(true, result);    
+            boolean result = maintenanceActivityDAO.deleteMaintenanceActivity(3);
+            assertEquals(true, result);    
+        } catch (NotValidParameterException ex) {
+           fail("NotValidParameterException");
+        }
     }
     
     
     @Test
     public void testDeleteMaintenanceActivityExtraActivity() throws MaintenanceActivityException, SQLException {
-        deleteMaintenaceActivity(4);
-        insertMaintenanceActivity(4,"ProvaDescrizione4",124,"2050-11-24",false, 
+        try {
+            deleteMaintenaceActivity(4); 
+            insertMaintenanceActivity(4,"ProvaDescrizione4",124,"2050-11-24",false,
                     "Unplanned","Extra","ProvaTypologyName4","ProvaBranch4","ProvaArea4",null);
-        boolean result = maintenanceActivityDAO.deleteMaintenanceActivity(4);
-        assertEquals(true, result);    
+            boolean result = maintenanceActivityDAO.deleteMaintenanceActivity(4);
+            assertEquals(true, result);    
+        } catch (NotValidParameterException ex) {
+           fail("NotValidParameterException");
+        }
     }
     
     //================================================test retrieveMaintenanceActivitu=========================================================================================
@@ -614,11 +636,9 @@ public class MaintenanceActivityDAOImplTest {
                     "Planned",null,"ProvaTypologyName1","ProvaBranch1","ProvaArea1", "ProvaWorkSpaceNotes1","smp1");
         }catch(MaintenanceActivityException ex){
             fail("MaterialException was thrown");
-        } catch (SiteException ex) {
-            fail("SiteException");
-        } catch (DateException ex) {
-            fail("DateException");
-        }   
+        } catch (NotValidParameterException ex) {
+           fail("NotValidParameterException");
+        }  
     }
     
     /**
@@ -640,10 +660,8 @@ public class MaintenanceActivityDAOImplTest {
                     "Unplanned","Extra","ProvaTypologyName3","ProvaBranch3","ProvaArea3", "ProvaWorkSpaceNotes3","smp3");
         }catch(MaintenanceActivityException ex){
             fail("MaintenanceActivityException was thrown");
-        }catch (SiteException ex) {
-            fail("SiteException");
-        }catch (DateException ex) {
-            fail("DateException");
+        } catch (NotValidParameterException ex) {
+           fail("NotValidParameterException");
         }
         
     }
@@ -661,74 +679,64 @@ public class MaintenanceActivityDAOImplTest {
             assertTrue(resultList.isEmpty());
         }catch(MaintenanceActivityException ex){
             fail("MaintenanceActivityException was thrown");
-        } catch (SiteException ex) {
-            fail("SiteException");
-        } catch (DateException ex) {
-            fail("DateException");
-        }    
+        } catch (NotValidParameterException ex) {
+           fail("NotValidParameterException");
+        }   
     }
     
     /**
      * This method asserts that retrieveMaintenanceFromRangeMoreElement correctly raises MaintenanceActivityException
      */
-    @Test(expected = DateException.class)
-    public void testRetrieveMaintenanceActivityFromRangeStartGreaterThanStop() throws DateException{
+    @Test(expected = MaintenanceActivityException.class)
+    public void testRetrieveMaintenanceActivityFromRangeStartGreaterThanStop() throws MaintenanceActivityException{
         try {
             initializeRange();
             List<MaintenanceActivity> resultList = maintenanceActivityDAO.retrieveMaintenanceActivityFromRange(LocalDate.parse("2050-11-23"),
                     LocalDate.parse("2050-11-21"));
-        } catch (SiteException ex) {
-            fail("SiteException");
-        }catch(MaintenanceActivityException ex){
-            fail("MaintenanceActivityException was thrown");
+        } catch (NotValidParameterException ex) {
+           fail("NotValidParameterException");
         }
     }
     
     /**
      * This method asserts that retrieveMaintenanceFromRangeMoreElement correctly raises MaintenanceActivityException
      */
-    @Test(expected = DateException.class)
-    public void testRetrieveMaintenanceActivityFromRangeStartNull() throws DateException{
+    @Test(expected = MaintenanceActivityException.class)
+    public void testRetrieveMaintenanceActivityFromRangeStartNull() throws MaintenanceActivityException{
         try {
             initializeRange();
             List<MaintenanceActivity> resultList = maintenanceActivityDAO.retrieveMaintenanceActivityFromRange(null,
                     LocalDate.parse("2050-11-21"));
-        } catch (SiteException ex) {
-            fail("SiteException");
-        }catch(MaintenanceActivityException ex){
-            fail("MaintenanceActivityException was thrown");
-        } 
+        } catch (NotValidParameterException ex) {
+           fail("NotValidParameterException");
+        }
     }
     
     /**
      * This method asserts that retrieveMaintenanceFromRangeMoreElement correctly raises MaintenanceActivityException
      */
-    @Test(expected = DateException.class)
-    public void testRetrieveMaintenanceActivityFromRangeStopNull() throws DateException{
+    @Test(expected = MaintenanceActivityException.class)
+    public void testRetrieveMaintenanceActivityFromRangeStopNull() throws  MaintenanceActivityException{
         try {
             initializeRange();
             List<MaintenanceActivity> resultList = maintenanceActivityDAO.retrieveMaintenanceActivityFromRange(LocalDate.parse("2050-11-23"),
                     null);
-        } catch (SiteException ex) {
-            fail("SiteException");
-        }catch(MaintenanceActivityException ex){
-            fail("MaintenanceActivityException was thrown");
-        } 
+        }  catch (NotValidParameterException ex) {
+           fail("NotValidParameterException");
+        }
     }
     
     /**
      * This method asserts that retrieveMaintenanceFromRangeMoreElement correctly raises SiteException
      */
-    @Test(expected = SiteException.class)
-    public void testRetrieveMaintenanceActivityFromRangeSiteException() throws SiteException{
+    @Test(expected = MaintenanceActivityException.class)
+    public void testRetrieveMaintenanceActivityFromRangeSiteException() throws MaintenanceActivityException{
         try {
             initializeRange();
             List<MaintenanceActivity> resultList = maintenanceActivityDAO.retrieveMaintenanceActivityFromRange(LocalDate.parse("2050-11-21"),
                     LocalDate.parse("2050-11-28"));
-        }catch (MaintenanceActivityException ex) {
-            fail("MaintenanceActivityException was thrown");
-        }   catch (DateException ex) {
-            fail("DateException");
+        } catch (NotValidParameterException ex) {
+           fail("NotValidParameterException");
         }   
     }
     

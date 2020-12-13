@@ -403,7 +403,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
             }        
         }catch(NumberFormatException ex){
             errorMessage("ID must be an integer");
-        } catch (SiteException | MaintenanceActivityException | MaterialException | NumberNotValidException | NotValidParameterException ex) {
+        } catch (MaintenanceActivityException | NumberNotValidException | NotValidParameterException ex) {
             errorMessage(ex.getMessage());
         }
     }//GEN-LAST:event_viewButtonActionPerformed

@@ -82,7 +82,7 @@ public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
 
 
     @Override
-    public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId) throws SiteException, MaintenanceActivityException {
+    public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId) throws  MaintenanceActivityException {
         switch (activityId) {
             case 1:
                 return new PlannedMaintenanceActivity(activityId, new Site("ProvaBranchOffice1", "ProvaArea1", "ProvaWorkspaceNotes1"),
@@ -99,7 +99,7 @@ public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
             case 4:
                 return null;
             case 5:
-                throw new SiteException("SiteException");
+                throw new MaintenanceActivityException("SiteException");
             case 6:
                 throw new MaintenanceActivityException("MaintenanceActivityException");
             case 7:
@@ -166,13 +166,13 @@ public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
     }
 
     @Override
-    public List<MaintenanceActivity> retrieveMaintenanceActivityFromRange(LocalDate startDate, LocalDate stopDate) throws MaintenanceActivityException, SiteException, DateException {
+    public List<MaintenanceActivity> retrieveMaintenanceActivityFromRange(LocalDate startDate, LocalDate stopDate) throws MaintenanceActivityException {
         if(startDate.equals(LocalDate.of(2021, Month.JANUARY, 4))){
             throw new MaintenanceActivityException();
         }else if(startDate.equals(LocalDate.of(2021, Month.JANUARY, 11))){
-            throw new SiteException();
+            throw new MaintenanceActivityException();
         }else if(startDate.equals(LocalDate.of(2021, Month.JANUARY, 18))){
-            throw new DateException();
+            throw new MaintenanceActivityException();
         }else if(startDate.equals(LocalDate.of(2021, Month.JANUARY, 25))){
             return new ArrayList<>(){{
                 add(new PlannedMaintenanceActivity(1, new Site("ProvaBranchOffice1", "ProvaArea1"), "ProvaTypology1", "ProvaDescription1", 1, LocalDate.of(2020, Month.JANUARY, 1), null, null, true));

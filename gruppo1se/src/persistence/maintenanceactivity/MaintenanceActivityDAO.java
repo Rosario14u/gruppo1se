@@ -18,10 +18,10 @@ import java.util.List;
  * @author rosar
  */
 public interface MaintenanceActivityDAO{
-    public boolean addMaintenanceActivity(MaintenanceActivity activity) throws MaintenanceActivityException;
-    public boolean deleteMaintenanceActivity(int activityId) throws MaintenanceActivityException;
-    public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId) throws SiteException, MaintenanceActivityException;    
-    public boolean modifyMaintenaceActivity(MaintenanceActivity newActivity) throws MaintenanceActivityException;
+    public boolean addMaintenanceActivity(MaintenanceActivity activity) throws MaintenanceActivityException, NotValidParameterException;
+    public boolean deleteMaintenanceActivity(int activityId) throws MaintenanceActivityException, NotValidParameterException;
+    public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId) throws MaintenanceActivityException, NotValidParameterException;    
+    public boolean modifyMaintenaceActivity(MaintenanceActivity newActivity) throws MaintenanceActivityException, NotValidParameterException;
     public List<MaintenanceActivity> retrieveMaintenanceActivityFromRange(LocalDate startDate, LocalDate stopDate) 
-            throws MaintenanceActivityException, SiteException, DateException;
+            throws MaintenanceActivityException, NotValidParameterException;
 }

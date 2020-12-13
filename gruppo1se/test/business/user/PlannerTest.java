@@ -370,7 +370,7 @@ public class PlannerTest {
      * Test of makeMaintenanceActivity method, of class Planner.
      */
     @Test
-    public void testMakeMaintenanceActivity() throws MaterialException, MaintenanceActivityException, SkillException {
+    public void testMakeMaintenanceActivity() throws  MaintenanceActivityException {
         try {
             System.out.println("makeMaintenanceActivity");
             //planner.removeMaintenanceActivity(activityId);
@@ -386,7 +386,7 @@ public class PlannerTest {
     }
 
     @Test(expected = MaintenanceActivityException.class)
-    public void testMakeMaintenanceActivityWrong() throws MaterialException, MaintenanceActivityException, SkillException {
+    public void testMakeMaintenanceActivityWrong() throws  MaintenanceActivityException {
         try {
             System.out.println("makeMaintenanceActivityWrong");
             activityId = 2;
@@ -403,7 +403,7 @@ public class PlannerTest {
     }
     
     @Test
-    public void testMakeMaintenanceActivityExtraActivity() throws MaterialException, MaintenanceActivityException, SkillException{
+    public void testMakeMaintenanceActivityExtraActivity() throws  MaintenanceActivityException{
         try {
             System.out.println("makeMaintenanceActivityExtraActivity");
             extraActivity = true;
@@ -422,7 +422,7 @@ public class PlannerTest {
     }
     
     @Test(expected = MaintenanceActivityException.class)
-    public void testMakeMaintenanceActivityExtraActivityWrong() throws MaterialException, MaintenanceActivityException, SkillException{
+    public void testMakeMaintenanceActivityExtraActivityWrong() throws  MaintenanceActivityException{
         try {
             System.out.println("makeMaintenanceActivityExtraActivityWrong");
             activityId = 2;
@@ -442,7 +442,7 @@ public class PlannerTest {
     }
     
     @Test
-    public void testMakeMaintenanceActivityEwo() throws MaterialException, MaintenanceActivityException, SkillException{
+    public void testMakeMaintenanceActivityEwo() throws  MaintenanceActivityException{
         try {
             System.out.println("makeMaintenanceActivityEwo");
             plannedActivity = false;
@@ -461,7 +461,7 @@ public class PlannerTest {
     }
     
     @Test(expected = MaintenanceActivityException.class)
-    public void testMakeMaintenanceActivityEwoWrong() throws MaterialException, MaintenanceActivityException, SkillException {
+    public void testMakeMaintenanceActivityEwoWrong() throws MaintenanceActivityException {
         try {
             System.out.println("makeMaintenanceActivityEwoWrong");
             activityId = 2;
@@ -533,7 +533,7 @@ public class PlannerTest {
      * This test method assert that viewMaintenanceActivity correctly return a planned activity
      */
     @Test
-    public void testviewMaintenanceActivityReturnPlanned() throws SkillException {
+    public void testviewMaintenanceActivityReturnPlanned()  {
         try {
             MaintenanceActivity activity = planner.viewMaintenanceActivity(1);
             List<Material> materials= new ArrayList<>(){{
@@ -543,13 +543,9 @@ public class PlannerTest {
                 }};
             assertViewMaintenanceActivity(activity, 1, "ProvaDescription1", 121, "2020-12-21", true, "Planned", null,
                     "ProvaTypology1", "ProvaBranchOffice1", "ProvaArea1", "ProvaWorkspaceNotes1",materials,"ProvaSmp1");
-        } catch (SiteException ex) {
-            fail("SiteException");
-        } catch (MaintenanceActivityException ex) {
+        }catch (MaintenanceActivityException ex) {
             fail("MaintenanceActivityException");
-        } catch (MaterialException ex) {
-            fail("MaterialException");
-        }catch (NotValidParameterException ex) {
+        } catch (NotValidParameterException ex) {
             fail("NotValidParameterException");
         }
     }
@@ -557,7 +553,7 @@ public class PlannerTest {
      * This test method assert that viewMaintenanceActivity correctly return a Ewo activity
      */
     @Test
-    public void testviewMaintenanceActivityReturnEwo() throws SkillException {
+    public void testviewMaintenanceActivityReturnEwo() {
         try {
             MaintenanceActivity activity = planner.viewMaintenanceActivity(2);
             List<Material> materials= new ArrayList<>(){{
@@ -567,12 +563,8 @@ public class PlannerTest {
                 }};
             assertViewMaintenanceActivity(activity, 2, "ProvaDescription2", 122, "2020-12-22", false, "Unplanned", "EWO",
                     "ProvaTypology2", "ProvaBranchOffice2", "ProvaArea2", "ProvaWorkspaceNotes2",materials,"ProvaSmp2");
-        } catch (SiteException ex) {
-            fail("SiteException");
         } catch (MaintenanceActivityException ex) {
             fail("MaintenanceActivityException");
-        } catch (MaterialException ex) {
-            fail("MaterialException");
         }catch (NotValidParameterException ex) {
             fail("NotValidParameterException");
         }
@@ -581,7 +573,7 @@ public class PlannerTest {
      * This test method assert that viewMaintenanceActivity correctly return a Extra activity
      */
     @Test
-    public void testviewMaintenanceActivityReturnExtra() throws SkillException {
+    public void testviewMaintenanceActivityReturnExtra() {
         try {
             MaintenanceActivity activity = planner.viewMaintenanceActivity(3);
             List<Material> materials= new ArrayList<>(){{
@@ -591,12 +583,8 @@ public class PlannerTest {
                 }};
             assertViewMaintenanceActivity(activity, 3, "ProvaDescription3", 123, "2020-12-23", false, "Unplanned", "Extra",
                     "ProvaTypology3", "ProvaBranchOffice3", "ProvaArea3", "ProvaWorkspaceNotes3",materials,"ProvaSmp3");
-        } catch (SiteException ex) {
-            fail("SiteException");
         } catch (MaintenanceActivityException ex) {
             fail("MaintenanceActivityException");
-        } catch (MaterialException ex) {
-            fail("MaterialException");
         }catch (NotValidParameterException ex) {
             fail("NotValidParameterException");
         }
@@ -610,12 +598,8 @@ public class PlannerTest {
         try {
             MaintenanceActivity activity = planner.viewMaintenanceActivity(4);
             assertNull("testviewMaintenanceActivityNull error", activity);
-        }catch (SiteException ex) {
-            fail("SiteException");
         } catch (MaintenanceActivityException ex) {
             fail("MaintenanceActivityException");
-        } catch (MaterialException ex) {
-            fail("MaterialException");
         }catch (NotValidParameterException ex) {
             fail("NotValidParameterException");
         }
@@ -624,14 +608,10 @@ public class PlannerTest {
     /**
      * This test method assert that viewMaintenanceActivity correctly raises SiteException
      */
-    @Test(expected = SiteException.class)
-    public void testviewMaintenanceActivitySiteException() throws SiteException, SkillException {
+    @Test(expected = MaintenanceActivityException.class)
+    public void testviewMaintenanceActivitySiteException() throws MaintenanceActivityException{
         try {
             MaintenanceActivity activity = planner.viewMaintenanceActivity(5);
-        } catch (MaintenanceActivityException ex) {
-            fail("MaintenanceActivityException");
-        } catch (MaterialException ex) {
-            fail("MaterialException");
         }catch (NotValidParameterException ex) {
             fail("NotValidParameterException");
         }
@@ -640,13 +620,9 @@ public class PlannerTest {
      * This test method assert that viewMaintenanceActivity correctly raises MaintenanceActivityException
      */
     @Test(expected = MaintenanceActivityException.class)
-    public void testviewMaintenanceActivityMaintenanceActivityException() throws MaintenanceActivityException, SkillException {
+    public void testviewMaintenanceActivityMaintenanceActivityException() throws MaintenanceActivityException{
         try {
             MaintenanceActivity activity = planner.viewMaintenanceActivity(6);
-        } catch (SiteException ex) {
-            fail("SiteException");
-        } catch (MaterialException ex) {
-            fail("MaterialException");
         }catch (NotValidParameterException ex) {
             fail("NotValidParameterException");
         }
@@ -655,18 +631,14 @@ public class PlannerTest {
      * This test method assert that viewMaintenanceActivity correctly return a maintenance activity with no material associated
      */
     @Test
-    public void testviewMaintenanceActivityMaterialEmpty() throws SkillException {
+    public void testviewMaintenanceActivityMaterialEmpty() {
         try {
             MaintenanceActivity activity = planner.viewMaintenanceActivity(7);
             List<Material> materials= new ArrayList<>();
             assertViewMaintenanceActivity(activity, 7, "ProvaDescription7", 127, "2020-12-27", false, "Planned", null,
                     "ProvaTypology7", "ProvaBranchOffice7", "ProvaArea7", "ProvaWorkspaceNotes7", materials, null);
-        } catch (SiteException ex) {
-            fail("SiteException");
-        } catch (MaintenanceActivityException ex) {
+        }catch (MaintenanceActivityException ex) {
             fail("MaintenanceActivityException");
-        } catch (MaterialException ex) {
-            fail("MaterialException");
         }catch (NotValidParameterException ex) {
             fail("NotValidParameterException");
         }
@@ -674,14 +646,10 @@ public class PlannerTest {
     /**
      * This test method assert that viewMaintenanceActivity correctly raises MaterialException
      */
-    @Test(expected = MaterialException.class)
-    public void testviewMaintenanceActivityMaterialException() throws MaterialException, SkillException {
+    @Test(expected = MaintenanceActivityException.class)
+    public void testviewMaintenanceActivityMaterialException() throws MaintenanceActivityException {
         try {
             MaintenanceActivity activity = planner.viewMaintenanceActivity(8);
-        } catch (SiteException ex) {
-            fail("SiteException");
-        } catch (MaintenanceActivityException ex) {
-            fail("MaintenanceActivityException");
         }catch (NotValidParameterException ex) {
             fail("NotValidParameterException");
         }
@@ -742,8 +710,8 @@ public class PlannerTest {
     } 
     
     
-    @Test(expected = SiteException.class)
-    public void viewMaintenanceActivityByWeekSiteException() throws MaintenanceActivityException, SiteException, DateException, SkillException{
+    @Test(expected = MaintenanceActivityException.class)
+    public void viewMaintenanceActivityByWeekSiteException() throws MaintenanceActivityException{
         try {
             planner.viewMaintenanceActivityByWeek(2, 2021);
         } catch (NotValidParameterException ex) {
@@ -751,8 +719,8 @@ public class PlannerTest {
         }
     }
     
-    @Test(expected = DateException.class)
-    public void viewMaintenanceActivityByWeekDateException() throws MaintenanceActivityException, SiteException, DateException, SkillException{
+    @Test(expected = MaintenanceActivityException.class)
+    public void viewMaintenanceActivityByWeekDateException() throws MaintenanceActivityException{
         try {
             planner.viewMaintenanceActivityByWeek(3, 2021);
         } catch (NotValidParameterException ex) {
@@ -781,12 +749,6 @@ public class PlannerTest {
             assertEquals(listOfMaintenaceActivity.size(), 0);
         }catch(MaintenanceActivityException ex){
             fail("MaintenanceActivityException");
-        }catch(SiteException ex){
-            fail("SiteException");
-        }catch(DateException ex){
-            fail("DateException");
-        } catch (SkillException ex) {
-            Logger.getLogger(PlannerTest.class.getName()).log(Level.SEVERE, null, ex);
         }catch (NotValidParameterException ex) {
             fail("NotValidParameterException");
         }
@@ -801,12 +763,6 @@ public class PlannerTest {
             assertEquals(2, list.size());
         } catch (UsersException ex) {
             fail("UsersException");
-        } catch (DateException ex) {
-            fail("DateException");
-        } catch (AppointmentException ex) {
-            fail("AppointmentException");
-        } catch (SkillException ex) {
-            fail("SkillException");
         } catch (NotValidParameterException ex) {
             fail("NotValidParameterException");
         }

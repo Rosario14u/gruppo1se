@@ -7,11 +7,14 @@ package persistence.maintenanceactivity;
 import business.maintenanceactivity.*;
 import exception.DateException;
 import exception.MaintenanceActivityException;
+import exception.NotValidParameterException;
 import exception.SiteException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import persistence.database.ConnectionDB;
 /**
  *
@@ -40,7 +43,8 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     
     
     @Override
-    public boolean addMaintenanceActivity(MaintenanceActivity activity) throws MaintenanceActivityException{
+    public boolean addMaintenanceActivity(MaintenanceActivity activity) throws MaintenanceActivityException, NotValidParameterException{
+        checkDao(siteDao,"Error in storing activity");
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             PreparedStatement preparedStatement = conn.prepareStatement(INSERT_ACTIVITY);
@@ -55,7 +59,8 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     
     //Returns true if at least one row has been deleted
     @Override
-    public boolean deleteMaintenanceActivity(int activityId) throws MaintenanceActivityException{
+    public boolean deleteMaintenanceActivity(int activityId) throws MaintenanceActivityException, NotValidParameterException{
+        checkDao(siteDao,"Error in deleting activity");
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             PreparedStatement preparedStatement = conn.prepareStatement(DELETE_ACTIVITY);
@@ -79,7 +84,8 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
      */
     /*Method developed by Rosario Gaeta*/
     @Override
-    public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId) throws SiteException, MaintenanceActivityException{
+    public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId) throws MaintenanceActivityException, NotValidParameterException{
+        checkDao(siteDao,"Error in deleting activity");
         try {
             MaintenanceActivity ma = null;
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
@@ -92,7 +98,9 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
             return ma;
         } catch (SQLException ex) {
            throw new MaintenanceActivityException("Maintenance Activity retriving error");
-        }       
+        }  catch (SiteException ex) {
+           throw new MaintenanceActivityException(ex.getMessage());
+        }      
     }
     
     
@@ -142,7 +150,8 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
      */
     /*Developed by Antonio Gorrasi*/
     @Override
-    public boolean modifyMaintenaceActivity(MaintenanceActivity newActivity) throws MaintenanceActivityException{
+    public boolean modifyMaintenaceActivity(MaintenanceActivity newActivity) throws MaintenanceActivityException, NotValidParameterException{
+        checkDao(siteDao,"Error in deleting activity");
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             PreparedStatement pstm = conn.prepareStatement(UPDATE_ACTIVITY);
@@ -163,9 +172,10 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
      */
     @Override
     public List<MaintenanceActivity> retrieveMaintenanceActivityFromRange(LocalDate startDate, LocalDate stopDate)
-            throws MaintenanceActivityException, SiteException, DateException{
+            throws MaintenanceActivityException,NotValidParameterException{
+        checkDao(siteDao,"Error in deleting activity");
         if (startDate==null || stopDate==null || startDate.isAfter(stopDate))
-            throw new DateException("Maintenance Activity retriving error");
+            throw new MaintenanceActivityException("Error on date");
         try {
             List<MaintenanceActivity> activityList = new ArrayList<>();
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
@@ -179,6 +189,8 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
             return activityList;
         } catch (SQLException ex) {
            throw new MaintenanceActivityException("Maintenance Activity retriving error");
+        } catch (SiteException ex) {
+            throw new MaintenanceActivityException(ex.getMessage());
         }
     }
     
@@ -202,4 +214,11 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
         preparedStatement.setString(9, activity.getSite().getArea());
         preparedStatement.setInt(10, activity.getActivityId());
     }
+    
+    private void checkDao(SiteDao siteDao, String message) throws NotValidParameterException{
+        if(siteDao == null)
+            throw new NotValidParameterException(message);
+    }
+
+
 }

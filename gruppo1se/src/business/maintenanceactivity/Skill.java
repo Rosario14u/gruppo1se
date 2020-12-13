@@ -5,7 +5,6 @@
  */
 package business.maintenanceactivity;
 
-import exception.NotValidParameterException;
 import java.util.Objects;
 
 /**

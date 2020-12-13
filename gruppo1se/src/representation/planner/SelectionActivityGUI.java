@@ -250,7 +250,7 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
                tableModel.addRow(new Object[]{ma.getActivityId(), ma.getSite().getArea(), ma.getTypology(), ma.getEstimatedInterventionTime()});
             }
 
-        } catch (MaintenanceActivityException | SiteException | DateException | SkillException | NotValidParameterException ex) {
+        } catch (MaintenanceActivityException | NotValidParameterException ex) {
             errorMessage(ex.getMessage());
         }
     }
