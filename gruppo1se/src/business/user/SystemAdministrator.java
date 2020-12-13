@@ -31,9 +31,8 @@ public class SystemAdministrator extends User {
     
     
     public SystemAdministrator(String username, String password, MaintenanceProcedureDAO procedureDao,
-            UsersDAO usersDao, TypologyDAO typologyDao) throws NotValidParameterException {
+            UsersDAO usersDao, TypologyDAO typologyDao) {
         super(username, password);
-        validateSystemAdministrator(procedureDao, usersDao, typologyDao);
         this.procedureDao = procedureDao;
         this.typologyDao = typologyDao;
         this.usersDao = usersDao;
@@ -41,12 +40,16 @@ public class SystemAdministrator extends User {
     
     
     public boolean saveSmpProcedure(String newSmp,String oldSmp) throws ProcedureException, NotValidParameterException{
-        MaintenanceProcedure procedure;
+        if(procedureDao == null){
+            throw new NotValidParameterException("Error in saving procedure");
+        }
+        
         boolean retVal = false;
         if (newSmp == null || newSmp.trim().replaceAll("  +", " ").equals("")){
             throw new ProcedureException("Problem in saving smp");
         }
-        procedure = new MaintenanceProcedure(newSmp);
+        MaintenanceProcedure procedure = new MaintenanceProcedure(newSmp);
+        
         if (oldSmp != null && !oldSmp.trim().replaceAll("  +", " ").equals("")){
             retVal = procedureDao.updateSmp(procedure,oldSmp);
         }
@@ -57,11 +60,17 @@ public class SystemAdministrator extends User {
     }
     
     public List<UserDTO> viewUsers() throws UsersException, NotValidParameterException{
+        if(usersDao == null){
+            throw new NotValidParameterException("Error in retrieving users");
+        }
         return usersDao.readUsers();
     }
     
     
     public boolean makeUser(String username, String password, String role) throws UsersException, NotValidParameterException{
+        if(usersDao == null){
+            throw new NotValidParameterException("Error in creating user");
+        }
         UserDTO user;
         if (role.equals("System Administrator"))
             user = new SystemAdministratorDTO(username, password);
@@ -72,14 +81,20 @@ public class SystemAdministrator extends User {
         return usersDao.addUser(user);
     }
     
-    public int removeUsers(List<String> usernameList) throws UsersException{
+    public int removeUsers(List<String> usernameList) throws UsersException, NotValidParameterException{
+        if(usersDao == null){
+            throw new NotValidParameterException("Error in removing users");
+        }
         if(usernameList == null || usernameList.isEmpty())
             return 0;
         return usersDao.deleteUsers(usernameList);
     }
     
     
-    public boolean modifyUser(String oldUsername, UserDTO newUser) throws UsersException{
+    public boolean modifyUser(String oldUsername, UserDTO newUser) throws UsersException, NotValidParameterException{
+        if(usersDao == null){
+            throw new NotValidParameterException("Error in updating users");
+        }
         if(oldUsername==null || newUser==null || newUser.getUsername()==null || newUser.getPassword()==null
                 || oldUsername.equals("") || newUser.getUsername().equals("")){
             throw new UsersException("Invalid parameters");
@@ -87,22 +102,24 @@ public class SystemAdministrator extends User {
         return usersDao.updateUser(oldUsername, newUser);
     }
 
-    public boolean makeTypology(String typology) throws TypologyException{
+    public boolean makeTypology(String typology) throws TypologyException, NotValidParameterException{
+        if(typologyDao == null){
+            throw new NotValidParameterException("Error in retrieving users");
+        }
         return typologyDao.addTypology(typology);
     }
     
-    public List<String> readTypologies() throws TypologyException{
+    public List<String> readTypologies() throws TypologyException, NotValidParameterException{
+        if(typologyDao == null){
+            throw new NotValidParameterException("Error in retrieving users");
+        }        
         return typologyDao.viewTypologies();
     }
     
-    public boolean updateTypology(String oldTypology, String newTypology) throws TypologyException{
+    public boolean updateTypology(String oldTypology, String newTypology) throws TypologyException, NotValidParameterException{
+        if(typologyDao == null){
+            throw new NotValidParameterException("Error in retrieving users");
+        }
         return typologyDao.modifyTypology(oldTypology, newTypology);
-    }
-    
-    
-    private void validateSystemAdministrator(MaintenanceProcedureDAO procedureDao, UsersDAO usersDao,
-            TypologyDAO typologyDao) throws NotValidParameterException{
-        if(procedureDao == null || usersDao == null || typologyDao == null)
-            throw new NotValidParameterException();  
     }
 }

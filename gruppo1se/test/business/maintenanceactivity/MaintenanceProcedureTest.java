@@ -21,12 +21,10 @@ import static org.junit.Assert.*;
  */
 public class MaintenanceProcedureTest {
     private MaintenanceProcedure instance;
+    
+    
     public MaintenanceProcedureTest() {
-        try {
-            instance = new MaintenanceProcedure("Smp");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        instance = new MaintenanceProcedure("Smp");
     }
     
     @BeforeClass
@@ -60,13 +58,9 @@ public class MaintenanceProcedureTest {
      */
     @Test
     public void testSetSmp() {
-        try {
-            String smp = "Smp2";
-            instance.setSmp(smp);
-            assertEquals(instance.getSmp(),smp);
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        String smp = "Smp2";
+        instance.setSmp(smp);
+        assertEquals(instance.getSmp(),smp);
     }
 
     /**
@@ -85,13 +79,9 @@ public class MaintenanceProcedureTest {
      */
     @Test
     public void testEqualsSameAttributes() {
-        try {
-            MaintenanceProcedure expProcedure = new MaintenanceProcedure("Smp");
-            boolean result = instance.equals(expProcedure);
-            assertTrue(result);
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        MaintenanceProcedure expProcedure = new MaintenanceProcedure("Smp");
+        boolean result = instance.equals(expProcedure);
+        assertTrue(result);
     }
     
     /**
@@ -99,13 +89,9 @@ public class MaintenanceProcedureTest {
      */
     @Test
     public void testEqualsDifferentAttributes() {
-        try {
-            MaintenanceProcedure expProcedure = new MaintenanceProcedure("Smp2");
-            boolean result = instance.equals(expProcedure);
-            assertFalse(result);
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        MaintenanceProcedure expProcedure = new MaintenanceProcedure("Smp2");
+        boolean result = instance.equals(expProcedure);
+        assertFalse(result);
     }
     
 

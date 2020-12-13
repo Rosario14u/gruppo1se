@@ -48,7 +48,7 @@ public abstract class MaintenanceActivityFactory {
      */
     public static MaintenanceActivity make(Typology type, int activityId, String branchOffice, String area,
             String workspaceNotes,String typology, String activityDescription, int estimatedInterventionTime, String date,
-            String smp, List<Material> materials, boolean interruptibleActivity) throws NotValidParameterException{
+            String smp, List<Material> materials, boolean interruptibleActivity){
         MaintenanceActivityFactory factory = null;
         if (type == Typology.PLANNED) {
             System.out.println("sono qua");
@@ -87,7 +87,7 @@ public abstract class MaintenanceActivityFactory {
      */
     private MaintenanceActivity build(Typology type, int activityId, String branchOffice, String area,
             String workspaceNotes,String typology, String activityDescription, int estimatedInterventionTime, String date,
-            String smp, List<Material> materials, boolean interruptibleActivity) throws NotValidParameterException {
+            String smp, List<Material> materials, boolean interruptibleActivity) {
         Site site = new Site(branchOffice, area, workspaceNotes);
         LocalDate localDate = LocalDate.parse(date);
         MaintenanceProcedure procedure = null;
@@ -122,5 +122,5 @@ public abstract class MaintenanceActivityFactory {
     protected abstract MaintenanceActivity selectMaintenanceActivity(Typology type, int activityId, Site site,
             String typology, String activityDescription, int estimatedInterventionTime,
             LocalDate date, MaintenanceProcedure maintenanceProcedure, List<Material> materials,
-            boolean interruptibleActivity) throws NotValidParameterException;
+            boolean interruptibleActivity);
 }

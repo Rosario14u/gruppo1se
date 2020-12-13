@@ -181,7 +181,7 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
         }else if(row.length > 1){
             infoMessage("Select one row!");
         }else{
-            VerifyActivity verifyActivity = new VerifyActivity(list.get(row[0]));
+            VerifyActivity verifyActivity = new VerifyActivity(list.get(row[0]), planner);
             verifyActivity.setVisible(true);
         }
     }//GEN-LAST:event_jButton1ActionPerformed

@@ -13,10 +13,11 @@ import java.util.Objects;
 /**
  *
  * @author rosar
- * 
+ *
  */
 //Class developed by Rosario Gaeta
 public abstract class MaintenanceActivity implements Comparable<MaintenanceActivity> {
+
     private final int activityId;
     private final Site site;
     private final String typology;
@@ -26,24 +27,27 @@ public abstract class MaintenanceActivity implements Comparable<MaintenanceActiv
     private final MaintenanceProcedure maintenanceProcedure;
     private List<Material> materials;
     private final boolean interruptibleActivity;
-    
-    
+
     /**
      * Constructor of Maintenance Activity
+     *
      * @param activityId activityId of Maintenance Activity
      * @param site site of Maintenance Activity
-     * @param typology typology of Maintenance Activity (Eletronic,Meccanical ecc)
-     * @param activityDescription typology of Maintenance Activity (Eletronic,Meccanical ecc)
-     * @param estimatedInterventionTime estimated intervention time of Maintenance Activity
+     * @param typology typology of Maintenance Activity (Eletronic,Meccanical
+     * ecc)
+     * @param activityDescription typology of Maintenance Activity
+     * (Eletronic,Meccanical ecc)
+     * @param estimatedInterventionTime estimated intervention time of
+     * Maintenance Activity
      * @param date date of Maintenance Activity
-     * @param maintenanceProcedure maintenance procedure associated with Maintenance Activity
+     * @param maintenanceProcedure maintenance procedure associated with
+     * Maintenance Activity
      * @param materials list of materials associated with Maintenance Activity
      * @param interruptibleActivity interruptible activity
      */
     public MaintenanceActivity(int activityId, Site site, String typology, String activityDescription,
             int estimatedInterventionTime, LocalDate date, MaintenanceProcedure maintenanceProcedure,
-            List<Material> materials, boolean interruptibleActivity) throws NotValidParameterException {
-        validateActivity(activityId,site,typology,activityDescription,estimatedInterventionTime,date,materials);
+            List<Material> materials, boolean interruptibleActivity){
         this.activityId = activityId;
         this.site = site;
         this.typology = typology;
@@ -54,90 +58,81 @@ public abstract class MaintenanceActivity implements Comparable<MaintenanceActiv
         this.materials = materials;
         this.interruptibleActivity = interruptibleActivity;
     }
-    
-    
+
     /**
-     * 
+     *
      * @return {@code int} activityId
      */
     public int getActivityId() {
         return activityId;
     }
-    
-    
+
     /**
-     * 
+     *
      * @return {@code Site} site
      */
     public Site getSite() {
         return site;
     }
-    
-    
+
     /**
-     * 
+     *
      * @return {@code String} typology
      */
     public String getTypology() {
         return typology;
     }
-    
-    
+
     /**
-     * 
+     *
      * @return {@code String} activityDescription
      */
     public String getActivityDescription() {
         return activityDescription;
     }
-    
-    
+
     /**
-     * 
+     *
      * @return {@code String} estimatedInterventionTime
      */
     public int getEstimatedInterventionTime() {
         return estimatedInterventionTime;
     }
-    
-    
+
     /**
-     * 
+     *
      * @return {@code LocalDate} date
      */
     public LocalDate getDate() {
         return date;
     }
-    
-    
+
     /**
-     * 
+     *
      * @return {@code MaintenanceProcedure} maintenanceProcedure
      */
     public MaintenanceProcedure getMaintenanceProcedure() {
         return maintenanceProcedure;
     }
-    
-    
+
     /**
-     * 
+     *
      * @return {@code List<String>} materials
      */
     public List<Material> getMaterials() {
         return materials;
     }
-    
+
     /**
-     * 
+     *
      * @return {@code boolean} interruptibleActivity
      */
     public boolean isInterruptibleActivity() {
         return interruptibleActivity;
     }
-    
-    
+
     /**
-     * 
+     *
      * @param materials list of materials
      */
     public void setMaterials(List<Material> materials) {
@@ -147,18 +142,18 @@ public abstract class MaintenanceActivity implements Comparable<MaintenanceActiv
     public void setDate(LocalDate date) {
         this.date = date;
     }
-    
-    
+
     /**
-     * Return string representation of the MaintenanceActivity object 
+     * Return string representation of the MaintenanceActivity object
+     *
      * @return {@code String}
      */
     @Override
     public String toString() {
-        return '{' + "activityId=" + activityId + ", site=" + site + ", typology=" + typology + 
-                ", activityDescription=" + activityDescription + ", estimatedInterventionTime=" + 
-                estimatedInterventionTime + ", date=" + date + ", maintenanceProcedure=" + maintenanceProcedure + 
-                ", materials=" + materials + ", interruptibleActivity=" + interruptibleActivity + '}';
+        return '{' + "activityId=" + activityId + ", site=" + site + ", typology=" + typology
+                + ", activityDescription=" + activityDescription + ", estimatedInterventionTime="
+                + estimatedInterventionTime + ", date=" + date + ", maintenanceProcedure=" + maintenanceProcedure
+                + ", materials=" + materials + ", interruptibleActivity=" + interruptibleActivity + '}';
     }
 
     @Override
@@ -177,7 +172,7 @@ public abstract class MaintenanceActivity implements Comparable<MaintenanceActiv
     }
 
     /**
-     * 
+     *
      * @param obj
      * @return true if the two object are equals, false otherwise
      */
@@ -227,15 +222,4 @@ public abstract class MaintenanceActivity implements Comparable<MaintenanceActiv
     public int compareTo(MaintenanceActivity o) {
         return this.getActivityId() - o.getActivityId();
     }
-    
-    private void validateActivity(int activityId, Site site, String typology, String activityDescription,
-            int estimatedInterventionTime, LocalDate date, List<Material> materials) throws NotValidParameterException{
-        if(activityId <= 0 || site == null || typology == null || typology.trim().replaceAll("  +", " ").equals("")
-                || activityDescription == null || activityDescription.trim().replaceAll("  +", " ").equals("")
-                || estimatedInterventionTime <= 0 || date == null
-                || (materials != null && (materials.stream().anyMatch(material -> material == null))))
-            throw new NotValidParameterException("Maintenance Activity not valid");
-    }
-    
-
 }

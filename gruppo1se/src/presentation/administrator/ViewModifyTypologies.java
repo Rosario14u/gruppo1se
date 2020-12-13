@@ -72,11 +72,15 @@ public class ViewModifyTypologies extends javax.swing.JFrame {
     }
     
     public void addRowsToTable() throws TypologyException{
-        list = systemAdministrator.readTypologies();
-        Object[] rows = new Object[1];
-        for(int i = 0; i < list.size(); i++) {
-            rows[0] = list.get(i);
-            tableModel.addRow(rows);
+        try {
+            list = systemAdministrator.readTypologies();
+            Object[] rows = new Object[1];
+            for(int i = 0; i < list.size(); i++) {
+                rows[0] = list.get(i);
+                tableModel.addRow(rows);
+            }
+        } catch (NotValidParameterException ex) {
+            errorMessage(ex.getMessage());
         }
     }
     
@@ -233,6 +237,10 @@ public class ViewModifyTypologies extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, message, "INFO", JOptionPane.INFORMATION_MESSAGE);
     }
     
+    private void errorMessage(String message){
+        JOptionPane.showMessageDialog(this, message, "ERROR", JOptionPane.ERROR_MESSAGE);
+    }
+    
     private void jModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jModifyActionPerformed
         int[] indexOfSelectedRow = jTable.getSelectedRows();
         if(indexOfSelectedRow.length==1){
@@ -268,7 +276,7 @@ public class ViewModifyTypologies extends javax.swing.JFrame {
                     systemAdministrator.updateTypology(oldTypology, newTypology);
                     tableModel.setValueAt(newTypology, indexOfSelectedRow[0], 0);
                 }       
-            } catch (TypologyException ex) {
+            } catch (TypologyException | NotValidParameterException ex) {
                 JOptionPane.showMessageDialog(this, "Error while trying to modify this typology", "Error", JOptionPane.ERROR_MESSAGE);
             }
             jDialog1.dispose();
@@ -312,8 +320,6 @@ public class ViewModifyTypologies extends javax.swing.JFrame {
                     new ViewModifyTypologies(new SystemAdministrator("ProvaUsername","ProvaPassword",new MaintenanceProcedureDAOImpl(),
                             new UsersDAOImpl(),new TypologyDAOImpl())).setVisible(true);
                 } catch (TypologyException ex) {
-                    Logger.getLogger(ViewModifyTypologies.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (NotValidParameterException ex) {
                     Logger.getLogger(ViewModifyTypologies.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }

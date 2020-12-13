@@ -11,9 +11,6 @@ import exception.MaintenanceActivityException;
 import exception.MaterialException;
 import exception.NotValidParameterException;
 import exception.SiteException;
-import exception.SkillException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -207,7 +204,7 @@ public class DeleteActivity extends javax.swing.JFrame {
             jMaintenanceActivity.setText("");
             jSearch.setEnabled(false);
             jDelete.setEnabled(false);
-        } catch (MaintenanceActivityException ex) {
+        } catch (MaintenanceActivityException | NotValidParameterException ex) {
             errorMessage(ex.getMessage());
         }
     }//GEN-LAST:event_jDeleteActionPerformed

@@ -430,7 +430,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
                 int activityId = getCheckedNumberParameter(activityIdTextField.getText());
                 planner.addRequiredMaterial(activityId, listMaterialsToAdd);
                 listModel.addElement(material);
-            }catch(MaterialException | NumberNotValidException ex){
+            }catch(MaterialException | NumberNotValidException | NotValidParameterException ex){
                 errorMessage(ex.getMessage());
             }
         }else
@@ -452,7 +452,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
             try {
                 int activityId = getCheckedNumberParameter(activityIdTextField.getText());
                 planner.removeRequiredMaterial(activityId, listMaterialsToDelete);
-            } catch (MaterialException | NumberNotValidException ex) {
+            } catch (MaterialException | NumberNotValidException | NotValidParameterException ex) {
                 errorMessage(ex.getMessage());
             }
         }

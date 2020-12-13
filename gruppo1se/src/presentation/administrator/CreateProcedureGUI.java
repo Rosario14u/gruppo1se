@@ -36,14 +36,10 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
      * Creates new form CreateProcedureGUI
      */
     public CreateProcedureGUI() {
-        try {
-            fileChoosen = null;
-            admin = new SystemAdministrator("admin","admin", new MaintenanceProcedureDAOImpl(),new UsersDAOImpl(),new TypologyDAOImpl());
-            initComponents();
-            setField(false);
-        } catch (NotValidParameterException ex) {
-            errorMessage(ex.getMessage());
-        }
+        fileChoosen = null;
+        admin = new SystemAdministrator("admin","admin", new MaintenanceProcedureDAOImpl(),new UsersDAOImpl(),new TypologyDAOImpl());
+        initComponents();
+        setField(false);
     }
 
     /**

@@ -108,8 +108,6 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
             fail("SQLException");
         } catch (MaterialException ex) {
             fail("MaterialException");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
         }
     }
     
@@ -130,8 +128,6 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
             fail("SQLException");
         } catch (MaterialException ex) {
             fail("MaterialException");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
         }
     }
     
@@ -167,8 +163,6 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
             fail("SQLException");
         } catch (MaterialException ex) {
             fail("MaterialException");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
         }
     }
      
@@ -200,8 +194,6 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
             fail("SQLException");
         } catch (MaterialException ex) {
             fail("MaterialException");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
         }
     }
     
@@ -229,8 +221,6 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
             fail("SQLException");
         } catch (MaterialException ex) {
             fail("MaterialException");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
         }
     }
     
@@ -262,8 +252,6 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
             fail("SQLException");
         } catch (MaterialException ex) {
             fail("MaterialException");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
         }
     }
     
@@ -286,8 +274,6 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
             fail("SQLException");
         } catch (MaterialException ex) {
             fail("MaterialException");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
         }
     }
     

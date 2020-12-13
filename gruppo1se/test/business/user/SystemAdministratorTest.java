@@ -23,16 +23,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import persistence.maintenanceactivity.MaintenanceProcedureDAO;
-import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
-import persistence.user.MaintainerSkillDAOImpl;
-import persistence.maintenanceactivity.TypologyDAOImpl;
-import persistence.user.UsersDAOImpl;
-import stub.EmployeeAppointmentDAOStub;
-import stub.MaintenanceActivityDAOStub;
 import stub.MaintenanceProcedureDAOStub;
-import stub.RequiredMaterialForMaintenanceDAOStub;
-import stub.RequiredSkillForMaintenanceDAOStub;
 import stub.TypologyDAOStub;
 import stub.UsersDAOStub;
 
@@ -208,26 +199,38 @@ public class SystemAdministratorTest {
     
     @Test
     public void testMakeTypology() throws TypologyException{
-       System.out.println("makeTypology");
-       String typology = " ";
-       boolean result = instance.makeTypology(typology);
-       assertEquals(true,result);
+        try {
+            System.out.println("makeTypology");
+            String typology = " ";
+            boolean result = instance.makeTypology(typology);
+            assertEquals(true,result);
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
     @Test(expected = TypologyException.class)
     public void testMakeTypologyException() throws TypologyException{
-       System.out.println("makeTypologyException");
-       String typology = "exception";
-       instance.makeTypology(typology);
+        try {
+            System.out.println("makeTypologyException");
+            String typology = "exception";
+            instance.makeTypology(typology);
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
     
     @Test
     public void testMakeTypologyFalse() throws TypologyException{
-       System.out.println("makeTypologyFalse");
-       String typology = "false";
-       boolean result = instance.makeTypology(typology);
-       assertEquals(false,result);
+        try {
+            System.out.println("makeTypologyFalse");
+            String typology = "false";
+            boolean result = instance.makeTypology(typology);
+            assertEquals(false,result);
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
     /**
@@ -236,7 +239,7 @@ public class SystemAdministratorTest {
      */
     
     @Test 
-    public void testReadTypologies() throws TypologyException{
+    public void testReadTypologies() throws TypologyException, NotValidParameterException{
         System.out.println("readTypologiesTest");
         List<String> expected = new ArrayList<>();
         expected.add("Typology1");
@@ -253,10 +256,14 @@ public class SystemAdministratorTest {
     
     @Test 
     public void testUpdateTypology() throws TypologyException {
-        System.out.println("correct updateTypologyTest");
-        String oldTypology = "oldTypology";
-        String newTypology = "newTypology";
-        assertEquals(true,instance.updateTypology(oldTypology, newTypology));
+        try {
+            System.out.println("correct updateTypologyTest");
+            String oldTypology = "oldTypology";
+            String newTypology = "newTypology";
+            assertEquals(true,instance.updateTypology(oldTypology, newTypology));
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
     @Test 
@@ -264,11 +271,15 @@ public class SystemAdministratorTest {
         System.out.println("incorrect updateTypologyTest");
         String oldTypology = "oldTypology";
         String newTypology = "oldTypology";
-        assertEquals(false,instance.updateTypology(oldTypology, newTypology));
+        try {
+            assertEquals(false,instance.updateTypology(oldTypology, newTypology));
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
     @Test(expected = TypologyException.class) 
-    public void testUpdateTypologyException() throws TypologyException {
+    public void testUpdateTypologyException() throws TypologyException, NotValidParameterException {
         System.out.println("updateTypologyExceptionTest");
         String oldTypology = "oldTypology";
         String newTypology = "Typology Exception";
@@ -310,7 +321,7 @@ public class SystemAdministratorTest {
      * and there is a ridenomination
      */
     @Test
-    public void testRemoveUsers(){
+    public void testRemoveUsers() throws NotValidParameterException{
         try {
             List<String> usernameList = new ArrayList<>() {{
                 add("username1");
@@ -330,7 +341,7 @@ public class SystemAdministratorTest {
 //=========================================================================================================================================
 
     @Test
-    public void testModifyUserSuccessfulUpdateToPlanner(){
+    public void testModifyUserSuccessfulUpdateToPlanner() throws NotValidParameterException{
         try{
             assertTrue(admin.modifyUser("oldUsername1", planner));
         } catch(UsersException ex){
@@ -339,7 +350,7 @@ public class SystemAdministratorTest {
     }
     
     @Test
-    public void testRemoveUsersZero(){
+    public void testRemoveUsersZero() throws NotValidParameterException{
         try {
             List<String> usernameList = new ArrayList<>() {{
                 add("username1");
@@ -351,7 +362,7 @@ public class SystemAdministratorTest {
         }        
     }
     
-    public void testModifyUserUnsuccessfulUpdateToPlanner(){
+    public void testModifyUserUnsuccessfulUpdateToPlanner() throws NotValidParameterException{
         try{
             assertFalse(admin.modifyUser("oldUsername2", planner));
         } catch(UsersException ex){
@@ -360,7 +371,7 @@ public class SystemAdministratorTest {
     }
     
     @Test
-    public void testRemoveUsersIsEmpty(){
+    public void testRemoveUsersIsEmpty() throws NotValidParameterException{
         try {
             List<String> usernameList = new ArrayList<>();
             int returnedNumberOfDeletedRow = admin.removeUsers(usernameList);
@@ -371,7 +382,7 @@ public class SystemAdministratorTest {
     }
     
     @Test
-    public void testRemoveUsersNull(){
+    public void testRemoveUsersNull() throws NotValidParameterException{
         try {
             int returnedNumberOfDeletedRow = admin.removeUsers(null);
             assertEquals(returnedNumberOfDeletedRow,0);
@@ -381,7 +392,7 @@ public class SystemAdministratorTest {
     }
     
     @Test(expected = UsersException.class)
-    public void testRemoveUsersRaisesException() throws UsersException{
+    public void testRemoveUsersRaisesException() throws UsersException, NotValidParameterException{
         List<String> usernameList = new ArrayList<>() {{
             add("username1");
             add("username2");
@@ -391,12 +402,12 @@ public class SystemAdministratorTest {
     
     
     @Test(expected = UsersException.class)
-    public void testModifyUserUpdateToPlannerException() throws UsersException{
+    public void testModifyUserUpdateToPlannerException() throws UsersException, NotValidParameterException{
         admin.modifyUser("oldUsername3", planner);
     }
     
     @Test
-    public void testModifyUserSuccessfulUpdateToMaintainer(){
+    public void testModifyUserSuccessfulUpdateToMaintainer() throws NotValidParameterException{
         try{
             assertTrue(admin.modifyUser("oldUsername1", maintainer));
         } catch(UsersException ex){
@@ -405,7 +416,7 @@ public class SystemAdministratorTest {
     }
     
     @Test
-    public void testModifyUserUnsuccessfulUpdateToMaintainer(){
+    public void testModifyUserUnsuccessfulUpdateToMaintainer() throws NotValidParameterException{
         try{
             assertFalse(admin.modifyUser("oldUsername2", maintainer));
         } catch(UsersException ex){
@@ -414,12 +425,12 @@ public class SystemAdministratorTest {
     }
     
     @Test(expected = UsersException.class)
-    public void testModifyUserUpdateToMaintainerException() throws UsersException{
+    public void testModifyUserUpdateToMaintainerException() throws UsersException, NotValidParameterException{
         admin.modifyUser("oldUsername3", maintainer);
     }
     
     @Test
-    public void testModifyUserSuccessfulUpdateTo(){
+    public void testModifyUserSuccessfulUpdateTo() throws NotValidParameterException{
         try{
             assertTrue(admin.modifyUser("oldUsername1", systemAdministrator));
         } catch(UsersException ex){
@@ -428,7 +439,7 @@ public class SystemAdministratorTest {
     }
     
     @Test
-    public void testModifyUserUnsuccessfulUpdateToSystemAdministrator(){
+    public void testModifyUserUnsuccessfulUpdateToSystemAdministrator() throws NotValidParameterException{
         try{
             assertFalse(admin.modifyUser("oldUsername2", systemAdministrator));
         } catch(UsersException ex){
@@ -437,12 +448,12 @@ public class SystemAdministratorTest {
     }
     
     @Test(expected = UsersException.class)
-    public void testModifyUserUpdateToSystemAdministratorException() throws UsersException{
+    public void testModifyUserUpdateToSystemAdministratorException() throws UsersException, NotValidParameterException{
         admin.modifyUser("oldUsername3 ", systemAdministrator);
     }
     
     @Test(expected = UsersException.class)
-    public void testModifyUserOldUsernameNull() throws UsersException{
+    public void testModifyUserOldUsernameNull() throws UsersException, NotValidParameterException{
         admin.modifyUser("null", systemAdministrator);        
     }
     

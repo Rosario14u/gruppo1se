@@ -316,7 +316,7 @@ public class ViewUsers extends javax.swing.JFrame {
             }else{
                 infoMessage("There aren't user selected");
             }
-        } catch (UsersException ex) {
+        } catch (UsersException | NotValidParameterException ex) {
             errorMessage(ex.getMessage());
         }
     }//GEN-LAST:event_deleteButtonActionPerformed

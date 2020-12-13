@@ -140,15 +140,11 @@ public class EwoTest {
      */
     @Test
     public void testSetMaterials() {
-        try {
-            System.out.println("setMaterials");
-            List<Material> materialsAdd = new LinkedList<>();
-            materialsAdd.add(new Material("materials2"));
-            instance.setMaterials(materialsAdd);
-            assertEquals(instance.getMaterials(), materialsAdd);
-        }  catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        System.out.println("setMaterials");
+        List<Material> materialsAdd = new LinkedList<>();
+        materialsAdd.add(new Material("materials2"));
+        instance.setMaterials(materialsAdd);
+        assertEquals(instance.getMaterials(), materialsAdd);
     }
     
     
@@ -161,26 +157,18 @@ public class EwoTest {
     
     @Test
     public void testEqualsEwo() {
-        try {
-            System.out.println("test Equals Ewo");
-            Ewo ewo = new Ewo(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
-            boolean result = instance.equals(ewo);
-            assertEquals(result,true);
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        System.out.println("test Equals Ewo");
+        Ewo ewo = new Ewo(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
+        boolean result = instance.equals(ewo);
+        assertEquals(result,true);
     }
     
     @Test
     public void testNotEqualsEwo() {
-        try {
-            System.out.println("test Not Equals Ewo");
-            Ewo ewo = new Ewo(2, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
-            boolean result = instance.equals(ewo);
-            assertEquals(result,false);
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        System.out.println("test Not Equals Ewo");
+        Ewo ewo = new Ewo(2, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
+        boolean result = instance.equals(ewo);
+        assertEquals(result,false);
     }
     
 }

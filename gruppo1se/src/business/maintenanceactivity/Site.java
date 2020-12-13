@@ -5,7 +5,6 @@
  */
 package business.maintenanceactivity;
 
-import java.security.InvalidParameterException;
 import java.util.Objects;
 
 /**
@@ -25,9 +24,6 @@ public class Site {
      * @param area Area
      */
     public Site(String branchOffice, String area) {
-        if (branchOffice == null || area == null || branchOffice.equals("") || area.equals("")) {
-            throw new InvalidParameterException("Site not valid");
-        }
         this.branchOffice = branchOffice;
         this.area = area;
         this.workSpaceNotes = null;
@@ -40,10 +36,6 @@ public class Site {
      * @param workSpaceNotes
      */
     public Site(String branchOffice, String area, String workSpaceNotes) {
-        if (branchOffice == null || area == null || branchOffice == null
-                || branchOffice.equals("") || area.equals("") || branchOffice.equals("")) {
-            throw new InvalidParameterException("Site not valid");
-        }
         this.branchOffice = branchOffice;
         this.area = area;
         this.workSpaceNotes = workSpaceNotes;
@@ -79,9 +71,6 @@ public class Site {
      * @param workSpaceNotes Workspace notes
      */
     public void setWorkSpaceNotes(String workSpaceNotes) {
-        if (workSpaceNotes == null || workSpaceNotes.equals("")) {
-            throw new InvalidParameterException("Site not valid");
-        }
         this.workSpaceNotes = workSpaceNotes;
     }
 

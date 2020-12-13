@@ -10,8 +10,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import static org.junit.Assert.*;
 import org.junit.*;
 
@@ -137,15 +135,11 @@ public class PlannedMaintenanceActivityTest {
      */
     @Test
     public void testSetMaterials() {
-        try {
-            System.out.println("setMaterials");
-            List<Material> materialsAdd = new LinkedList<>();
-            materialsAdd.add(new Material("materials2"));
-            instance.setMaterials(materialsAdd);
-            assertEquals(instance.getMaterials(), materialsAdd);
-        }  catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        System.out.println("setMaterials");
+        List<Material> materialsAdd = new LinkedList<>();
+        materialsAdd.add(new Material("materials2"));
+        instance.setMaterials(materialsAdd);
+        assertEquals(instance.getMaterials(), materialsAdd);
     }
     
     @Test
@@ -166,14 +160,10 @@ public class PlannedMaintenanceActivityTest {
     
     @Test
     public void testNotEquals(){
-        try {
-            System.out.println("not equals");
-            PlannedMaintenanceActivity obj = new PlannedMaintenanceActivity(2, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials,  true);
-            boolean result = instance.equals(obj);
-            assertEquals(result, false);
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        System.out.println("not equals");
+        PlannedMaintenanceActivity obj = new PlannedMaintenanceActivity(2, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials,  true);
+        boolean result = instance.equals(obj);
+        assertEquals(result, false);
     }
     
     /**
@@ -181,19 +171,15 @@ public class PlannedMaintenanceActivityTest {
      */
     @Test
     public void testToString() {
-        try {
-            List<Material> listMaterial = new ArrayList<>(){{
-                        add(new Material("material1"));
-                    }};
-            String expResult = "PlannedMaintenanceActivity{activityId=1, site=Site{branchOffice=ProvaBranchOffice,"
-                    + " area=ProvaArea, workSpaceNotes=ProvaWorkspaceNotes}, typology=ProvaTypology,"
-                    + " activityDescription=ProvaActivityDescription, estimatedInterventionTime=30, date=2050-11-09,"
-                    + " maintenanceProcedure=MaintenanceProcedure{smp=ProvaPDF}, materials=[material1], interruptibleActivity=true}";
-            String result = instance.toString();
-            assertEquals(expResult, result);
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        List<Material> listMaterial = new ArrayList<>(){{
+            add(new Material("material1"));
+        }};
+        String expResult = "PlannedMaintenanceActivity{activityId=1, site=Site{branchOffice=ProvaBranchOffice,"
+                + " area=ProvaArea, workSpaceNotes=ProvaWorkspaceNotes}, typology=ProvaTypology,"
+                + " activityDescription=ProvaActivityDescription, estimatedInterventionTime=30, date=2050-11-09,"
+                + " maintenanceProcedure=MaintenanceProcedure{smp=ProvaPDF}, materials=[material1], interruptibleActivity=true}";
+        String result = instance.toString();
+        assertEquals(expResult, result);
     }
 
 }

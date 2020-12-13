@@ -20,8 +20,8 @@ import java.util.List;
 public interface MaintenanceActivityDAO{
     public boolean addMaintenanceActivity(MaintenanceActivity activity) throws MaintenanceActivityException;
     public boolean deleteMaintenanceActivity(int activityId) throws MaintenanceActivityException;
-    public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId) throws SiteException ,MaintenanceActivityException, NotValidParameterException;    
+    public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId) throws SiteException, MaintenanceActivityException;    
     public boolean modifyMaintenaceActivity(MaintenanceActivity newActivity) throws MaintenanceActivityException;
     public List<MaintenanceActivity> retrieveMaintenanceActivityFromRange(LocalDate startDate, LocalDate stopDate) 
-            throws MaintenanceActivityException, SiteException, DateException, NotValidParameterException;
+            throws MaintenanceActivityException, SiteException, DateException;
 }

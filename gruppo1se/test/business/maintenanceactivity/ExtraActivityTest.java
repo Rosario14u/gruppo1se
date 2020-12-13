@@ -140,15 +140,11 @@ public class ExtraActivityTest {
      */
     @Test
     public void testSetMaterials() {
-        try {
-            System.out.println("setMaterials");
-            List<Material> materialsAdd = new LinkedList<>();
-            materialsAdd.add(new Material("materials2"));
-            instance.setMaterials(materialsAdd);
-            assertEquals(instance.getMaterials(), materialsAdd);
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        System.out.println("setMaterials");
+        List<Material> materialsAdd = new LinkedList<>();
+        materialsAdd.add(new Material("materials2"));
+        instance.setMaterials(materialsAdd);
+        assertEquals(instance.getMaterials(), materialsAdd);
     }
     
 
@@ -163,25 +159,17 @@ public class ExtraActivityTest {
     
     @Test
     public void testEqualsExtraActivity() {
-        try {
-            System.out.println("test Equals Extra Activity");
-            ExtraActivity extra = new ExtraActivity(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
-            boolean result = instance.equals(extra);
-            assertEquals(result,true);
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        System.out.println("test Equals Extra Activity");
+        ExtraActivity extra = new ExtraActivity(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
+        boolean result = instance.equals(extra);
+        assertEquals(result,true);
     }
     
     @Test
     public void testNotEqualsExtraActivity() {
-        try {
-            System.out.println("test Not Equals Extra Activity");
-            ExtraActivity extra = new ExtraActivity(2, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
-            boolean result = instance.equals(extra);
-            assertEquals(result,false);
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        System.out.println("test Not Equals Extra Activity");
+        ExtraActivity extra = new ExtraActivity(2, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
+        boolean result = instance.equals(extra);
+        assertEquals(result,false);
     }
 }

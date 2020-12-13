@@ -21,13 +21,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import persistence.maintenanceactivity.EmployeeAppointmentDAOImpl;
 import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
@@ -383,11 +379,7 @@ public class ActivityAssignment extends javax.swing.JDialog {
                     int hour;
                     if (matcher.find()) {
                         hour = Integer.valueOf(matcher.group(0).split(" - ")[0].split(":")[0]);
-                        try {
-                            appointmentList.add(new Appointment(activity.getActivityId(), newDate.atTime(hour, 00), duration));
-                        } catch (NotValidParameterException ex) {
-                            errorMessage(ex.getMessage());
-                        }
+                        appointmentList.add(new Appointment(activity.getActivityId(), newDate.atTime(hour, 00), duration));
                     }
                 }
             }
@@ -404,10 +396,8 @@ public class ActivityAssignment extends javax.swing.JDialog {
                 System.out.println("else");
                 this.dispose();
             }
-        } catch (AppointmentException ex) {
-
-        } catch (MaintenanceActivityException ex) {
-
+        } catch (AppointmentException | MaintenanceActivityException | NotValidParameterException ex) {
+            errorMessage(ex.getMessage());
         }
     }//GEN-LAST:event_sendButtonActionPerformed
 

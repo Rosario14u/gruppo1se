@@ -162,8 +162,6 @@ public class RequiredSkillForMaintenanceDAOImplTest {
             fail("SQLException");
         } catch (SkillException ex) {
             fail("SkillException");
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
         }
     }
      
@@ -195,8 +193,6 @@ public class RequiredSkillForMaintenanceDAOImplTest {
             fail("SQLException");
         } catch (SkillException ex) {
             fail("SkillException");
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
         }
     }
     
@@ -224,8 +220,6 @@ public class RequiredSkillForMaintenanceDAOImplTest {
             fail("SQLException");
         } catch (SkillException ex) {
             fail("SkillException");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
         }
     }
     

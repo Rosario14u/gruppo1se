@@ -14,7 +14,6 @@ import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.sql.ResultSet;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -206,8 +205,6 @@ public class EmployeeAppointmentDAOImplTest {
            Logger.getLogger(EmployeeAppointmentDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
         } catch (AppointmentException ex) {
             fail("AppointmentException");
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
         }
     }
     
@@ -233,8 +230,6 @@ public class EmployeeAppointmentDAOImplTest {
             boolean retVal = employeeAppointmentDAO.addEmployeeAvailability("username", expectedList);
         }catch(SQLException ex){
             fail("SQLException");
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
         }
     }
     
@@ -256,8 +251,6 @@ public class EmployeeAppointmentDAOImplTest {
             employeeAppointmentDAO.addEmployeeAvailability(null,expectedList);
         }catch(SQLException ex){
             fail("SQLException");
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
         }
     }
     
@@ -274,8 +267,6 @@ public class EmployeeAppointmentDAOImplTest {
             
         }catch(SQLException ex){
             fail("SQLException");
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
         }
     }
     
@@ -300,8 +291,6 @@ public class EmployeeAppointmentDAOImplTest {
            Logger.getLogger(EmployeeAppointmentDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
         } catch (AppointmentException ex) {
             fail("AppointmentException");
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
         }
     }
     
@@ -322,8 +311,6 @@ public class EmployeeAppointmentDAOImplTest {
            Logger.getLogger(EmployeeAppointmentDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
         } catch (AppointmentException ex) {
             fail("AppointmentException");
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
         }
     }
     

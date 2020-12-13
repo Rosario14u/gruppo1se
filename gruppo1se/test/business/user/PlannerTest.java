@@ -9,7 +9,6 @@ import business.maintenanceactivity.Appointment;
 import business.maintenanceactivity.Ewo;
 import business.maintenanceactivity.ExtraActivity;
 import business.maintenanceactivity.MaintenanceActivity;
-import business.maintenanceactivity.MaintenanceActivityFactory;
 import business.maintenanceactivity.MaintenanceActivityFactory.Typology;
 import business.maintenanceactivity.MaintenanceProcedure;
 import business.maintenanceactivity.Material;
@@ -277,13 +276,19 @@ public class PlannerTest {
             assertTrue(planner.addRequiredMaterial(1, listMaterialToAdd));
         }catch (MaterialException ex){
             fail("MaterialException");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
     @Test(expected = MaterialException.class)
     public void testUnsuccessfulAddRequiredMaterial() throws MaterialException{
-        List<Material> listMaterialToAdd = new ArrayList<>();
-        planner.addRequiredMaterial(2, listMaterialToAdd);
+        try {
+            List<Material> listMaterialToAdd = new ArrayList<>();
+            planner.addRequiredMaterial(2, listMaterialToAdd);
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
     @Test
@@ -293,6 +298,8 @@ public class PlannerTest {
             assertTrue(planner.removeRequiredMaterial(3, listMaterialToAdd));
         } catch (MaterialException ex) {
             fail("MaterialException");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -303,15 +310,21 @@ public class PlannerTest {
             assertFalse(planner.removeRequiredMaterial(4, listMaterialToAdd));
         } catch (MaterialException ex) {
             fail("MaterialException");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
     
     @Test(expected = MaterialException.class)
     public void testUnsuccessfulRemoveRequiredMaterial() throws MaterialException{
-        List<Material> listMaterialToAdd = new ArrayList<>();
-        planner.removeRequiredMaterial(5, listMaterialToAdd);
-    }
+        try {
+            List<Material> listMaterialToAdd = new ArrayList<>();
+            planner.removeRequiredMaterial(5, listMaterialToAdd);
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
+    } 
     
     @Test
     public void testRetrieveAvaliableMaterialToAdd(){
@@ -480,6 +493,8 @@ public class PlannerTest {
             conn.rollback();
         } catch (SQLException ex) {
             System.out.println("Error on : connection rollback!");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -493,6 +508,8 @@ public class PlannerTest {
             conn.rollback();
         } catch (SQLException ex) {
             System.out.println("Error on : connection rollback!");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
     
@@ -504,7 +521,9 @@ public class PlannerTest {
             conn.rollback();
         } catch (SQLException ex) {
             System.out.println("Error on : connection rollback!");
-        }    
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
     }
     
     

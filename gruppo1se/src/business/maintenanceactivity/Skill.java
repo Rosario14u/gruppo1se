@@ -20,8 +20,7 @@ public class Skill implements Comparable<Skill>{
      * 
      * @param name 
      */
-    public Skill(String name) throws NotValidParameterException {
-        validateSkill(name);
+    public Skill(String name) {
         this.name = name;
     }
     
@@ -87,9 +86,4 @@ public class Skill implements Comparable<Skill>{
     public int compareTo(Skill o) {
         return this.getName().compareTo(o.getName());
     }    
-    
-    private void validateSkill(String name) throws NotValidParameterException{
-        if(name == null || name.trim().replaceAll("  +", " ").equals(""))
-            throw new NotValidParameterException();
-    }
 }

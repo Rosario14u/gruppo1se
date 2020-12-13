@@ -6,18 +6,16 @@
 package representation.planner;
 
 import business.maintenanceactivity.MaintenanceActivity;
-import business.maintenanceactivity.MaintenanceProcedure;
-import business.maintenanceactivity.Material;
-import business.maintenanceactivity.PlannedMaintenanceActivity;
-import business.maintenanceactivity.Site;
 import business.maintenanceactivity.Skill;
+import business.user.Planner;
+import exception.AppointmentException;
+import exception.MaintenanceActivityException;
 import exception.NotValidParameterException;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
-import java.util.ArrayList;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,6 +28,7 @@ import javax.swing.JOptionPane;
 public class VerifyActivity extends javax.swing.JFrame {
     private final MaintenanceActivity activity;
     private String oldWorkspaceNotes;
+    private final Planner planner;
     private final static String PROJECT_PATH = System.getProperty("user.dir");
     private final static String RELATIVE_PROJECT_PATH = "/src/smp/";
     private final static String FILE_EXTENSION = ".pdf";
@@ -37,30 +36,46 @@ public class VerifyActivity extends javax.swing.JFrame {
      * Creates new form VerifyActivity
      * @param activity
      */
-    public VerifyActivity(MaintenanceActivity activity) {
+    public VerifyActivity(MaintenanceActivity activity, Planner planner) {
         initComponents();
+        this.planner = planner;
         this.activity = activity;
         this.oldWorkspaceNotes = activity.getSite().getWorkSpaceNotes();
         fillFields();
     }
     
     private void fillFields(){
-        LocalDate date = activity.getDate();
-        WeekFields weekFields = WeekFields.of(Locale.getDefault()); 
-        int weekNumber = date.get(weekFields.weekOfWeekBasedYear());
-        jWeek.setText(Integer.toString(weekNumber));
-        jWorkspaceNotes.setText(oldWorkspaceNotes);
-        jInterventionDescription.setText(activity.getActivityDescription());
-        jActivityToAssign.setText(Integer.toString(activity.getActivityId())+" - "+activity.getSite().getArea()
-                +" - "+activity.getTypology()+" - "+ Integer.toString(activity.getEstimatedInterventionTime())+"'");
-        if (activity.getMaintenanceProcedure().getSkills() != null){
-            StringBuilder builder2 = new StringBuilder();
-            for(Skill skill : activity.getMaintenanceProcedure().getSkills()){
-                builder2.append(skill.toString() + "\n");
+        try {
+            if(planner.verifyActivityAssignment(activity.getActivityId(), activity.getEstimatedInterventionTime())){
+                jForward.setEnabled(false);
+                jLabel6.setVisible(true);
+            }else{
+                jLabel6.setVisible(false);
             }
-            jSkillsNeeded.setText(builder2.toString());
+            LocalDate date = activity.getDate();
+            WeekFields weekFields = WeekFields.of(Locale.getDefault());
+            int weekNumber = date.get(weekFields.weekOfWeekBasedYear());
+            jWeek.setText(Integer.toString(weekNumber));
+            jWorkspaceNotes.setText(oldWorkspaceNotes);
+            jInterventionDescription.setText(activity.getActivityDescription());
+            jActivityToAssign.setText(Integer.toString(activity.getActivityId())+" - "+activity.getSite().getArea()
+                    +" - "+activity.getTypology()+" - "+ Integer.toString(activity.getEstimatedInterventionTime())+"'");
+            if (activity.getMaintenanceProcedure().getSkills() != null){
+                StringBuilder builder2 = new StringBuilder();
+                for(Skill skill : activity.getMaintenanceProcedure().getSkills()){
+                    builder2.append(skill.toString() + "\n");
+                }
+                jSkillsNeeded.setText(builder2.toString());
+            }
+        } catch (MaintenanceActivityException | NotValidParameterException | AppointmentException ex) {
+            errorMessage(ex.getMessage());
         }
         
+    }
+    
+    
+    private void errorMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.ERROR_MESSAGE);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -93,6 +108,7 @@ public class VerifyActivity extends javax.swing.JFrame {
         jForward = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jSkillsNeeded = new javax.swing.JTextArea();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -267,6 +283,12 @@ public class VerifyActivity extends javax.swing.JFrame {
         jSkillsNeeded.setRows(5);
         jScrollPane3.setViewportView(jSkillsNeeded);
 
+        jLabel6.setBackground(new java.awt.Color(0, 200, 0));
+        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("ASSEGNATA");
+        jLabel6.setOpaque(true);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -294,14 +316,14 @@ public class VerifyActivity extends javax.swing.JFrame {
                                 .addComponent(jTextArea3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                             .addComponent(jScrollPane2)
                             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(86, 86, 86)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
                                 .addComponent(jForward, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(37, Short.MAX_VALUE))
         );
@@ -331,7 +353,11 @@ public class VerifyActivity extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jForward, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jForward, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
 
@@ -421,6 +447,7 @@ public class VerifyActivity extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JButton jPDF;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

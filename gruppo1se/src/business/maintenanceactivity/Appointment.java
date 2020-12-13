@@ -18,8 +18,7 @@ public class Appointment implements Comparable<Appointment> {
     private final LocalDateTime startDateAndTime;
     private final int duration;
 
-    public Appointment(int activityId, LocalDateTime startDateAndTime, int duration) throws NotValidParameterException {
-        validateAppointment(activityId,startDateAndTime, duration);
+    public Appointment(int activityId, LocalDateTime startDateAndTime, int duration) {
         this.activityId = activityId;
         this.startDateAndTime = startDateAndTime;
         this.duration = duration;
@@ -78,14 +77,5 @@ public class Appointment implements Comparable<Appointment> {
     @Override
     public String toString() {
         return "Appointment{" + "activityId=" + activityId + ", startDateAndTime=" + startDateAndTime + ", duration=" + duration + '}';
-    }
-    
-    
-    private void validateAppointment(int activityId, LocalDateTime startDateAndTime, int duration) throws NotValidParameterException{
-        if(activityId <= 0 || startDateAndTime == null || duration <=0){
-            throw new NotValidParameterException("Appointment not valid");
-        }
-    }
-    
-    
+    }   
 }

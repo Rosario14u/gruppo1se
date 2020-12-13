@@ -116,13 +116,9 @@ public class MaintenanceActivityTest {
      */
     @Test
     public void testGetMaintenanceProcedure() {
-        try {
-            MaintenanceProcedure expResult = new MaintenanceProcedure("Provasmp");
-            MaintenanceProcedure result = instance.getMaintenanceProcedure();
-            assertEquals(expResult.getSmp(), result.getSmp());
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        MaintenanceProcedure expResult = new MaintenanceProcedure("Provasmp");
+        MaintenanceProcedure result = instance.getMaintenanceProcedure();
+        assertEquals(expResult.getSmp(), result.getSmp());
     }
 
     /**
@@ -130,19 +126,15 @@ public class MaintenanceActivityTest {
      */
     @Test
     public void testGetMaterials() {
-        try{
-            List<Material> expResult = new ArrayList<>(){{
-                        add(new Material("Materiale1"));
-                        add(new Material("Materiale2"));
-                        add(new Material("Materiale3"));
-                    }};
-            List<Material> result = instance.getMaterials();
-            Collections.sort(result);
-            Collections.sort(expResult);
-            assertEquals(expResult, result);
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        List<Material> expResult = new ArrayList<>(){{
+            add(new Material("Materiale1"));
+            add(new Material("Materiale2"));
+            add(new Material("Materiale3"));
+        }};
+        List<Material> result = instance.getMaterials();
+        Collections.sort(result);
+        Collections.sort(expResult);
+        assertEquals(expResult, result);
     }
 
     /**
@@ -160,19 +152,15 @@ public class MaintenanceActivityTest {
      */
     @Test
     public void testSetMaterials() {
-        try{
-            List<Material> oldMaterials = instance.getMaterials();
-            List<Material> materials =  new ArrayList<>(){{
-                        add(new Material("Materiale4"));
-                        add(new Material("Materiale5"));
-                        add(new Material("Materiale6"));
-                    }};
-            instance.setMaterials(materials);
-            assertEquals(materials, instance.getMaterials());
-            instance.setMaterials(oldMaterials);
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        List<Material> oldMaterials = instance.getMaterials();
+        List<Material> materials =  new ArrayList<>(){{
+            add(new Material("Materiale4"));
+            add(new Material("Materiale5"));
+            add(new Material("Materiale6"));
+        }};
+        instance.setMaterials(materials);
+        assertEquals(materials, instance.getMaterials());
+        instance.setMaterials(oldMaterials);
     }
 
     /**
@@ -180,23 +168,19 @@ public class MaintenanceActivityTest {
      */
     @Test
     public void testToString() {
-        try{
-            List<Material> listMaterial = new ArrayList<>(){{
-                        add(new Material("Materiale1"));
-                        add(new Material("Materiale2"));
-                        add(new Material("Materiale3"));
-                    }};
-            String expResult = '{' + "activityId=" + 1 + ", site=" + 
-                    new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes").toString() + ", typology=" + "ProvaTipologia" + 
-                    ", activityDescription=" + "ProvaDescrizione" + ", estimatedInterventionTime=" + 
-                    120 + ", date=" + LocalDate.parse("2021-11-20").toString() + ", maintenanceProcedure="
-                    + new MaintenanceProcedure("Provasmp").toString() +  ", materials=" + listMaterial.toString() + 
-                    ", interruptibleActivity=" + true + '}';
-            String result = instance.toString();
-            assertEquals(expResult, result);
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        List<Material> listMaterial = new ArrayList<>(){{
+            add(new Material("Materiale1"));
+            add(new Material("Materiale2"));
+            add(new Material("Materiale3"));
+        }};
+        String expResult = '{' + "activityId=" + 1 + ", site=" +
+                new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes").toString() + ", typology=" + "ProvaTipologia" +
+                ", activityDescription=" + "ProvaDescrizione" + ", estimatedInterventionTime=" +
+                120 + ", date=" + LocalDate.parse("2021-11-20").toString() + ", maintenanceProcedure="
+                + new MaintenanceProcedure("Provasmp").toString() +  ", materials=" + listMaterial.toString() +
+                ", interruptibleActivity=" + true + '}';
+        String result = instance.toString();
+        assertEquals(expResult, result);
     }
     
     /**
@@ -204,17 +188,13 @@ public class MaintenanceActivityTest {
      */
     @Test
     public void testEqualsSameInstance() {
-        try{
-            List<Material> listMaterial = new ArrayList<>(){{
-                        add(new Material("Materiale1"));
-                        add(new Material("Materiale2"));
-                        add(new Material("Materiale3"));
-                    }};
-            MaintenanceActivity activity = instance;
-            assertTrue("EqualsTrue error", instance.equals(activity));
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        List<Material> listMaterial = new ArrayList<>(){{
+            add(new Material("Materiale1"));
+            add(new Material("Materiale2"));
+            add(new Material("Materiale3"));
+        }};
+        MaintenanceActivity activity = instance;
+        assertTrue("EqualsTrue error", instance.equals(activity));
     }
     
     /**

@@ -81,8 +81,6 @@ public class MaintenanceProcedureDAOImplTest {
             fail("SQLEXception");
         } catch (ProcedureException ex) {
             fail("ProcedureException");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
         }       
     }
     
@@ -94,8 +92,6 @@ public class MaintenanceProcedureDAOImplTest {
             procedureDao.addSmp(new MaintenanceProcedure("ProvaSmp2"));
         } catch (SQLException ex) {
             fail("SQLEXception");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
         }     
     }
     
@@ -148,8 +144,6 @@ public class MaintenanceProcedureDAOImplTest {
             fail("SQLEXception");
         } catch (ProcedureException ex) {
             fail("ProcedureException");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
         } 
     }
     
@@ -164,8 +158,6 @@ public class MaintenanceProcedureDAOImplTest {
             fail("SQLEXception");
         } catch (ProcedureException ex) {
             fail("ProcedureException");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
         } 
     }
     
@@ -178,8 +170,6 @@ public class MaintenanceProcedureDAOImplTest {
             boolean retVal = procedureDao.updateSmp(procedure, null);
         } catch (SQLException ex) {
             fail("SQLEXception");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
         } 
     }
     
@@ -192,8 +182,6 @@ public class MaintenanceProcedureDAOImplTest {
             boolean retVal = procedureDao.updateSmp(procedure, " ");
         } catch (SQLException ex) {
             fail("SQLEXception");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
         } 
     }
     
@@ -206,8 +194,6 @@ public class MaintenanceProcedureDAOImplTest {
             boolean retVal = procedureDao.updateSmp(null, "ProvaSmp1");
         } catch (SQLException ex) {
             fail("SQLEXception");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
         } 
     }
     
@@ -221,8 +207,6 @@ public class MaintenanceProcedureDAOImplTest {
             boolean retVal = procedureDao.updateSmp(procedure, "ProvaSmp1");
         } catch (SQLException ex) {
             fail("SQLEXception");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
         } 
     }
 }

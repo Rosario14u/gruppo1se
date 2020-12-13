@@ -6,15 +6,12 @@
 package presentation.administrator;
 
 import business.user.SystemAdministrator;
+import exception.NotValidParameterException;
 import exception.TypologyException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import exception.NotValidParameterException;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
-import persistence.maintenanceactivity.TypologyDAOImpl;
-import persistence.user.UsersDAOImpl;
 
 
 
@@ -119,7 +116,7 @@ public class CreateTypology extends javax.swing.JFrame {
         try {
             systemAdministrator.makeTypology(typology);
             jTypology.setText("");
-        } catch (TypologyException ex) {
+        } catch (TypologyException | NotValidParameterException ex) {
             errorMessage("Typology already existing!");
         }
         

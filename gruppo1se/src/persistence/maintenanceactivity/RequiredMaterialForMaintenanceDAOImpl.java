@@ -38,7 +38,7 @@ public class RequiredMaterialForMaintenanceDAOImpl implements RequiredMaterialFo
      */
     /*Method developed by Rosario Gaeta*/
     @Override
-    public List<Material> retrieveMaterialsByActivityId(int activityId) throws MaterialException, NotValidParameterException{
+    public List<Material> retrieveMaterialsByActivityId(int activityId) throws MaterialException{
         List<Material> listMaterials = new ArrayList<>();
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
@@ -96,7 +96,7 @@ public class RequiredMaterialForMaintenanceDAOImpl implements RequiredMaterialFo
     
     //Developed by Antonio Gorrasi
     @Override
-    public List<Material> retrieveAvailableMaterialToAdd(int activityId) throws MaterialException, NotValidParameterException{
+    public List<Material> retrieveAvailableMaterialToAdd(int activityId) throws MaterialException{
         List<Material> listMaterials = new ArrayList<>();
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();

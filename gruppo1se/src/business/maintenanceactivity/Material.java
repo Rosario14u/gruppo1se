@@ -5,7 +5,6 @@
  */
 package business.maintenanceactivity;
 
-import exception.NotValidParameterException;
 import java.util.Objects;
 
 /**
@@ -19,8 +18,7 @@ public class Material implements Comparable<Material> {
      * 
      * @param name 
      */
-    public Material(String name) throws NotValidParameterException {
-        validateMaterial(name);
+    public Material(String name) {
         this.name = name;
     }
     
@@ -85,11 +83,5 @@ public class Material implements Comparable<Material> {
     @Override
     public int compareTo(Material o) {
         return this.getName().compareTo(o.getName());
-    }
-
-
-    public void validateMaterial(String name) throws NotValidParameterException{
-        if(name == null || name.trim().replaceAll("  +", " ").equals(""))
-            throw new NotValidParameterException();
     }
 }
