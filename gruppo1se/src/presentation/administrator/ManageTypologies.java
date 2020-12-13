@@ -27,7 +27,7 @@ import persistence.user.UsersDAOImpl;
  *
  * @author VincenzaCoppola <v.coppola38@studenti.unisa.it>
  */
-public class ViewModifyTypologies extends javax.swing.JFrame {
+public class ManageTypologies extends javax.swing.JFrame {
     private final SystemAdministrator systemAdministrator;
     private List<String> list = new ArrayList<>();
     private final DefaultTableModel tableModel;
@@ -37,7 +37,7 @@ public class ViewModifyTypologies extends javax.swing.JFrame {
      * @param systemAdministrator
      * @throws exception.TypologyException
      */
-    public ViewModifyTypologies(SystemAdministrator systemAdministrator) throws TypologyException{
+    public ManageTypologies(SystemAdministrator systemAdministrator) throws TypologyException{
         this.systemAdministrator = systemAdministrator;
         initComponents();
         tableModel = (DefaultTableModel) jTable.getModel();
@@ -106,6 +106,7 @@ public class ViewModifyTypologies extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jFilter = new javax.swing.JTextField();
         jModify = new javax.swing.JButton();
+        jDelete = new javax.swing.JButton();
 
         jDialog1.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         jDialog1.setMinimumSize(new java.awt.Dimension(390, 230));
@@ -189,20 +190,34 @@ public class ViewModifyTypologies extends javax.swing.JFrame {
             }
         });
 
+        jDelete.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jDelete.setText("Delete");
+        jDelete.setPreferredSize(new java.awt.Dimension(75, 23));
+        jDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jDeleteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jModify, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel2)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addGap(87, 87, 87)
+                        .addComponent(jDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
+                        .addComponent(jModify)))
                 .addContainerGap(28, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -215,8 +230,10 @@ public class ViewModifyTypologies extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jModify, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jDelete, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+                    .addComponent(jModify, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -239,6 +256,10 @@ public class ViewModifyTypologies extends javax.swing.JFrame {
     
     private void errorMessage(String message){
         JOptionPane.showMessageDialog(this, message, "ERROR", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    private int confirmMessage(String message){
+        return JOptionPane.showConfirmDialog(this, message, "Confirm", JOptionPane.YES_NO_OPTION);
     }
     
     private void jModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jModifyActionPerformed
@@ -283,6 +304,27 @@ public class ViewModifyTypologies extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jConfirmActionPerformed
 
+    private void jDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDeleteActionPerformed
+            int[] selectedIndex = jTable.getSelectedRows();
+            if(selectedIndex.length == 1){
+                int dialogResult = confirmMessage("Are you sure you wish to delete these users");
+                if(dialogResult == JOptionPane.YES_OPTION){
+                    String typology = String.valueOf(tableModel.getValueAt(selectedIndex[0], 0));
+                    try {
+                        systemAdministrator.removeTypology(typology);
+                        for(int i: selectedIndex){
+                            tableModel.removeRow(jTable.convertRowIndexToModel(i));
+                        }
+                    } catch (TypologyException | NotValidParameterException ex) {
+                        errorMessage("Cannot remove this typology");
+                    }
+                    jTable.clearSelection();
+                }
+            }else {
+                infoMessage(selectedIndex.length < 1 ? "Select one row" : "Too many rows selected");
+            }     
+    }//GEN-LAST:event_jDeleteActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -300,14 +342,26 @@ public class ViewModifyTypologies extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ViewModifyTypologies.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ManageTypologies.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ViewModifyTypologies.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ManageTypologies.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ViewModifyTypologies.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ManageTypologies.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ViewModifyTypologies.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ManageTypologies.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -317,10 +371,10 @@ public class ViewModifyTypologies extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new ViewModifyTypologies(new SystemAdministrator("ProvaUsername","ProvaPassword",new MaintenanceProcedureDAOImpl(),
+                    new ManageTypologies(new SystemAdministrator("ProvaUsername","ProvaPassword",new MaintenanceProcedureDAOImpl(),
                             new UsersDAOImpl(),new TypologyDAOImpl())).setVisible(true);
                 } catch (TypologyException ex) {
-                    Logger.getLogger(ViewModifyTypologies.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ManageTypologies.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -328,6 +382,7 @@ public class ViewModifyTypologies extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jConfirm;
+    private javax.swing.JButton jDelete;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JTextField jFilter;
     private javax.swing.JLabel jLabel1;

@@ -23,8 +23,8 @@ import persistence.database.ConnectionDB;
 public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     private static final String INSERT_ACTIVITY = "INSERT INTO MaintenanceActivity (activityDescription,"
             + " estimatedInterventionTime, dateActivity, interruptibleActivity, typologyOfActivity,"
-            + " typologyOfUnplannedActivity, typologyName, branchOffice, area, activityId) "
-            + "VALUES (?,?,?,?,?,?,?,?,?,?)";
+            + " typologyOfUnplannedActivity, typologyName, branchOffice, area, activityId, smp) "
+            + "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
     private static final String DELETE_ACTIVITY = "DELETE FROM MAINTENANCEACTIVITY WHERE ACTIVITYID=?";
     private static final String SELECT_ACTIVITY = "SELECT * FROM MaintenanceActivity WHERE activityId = ?";
     private static final String UPDATE_ACTIVITY = "UPDATE MaintenanceActivity SET activityDescription=?, "
@@ -213,6 +213,7 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
         preparedStatement.setString(8, activity.getSite().getBranchOffice());
         preparedStatement.setString(9, activity.getSite().getArea());
         preparedStatement.setInt(10, activity.getActivityId());
+        preparedStatement.setString(11, activity.getMaintenanceProcedure().getSmp());
     }
     
     private void checkDao(SiteDao siteDao, String message) throws NotValidParameterException{
