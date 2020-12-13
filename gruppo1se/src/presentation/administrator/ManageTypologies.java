@@ -22,6 +22,7 @@ import javax.swing.table.TableRowSorter;
 import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
 import persistence.maintenanceactivity.TypologyDAOImpl;
 import persistence.user.UsersDAOImpl;
+import presentation.manager.MessageManager;
 
 /**
  *
@@ -80,7 +81,7 @@ public class ManageTypologies extends javax.swing.JFrame {
                 tableModel.addRow(rows);
             }
         } catch (NotValidParameterException ex) {
-            errorMessage(ex.getMessage());
+            MessageManager.errorMessage(this,ex.getMessage());
         }
     }
     
@@ -250,17 +251,7 @@ public class ManageTypologies extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-    private void infoMessage(String message){
-        JOptionPane.showMessageDialog(this, message, "INFO", JOptionPane.INFORMATION_MESSAGE);
-    }
-    
-    private void errorMessage(String message){
-        JOptionPane.showMessageDialog(this, message, "ERROR", JOptionPane.ERROR_MESSAGE);
-    }
-    
-    private int confirmMessage(String message){
-        return JOptionPane.showConfirmDialog(this, message, "Confirm", JOptionPane.YES_NO_OPTION);
-    }
+
     
     private void jModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jModifyActionPerformed
         int[] indexOfSelectedRow = jTable.getSelectedRows();
@@ -268,26 +259,14 @@ public class ManageTypologies extends javax.swing.JFrame {
             jTypology.setText(String.valueOf(tableModel.getValueAt(indexOfSelectedRow[0], 0))); 
             jDialog1.setVisible(true);
         }else{
-            infoMessage(indexOfSelectedRow.length < 1 ? "Select one row" : "Too many rows selected");
+            MessageManager.infoMessage(this,indexOfSelectedRow.length < 1 ? "Select one row" : "Too many rows selected");
         }
     }//GEN-LAST:event_jModifyActionPerformed
     
-    private int confirmRequest(String msg, String title) {
-        switch (JOptionPane.showConfirmDialog(jDialog1, msg, title, JOptionPane.YES_NO_OPTION)) {           
-            case JOptionPane.YES_OPTION:
-                return EXIT_ON_CLOSE;
-            case JOptionPane.NO_OPTION:
-                return DO_NOTHING_ON_CLOSE;
-            case JOptionPane.CLOSED_OPTION:
-                return DO_NOTHING_ON_CLOSE;
-            default:
-                return DO_NOTHING_ON_CLOSE;
-        }
-    }
 
         
     private void jConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jConfirmActionPerformed
-        int result = confirmRequest("Are you sure you want to modify this typology?", "CONFIRM");
+        int result = MessageManager.confirmRequest(this,"Are you sure you want to modify this typology?", "CONFIRM");
         if (result==EXIT_ON_CLOSE){
             try {
                 int[] indexOfSelectedRow = jTable.getSelectedRows();
@@ -307,7 +286,7 @@ public class ManageTypologies extends javax.swing.JFrame {
     private void jDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDeleteActionPerformed
             int[] selectedIndex = jTable.getSelectedRows();
             if(selectedIndex.length == 1){
-                int dialogResult = confirmMessage("Are you sure you wish to delete these users");
+                int dialogResult = MessageManager.confirmMessage(this,"Are you sure you wish to delete these users");
                 if(dialogResult == JOptionPane.YES_OPTION){
                     String typology = String.valueOf(tableModel.getValueAt(selectedIndex[0], 0));
                     try {
@@ -316,12 +295,12 @@ public class ManageTypologies extends javax.swing.JFrame {
                             tableModel.removeRow(jTable.convertRowIndexToModel(i));
                         }
                     } catch (TypologyException | NotValidParameterException ex) {
-                        errorMessage("Cannot remove this typology");
+                        MessageManager.errorMessage(this,"Cannot remove this typology");
                     }
                     jTable.clearSelection();
                 }
             }else {
-                infoMessage(selectedIndex.length < 1 ? "Select one row" : "Too many rows selected");
+                MessageManager.infoMessage(this,selectedIndex.length < 1 ? "Select one row" : "Too many rows selected");
             }     
     }//GEN-LAST:event_jDeleteActionPerformed
 
