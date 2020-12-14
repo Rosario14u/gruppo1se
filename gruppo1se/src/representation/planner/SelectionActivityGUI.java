@@ -36,8 +36,7 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
         this.planner = planner;
         initComponents();
         tableModel = (DefaultTableModel) maintenanceActivityTable.getModel();
-        inizializeField();
-        
+        inizializeField();    
     }
 
     /**
@@ -217,19 +216,14 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
 //        });
 //    }
     
-    
-    
-    
+
     private void inizializeField() {
         LocalDate date = LocalDate.now();
         int weekNumber = WeekConverter.getWeek(date);
         int year = WeekConverter.getYear(date);
-        
         weekComboBox.setSelectedIndex(weekNumber-1);
-
         populateTable(weekNumber, year);
     }
-    
     
     
     public void populateTable(int weekNumber, int year){
@@ -237,9 +231,9 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
         try {
             list = planner.viewMaintenanceActivityByWeek(weekNumber, year);
             for (MaintenanceActivity ma : list) {
-               tableModel.addRow(new Object[]{ma.getActivityId(), ma.getSite().getArea(), ma.getTypology(), ma.getEstimatedInterventionTime()});
+               tableModel.addRow(new Object[]{ma.getActivityId(), ma.getSite().getArea(),
+                   ma.getTypology(), ma.getEstimatedInterventionTime()});
             }
-
         } catch (MaintenanceActivityException | NotValidParameterException ex) {
             MessageManager.errorMessage(this,ex.getMessage());
         }

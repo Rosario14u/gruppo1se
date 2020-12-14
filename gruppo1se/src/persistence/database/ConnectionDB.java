@@ -10,7 +10,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- *
+ * This class provides a connection to database
  * @author gorra
  */
 public class ConnectionDB {
@@ -20,27 +20,38 @@ public class ConnectionDB {
     private final  String user = "gruppo1";
     private final  String pwd = "123456";
 
+    
+    /**
+     * Constructor of {@code ConnectionDB} class.
+     * @throws SQLException throws an exception 
+     * if the connection to the database fails.
+     */
     private ConnectionDB() throws SQLException {
-        try {
-            this.connection = DriverManager.getConnection(url, user, pwd);
-        } catch (SQLException ex) {
-            System.out.println("Database Connection Creation Failed : " + ex.getMessage());
-        }
+        this.connection = DriverManager.getConnection(url, user, pwd);
     }
 
+    
+    /**
+     * This method returns a connection.
+     * @return a {@code Connection}.
+     */
     public Connection getConnection() { 
         return connection;
     }
 
+    
+    /**
+     * This method creates an istance of ConnectionDB
+     * if it has not been previously created, 
+     * otherwise it returns the already existing one.
+     * @return An istance of {@code ConnectionDB}
+     * @throws SQLException 
+     */
     public synchronized static ConnectionDB getInstanceConnection() throws SQLException {
         if (instance == null) {
-            //System.out.println("Sto creando una connessione al DB");
             instance = new ConnectionDB();
         } else if (instance.getConnection().isClosed()) {
-            //System.out.println("Connessione chiusa. Sto ricreando una connessione al DB");
             instance = new ConnectionDB();
-        }else{
-            //System.out.println("Sto riusando la connessione");
         }
         return instance;
     }

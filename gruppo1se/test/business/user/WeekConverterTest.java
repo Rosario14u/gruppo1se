@@ -150,6 +150,19 @@ public class WeekConverterTest {
         assertEquals(53, WeekConverter.getNumberOfWeeksInYear(LocalDate.of(2021, 1, 1)));
     }
     
+    @Test
+    public void testGetYearOfWeekSameYear(){
+        int expectedYear = 2020;
+        int resultedYear = WeekConverter.getYear(LocalDate.parse("2020-12-12"));
+        assertEquals(expectedYear,resultedYear);
+    }
+    
+    @Test
+    public void testGetYearOfWeekDifferentYear(){
+        int expectedYear = 2020;
+        int resultedYear = WeekConverter.getYear(LocalDate.parse("2021-01-01"));
+        assertEquals(expectedYear,resultedYear);
+    }
     
     /**
      * This test asserts that the method getDayOfWeek correctly 

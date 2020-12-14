@@ -37,7 +37,7 @@ private final static String SELECT_REQUIRED_SKILL_BY_SMP = "SELECT * FROM Requir
      * @throws exception.SkillException
      */
     @Override
-    public List<Skill> retrieveSkillsBySmp(String smp) throws SkillException, NotValidParameterException{
+    public List<Skill> retrieveSkillsBySmp(String smp) throws SkillException{
         List<Skill> listSkills = new ArrayList<>();
         if(smp == null || smp.trim().replaceAll("  +", " ").equals("")){
             throw new SkillException("Retrieving skill failed");

@@ -67,12 +67,16 @@ public class SiteDaoImplTest {
          Logger.getLogger(RequiredMaterialForMaintenanceDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    
+    /*======================================================test retrieveSiteDao==========================================================*/
+    
+    /*Test of retrieveSiteDao method developed by Rosario Gaeta*/
+    
     /**
      * This method asserts that retrieveSiteDao correctly returns a Site object<br>
      * when there is in database a site with the required branchOffice and area.
      */
-    /*Test method developed by Rosario Gaeta*/
     @Test
     public void testRetrieveSiteDao() {
         try {
@@ -108,7 +112,13 @@ public class SiteDaoImplTest {
         }
 
     }
-    /*Utility method developed by Rosario Gaeta*/
+    
+    /**
+     * This method allows to delete a site from database.
+     * @param officeBranch
+     * @param area
+     * @throws SQLException 
+     */
     private void deleteFromSite(String officeBranch, String area) throws SQLException{
         try {
             PreparedStatement pstm = conn.prepareStatement(DELETE_FROM_SITE);

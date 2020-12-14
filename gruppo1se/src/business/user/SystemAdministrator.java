@@ -20,13 +20,16 @@ import persistence.maintenanceactivity.TypologyDAO;
 import persistence.user.UsersDAO;
 
 /**
- *
+ * <p>An object of the class System Administrator provides a series of method to manage Users<br>
+ * and other aspect of the system, like maintenance procedure and typology of activity. <br>
+ * This class requires a series of dao object (as attributes) to performs this
+ * operation.</p> 
  * @author rosar
  */
 public class SystemAdministrator extends User {
-    private MaintenanceProcedureDAO procedureDao;
-    private UsersDAO usersDao;
-    private TypologyDAO typologyDao; 
+    private final MaintenanceProcedureDAO procedureDao;
+    private final UsersDAO usersDao;
+    private final TypologyDAO typologyDao; 
    
     
     /**
@@ -106,7 +109,7 @@ public class SystemAdministrator extends User {
     
     /**
      * this method allows to remove users from the database. Returns the number of deleted users
-     * UsersDao object required
+     * UsersDao object required.
      * @param usernameList List of users to delete
      * @return {@code int} number of deleted rows
      * @throws UsersException if there are problems in deleting users
