@@ -163,6 +163,7 @@ public class Planner extends User {
      * @throws MaintenanceActivityException
      * @throws NotValidParameterException 
      */
+    /* Method developed by Alessio Citro*/
     public boolean makeMaintenanceActivity(int activityId, String branchOffice, String area, String workspaceNotes, String typology, String activityDescription, int estimatedInterventionTime,
             String date, String smp, List<Material> materials, boolean interruptibleActivity,
             Typology typologyOfActivity) throws MaintenanceActivityException, NotValidParameterException {
@@ -308,6 +309,7 @@ public class Planner extends User {
      * @throws TypologyException
      * @throws NotValidParameterException 
      */
+    /* Method developed by Alessio Citro*/
     public List<String> readTypologies() throws TypologyException, NotValidParameterException{
         if(typologyDao == null){
             throw new NotValidParameterException("Error in retrieving users");

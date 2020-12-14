@@ -48,6 +48,7 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
      * @throws MaintenanceActivityException
      * @throws NotValidParameterException 
      */
+    /* Method developed by Alessio Citro*/
     @Override
     public boolean addMaintenanceActivity(MaintenanceActivity activity) throws MaintenanceActivityException, NotValidParameterException{
         checkDao(siteDao,"Error in storing activity");

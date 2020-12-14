@@ -89,6 +89,7 @@ public class SystemAdministrator extends User {
      * @throws UsersException
      * @throws NotValidParameterException 
      */
+    /* Method developed by Alessio Citro*/
     public boolean makeUser(String username, String password, UserRole role) throws UsersException, NotValidParameterException{
         if(usersDao == null){
             throw new NotValidParameterException("Error in creating user");
