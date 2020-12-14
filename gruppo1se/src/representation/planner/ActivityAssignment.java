@@ -28,6 +28,7 @@ import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.SiteDaoImpl;
+import persistence.maintenanceactivity.TypologyDAOImpl;
 import persistence.user.MaintainerSkillDAOImpl;
 import persistence.user.UsersDAOImpl;
 import presentation.manager.MessageManager;
@@ -61,7 +62,7 @@ public class ActivityAssignment extends javax.swing.JDialog {
         this.remainEstimatedInterventionTime = activity.getEstimatedInterventionTime();
         this.planner = new Planner("planner", "planner", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
                 new RequiredMaterialForMaintenanceDAOImpl(), new UsersDAOImpl(), new EmployeeAppointmentDAOImpl(),
-                new RequiredSkillForMaintenanceDAOImpl(), new MaintainerSkillDAOImpl());
+                new RequiredSkillForMaintenanceDAOImpl(), new MaintainerSkillDAOImpl(), new TypologyDAOImpl());
         initComponents();
         this.setLocationRelativeTo(null);
         tableModel = (DefaultTableModel) maintainerAvailabilityDayTable.getModel();

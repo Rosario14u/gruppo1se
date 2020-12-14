@@ -22,6 +22,7 @@ import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.SiteDaoImpl;
+import persistence.maintenanceactivity.TypologyDAOImpl;
 import persistence.user.MaintainerSkillDAOImpl;
 import persistence.user.UsersDAOImpl;
 import presentation.manager.MessageManager;
@@ -262,7 +263,7 @@ public class DeleteActivity extends javax.swing.JFrame {
     public static void main(String args[]) {
         Planner planner = new Planner("admin","admin", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
                 new RequiredMaterialForMaintenanceDAOImpl(), new UsersDAOImpl(), 
-                new EmployeeAppointmentDAOImpl(), new RequiredSkillForMaintenanceDAOImpl(),new MaintainerSkillDAOImpl());
+                new EmployeeAppointmentDAOImpl(), new RequiredSkillForMaintenanceDAOImpl(),new MaintainerSkillDAOImpl(), new TypologyDAOImpl());
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {

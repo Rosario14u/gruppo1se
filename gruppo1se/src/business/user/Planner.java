@@ -19,6 +19,7 @@ import exception.MaterialException;
 import exception.NotValidParameterException;
 import exception.SiteException;
 import exception.SkillException;
+import exception.TypologyException;
 import exception.UsersException;
 import java.time.LocalDate;
 import java.util.List;
@@ -27,6 +28,7 @@ import persistence.maintenanceactivity.EmployeeAppointmentDAO;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAO;
 import persistence.maintenanceactivity.MaintenanceActivityDAO;
 import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAO;
+import persistence.maintenanceactivity.TypologyDAO;
 import persistence.user.MaintainerSkillDAO;
 import persistence.user.UsersDAO;
 
@@ -42,6 +44,7 @@ public class Planner extends User {
     private UsersDAO userDao;
     private EmployeeAppointmentDAO employeeAppointmentDao;
     private MaintainerSkillDAO maintainerSkillDao;
+    private TypologyDAO typologyDao;
     
     
     /**
@@ -58,7 +61,7 @@ public class Planner extends User {
     public Planner(String username, String password, MaintenanceActivityDAO maintenanceActivityDao,
             RequiredMaterialForMaintenanceDAO requiredMaterialsDao,
             UsersDAO userDao, EmployeeAppointmentDAO employeeAppointmentDao,
-            RequiredSkillForMaintenanceDAO requiredSkillForMaintenanceDao, MaintainerSkillDAO maintainerSkillDao) {
+            RequiredSkillForMaintenanceDAO requiredSkillForMaintenanceDao, MaintainerSkillDAO maintainerSkillDao, TypologyDAO typologyDao) {
         super(username, password);
         this.maintenanceActivityDao = maintenanceActivityDao;
         this.requiredMaterialsDao = requiredMaterialsDao;
@@ -66,8 +69,13 @@ public class Planner extends User {
         this.employeeAppointmentDao = employeeAppointmentDao;
         this.requiredSkillsDao = requiredSkillForMaintenanceDao;
         this.maintainerSkillDao = maintainerSkillDao;
+        this.typologyDao = typologyDao;
     }
 
+    /**
+     * 
+     * @return RequiredMaterialDAO object
+     */
     public RequiredMaterialForMaintenanceDAO getRequiredMaterialsDao() {
         return requiredMaterialsDao;
     }
@@ -137,6 +145,24 @@ public class Planner extends User {
         return maintenanceActivityDao.deleteMaintenanceActivity(activityId);
     }
 
+    /**
+     * 
+     * @param activityId
+     * @param branchOffice
+     * @param area
+     * @param workspaceNotes
+     * @param typology
+     * @param activityDescription
+     * @param estimatedInterventionTime
+     * @param date
+     * @param smp
+     * @param materials
+     * @param interruptibleActivity
+     * @param typologyOfActivity
+     * @return {@code boolean} true if MaintenanceActivity and materials are inserted into the database 
+     * @throws MaintenanceActivityException
+     * @throws NotValidParameterException 
+     */
     public boolean makeMaintenanceActivity(int activityId, String branchOffice, String area, String workspaceNotes, String typology, String activityDescription, int estimatedInterventionTime,
             String date, String smp, List<Material> materials, boolean interruptibleActivity,
             Typology typologyOfActivity) throws MaintenanceActivityException, NotValidParameterException {
@@ -274,5 +300,18 @@ public class Planner extends User {
         }
         int totalTimeAssigned = employeeAppointmentDao.getDurationOfAssignedActivity(activityId);
         return totalTimeAssigned==estimatedInterventionTime;
+    }
+    
+    /**
+     * 
+     * @return a list of Strings, representing all the typologies stored into the database
+     * @throws TypologyException
+     * @throws NotValidParameterException 
+     */
+    public List<String> readTypologies() throws TypologyException, NotValidParameterException{
+        if(typologyDao == null){
+            throw new NotValidParameterException("Error in retrieving users");
+        }      
+        return typologyDao.viewTypologies();
     }
 }

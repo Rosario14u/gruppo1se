@@ -10,10 +10,25 @@ import business.maintenanceactivity.Material;
 import business.user.Planner;
 import exception.MaintenanceActivityException;
 import exception.NotValidParameterException;
+import exception.TypologyException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import persistence.maintenanceactivity.EmployeeAppointmentDAOImpl;
+import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
+import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
+import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
+import persistence.maintenanceactivity.SiteDaoImpl;
+import persistence.maintenanceactivity.TypologyDAOImpl;
+import persistence.user.MaintainerSkillDAOImpl;
+import persistence.user.UsersDAOImpl;
 import presentation.manager.MessageManager;
 
 
@@ -23,31 +38,69 @@ import presentation.manager.MessageManager;
  */
 public class CreateActivity extends javax.swing.JFrame {
     private Planner planner = null;
-    private final JTextField[] textFields = new JTextField[8];
+    private final JTextField[] textFields = new JTextField[7];
     private boolean interruptible = false;
+    private boolean typologyBool = false;
     private boolean typeOfActivity = false;
     private MyDocumentListener myDocumentListener = null;
     /**
      * Creates new form CreateActivity
      * @param planner
+     * @throws exception.TypologyException
+     * @throws exception.NotValidParameterException
      */
-    public CreateActivity(Planner planner) {
+    public CreateActivity(Planner planner) throws TypologyException, NotValidParameterException {
         this.planner = planner;
         initComponents();
         myDocumentListener = new MyDocumentListener();
         textFields[0] = jActivityId;
         textFields[1] = jBranchOffice;
         textFields[2] = jArea;
-        textFields[3] = jTypology;
-        textFields[4] = jActivityDescription;
-        textFields[5] = jEstimatedInterventionTime;
-        textFields[6] = jDate;
-        textFields[7] = jMaterials;
+        textFields[3] = jActivityDescription;
+        textFields[4] = jEstimatedInterventionTime;
+        textFields[5] = jDate;
+        textFields[6] = jMaterials;
         for (int i = 0; i<textFields.length-1;i++) {
             textFields[i].getDocument().addDocumentListener(myDocumentListener);
         }
+        fillTypology();
+        jTypology.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if(!jTypology.getSelectedItem().equals("")){
+                    typologyBool = true;
+                    checkFields();
+                }
+                else{ 
+                    typologyBool = false;
+                    checkFields();
+                }
+            }
+        });
+        jTypologyOfActivity.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if(!jTypologyOfActivity.getSelectedItem().equals("")){
+                    typeOfActivity = true;
+                    checkFields();
+                }else {
+                    typeOfActivity = false;
+                    checkFields();
+                }
+            }
+        });
     }
 
+    private void fillTypology() throws TypologyException, NotValidParameterException{
+        List<String> typologiesList = planner.readTypologies();
+        String[] strings = new String[typologiesList.size()+1];
+        Object[] objArray = typologiesList.toArray();
+        strings[0] = "";
+        for(int i = 1; i<strings.length; i++)
+            strings[i] = (String) objArray[i-1];
+        jTypology.setModel(new DefaultComboBoxModel(strings));
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -67,7 +120,6 @@ public class CreateActivity extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jArea = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jTypology = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jActivityDescription = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
@@ -77,14 +129,14 @@ public class CreateActivity extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jMaterials = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        jPlanned = new javax.swing.JRadioButton();
-        jExtra = new javax.swing.JRadioButton();
-        jEwo = new javax.swing.JRadioButton();
         jCreate = new javax.swing.JButton();
         jInterruptibleTrue = new javax.swing.JRadioButton();
         jInterruptibleFalse = new javax.swing.JRadioButton();
         jErrorActivityId = new javax.swing.JLabel();
         jErrorEstimatedInterventionTime = new javax.swing.JLabel();
+        jTypology = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        jTypologyOfActivity = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -104,29 +156,11 @@ public class CreateActivity extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setText("Branch Office:");
 
-        jBranchOffice.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBranchOfficeActionPerformed(evt);
-            }
-        });
-
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setText("Area:");
 
-        jArea.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jAreaActionPerformed(evt);
-            }
-        });
-
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel5.setText("Typology:");
-
-        jTypology.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTypologyActionPerformed(evt);
-            }
-        });
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel6.setText("Activity Description:");
@@ -147,49 +181,8 @@ public class CreateActivity extends javax.swing.JFrame {
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel10.setText("Materials (separate each material with comma):");
 
-        jMaterials.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMaterialsActionPerformed(evt);
-            }
-        });
-
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel11.setText("Interruptible Activity:");
-
-        jPlanned.setBackground(new java.awt.Color(255, 153, 0));
-        buttonGroupTypeOfActivity.add(jPlanned);
-        jPlanned.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jPlanned.setText("Planned Activity");
-        jPlanned.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jPlannedItemStateChanged(evt);
-            }
-        });
-        jPlanned.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jPlannedActionPerformed(evt);
-            }
-        });
-
-        jExtra.setBackground(new java.awt.Color(255, 153, 0));
-        buttonGroupTypeOfActivity.add(jExtra);
-        jExtra.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jExtra.setText("Extra Activity");
-        jExtra.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jExtraItemStateChanged(evt);
-            }
-        });
-
-        jEwo.setBackground(new java.awt.Color(255, 153, 0));
-        buttonGroupTypeOfActivity.add(jEwo);
-        jEwo.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jEwo.setText("EWO");
-        jEwo.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jEwoItemStateChanged(evt);
-            }
-        });
 
         jCreate.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jCreate.setText("Create Activity");
@@ -224,6 +217,15 @@ public class CreateActivity extends javax.swing.JFrame {
 
         jErrorEstimatedInterventionTime.setFont(new java.awt.Font("Tahoma", 3, 12)); // NOI18N
 
+        jTypology.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "" }));
+        jTypology.setPreferredSize(new java.awt.Dimension(57, 30));
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel4.setText("Typology of activity: ");
+
+        jTypologyOfActivity.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "Planned", "EWO", "Extra Activity" }));
+        jTypologyOfActivity.setPreferredSize(new java.awt.Dimension(57, 30));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -233,10 +235,6 @@ public class CreateActivity extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jActivityDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                     .addComponent(jLabel3)
@@ -251,6 +249,10 @@ public class CreateActivity extends javax.swing.JFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(jBranchOffice)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jActivityDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jTypology, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -260,92 +262,93 @@ public class CreateActivity extends javax.swing.JFrame {
                         .addComponent(jCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel10)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel7)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jMaterials))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addComponent(jLabel7)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(jEstimatedInterventionTime, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addComponent(jLabel8)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(jDate, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jEstimatedInterventionTime, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel8)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jDate, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jErrorEstimatedInterventionTime, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel11)
-                                .addGap(28, 28, 28)
-                                .addComponent(jInterruptibleTrue)
-                                .addGap(18, 18, 18)
-                                .addComponent(jInterruptibleFalse))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jPlanned)
-                                .addGap(18, 18, 18)
-                                .addComponent(jExtra)
-                                .addGap(18, 18, 18)
-                                .addComponent(jEwo)))))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel10)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jMaterials, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel11)
+                                        .addGap(27, 27, 27)
+                                        .addComponent(jInterruptibleTrue)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jInterruptibleFalse))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel4)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jTypologyOfActivity, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jActivityId, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jErrorActivityId, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jBranchOffice, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jArea, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTypology, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jActivityDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel7)
-                        .addComponent(jEstimatedInterventionTime, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jErrorEstimatedInterventionTime, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(7, 7, 7)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(jDate, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(jMaterials, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jActivityId, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jErrorActivityId, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(10, 10, 10)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jBranchOffice, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jArea, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTypology, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5))
+                        .addGap(11, 11, 11)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(jActivityDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jErrorEstimatedInterventionTime, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel7)
+                                .addComponent(jEstimatedInterventionTime, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(14, 14, 14)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jDate, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8))
+                        .addGap(33, 33, 33))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(313, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jMaterials, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel10))))
+                .addGap(14, 14, 14)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jInterruptibleTrue)
                     .addComponent(jInterruptibleFalse))
-                .addGap(26, 26, 26)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jPlanned)
-                    .addComponent(jExtra)
-                    .addComponent(jEwo))
-                .addGap(40, 40, 40)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTypologyOfActivity, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(84, 84, 84)
                 .addComponent(jCreate)
-                .addGap(22, 22, 22))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jActivityId.getAccessibleContext().setAccessibleName("");
-        jPlanned.getAccessibleContext().setAccessibleName("Planned");
-        jEwo.getAccessibleContext().setAccessibleName("Ewo");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -361,18 +364,6 @@ public class CreateActivity extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jPlannedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPlannedActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jPlannedActionPerformed
-
-    private void jBranchOfficeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBranchOfficeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jBranchOfficeActionPerformed
-
-    private void jMaterialsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMaterialsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMaterialsActionPerformed
-
     private void jInterruptibleTrueItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jInterruptibleTrueItemStateChanged
         interruptible = true;
         checkFields();
@@ -383,27 +374,12 @@ public class CreateActivity extends javax.swing.JFrame {
         checkFields();
     }//GEN-LAST:event_jInterruptibleFalseItemStateChanged
 
-    private void jPlannedItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jPlannedItemStateChanged
-        typeOfActivity = true;
-        checkFields();
-    }//GEN-LAST:event_jPlannedItemStateChanged
-
-    private void jExtraItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jExtraItemStateChanged
-        typeOfActivity = true;
-        checkFields();
-    }//GEN-LAST:event_jExtraItemStateChanged
-
-    private void jEwoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jEwoItemStateChanged
-        typeOfActivity = true;
-        checkFields();
-    }//GEN-LAST:event_jEwoItemStateChanged
-
     private void jCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCreateActionPerformed
         try {
             int activityId = Integer.parseInt(jActivityId.getText());
             String branchOffice = jBranchOffice.getText();
             String area = jArea.getText();
-            String typology = jTypology.getText();
+            String typology = (String) jTypology.getSelectedItem();
             String activityDescription = jActivityDescription.getText();
             int estimatedInterventionTime = Integer.parseInt(jEstimatedInterventionTime.getText());
             String date = jDate.getText();
@@ -417,29 +393,24 @@ public class CreateActivity extends javax.swing.JFrame {
             }else materials = null;
             boolean interruptibleActivity;
             interruptibleActivity = jInterruptibleTrue.isSelected();
-            Typology typologyOfActivity = null;
-            if(jPlanned.isSelected()){
+            Typology typologyOfActivity;
+            if(jTypologyOfActivity.getSelectedItem().equals("Planned"))
                 typologyOfActivity = Typology.PLANNED;
-            }else if(jEwo.isSelected()){
+            else if(jTypologyOfActivity.getSelectedItem().equals("EWO"))
                 typologyOfActivity = Typology.EWO;
-            }else{
+            else
                 typologyOfActivity = Typology.EXTRA;
-            }
-            boolean plannedActivity = jPlanned.isSelected();
-            boolean extraActivity = jExtra.isSelected();
-            boolean ewo = jEwo.isSelected();
             planner.makeMaintenanceActivity(activityId, branchOffice, area, "", typology, activityDescription,
                     estimatedInterventionTime, date, " ", materials, interruptibleActivity, typologyOfActivity);
             jActivityId.setText("");
             jBranchOffice.setText("");
             jArea.setText("");
-            jTypology.setText("");
+            jTypology.setSelectedIndex(0);
             jActivityDescription.setText("");
             jEstimatedInterventionTime.setText("");
             jDate.setText("");
             jMaterials.setText("");
-            buttonGroupInterruptible.clearSelection();
-            buttonGroupTypeOfActivity.clearSelection();
+            jTypologyOfActivity.setSelectedIndex(0);
             jCreate.setEnabled(false);
         } catch (MaintenanceActivityException | NotValidParameterException ex) {
             MessageManager.errorMessage(this,ex.getMessage());
@@ -467,14 +438,6 @@ public class CreateActivity extends javax.swing.JFrame {
             jErrorEstimatedInterventionTime.setText("");
         }
     }//GEN-LAST:event_jEstimatedInterventionTimeKeyPressed
-
-    private void jAreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAreaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jAreaActionPerformed
-
-    private void jTypologyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTypologyActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTypologyActionPerformed
 
     private class MyDocumentListener implements DocumentListener {
 
@@ -511,7 +474,7 @@ public class CreateActivity extends javax.swing.JFrame {
     }
     
     private void checkFields(){
-        if (interruptible && typeOfActivity && myDocumentListener.checkTextFields()){
+        if (interruptible && typeOfActivity && typologyBool && myDocumentListener.checkTextFields()){
             jCreate.setEnabled(true);
         }else jCreate.setEnabled(false);
     }
@@ -519,17 +482,22 @@ public class CreateActivity extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    /*
     public static void main(String args[]) {
-        Planner planner = new Planner(username, password, new MaintenanceActivityDAOImpl(new SiteDaoImpl()), 
-                new RequiredMaterialsDaoImpl(), new UserDaoImpl(), new EmployeeAppointmentDaoImpl(),
-                new RequiredSkillForMaintenanceDaoImpl, maintainerSkillDao)
-         Create and display the form 
-        java.awt.EventQueue.invokeLater(() -> {
-            new CreateActivity(planner).setVisible(true);
+        Planner planner = new Planner("ProvaUsername", "ProvaPassword", new MaintenanceActivityDAOImpl(new SiteDaoImpl()), 
+                new RequiredMaterialForMaintenanceDAOImpl(), new UsersDAOImpl(), new EmployeeAppointmentDAOImpl(),
+                new RequiredSkillForMaintenanceDAOImpl(), new MaintainerSkillDAOImpl(), new TypologyDAOImpl());
+//         Create and display the form 
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    new CreateActivity(planner).setVisible(true);
+                } catch (TypologyException | NotValidParameterException ex) {
+                    Logger.getLogger(CreateActivity.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         });
     }
-    */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroupInterruptible;
@@ -543,8 +511,6 @@ public class CreateActivity extends javax.swing.JFrame {
     private javax.swing.JLabel jErrorActivityId;
     private javax.swing.JLabel jErrorEstimatedInterventionTime;
     private javax.swing.JTextField jEstimatedInterventionTime;
-    private javax.swing.JRadioButton jEwo;
-    private javax.swing.JRadioButton jExtra;
     private javax.swing.JRadioButton jInterruptibleFalse;
     private javax.swing.JRadioButton jInterruptibleTrue;
     private javax.swing.JLabel jLabel1;
@@ -552,13 +518,14 @@ public class CreateActivity extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JTextField jMaterials;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JRadioButton jPlanned;
-    private javax.swing.JTextField jTypology;
+    private javax.swing.JComboBox<String> jTypology;
+    private javax.swing.JComboBox<String> jTypologyOfActivity;
     // End of variables declaration//GEN-END:variables
 }

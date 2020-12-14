@@ -80,7 +80,15 @@ public class SystemAdministrator extends User {
         return usersDao.readUsers();
     }
     
-    
+    /**
+     * 
+     * @param username
+     * @param password
+     * @param role
+     * @return {@code boolean} true if the user is inserted into the database
+     * @throws UsersException
+     * @throws NotValidParameterException 
+     */
     public boolean makeUser(String username, String password, UserRole role) throws UsersException, NotValidParameterException{
         if(usersDao == null){
             throw new NotValidParameterException("Error in creating user");

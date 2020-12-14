@@ -58,6 +58,7 @@ public class TypologyDAOImplTest{
         try {
             System.out.println("addTypology");
             String typology = "ProvaTypology";
+            //INSERIRE CANCELLAZIONE DEFAULT
             boolean result = instance.addTypology(typology);
             assertEquals(true, result);
             conn.rollback();
