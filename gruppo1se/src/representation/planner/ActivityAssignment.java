@@ -369,12 +369,12 @@ public class ActivityAssignment extends javax.swing.JDialog {
             if(!planner.verifyActivityAssignment(activity.getActivityId(), activity.getEstimatedInterventionTime())){
                 activity.setDate(newDate);
                 if (!planner.saveAppointments(maintainer.getUsername(), activity, appointmentList)) {
-                    errorMessage("Saving failed");
+                    MessageManager.errorMessage(this, "Saving failed");
                 } else {
                     this.dispose();
                 }
             }else
-                errorMessage("Activity already assign");
+                MessageManager.errorMessage(this, "Activity already assign");
         } catch (AppointmentException | MaintenanceActivityException | NotValidParameterException ex) {
             MessageManager.errorMessage(this,ex.getMessage());
         }

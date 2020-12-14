@@ -102,7 +102,7 @@ public class ViewUsers extends javax.swing.JFrame {
                 tableModel.addRow(rows);
             }
         } catch (UsersException | NotValidParameterException ex) {
-            errorMessage(ex.getMessage());
+            MessageManager.errorMessage(this, ex.getMessage());
         }
     }
     

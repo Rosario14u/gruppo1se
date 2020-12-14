@@ -6,10 +6,8 @@
 package persistence.maintenanceactivity;
 
 import business.maintenanceactivity.MaintenanceActivity;
-import exception.DateException;
 import exception.MaintenanceActivityException;
 import exception.NotValidParameterException;
-import exception.SiteException;
 import java.time.LocalDate;
 import java.util.List;
 

@@ -12,9 +12,6 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
-import persistence.maintenanceactivity.TypologyDAOImpl;
-import persistence.user.UsersDAOImpl;
 import presentation.manager.MessageManager;
 /**
  *
@@ -159,7 +156,7 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
             builder.append(PROJECT_PATH).append(RELATIVE_PROJECT_PATH).append(newName).append(FILE_EXTENSION);
             boolean choosen = fileChoosen.renameTo(new File(builder.toString()));       // renaming of file
             if (choosen == true){
-                admin.saveSmpProcedure(newName,oldName); // if the file is successfully renamed, the smp file is stored in the system 
+                administrator.saveSmpProcedure(newName,oldName); // if the file is successfully renamed, the smp file is stored in the system 
                 MessageManager.infoMessage(this,"Procedura aggiunta con successo");
                 setField(false); 
                 procedureTextField.setText("");

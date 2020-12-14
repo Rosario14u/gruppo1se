@@ -13,6 +13,8 @@ import business.maintenanceactivity.Skill;
 import business.user.Planner;
 import business.user.WeekConverter;
 import dto.MaintainerDTO;
+import exception.AppointmentException;
+import exception.MaintenanceActivityException;
 
 import exception.NotValidParameterException;
 
@@ -86,7 +88,7 @@ public class MaintainerAvailability extends javax.swing.JFrame {
             }
             populateTable();
         } catch (MaintenanceActivityException | NotValidParameterException | AppointmentException ex) {
-            Logger.getLogger(MaintainerAvailability.class.getName()).log(Level.SEVERE, null, ex);
+            MessageManager.errorMessage(this, ex.getMessage());
         }
     }
 
@@ -316,7 +318,7 @@ public class MaintainerAvailability extends javax.swing.JFrame {
                             populateTable();
                             setAssignedLabel();
                         } catch (MaintenanceActivityException | NotValidParameterException | AppointmentException ex) {
-                            Logger.getLogger(MaintainerAvailability.class.getName()).log(Level.SEVERE, null, ex);
+                            MessageManager.confirmRequest(e.getComponent().getParent(), ex.getMessage(), "CONFIRM");
                         }
                     }
                 });
