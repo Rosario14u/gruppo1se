@@ -31,20 +31,6 @@ public class Skill implements Comparable<Skill>{
         return name;
     }
     
-    /**
-     * 
-     * @return 
-     */
-    @Override
-    public String toString() {
-        return name;
-    }
-    
-    
-    /**
-     * 
-     * @return 
-     */
     @Override
     public int hashCode() {
         int hash = 7;
@@ -52,12 +38,6 @@ public class Skill implements Comparable<Skill>{
         return hash;
     }
 
-
-    /**
-     * 
-     * @param obj
-     * @return 
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -77,9 +57,8 @@ public class Skill implements Comparable<Skill>{
     }
     
     /**
-     * 
-     * @param o
-     * @return 
+     * Compares this object with the specified object for order.
+     * @param o the object to be compared
      */
     @Override
     public int compareTo(Skill o) {

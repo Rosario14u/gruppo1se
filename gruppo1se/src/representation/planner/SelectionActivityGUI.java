@@ -13,16 +13,8 @@ import exception.NotValidParameterException;
 import java.awt.Dimension;
 import java.time.LocalDate;
 import java.util.List;
-import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
-import persistence.maintenanceactivity.EmployeeAppointmentDAOImpl;
-import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
-import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
-import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
-import persistence.maintenanceactivity.SiteDaoImpl;
-import persistence.user.MaintainerSkillDAOImpl;
-import persistence.user.UsersDAOImpl;
 import presentation.manager.MessageManager;
 
 /**
@@ -43,8 +35,7 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
         this.planner = planner;
         initComponents();
         tableModel = (DefaultTableModel) maintenanceActivityTable.getModel();
-        inizializeField();
-        
+        inizializeField();    
     }
 
     /**
@@ -187,7 +178,6 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
 
     private void weekComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_weekComboBoxActionPerformed
         int year = LocalDate.now().getYear();
-        
         populateTable(weekComboBox.getSelectedIndex()+1, year);
     }//GEN-LAST:event_weekComboBoxActionPerformed
 
@@ -226,19 +216,14 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
 //        });
 //    }
     
-    
-    
-    
+
     private void inizializeField() {
         LocalDate date = LocalDate.now();
         int weekNumber = WeekConverter.getWeek(date);
         int year = WeekConverter.getYear(date);
-        
         weekComboBox.setSelectedIndex(weekNumber-1);
-
         populateTable(weekNumber, year);
     }
-    
     
     
     public void populateTable(int weekNumber, int year){
@@ -246,9 +231,9 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
         try {
             list = planner.viewMaintenanceActivityByWeek(weekNumber, year);
             for (MaintenanceActivity ma : list) {
-               tableModel.addRow(new Object[]{ma.getActivityId(), ma.getSite().getArea(), ma.getTypology(), ma.getEstimatedInterventionTime()});
+               tableModel.addRow(new Object[]{ma.getActivityId(), ma.getSite().getArea(),
+                   ma.getTypology(), ma.getEstimatedInterventionTime()});
             }
-
         } catch (MaintenanceActivityException | NotValidParameterException ex) {
             MessageManager.errorMessage(this,ex.getMessage());
         }

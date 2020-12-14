@@ -14,7 +14,13 @@ import persistence.maintenanceactivity.MaintenanceProcedureDAO;
  * @author rosar
  */
 public class MaintenanceProcedureDAOStub implements MaintenanceProcedureDAO {
-
+    
+    /**
+     * Simulates the behaviour of addSmp of MaintenanceProcedureDAO.
+     * @param procedure
+     * @return
+     * @throws ProcedureException 
+     */
     @Override
     public boolean addSmp(MaintenanceProcedure procedure) throws ProcedureException {
         if(procedure == null || procedure.getSmp().equals("")){ 
@@ -28,7 +34,14 @@ public class MaintenanceProcedureDAOStub implements MaintenanceProcedureDAO {
         }
         
     }
-
+    
+    /**
+     * Simulates the behaviour of updateSmp of MaintenanceProcedureDAO.
+     * @param newProcedure
+     * @param oldSmp
+     * @return
+     * @throws ProcedureException 
+     */
     @Override
     public boolean updateSmp(MaintenanceProcedure newProcedure, String oldSmp) throws ProcedureException {
         if(newProcedure == null || newProcedure.getSmp().equals("")){

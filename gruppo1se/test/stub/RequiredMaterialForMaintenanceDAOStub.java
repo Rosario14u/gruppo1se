@@ -17,26 +17,21 @@ import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAO;
  * @author rosar
  */
 public class RequiredMaterialForMaintenanceDAOStub implements RequiredMaterialForMaintenanceDAO {
-
+    /**
+     * Simulates the behaviour of retrieveMaterialsByActivityId of RequiredMaterialForMaintenanceDAO.
+     * @param activityId
+     * @return
+     * @throws MaterialException 
+     */
     @Override
     public List<Material> retrieveMaterialsByActivityId(int activityId) throws MaterialException {
         switch (activityId) {
             case 1:
-                return retrieveArrayList("Material1","Material2","Material3");
-            case 2:
-                return retrieveArrayList("Material4","Material5","Material6");
-            case 3:
-                return retrieveArrayList("Material7","Material8","Material9");
-            case 4:
-                return retrieveArrayList("Material10","Material11","Material12");
-            case 5:
-                return retrieveArrayList("Material13","Material14","Material5");
-            case 6:
-                return retrieveArrayList("Material16","Material17","Material8");
-            case 7:
                 return new ArrayList<>();
-            default:
+            case 2:
                 throw new MaterialException();
+            default:
+                return retrieveArrayList("Material1","Material2","Material3");
         }
     }
     

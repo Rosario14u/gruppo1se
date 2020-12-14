@@ -16,9 +16,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
-import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
-import persistence.maintenanceactivity.SiteDaoImpl;
 
 /**
  *
@@ -97,5 +94,19 @@ public class WeekConverterTest {
         assertEquals(53, WeekConverter.getNumberOfWeeksInYear(2020));
         assertEquals(52, WeekConverter.getNumberOfWeeksInYear(2021));
         assertEquals(52, WeekConverter.getNumberOfWeeksInYear(2022));
+    }
+    
+    @Test
+    public void testGetYearOfWeekSameYear(){
+        int expectedYear = 2020;
+        int resultedYear = WeekConverter.getYear(LocalDate.parse("2020-12-12"));
+        assertEquals(expectedYear,resultedYear);
+    }
+    
+    @Test
+    public void testGetYearOfWeekDifferentYear(){
+        int expectedYear = 2020;
+        int resultedYear = WeekConverter.getYear(LocalDate.parse("2021-01-01"));
+        assertEquals(expectedYear,resultedYear);
     }
 }

@@ -26,7 +26,7 @@ import static org.junit.Assert.*;
 /*Test class developed by Rosario Gaeta*/
 public class MaintenanceActivityTest {
     MaintenanceActivity instance;
-    public MaintenanceActivityTest() throws NotValidParameterException {
+    public MaintenanceActivityTest() {
         List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
         instance = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
                 "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
@@ -184,212 +184,159 @@ public class MaintenanceActivityTest {
     }
     
     /**
-     * Test of toString method, of class MaintenanceActivity.
+     * Test that equals method correctly returns false when the other object is the same instance.
      */
     @Test
     public void testEqualsSameInstance() {
-        List<Material> listMaterial = new ArrayList<>(){{
-            add(new Material("Materiale1"));
-            add(new Material("Materiale2"));
-            add(new Material("Materiale3"));
-        }};
         MaintenanceActivity activity = instance;
         assertTrue("EqualsTrue error", instance.equals(activity));
     }
     
     /**
-     * Test of toString method, of class MaintenanceActivity.
+     * Test that equals method correctly returns false when the other object has the same attribute.
      */
     @Test
     public void testEqualsSameAttributes() {
-        try {
-            List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
-            MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
-                    "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
-                    new MaintenanceProcedure("Provasmp"),listMaterial,true);
-            assertTrue(instance.equals(activity));
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
+        MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
+                "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
+                new MaintenanceProcedure("Provasmp"),listMaterial,true);
+        assertTrue(instance.equals(activity));
     }
     
     /**
-     * Test of toString method, of class MaintenanceActivity.
+     * Test that equals method correctly returns false when the other object has a different attribute.
      */
     @Test
     public void testEqualsDifferentAttributes1() {
-        try {
-            List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
-            MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
-                    "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
-                    new MaintenanceProcedure("Provasmp"),listMaterial,true);
-            assertTrue( instance.equals(activity));
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
+        MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice1","ProvaArea","ProvaWorkspaceNotes"),
+                "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
+                new MaintenanceProcedure("Provasmp"),listMaterial,true);
+        assertFalse( instance.equals(activity));
     }
     
     /**
-     * Test of toString method, of class MaintenanceActivity.
+     * Test that equals method correctly returns false when the other object has a different attribute.
      */
     @Test
     public void testEqualsDifferentAttributes2() {
-        try {
-            List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
-            MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea2","ProvaWorkspaceNotes"),
-                    "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
-                    new MaintenanceProcedure("Provasmp"),listMaterial,true);
-            assertFalse(instance.equals(activity));
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
+        MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea2","ProvaWorkspaceNotes"),
+                "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
+                new MaintenanceProcedure("Provasmp"),listMaterial,true);
+        assertFalse(instance.equals(activity));
     }
     
     /**
-     * Test of toString method, of class MaintenanceActivity.
+     * Test that equals method correctly returns false when the other object has a different attribute.
      */
     @Test
     public void testEqualsDifferentAttributes3() {
-        try {
-            List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
-            MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes2"),
-                    "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
-                    new MaintenanceProcedure("Provasmp"),listMaterial,true);
-            assertFalse(instance.equals(activity));
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
+        MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes2"),
+                "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
+                new MaintenanceProcedure("Provasmp"),listMaterial,true);
+        assertFalse(instance.equals(activity));
     }
     
     /**
-     * Test of toString method, of class MaintenanceActivity.
+     * Test that equals method correctly returns false when the other object has a different attribute.
      */
     @Test
     public void testEqualsDifferentAttributes4() {
-        try {
-            List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
-            MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
-                    "ProvaTipologia2","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
-                    new MaintenanceProcedure("Provasmp"),listMaterial,true);
-            assertFalse(instance.equals(activity));
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
+        MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
+                "ProvaTipologia2","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
+                new MaintenanceProcedure("Provasmp"),listMaterial,true);
+        assertFalse(instance.equals(activity));
     }
     
     /**
-     * Test of toString method, of class MaintenanceActivity.
+     * Test that equals method correctly returns false when the other object has a different attribute.
      */
     @Test
     public void testEqualsDifferentAttributes5() {
-        try {
-            List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
-            MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
-                    "ProvaTipologia","ProvaDescrizione2",120,LocalDate.parse("2021-11-20"),
-                    new MaintenanceProcedure("Provasmp"),listMaterial,true);
-            assertFalse(instance.equals(activity));
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
+        MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
+                "ProvaTipologia","ProvaDescrizione2",120,LocalDate.parse("2021-11-20"),
+                new MaintenanceProcedure("Provasmp"),listMaterial,true);
+        assertFalse(instance.equals(activity));
     }
     
     /**
-     * Test of toString method, of class MaintenanceActivity.
+     * Test that equals method correctly returns false when the other object has a different attribute.
      */
     @Test
     public void testEqualsDifferentAttributes6() {
-        try {
-            List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
-            MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
-                    "ProvaTipologia","ProvaDescrizione",121,LocalDate.parse("2021-11-20"),
-                    new MaintenanceProcedure("Provasmp"),listMaterial,true);
-            assertFalse(instance.equals(activity));
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
+        MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
+                "ProvaTipologia","ProvaDescrizione",121,LocalDate.parse("2021-11-20"),
+                new MaintenanceProcedure("Provasmp"),listMaterial,true);
+        assertFalse(instance.equals(activity));
     }
     
     /**
-     * Test of toString method, of class MaintenanceActivity.
+     * Test that equals method correctly returns false when the other object has a different attribute.
      */
     @Test
     public void testEqualsDifferentAttributes7() {
-        try {
-            List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
-            MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
-                    "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-21"),
-                    new MaintenanceProcedure("Provasmp"),listMaterial,true);
-            assertFalse(instance.equals(activity));
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
+        MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
+                "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-21"),
+                new MaintenanceProcedure("Provasmp"),listMaterial,true);
+        assertFalse(instance.equals(activity));
     }
     
     /**
-     * Test of toString method, of class MaintenanceActivity.
+     * Test that equals method correctly returns false when the other object has a different attribute.
      */
     @Test
     public void testEqualsDifferentAttributes8() {
-        try {
-            List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
-            MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
-                    "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
-                    new MaintenanceProcedure("Provasmp2"),listMaterial,true);
-            assertFalse(instance.equals(activity));
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
+        MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
+                "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
+                new MaintenanceProcedure("Provasmp2"),listMaterial,true);
+        assertFalse(instance.equals(activity));
     }
     
     /**
-     * Test of toString method, of class MaintenanceActivity.
+     * Test that equals method correctly returns false when the other object has a different attribute.
      */
     @Test
     public void testEqualsDifferentAttributes9() {
-        try {
-            List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale4");
-            MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
-                    "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
-                    new MaintenanceProcedure("Provasmp"),listMaterial,true);
-            assertFalse(instance.equals(activity));
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale4");
+        MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
+                "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
+                new MaintenanceProcedure("Provasmp"),listMaterial,true);
+        assertFalse(instance.equals(activity));
     }
     
     /**
-     * Test of toString method, of class MaintenanceActivity.
+     * Test that equals method correctly returns false when the other object has a different attribute.
      */
     @Test
     public void testEqualsDifferentAttributes10() {
-        try {
-            List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
-            MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
-                    "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
-                    new MaintenanceProcedure("Provasmp"),listMaterial,false);
-            assertFalse(instance.equals(activity));
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        List<Material> listMaterial = createListMaterial("Materiale1","Materiale2","Materiale3");
+        MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
+                "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
+                new MaintenanceProcedure("Provasmp"),listMaterial,false);
+        assertFalse(instance.equals(activity));
     }
     
     /**
-     * Test of toString method, of class MaintenanceActivity.
+     * Test that equals method correctly returns true when the other object has the same list of materials but in different order.
      */
     @Test
     public void testEqualsListMaterials() {
-        try {
-            List<Material> listMaterial = createListMaterial("Materiale2","Materiale1","Materiale3");
-            MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
-                    "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
-                    new MaintenanceProcedure("Provasmp"),listMaterial,true);
-            assertTrue(instance.equals(activity));
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        List<Material> listMaterial = createListMaterial("Materiale2","Materiale1","Materiale3");
+        MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
+                "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
+                new MaintenanceProcedure("Provasmp"),listMaterial,true);
+        assertTrue(instance.equals(activity));
     }
     
-    private List<Material> createListMaterial(String materialElement1, String materialElement2, String materialElement3) throws NotValidParameterException{
+    private List<Material> createListMaterial(String materialElement1, String materialElement2, String materialElement3){
         return new ArrayList<>() {{
             add(new Material(materialElement1));
             add(new Material(materialElement2));
@@ -401,7 +348,7 @@ public class MaintenanceActivityTest {
 
         public MaintenanceActivityImpl(int activityId, Site site, String typology, String activityDescription,
             int estimatedInterventionTime, LocalDate date, MaintenanceProcedure maintenanceProcedure,
-            List<Material> materials,boolean interruptibleActivity) throws NotValidParameterException {
+            List<Material> materials,boolean interruptibleActivity) {
             super(activityId, site, typology, activityDescription, estimatedInterventionTime,
                     date, maintenanceProcedure, materials,interruptibleActivity);
         }

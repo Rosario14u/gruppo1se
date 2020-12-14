@@ -109,8 +109,6 @@ public class EmployeeAppointmentDAOImpl implements EmployeeAppointmentDAO {
     /*Developed by Rosario Gaeta*/
     @Override
     public int getDurationOfAssignedActivity(int activityId) throws AppointmentException {
-        if(activityId <= 0)
-           throw new AppointmentException("Error in retrieving duration of activity assigned");
         int sum = 0;
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();

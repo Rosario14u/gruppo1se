@@ -6,11 +6,16 @@
 package representation.planner;
 
 import business.user.Planner;
+import exception.NotValidParameterException;
+import exception.TypologyException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import persistence.maintenanceactivity.EmployeeAppointmentDAOImpl;
 import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
 import persistence.maintenanceactivity.SiteDaoImpl;
+import persistence.maintenanceactivity.TypologyDAOImpl;
 import persistence.user.MaintainerSkillDAOImpl;
 import persistence.user.UsersDAOImpl;
 
@@ -27,7 +32,7 @@ public class MenuPlanner extends javax.swing.JFrame {
     public MenuPlanner() {
         planner = new Planner("admin","admin", new MaintenanceActivityDAOImpl(new SiteDaoImpl()), 
                 new RequiredMaterialForMaintenanceDAOImpl(), new UsersDAOImpl(), new EmployeeAppointmentDAOImpl(),
-                new RequiredSkillForMaintenanceDAOImpl(),new MaintainerSkillDAOImpl());
+                new RequiredSkillForMaintenanceDAOImpl(),new MaintainerSkillDAOImpl(), new TypologyDAOImpl());
         initComponents();
     }
 
@@ -149,7 +154,11 @@ public class MenuPlanner extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        new CreateActivity(planner).setVisible(true);
+        try {
+            new CreateActivity(planner).setVisible(true);
+        } catch (TypologyException | NotValidParameterException ex) {
+            Logger.getLogger(MenuPlanner.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void selectionActivityButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectionActivityButtonActionPerformed

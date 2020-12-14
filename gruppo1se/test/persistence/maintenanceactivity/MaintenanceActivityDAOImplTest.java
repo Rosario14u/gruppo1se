@@ -13,10 +13,8 @@ import business.maintenanceactivity.Material;
 import business.maintenanceactivity.PlannedMaintenanceActivity;
 import business.maintenanceactivity.Site;
 import business.maintenanceactivity.Skill;
-import exception.DateException;
 import exception.MaintenanceActivityException;
 import exception.NotValidParameterException;
-import exception.SiteException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -109,6 +107,7 @@ public class MaintenanceActivityDAOImplTest {
     
     //=======================Test of retrieveMaintenanceActivityDao=========================================
     /*Test methods of retrieveMaintenanceActivityDao developed by Rosario Gaeta*/
+    
     /**
      * This method asserts that retrieveMaintenanceActivityDao correctly returns a PlannedMaintenanceActivity object<br>
      * when there is in database a planned activity with the required activityId.
@@ -118,10 +117,10 @@ public class MaintenanceActivityDAOImplTest {
         try {
             deleteMaintenaceActivity(1);
             insertMaintenanceActivity(1,"ProvaDescrizione1",121,"2050-11-21",true, 
-                    "Planned",null,"ProvaTypologyName1","ProvaBranch1","ProvaArea1","smp1");
+                    "Planned",null,"ProvaTypologyName1","ProvaBranch","ProvaArea","smp1");
             MaintenanceActivity activity = maintenanceActivityDAO.retrieveMaintenanceActivityDao(1);
             assertMaintenanceActivity(activity,1,"ProvaDescrizione1",121,"2050-11-21",true, 
-                    "Planned",null,"ProvaTypologyName1","ProvaBranch1","ProvaArea1", "ProvaWorkSpaceNotes1","smp1");
+                    "Planned",null,"ProvaTypologyName1","ProvaBranch","ProvaArea", "ProvaWorkSpaceNotes","smp1");
         } catch (SQLException ex) {
             fail("SQLException");
         }catch (MaintenanceActivityException ex) {
@@ -130,6 +129,7 @@ public class MaintenanceActivityDAOImplTest {
            fail("NotValidParameterException");
         }
     }
+    
     /**
      * This method asserts that retrieveMaintenanceActivityDao correctly returns an Ewo object<br>
      * when there is in database a Ewo activity with the required activityId.
@@ -139,10 +139,10 @@ public class MaintenanceActivityDAOImplTest {
         try {
             deleteMaintenaceActivity(2);
             insertMaintenanceActivity(2,"ProvaDescrizione2",122,"2050-11-22",true, 
-                    "Unplanned","EWO","ProvaTypologyName2","ProvaBranch2","ProvaArea2","smp2");
+                    "Unplanned","EWO","ProvaTypologyName2","ProvaBranch","ProvaArea","smp2");
             MaintenanceActivity activity = maintenanceActivityDAO.retrieveMaintenanceActivityDao(2);
             assertMaintenanceActivity(activity,2,"ProvaDescrizione2",122,"2050-11-22",true, 
-                    "Unplanned","EWO","ProvaTypologyName2","ProvaBranch2","ProvaArea2", "ProvaWorkSpaceNotes2","smp2");
+                    "Unplanned","EWO","ProvaTypologyName2","ProvaBranch","ProvaArea", "ProvaWorkSpaceNotes","smp2");
         } catch (SQLException ex) {
             fail("SQLException");
         } catch (MaintenanceActivityException ex) {
@@ -160,10 +160,10 @@ public class MaintenanceActivityDAOImplTest {
         try {
             deleteMaintenaceActivity(3);
             insertMaintenanceActivity(3,"ProvaDescrizione3",123,"2050-11-23",false, 
-                    "Unplanned","Extra","ProvaTypologyName3","ProvaBranch3","ProvaArea3","smp3");
+                    "Unplanned","Extra","ProvaTypologyName3","ProvaBranch","ProvaArea","smp3");
             MaintenanceActivity activity = maintenanceActivityDAO.retrieveMaintenanceActivityDao(3);
             assertMaintenanceActivity(activity,3,"ProvaDescrizione3",123,"2050-11-23",false, 
-                    "Unplanned","Extra","ProvaTypologyName3","ProvaBranch3","ProvaArea3", "ProvaWorkSpaceNotes3","smp3");
+                    "Unplanned","Extra","ProvaTypologyName3","ProvaBranch","ProvaArea", "ProvaWorkSpaceNotes","smp3");
         } catch (SQLException ex) {
             fail("SQLException");
         } catch (MaintenanceActivityException ex) {
@@ -175,7 +175,7 @@ public class MaintenanceActivityDAOImplTest {
     
    /**
      * This method asserts that retrieveMaintenanceActivityDao correctly returns null when the required<br>
-     * maintenance activity is not in the database
+     * maintenance activity is not in the database.
      */
     @Test
     public void testRetrieveMaintenanceActivityDaoNotInDatabase() {
@@ -193,8 +193,8 @@ public class MaintenanceActivityDAOImplTest {
     }
     
     /**
-     * This method asserts that retrieveMaintenanceActivityDao correctly raises a SiteException <br>
-     * when SiteDao return Null
+     * This method asserts that retrieveMaintenanceActivityDao correctly raises a MaintenanceActivityException <br>
+     * when SiteDao return Null.
      */
     @Test(expected = MaintenanceActivityException.class)
     public void testRetrieveMaintenanceActivityDaoSiteExceptionCase1() throws MaintenanceActivityException  {
@@ -211,15 +211,15 @@ public class MaintenanceActivityDAOImplTest {
     }
     
     /**
-     * This method asserts that retrieveMaintenanceActivityDao correctly raises a SiteException <br>
-     * when SiteDao raises an exception
+     * This method asserts that retrieveMaintenanceActivityDao correctly raises a MaintenanceActivityException <br>
+     * when SiteDao raises an exception.
      */
     @Test(expected = MaintenanceActivityException.class)
     public void testRetrieveMaintenanceActivityDaoSiteExceptionCase2() throws MaintenanceActivityException  {
         try {
             deleteMaintenaceActivity(5);
             insertMaintenanceActivity(5,"ProvaDescrizione5",125,"2050-11-25",false, 
-                    "Unplanned","Extra","ProvaTypologyName5","ProvaBranch5","ProvaArea5", "smp5");
+                    "Unplanned","Extra","ProvaTypologyName5","ProvaBranch4","ProvaArea4", "smp5");
             MaintenanceActivity activity = maintenanceActivityDAO.retrieveMaintenanceActivityDao(5);
         } catch (SQLException ex) {
             fail("SQLException");
@@ -230,12 +230,32 @@ public class MaintenanceActivityDAOImplTest {
     
     //=======================Utilities to test retrieveMaintenanceActivityDao=========================================
     
+    /**
+     * This method delete an activity from database
+     * @param activityId
+     * @throws SQLException 
+     */
     private void deleteMaintenaceActivity(int activityId) throws SQLException{
         PreparedStatement pstm = conn.prepareStatement(DELETE_MAINTENANCE_ACTIVITY);
         pstm.setInt(1, activityId);
         pstm.executeUpdate();
     }
     
+    /**
+     * This method insert an activity with a series of parameters in database
+     * @param activityId
+     * @param descrizione
+     * @param estimatedInterventionTime
+     * @param date
+     * @param InterruptibleActivity
+     * @param typologyOfActivity
+     * @param typologyOfUnplannedActivity
+     * @param typologyName
+     * @param branchOffice
+     * @param area
+     * @param smp
+     * @throws SQLException 
+     */
     private void insertMaintenanceActivity(int activityId,String descrizione,int estimatedInterventionTime,
         String date,boolean InterruptibleActivity, String typologyOfActivity,String typologyOfUnplannedActivity,
         String typologyName,String branchOffice,String area,String smp) throws SQLException{
@@ -254,6 +274,22 @@ public class MaintenanceActivityDAOImplTest {
         pstm.executeUpdate();
     }
     
+    /**
+     * This method performs the assert of activity attributes with a series of parameters
+     * @param activity
+     * @param activityId
+     * @param descrizione
+     * @param estimatedInterventionTime
+     * @param date
+     * @param InterruptibleActivity
+     * @param typologyOfActivity
+     * @param typologyOfUnplannedActivity
+     * @param typologyName
+     * @param branchOffice
+     * @param area
+     * @param workSpaceNotes
+     * @param smp 
+     */
     private void assertMaintenanceActivity(MaintenanceActivity activity, 
         int activityId,String descrizione,int estimatedInterventionTime,
         String date,boolean InterruptibleActivity, String typologyOfActivity,
@@ -620,10 +656,13 @@ public class MaintenanceActivityDAOImplTest {
         }
     }
     
-    //================================================test retrieveMaintenanceActivitu=========================================================================================
+    //================================================test retrieveMaintenanceActivity=========================================================================================
+    
+    /* test of retrieveMaintenanceActivity developed by Rosario Gaeta*/
     
     /**
-     * This method asserts that retrieveMaintenanceFromRangeOneElement correctly returns list of MaintenanceActivity objects
+     * This method asserts that retrieveMaintenanceFromRange correctly<br>
+     * returns list of MaintenanceActivity objects with equals start and end date.
      */
     @Test
     public void testRetrieveMaintenanceActivityFromRangeEqualsStartDateAndStopDate(){
@@ -633,7 +672,7 @@ public class MaintenanceActivityDAOImplTest {
                     LocalDate.parse("2050-11-21"));
             assertEquals("Len resultList error",resultList.size(),1);
             assertMaintenanceActivity(resultList.get(0),1,"ProvaDescrizione1",121,"2050-11-21",true, 
-                    "Planned",null,"ProvaTypologyName1","ProvaBranch1","ProvaArea1", "ProvaWorkSpaceNotes1","smp1");
+                    "Planned",null,"ProvaTypologyName1","ProvaBranch","ProvaArea", "ProvaWorkSpaceNotes","smp1");
         }catch(MaintenanceActivityException ex){
             fail("MaterialException was thrown");
         } catch (NotValidParameterException ex) {
@@ -642,7 +681,8 @@ public class MaintenanceActivityDAOImplTest {
     }
     
     /**
-     * This method asserts that retrieveMaintenanceFromRangeMoreElement correctly returns list of MaintenanceActivity objects
+     * This method asserts that retrieveMaintenanceFromRange correctly<br>
+     * returns list of MaintenanceActivity objects with different start date and end date.
      */
     @Test
     public void testRetrieveMaintenanceActivityFromRangeDifferentStartDateAndStopDate(){
@@ -653,11 +693,11 @@ public class MaintenanceActivityDAOImplTest {
             assertEquals("Len resultList error",resultList.size(),3);
             Collections.sort(resultList);
             assertMaintenanceActivity(resultList.get(0),1,"ProvaDescrizione1",121,"2050-11-21",true, 
-                    "Planned",null,"ProvaTypologyName1","ProvaBranch1","ProvaArea1", "ProvaWorkSpaceNotes1","smp1");
+                    "Planned",null,"ProvaTypologyName1","ProvaBranch","ProvaArea", "ProvaWorkSpaceNotes","smp1");
             assertMaintenanceActivity(resultList.get(1),2,"ProvaDescrizione2",122,"2050-11-22",true, 
-                    "Unplanned","EWO","ProvaTypologyName2","ProvaBranch2","ProvaArea2", "ProvaWorkSpaceNotes2","smp2");
+                    "Unplanned","EWO","ProvaTypologyName2","ProvaBranch","ProvaArea", "ProvaWorkSpaceNotes","smp2");
             assertMaintenanceActivity(resultList.get(2),3,"ProvaDescrizione3",123,"2050-11-23",false, 
-                    "Unplanned","Extra","ProvaTypologyName3","ProvaBranch3","ProvaArea3", "ProvaWorkSpaceNotes3","smp3");
+                    "Unplanned","Extra","ProvaTypologyName3","ProvaBranch","ProvaArea", "ProvaWorkSpaceNotes","smp3");
         }catch(MaintenanceActivityException ex){
             fail("MaintenanceActivityException was thrown");
         } catch (NotValidParameterException ex) {
@@ -667,7 +707,8 @@ public class MaintenanceActivityDAOImplTest {
     }
     
     /**
-     * This method asserts that retrieveMaintenanceFromRangeMoreElement correctly returns Empty list
+     * This method asserts that retrieveMaintenanceFromRange correctly returns Empty list when<br>
+     * there aren't activity in the database with the date in that range.
      */
     @Test
     public void testRetrieveMaintenanceActivityFromRangeEmpty(){
@@ -685,7 +726,9 @@ public class MaintenanceActivityDAOImplTest {
     }
     
     /**
-     * This method asserts that retrieveMaintenanceFromRangeMoreElement correctly raises MaintenanceActivityException
+     * This method asserts that retrieveMaintenanceFromRangeMoreElement correctly<br>
+     * raises a MaintenanceActivityException when start date is after end date.
+     * @throws exception.MaintenanceActivityException
      */
     @Test(expected = MaintenanceActivityException.class)
     public void testRetrieveMaintenanceActivityFromRangeStartGreaterThanStop() throws MaintenanceActivityException{
@@ -699,7 +742,9 @@ public class MaintenanceActivityDAOImplTest {
     }
     
     /**
-     * This method asserts that retrieveMaintenanceFromRangeMoreElement correctly raises MaintenanceActivityException
+     * This method asserts that retrieveMaintenanceFromRangeMoreElement correctly raises a MaintenanceActivityException<br>
+     * when start date is null.
+     * @throws exception.MaintenanceActivityException
      */
     @Test(expected = MaintenanceActivityException.class)
     public void testRetrieveMaintenanceActivityFromRangeStartNull() throws MaintenanceActivityException{
@@ -713,7 +758,9 @@ public class MaintenanceActivityDAOImplTest {
     }
     
     /**
-     * This method asserts that retrieveMaintenanceFromRangeMoreElement correctly raises MaintenanceActivityException
+     * This method asserts that retrieveMaintenanceFromRangeMoreElement correctly raises a MaintenanceActivityException<br>
+     * when end date is null.
+     * @throws exception.MaintenanceActivityException
      */
     @Test(expected = MaintenanceActivityException.class)
     public void testRetrieveMaintenanceActivityFromRangeStopNull() throws  MaintenanceActivityException{
@@ -727,14 +774,16 @@ public class MaintenanceActivityDAOImplTest {
     }
     
     /**
-     * This method asserts that retrieveMaintenanceFromRangeMoreElement correctly raises SiteException
+     * This method asserts that retrieveMaintenanceFromRangeMoreElement correctly raises MaintenanceActivityException<br>
+     * when siteDao raises a SiteException..
+     * @throws exception.MaintenanceActivityException
      */
     @Test(expected = MaintenanceActivityException.class)
     public void testRetrieveMaintenanceActivityFromRangeSiteException() throws MaintenanceActivityException{
         try {
             initializeRange();
-            List<MaintenanceActivity> resultList = maintenanceActivityDAO.retrieveMaintenanceActivityFromRange(LocalDate.parse("2050-11-21"),
-                    LocalDate.parse("2050-11-28"));
+            List<MaintenanceActivity> resultList = maintenanceActivityDAO.retrieveMaintenanceActivityFromRange(
+                    LocalDate.parse("2050-11-21"), LocalDate.parse("2050-11-28"));
         } catch (NotValidParameterException ex) {
            fail("NotValidParameterException");
         }   
@@ -745,15 +794,15 @@ public class MaintenanceActivityDAOImplTest {
             deleteMaintenaceActivity(1);
             deleteMaintenaceActivity(2);
             deleteMaintenaceActivity(3);
-            deleteMaintenaceActivity(5);
+            deleteMaintenaceActivity(4);
             insertMaintenanceActivity(1, "ProvaDescrizione1", 121, "2050-11-21", true,
-                    "Planned",null, "ProvaTypologyName1", "ProvaBranch1", "ProvaArea1","smp1");
+                    "Planned",null, "ProvaTypologyName1", "ProvaBranch", "ProvaArea","smp1");
             insertMaintenanceActivity(2, "ProvaDescrizione2", 122, "2050-11-22", true,
-                    "Unplanned", "EWO", "ProvaTypologyName2", "ProvaBranch2", "ProvaArea2","smp2");
+                    "Unplanned", "EWO", "ProvaTypologyName2", "ProvaBranch", "ProvaArea","smp2");
             insertMaintenanceActivity(3, "ProvaDescrizione3", 123, "2050-11-23", false,
-                    "Unplanned", "Extra", "ProvaTypologyName3", "ProvaBranch3", "ProvaArea3","smp3");
-            insertMaintenanceActivity(5, "ProvaDescrizione5", 125, "2050-11-25", false,
-                    "Unplanned", "Extra", "ProvaTypologyName5", "ProvaBranch5", "ProvaArea5","smp5");
+                    "Unplanned", "Extra", "ProvaTypologyName3", "ProvaBranch", "ProvaArea","smp3");
+            insertMaintenanceActivity(4, "ProvaDescrizione4", 124, "2050-11-24", false,
+                    "Unplanned", "Extra", "ProvaTypologyName4", "ProvaBranch4", "ProvaArea4","smp4");
         } catch(SQLException ex){
             fail("SQLException was thrown");
         }

@@ -45,7 +45,13 @@ public class EmployeeAppointmentDAOStub implements EmployeeAppointmentDAO {
         else
             return new ArrayList<>();
     }
-
+    /**
+     * Simulates the behaviour of addEmployeeAvailability of EmployeeAppointmentDAO.
+     * @param username
+     * @param listAppointment
+     * @return
+     * @throws AppointmentException 
+     */
     @Override
     public boolean addEmployeeAvailability(String username, List<Appointment> listAppointment) throws AppointmentException {
         if(username == null || username.trim().replaceAll("  +", " ").equals("") || listAppointment == null ){
@@ -60,7 +66,12 @@ public class EmployeeAppointmentDAOStub implements EmployeeAppointmentDAO {
             return true;
         }
     }
-
+    /**
+     * Simulates the behaviour of getDurationOfAssignedActivity of EmployeeAppointmentDAO.
+     * @param activityId
+     * @return
+     * @throws AppointmentException 
+     */
     @Override
     public int getDurationOfAssignedActivity(int activityId) throws AppointmentException {
         if(activityId <= 0){

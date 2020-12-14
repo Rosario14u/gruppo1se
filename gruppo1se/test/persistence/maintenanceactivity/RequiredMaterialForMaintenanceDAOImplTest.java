@@ -20,7 +20,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import business.maintenanceactivity.Material;
 import exception.MaterialException;
-import exception.NotValidParameterException;
 import java.util.ArrayList;
 import java.util.Collections;
 import static org.junit.Assert.*;
@@ -76,11 +75,14 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
             Logger.getLogger(RequiredMaterialForMaintenanceDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    /*=====================================================test retrieveMaterialsByActivityId=================================================*/
 
+    /*Test retrieveMaterialsByActivityId method developed by Rosario Gaeta*/
+    
     /**
-     * This method assert that retrieveMaterialsByActivityIdInDatabase correctly return List of material
+     * This method assert that retrieveMaterialsByActivityIdInDatabase correctly return a List of materials.
      */
-    /*Test method developed by Rosario Gaeta*/
     @Test
     public void testRetrieveMaterialsByActivityIdInDatabase() {
         try {
@@ -101,9 +103,8 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
             pstm.setString(6, expectedResult.get(2).getName());
             pstm.executeUpdate();
             List<Material> result= materialForMaintenanceDao.retrieveMaterialsByActivityId(1);
-            Collections.sort(expectedResult);
-            Collections.sort(result);
-            assertEquals("retrieveMaterialsByActivityIdInDatabase error",expectedResult, result);
+            assertTrue("retrieveMaterialsByActivityIdInDatabase error",(expectedResult.size() == result.size()) 
+                    && (result.containsAll(expectedResult)));
         } catch (SQLException ex) {
             fail("SQLException");
         } catch (MaterialException ex) {
@@ -113,9 +114,8 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
     
     /**
      * This method assert that retrieveMaterialsByActivityIdInDatabase correctly return empty list when <br>
-     * there aren't material associated to activity
+     * there aren't material associated to activity.
      */
-    /*Test method developed by Rosario Gaeta*/
     @Test
     public void testRetrieveMaterialsByActivityIdNotInDatabase() {
         try {

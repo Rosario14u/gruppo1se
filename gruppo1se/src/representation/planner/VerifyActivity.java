@@ -54,12 +54,15 @@ public class VerifyActivity extends javax.swing.JFrame {
         jInterventionDescription.setText(activity.getActivityDescription());
         jActivityToAssign.setText(Integer.toString(activity.getActivityId())+" - "+activity.getSite().getArea()
                 +" - "+activity.getTypology()+" - "+ Integer.toString(activity.getEstimatedInterventionTime())+"'");
-        if (activity.getMaintenanceProcedure().getSkills() != null){
-            StringBuilder builder2 = new StringBuilder();
-            for(Skill skill : activity.getMaintenanceProcedure().getSkills()){
-                builder2.append(skill.toString() + "\n");
-            }
-            jSkillsNeeded.setText(builder2.toString());
+        if (activity.getMaintenanceProcedure() != null){
+            if (activity.getMaintenanceProcedure().getSkills() != null){
+                StringBuilder builder2 = new StringBuilder();
+                for(Skill skill : activity.getMaintenanceProcedure().getSkills()){
+                    builder2.append(skill.toString() + "\n");
+                }
+                jSkillsNeeded.setText(builder2.toString());
+            } else
+                jSkillsNeeded.setText("No skills associated to this Maintenance Procedure");
         }
     }
     

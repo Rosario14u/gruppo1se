@@ -8,10 +8,7 @@ package business.maintenanceactivity;
 import exception.NotValidParameterException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -46,101 +43,98 @@ public class MaintenanceActivityFactoryTest {
     }
 
     /**
-     * Test of make method, of class MaintenanceActivityFactory.
+     * This method assert that make method correctly creates a planned maintenance activity.
      */
     @Test
     public void testMakePlannedActivity() {
-        try {
-            MaintenanceActivity expectedActivity = createMaintenanceActivity("Planned",1, "branchOfficeProva", "areaProva", "workspaceNotesProva",
-                    "tipologiaProva", "DescrizioneProva", 500, "2020-12-30", "smpProva", true);
-            MaintenanceActivity returnedActivity = MaintenanceActivityFactory.make(MaintenanceActivityFactory.Typology.PLANNED,1,
-                    expectedActivity.getSite().getBranchOffice(), expectedActivity.getSite().getArea(), expectedActivity.getSite().getWorkSpaceNotes(),
-                    expectedActivity.getTypology(), expectedActivity.getActivityDescription(),
-                    expectedActivity.getEstimatedInterventionTime(), String.valueOf(expectedActivity.getDate()),
-                    expectedActivity.getMaintenanceProcedure().getSmp(), expectedActivity.getMaterials(),
-                    expectedActivity.isInterruptibleActivity());
-            assertMaintenanceActivity(expectedActivity,returnedActivity);
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        MaintenanceActivity expectedActivity = createMaintenanceActivity("Planned",1, "branchOfficeProva",
+                "areaProva", "workspaceNotesProva", "tipologiaProva", "DescrizioneProva",
+                500, "2020-12-30", "smpProva", true);
+        MaintenanceActivity returnedActivity = MaintenanceActivityFactory.make(
+                MaintenanceActivityFactory.Typology.PLANNED,expectedActivity.getActivityId(),
+                expectedActivity.getSite().getBranchOffice(), expectedActivity.getSite().getArea(),
+                expectedActivity.getSite().getWorkSpaceNotes(),
+                expectedActivity.getTypology(), expectedActivity.getActivityDescription(),
+                expectedActivity.getEstimatedInterventionTime(), String.valueOf(expectedActivity.getDate()),
+                expectedActivity.getMaintenanceProcedure().getSmp(), expectedActivity.getMaterials(),
+                expectedActivity.isInterruptibleActivity());
+        assertEquals("Error in making of Planned Activity",returnedActivity, expectedActivity);
         
     }
     
     /**
-     * Test of make method, of class MaintenanceActivityFactory.
+     * This method assert that make method correctly creates an Ewo maintenance activity.
      */
     @Test
     public void testMakeEwoActivity() {
-        try {
-            MaintenanceActivity expectedActivity = createMaintenanceActivity("Ewo",1, "branchOfficeProva", "areaProva", "workspaceNotesProva",
-                    "tipologiaProva", "DescrizioneProva", 500, "2020-12-30", "smpProva", true);
-            MaintenanceActivity returnedActivity = MaintenanceActivityFactory.make(MaintenanceActivityFactory.Typology.EWO,1, expectedActivity.getSite().getBranchOffice(),
-                    expectedActivity.getSite().getArea(),expectedActivity.getSite().getWorkSpaceNotes(), expectedActivity.getTypology(), expectedActivity.getActivityDescription(),
-                    expectedActivity.getEstimatedInterventionTime(), String.valueOf(expectedActivity.getDate()),
-                    expectedActivity.getMaintenanceProcedure().getSmp(), expectedActivity.getMaterials(),
-                    expectedActivity.isInterruptibleActivity());
-            assertMaintenanceActivity(expectedActivity,returnedActivity);
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        MaintenanceActivity expectedActivity = createMaintenanceActivity("Ewo",1, "branchOfficeProva", "areaProva", "workspaceNotesProva",
+                "tipologiaProva", "DescrizioneProva", 500, "2020-12-30", "smpProva", true);
+        MaintenanceActivity returnedActivity = MaintenanceActivityFactory.make(
+                MaintenanceActivityFactory.Typology.EWO,expectedActivity.getActivityId(),
+                expectedActivity.getSite().getBranchOffice(), expectedActivity.getSite().getArea(),
+                expectedActivity.getSite().getWorkSpaceNotes(), expectedActivity.getTypology(),
+                expectedActivity.getActivityDescription(), expectedActivity.getEstimatedInterventionTime(),
+                String.valueOf(expectedActivity.getDate()), expectedActivity.getMaintenanceProcedure().getSmp(),
+                expectedActivity.getMaterials(), expectedActivity.isInterruptibleActivity());
+        assertEquals("Error in making of Ewo Activity",returnedActivity, expectedActivity);
         
     }
     
     /**
-     * Test of make method, of class MaintenanceActivityFactory.
+     * This method assert that make method correctly creates an Extra maintenance activity.
      */
     @Test
     public void testMakeExtraActivity() {
-        try {
-            MaintenanceActivity expectedActivity = createMaintenanceActivity("Extra",1, "branchOfficeProva", "areaProva", "workspaceNotesProva",
-                    "tipologiaProva", "DescrizioneProva", 500, "2020-12-30", "smpProva", true);
-            MaintenanceActivity returnedActivity = MaintenanceActivityFactory.make(MaintenanceActivityFactory.Typology.EXTRA,1, expectedActivity.getSite().getBranchOffice(),
-                    expectedActivity.getSite().getArea(), expectedActivity.getSite().getWorkSpaceNotes(), expectedActivity.getTypology(), expectedActivity.getActivityDescription(),
-                    expectedActivity.getEstimatedInterventionTime(), String.valueOf(expectedActivity.getDate()),
-                    expectedActivity.getMaintenanceProcedure().getSmp(), expectedActivity.getMaterials(),
-                    expectedActivity.isInterruptibleActivity());   
-            assertMaintenanceActivity(expectedActivity,returnedActivity);
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        MaintenanceActivity expectedActivity = createMaintenanceActivity("Extra",1, "branchOfficeProva", "areaProva", "workspaceNotesProva",
+                "tipologiaProva", "DescrizioneProva", 500, "2020-12-30", "smpProva", true);
+        MaintenanceActivity returnedActivity = MaintenanceActivityFactory.make(
+                MaintenanceActivityFactory.Typology.EXTRA,expectedActivity.getActivityId(),
+                expectedActivity.getSite().getBranchOffice(), expectedActivity.getSite().getArea(),
+                expectedActivity.getSite().getWorkSpaceNotes(), expectedActivity.getTypology(),
+                expectedActivity.getActivityDescription(), expectedActivity.getEstimatedInterventionTime(),
+                String.valueOf(expectedActivity.getDate()), expectedActivity.getMaintenanceProcedure().getSmp(),
+                expectedActivity.getMaterials(),expectedActivity.isInterruptibleActivity());
+        assertEquals("Error in making of Extra Activity",returnedActivity, expectedActivity);
     }
-    
-    private void assertMaintenanceActivity(MaintenanceActivity expectedActivity, MaintenanceActivity returnedActivity){
-        assertEquals("activityId error", expectedActivity.getActivityId(), returnedActivity.getActivityId());
-        assertEquals("site error", expectedActivity.getSite(), returnedActivity.getSite());
-        assertEquals("typology error", expectedActivity.getTypology(), returnedActivity.getTypology());
-        assertEquals("description error", expectedActivity.getActivityDescription(), returnedActivity.getActivityDescription());
-        assertEquals("estimated error", expectedActivity.getEstimatedInterventionTime(), returnedActivity.getEstimatedInterventionTime());
-        assertEquals("date error", expectedActivity.getDate(), returnedActivity.getDate());
-        assertEquals("procedure error", expectedActivity.getMaintenanceProcedure().getSmp(), returnedActivity.getMaintenanceProcedure().getSmp());
-        assertEquals("material error", expectedActivity.getMaterials(), returnedActivity.getMaterials());
-        assertEquals("interruptible error", expectedActivity.isInterruptibleActivity(), returnedActivity.isInterruptibleActivity());
-        assertEquals("instance error", expectedActivity.getClass(), returnedActivity.getClass());
-    }
-    
+    /**
+     * This method create 
+     * @param role
+     * @param activityId
+     * @param branchOffice
+     * @param area
+     * @param workspaceNotes
+     * @param typology
+     * @param activityDescription
+     * @param estimatedInterventionTime
+     * @param dateString
+     * @param smp
+     * @param interruptibleActivity
+     * @return
+     * @throws NotValidParameterException 
+     */
     private MaintenanceActivity createMaintenanceActivity(String role, int activityId, String branchOffice,String area, 
             String workspaceNotes, String typology, String activityDescription, int estimatedInterventionTime, String dateString,
-            String smp, boolean interruptibleActivity) throws NotValidParameterException{
+            String smp, boolean interruptibleActivity) {
         MaintenanceActivity activity = null;
         List<Material> listMaterial = createListMaterial("MaterialeProva1", "MaterialeProva2", "MaterialeProva3");
         List<Skill> listSkill = createListSkill("SkillProva1", "SkillProva2", "SkillProva3");
         Site site = new Site(branchOffice, area, workspaceNotes);
         MaintenanceProcedure procedure = new MaintenanceProcedure(smp);
         LocalDate date = LocalDate.parse(dateString);
-        if (role.compareTo("Planned")== 0){
+        if (role.equals("Planned")){
             activity = new PlannedMaintenanceActivity(1, site, typology, activityDescription, estimatedInterventionTime, 
                     date, procedure, listMaterial,interruptibleActivity);
-        }else if (role.compareTo("Ewo")== 0) {
+        }else if (role.equals("Ewo")) {
             activity = new Ewo(1, site, typology, activityDescription, estimatedInterventionTime, 
                     date, procedure, listMaterial, interruptibleActivity);
-        }else if (role.compareTo("Extra")== 0) {
+        }else if (role.equals("Extra")) {
             activity = new ExtraActivity(1, site, typology, activityDescription, estimatedInterventionTime, 
                     date, procedure, listMaterial, interruptibleActivity);
         }
         return activity;
     }
     
-    private List<Material> createListMaterial(String materialElement1, String materialElement2, String materialElement3) throws NotValidParameterException{
+    private List<Material> createListMaterial(String materialElement1, String materialElement2, String materialElement3) {
         return new ArrayList<>() {{
             add(new Material(materialElement1));
             add(new Material(materialElement2));
@@ -148,7 +142,7 @@ public class MaintenanceActivityFactoryTest {
         }};
     }
     
-    private List<Skill> createListSkill(String skillElement1, String skillElement2, String skillElement3) throws NotValidParameterException{
+    private List<Skill> createListSkill(String skillElement1, String skillElement2, String skillElement3) {
         return new ArrayList<>() {{
             add(new Skill(skillElement1));
             add(new Skill(skillElement1));

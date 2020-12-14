@@ -11,12 +11,12 @@ import business.maintenanceactivity.MaintenanceActivityFactory.Typology;
 import business.maintenanceactivity.Material;
 import business.maintenanceactivity.PlannedMaintenanceActivity;
 import business.user.Planner;
+import business.user.WeekConverter;
 import com.toedter.calendar.JTextFieldDateEditor;
 import exception.NumberNotValidException;
 import exception.MaintenanceActivityException;
 import exception.MaterialException;
 import exception.NotValidParameterException;
-import exception.SiteException;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
@@ -30,14 +30,6 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
-import javax.swing.JOptionPane;
-import persistence.maintenanceactivity.EmployeeAppointmentDAOImpl;
-import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
-import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
-import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
-import persistence.maintenanceactivity.SiteDaoImpl;
-import persistence.user.MaintainerSkillDAOImpl;
-import persistence.user.UsersDAOImpl;
 import presentation.manager.MessageManager;
 
 /**
@@ -47,14 +39,15 @@ import presentation.manager.MessageManager;
 
 public class ViewModifyPlannerGUI extends javax.swing.JFrame {
     private final DefaultListModel<Material> listModel;
-    private final Planner planner = null;
+    private Planner planner = null;
     /**
      * Creates new form ViewModifyPlannerGUI1
+     * @param planner
      */
     //Method developed by Rosario Gaeta
     public ViewModifyPlannerGUI(Planner planner) {
         listModel = new DefaultListModel<>();
-        planner = planner;
+        this.planner = planner;
         initComponents();
         initializeField(false);
         weekTextField.setEnabled(false);
@@ -200,7 +193,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
                 @Override
                 public void propertyChange(PropertyChangeEvent e) {
                     LocalDate date = calendarDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                    weekTextField.setText(String.valueOf(getWeekNumber(date)));
+                    weekTextField.setText(String.valueOf(WeekConverter.getWeek(date)));
                 }
             });
 
@@ -380,12 +373,18 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
     private void interruptibleActivityCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_interruptibleActivityCheckBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_interruptibleActivityCheckBoxActionPerformed
-//Method developed by Rosario Gaeta
+
+    /**
+     * This method allows to visualize a maintenance activity.
+     * @param evt 
+     */
+    //Method developed by Rosario Gaeta
     private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
         String activityId = activityIdTextField.getText().trim().replaceAll("  +", " ");
         try{
             int id = getCheckedNumberParameter(activityId);
             MaintenanceActivity activity = planner.viewMaintenanceActivity(id);
+            /*If the activity is stored in the system, the details of the activity are showed in the field*/
             if (activity != null){
                 setField(activity);
                 initializeField(true);
@@ -406,9 +405,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         clearField();
         initializeField(false);       
     }//GEN-LAST:event_modifyButtonActionPerformed
-
-    
-    
+  
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         int selectedIndex = materialComboBox.getSelectedIndex();
         if(selectedIndex != -1){
@@ -451,16 +448,12 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         initializeField(false);
     }//GEN-LAST:event_activityIdTextFieldKeyPressed
 
-    
-    
-    
+
     private void getField(){
         try {
             String area =  areaTextField.getText();
             String branchOffice = branchOfficeTextField.getText();
-            
             Typology typologyOfActivity = Typology.valueOf(activityComboBox.getSelectedItem().toString());
-            
             int estimatedInterventionTime = getCheckedNumberParameter(estimatedInterventionTimeTextField.getText());
             int activityId = getCheckedNumberParameter(activityIdTextField.getText());
             boolean interruptibleActivity = interruptibleActivityCheckBox.isSelected();
@@ -475,7 +468,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
                     MessageManager.errorMessage(this, ex.getMessage());
                 }
         } catch (NumberNotValidException ex) {
-            Logger.getLogger(ViewModifyPlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+            MessageManager.errorMessage(this, ex.getMessage());
         }
     }
          
@@ -541,7 +534,10 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
 //            }
 //        });
 //    }
-    
+    /**
+     * This method enables and disables editability of a series of field.
+     * @param enabled 
+     */
     private void initializeField(boolean enabled) {
         activityDescriptionTextArea.setEnabled(enabled);
         addButton.setEnabled(enabled);
@@ -558,7 +554,10 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         materialComboBox.setEnabled(enabled);
     }
     
-    
+    /**
+     * This method sets the field of the GUI, filling them with the activity details.
+     * @param activity 
+     */
     private void setField(MaintenanceActivity activity){
         if (activity !=null){
             if (activity instanceof PlannedMaintenanceActivity){
@@ -597,11 +596,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         
     }
     
-    private int getWeekNumber(LocalDate date){
-        Locale userLocale = Locale.ITALY;
-        WeekFields weekNumbering = WeekFields.of(userLocale);
-        return date.get(weekNumbering.weekOfWeekBasedYear());
-    }
+
     
 
 

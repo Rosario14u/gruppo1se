@@ -300,7 +300,10 @@ public class ViewUsers extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+/**
+ * This method allows to delete selected users from the jTable
+ * @param evt 
+ */
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         try {
             int[] selectedIndex = jTable.getSelectedRows();

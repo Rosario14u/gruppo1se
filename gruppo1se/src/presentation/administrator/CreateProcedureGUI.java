@@ -14,9 +14,10 @@ import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import presentation.manager.MessageManager;
 /**
- *
+ * GUI to create the mainteance activity procedure with an smp file
  * @author rosar
  */
+/*Class developed by Rosario Gaeta*/
 public class CreateProcedureGUI extends javax.swing.JFrame {
     private final static String PROJECT_PATH = System.getProperty("user.dir");
     private final static String RELATIVE_PROJECT_PATH = "/src/smp/";
@@ -135,7 +136,10 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+/**
+ * This method allows to save the smp in the system when the button is pressed
+ * @param evt 
+ */
     private void fileChooserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileChooserButtonActionPerformed
         StringBuilder builder = new StringBuilder();
         String newName = null;
@@ -167,7 +171,10 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
             MessageManager.errorMessage(this, ex.getMessage());
         }
     }//GEN-LAST:event_fileChooserButtonActionPerformed
-
+/**
+ * This method allows to use a file chooser to select a smp file
+ * @param evt 
+ */
     private void chooserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooserButtonActionPerformed
         UIManager.put("FileChooser.readOnly", Boolean.TRUE);
         JFileChooser filechooser = new JFileChooser(PROJECT_PATH.concat(RELATIVE_PROJECT_PATH));
@@ -218,7 +225,10 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
 //            }
 //        });
 //    }
-    
+    /**
+     * This method set procedure and rename label of the GUI
+     * @param enable 
+     */
     private void setField(boolean enable){
         procedureTextField.setEnabled(enable);
         RenameLabel.setVisible(enable);

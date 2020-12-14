@@ -22,6 +22,13 @@ public class TypologyDAOImpl implements TypologyDAO{
     private final String SQL_UPDATE = "UPDATE Typology SET typologyName = ? WHERE typologyName = ?";
     private final String SQL_DELETE = "DELETE FROM Typology WHERE typologyName = ?";
     
+    /**
+     * 
+     * @param typology
+     * @return {@code boolean} true if the typology is inserted into the database
+     * @throws TypologyException 
+     */
+    /* Method developed by Alessio Citro*/
     @Override
     public boolean addTypology(String typology) throws TypologyException {
         if (typology == null)
@@ -37,6 +44,12 @@ public class TypologyDAOImpl implements TypologyDAO{
         }
     }
     
+    /**
+     * 
+     * @return a list of Strings, representing all the typologies stored into the database
+     * @throws TypologyException 
+     */
+    /* Method developed by Alessio Citro*/
     @Override
     public List<String> viewTypologies() throws TypologyException {
         try {
@@ -49,6 +62,13 @@ public class TypologyDAOImpl implements TypologyDAO{
         }
     }
     
+    /**
+     * 
+     * @param res ResultSet containing all the entries from the typology table
+     * @return a list of Strings, representing all the typologies stored into the database
+     * @throws TypologyException 
+     */
+    /* Method developed by Alessio Citro*/
     private List<String> makeTypologyList (ResultSet res) throws TypologyException{
         List<String> typologies = new ArrayList<>();
         try {
@@ -61,6 +81,14 @@ public class TypologyDAOImpl implements TypologyDAO{
         }
     }
     
+    /**
+     * 
+     * @param oldTypology
+     * @param newTypology
+     * @return {@code boolean} true if the typology is updated into the database
+     * @throws TypologyException 
+     */
+    /* Method developed by Alessio Citro*/
     @Override
     public boolean modifyTypology(String oldTypology, String newTypology) throws TypologyException {
         try {
@@ -74,6 +102,13 @@ public class TypologyDAOImpl implements TypologyDAO{
         }
     }
     
+    /**
+     * 
+     * @param typology
+     * @return {@code boolean} true if the typology is removed from the database
+     * @throws TypologyException 
+     */
+    /* Method developed by Alessio Citro*/
     @Override
     public boolean deleteTypology(String typology) throws TypologyException {
         try {
