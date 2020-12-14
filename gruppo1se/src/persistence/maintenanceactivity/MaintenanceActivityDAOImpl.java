@@ -80,7 +80,7 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
      * @param activityId activity id of the maintenance activity to retrieve
      * @return {@code MaintenanceActivity} MaintenanceActivity if exists a maintenance activity
      * with corresponding id in database, null otherwise.
-     * @throws exception.MaintenanceActivityException it there are problems in retrieving activity
+     * @throws exception.MaintenanceActivityException if there are problems in retrieving activity
      * @throws exception.NotValidParameterException if sitedao object is not correctly
      */
     /*Method developed by Rosario Gaeta*/

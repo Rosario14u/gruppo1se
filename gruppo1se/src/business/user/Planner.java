@@ -17,7 +17,6 @@ import exception.DateException;
 import exception.MaintenanceActivityException;
 import exception.MaterialException;
 import exception.NotValidParameterException;
-import exception.SiteException;
 import exception.SkillException;
 import exception.UsersException;
 import java.time.LocalDate;
@@ -31,17 +30,19 @@ import persistence.user.MaintainerSkillDAO;
 import persistence.user.UsersDAO;
 
 /**
- *
+ * <p>An object of the class Planner provides a series of method to manage Maintenance Activity<br>
+ * and to assign this activities to maintainers. This class requires a series of dao object (as attributes) to performs this
+ * operation.</p> 
  * @author rosar
  */
 public class Planner extends User {
 
-    private MaintenanceActivityDAO maintenanceActivityDao;
-    private RequiredMaterialForMaintenanceDAO requiredMaterialsDao;
-    private RequiredSkillForMaintenanceDAO requiredSkillsDao;
-    private UsersDAO userDao;
-    private EmployeeAppointmentDAO employeeAppointmentDao;
-    private MaintainerSkillDAO maintainerSkillDao;
+    private final MaintenanceActivityDAO maintenanceActivityDao;
+    private final RequiredMaterialForMaintenanceDAO requiredMaterialsDao;
+    private final RequiredSkillForMaintenanceDAO requiredSkillsDao;
+    private final UsersDAO userDao;
+    private final EmployeeAppointmentDAO employeeAppointmentDao;
+    private final MaintainerSkillDAO maintainerSkillDao;
     
     
     /**
@@ -68,9 +69,7 @@ public class Planner extends User {
         this.maintainerSkillDao = maintainerSkillDao;
     }
 
-    public RequiredMaterialForMaintenanceDAO getRequiredMaterialsDao() {
-        return requiredMaterialsDao;
-    }
+    
     
     /**
      * This method returns Maintenance Activity with the passed activityId if
@@ -155,6 +154,13 @@ public class Planner extends User {
             throw new MaintenanceActivityException(ex.getMessage());
         }
     }
+    
+    public List<Material> viewRequiredMaterialsByActivityId(int activityId) throws MaterialException, NotValidParameterException {
+        if (requiredMaterialsDao == null) {
+            throw new NotValidParameterException("Failure to create data relating to maintenance activities");
+        }
+        return requiredMaterialsDao.retrieveMaterialsByActivityId(activityId);
+    }
 
     //Developed by Antonio Gorrasi
     public boolean addRequiredMaterial(int activityId, List<Material> requiredMaterial) throws MaterialException, NotValidParameterException {
@@ -207,7 +213,13 @@ public class Planner extends User {
             throw new MaintenanceActivityException(ex.getMessage());
         }
     }
-
+    
+    /**
+     * This method allows to filter a list of maintenance activity,
+     * getting only the activity that have a not null procedure.
+     * @param listActivity list of activity
+     * @return {@code List<MaintenanceActivity>} listOfMaintenanceActivity
+     */
     private List<MaintenanceActivity> filterActivityWithoutProcedure(List<MaintenanceActivity> listActivity) {
         return listActivity.stream().filter(activity -> activity.getMaintenanceProcedure() != null).collect(Collectors.toList());
     }
@@ -235,7 +247,7 @@ public class Planner extends User {
     /**
      * This method allows to save appointments of a maintainer associated with a maintenance activity and<br>
      * updates the maintenance activity date. Returns true if the operation is successful, false otherwise.<br>
-     * EmployeeAppointmentDao and MaintenanceActivityDao are required
+     * EmployeeAppointmentDao and MaintenanceActivityDao are required.
      * @param username Username of the maintainer
      * @param activity Maintenance activity to be assigned to the maintainer
      * @param appointments Appointments to save
@@ -243,7 +255,7 @@ public class Planner extends User {
      * @throws AppointmentException if username is not valid or appointemnts list is null
      * @throws MaintenanceActivityException if activity passed is null
      * @throws NotValidParameterException if required dao ( EmployeeAppointmentDao and MaintenanceActivityDao) <br>
-     * are not correctly initialized
+     * are not correctly initialized.
      */
     /*Developed by Rosario Gaeta*/
     public boolean saveAppointments(String username, MaintenanceActivity activity, List<Appointment> appointments)
