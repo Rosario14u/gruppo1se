@@ -302,15 +302,16 @@ public class ViewUsers extends javax.swing.JFrame {
             User user = null;
             List<String> usernameList = new ArrayList<>();
             for(int i : selectedIndex){
-                usernameList.add(String.valueOf(jTable.getValueAt(i, 0)));
+                usernameList.add(String.valueOf(jTable.getValueAt(i, 0))); // get the username of selected maintainer
             }
             if(!usernameList.isEmpty()){
                 int dialogResult = MessageManager.confirmMessage(this,"Are you sure you wish to delete these users");
                 if(dialogResult == JOptionPane.YES_OPTION){
                     System.out.println(usernameList);
-                    int retVal = systemAdministrator.removeUsers(usernameList);
+                    int retVal = systemAdministrator.removeUsers(usernameList); // remove the users from the database
                     for(int i: selectedIndex){
-                        tableModel.removeRow(jTable.convertRowIndexToModel(i));
+                        tableModel.removeRow(jTable.convertRowIndexToModel(i)); // remove the selected row from the model only if 
+                        // the row was deleted from the database (otherwise removeUsers throws an exception)
                     }
                 }
                 jTable.clearSelection();

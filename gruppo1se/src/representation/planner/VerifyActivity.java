@@ -46,30 +46,20 @@ public class VerifyActivity extends javax.swing.JFrame {
     }
     
     private void fillFields(){
-        try {
-            if(planner.verifyActivityAssignment(activity.getActivityId(), activity.getEstimatedInterventionTime())){
-                jForward.setEnabled(false);
-                jLabel6.setVisible(true);
-            }else{
-                jLabel6.setVisible(false);
+        LocalDate date = activity.getDate();
+        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+        int weekNumber = date.get(weekFields.weekOfWeekBasedYear());
+        jWeek.setText(Integer.toString(weekNumber));
+        jWorkspaceNotes.setText(oldWorkspaceNotes);
+        jInterventionDescription.setText(activity.getActivityDescription());
+        jActivityToAssign.setText(Integer.toString(activity.getActivityId())+" - "+activity.getSite().getArea()
+                +" - "+activity.getTypology()+" - "+ Integer.toString(activity.getEstimatedInterventionTime())+"'");
+        if (activity.getMaintenanceProcedure().getSkills() != null){
+            StringBuilder builder2 = new StringBuilder();
+            for(Skill skill : activity.getMaintenanceProcedure().getSkills()){
+                builder2.append(skill.toString() + "\n");
             }
-            LocalDate date = activity.getDate();
-            WeekFields weekFields = WeekFields.of(Locale.getDefault());
-            int weekNumber = date.get(weekFields.weekOfWeekBasedYear());
-            jWeek.setText(Integer.toString(weekNumber));
-            jWorkspaceNotes.setText(oldWorkspaceNotes);
-            jInterventionDescription.setText(activity.getActivityDescription());
-            jActivityToAssign.setText(Integer.toString(activity.getActivityId())+" - "+activity.getSite().getArea()
-                    +" - "+activity.getTypology()+" - "+ Integer.toString(activity.getEstimatedInterventionTime())+"'");
-            if (activity.getMaintenanceProcedure().getSkills() != null){
-                StringBuilder builder2 = new StringBuilder();
-                for(Skill skill : activity.getMaintenanceProcedure().getSkills()){
-                    builder2.append(skill.toString() + "\n");
-                }
-                jSkillsNeeded.setText(builder2.toString());
-            }
-        } catch (MaintenanceActivityException | NotValidParameterException | AppointmentException ex) {
-            MessageManager.errorMessage(this,ex.getMessage());
+            jSkillsNeeded.setText(builder2.toString());
         }
         
     }

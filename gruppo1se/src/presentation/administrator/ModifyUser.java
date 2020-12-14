@@ -5,12 +5,7 @@
  */
 package presentation.administrator;
 
-import business.user.Maintainer;
-import business.user.Planner;
 import business.user.SystemAdministrator;
-import business.user.User;
-import exception.UsersException;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import presentation.manager.MessageManager;
 

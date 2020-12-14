@@ -28,8 +28,6 @@ import java.time.temporal.WeekFields;
 
 import java.util.List;
 import java.util.Locale;
-
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import persistence.maintenanceactivity.EmployeeAppointmentDAOImpl;
@@ -65,7 +63,7 @@ public class MaintainerAvailability extends javax.swing.JFrame {
         initComponents();
         tableModel = (DefaultTableModel) maintainerAvailabilityTable.getModel();
         initializeFields();
-        PercentageCellRenderer renderer = new PercentageCellRenderer();
+        PercentageCellRenderer renderer = new PercentageCellRenderer(); // Cell renderer to color cells of the table 
         maintainerAvailabilityTable.setDefaultRenderer(Object.class, renderer);
     }
 
@@ -74,13 +72,12 @@ public class MaintainerAvailability extends javax.swing.JFrame {
         WeekFields weekFields = WeekFields.of(Locale.getDefault());
         int weekNumber = date.get(weekFields.weekOfWeekBasedYear());
         weekLabel.setText(Integer.toString(weekNumber));
-        this.activity = activity;
         activityInfoLabel.setText(Integer.toString(activity.getActivityId()) + " - " + activity.getSite().getArea()
                 + " - " + activity.getTypology() + " - " + Integer.toString(activity.getEstimatedInterventionTime()) + "'");
         if (activity.getMaintenanceProcedure().getSkills() != null) {
             StringBuilder builder2 = new StringBuilder();
             for (Skill skill : activity.getMaintenanceProcedure().getSkills()) {
-                builder2.append(skill.toString() + "\n");
+                builder2.append(skill.toString()).append("\n");
             }
             skillTextArea.setText(builder2.toString());
             skillTextArea.setEnabled(false);

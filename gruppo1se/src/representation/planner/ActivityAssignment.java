@@ -7,7 +7,6 @@ package representation.planner;
 
 import business.maintenanceactivity.Appointment;
 import business.maintenanceactivity.MaintenanceActivity;
-import business.user.Maintainer;
 import business.user.Planner;
 import business.user.WeekConverter;
 import dto.MaintainerDTO;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import persistence.maintenanceactivity.EmployeeAppointmentDAOImpl;
 import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;

@@ -177,12 +177,12 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
         filechooser.setAcceptAllFileFilterUsed(false);
         FileNameExtensionFilter filter = new FileNameExtensionFilter("PDF file","pdf");
         filechooser.setFileFilter(filter);
-        filechooser.setDialogTitle("Scegli un pdf come smp");
-        int result = filechooser.showOpenDialog(this);
+        filechooser.setDialogTitle("Scegli un pdf come smp"); 
+        int result = filechooser.showOpenDialog(this); // get the file choosen with file chooser
         if (result == JFileChooser.APPROVE_OPTION){
             fileChoosen = filechooser.getSelectedFile();
             setField(true);
-            procedureTextField.setText(fileChoosen.getName().substring(0, fileChoosen.getName().lastIndexOf('.')));
+            procedureTextField.setText(fileChoosen.getName().substring(0, fileChoosen.getName().lastIndexOf('.'))); 
             procedureTextField.requestFocus();
         }
     }//GEN-LAST:event_chooserButtonActionPerformed
@@ -221,7 +221,10 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
             }
         });
     }
-    
+    /**
+     * This method set 
+     * @param enable 
+     */
     private void setField(boolean enable){
         procedureTextField.setEnabled(enable);
         RenameLabel.setVisible(enable);

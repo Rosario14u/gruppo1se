@@ -6,10 +6,8 @@
 package presentation.administrator;
 
 import business.user.SystemAdministrator;
-import exception.NotValidParameterException;
 import exception.TypologyException;
 import exception.NotValidParameterException;
-import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import presentation.manager.MessageManager;
