@@ -17,7 +17,6 @@ import exception.DateException;
 import exception.MaintenanceActivityException;
 import exception.MaterialException;
 import exception.NotValidParameterException;
-import exception.SiteException;
 import exception.SkillException;
 import exception.TypologyException;
 import exception.UsersException;
@@ -108,10 +107,12 @@ public class Planner extends User {
         }
     }
 
+   
     /**
-     *
-     * @param activityId
-     * @param branchOffice
+     * This method allows to modify an existent Maintenance
+     * activity acccording to actvityId parameter
+     * @param activityId ID of maintenance activity
+     * @param branchOffice 
      * @param area
      * @param typology
      * @param activityDescription
@@ -119,25 +120,30 @@ public class Planner extends User {
      * @param date
      * @param interruptibleActivity
      * @param typologyOfActivity
-     * @return
+     * @return {@code true} if the the change
+     * is successful, {@code false} otherwise
      * @throws MaintenanceActivityException
-     * @throws exception.NotValidParameterException
+     * @throws NotValidParameterException 
      */
     //Developed by Antonio Gorrasi
-    public boolean modifyMaintenanceActivity(int activityId, String branchOffice, String area, String typology, String activityDescription,
-            int estimatedInterventionTime, String date, boolean interruptibleActivity,
-            Typology typologyOfActivity) throws MaintenanceActivityException, NotValidParameterException {
+    public boolean modifyMaintenanceActivity(int activityId, String branchOffice, String area, 
+            String typology, String activityDescription, int estimatedInterventionTime, 
+            String date, boolean interruptibleActivity, Typology typologyOfActivity)
+            throws MaintenanceActivityException, NotValidParameterException {
 
         if (maintenanceActivityDao == null) {
-            throw new NotValidParameterException("Failure to modify data relating to maintenance activities");
+            throw new NotValidParameterException("Failure to modify data relating to activities");
         }
 
-        MaintenanceActivity newActivity = MaintenanceActivityFactory.make(typologyOfActivity, activityId, branchOffice, area, null, typology, activityDescription,
+        MaintenanceActivity newActivity = MaintenanceActivityFactory.make(typologyOfActivity, 
+                activityId, branchOffice, area, null, typology, activityDescription, 
                 estimatedInterventionTime, date, null, null, interruptibleActivity);
 
         return maintenanceActivityDao.modifyMaintenaceActivity(newActivity);
     }
 
+    
+    
     public boolean removeMaintenanceActivity(int activityId) throws MaintenanceActivityException, NotValidParameterException {
         if (maintenanceActivityDao == null) {
             throw new NotValidParameterException("Failure to remove data relating to maintenance activities");
@@ -208,10 +214,11 @@ public class Planner extends User {
     }
 
     //Developed by Antonio Gorrasi
-    public List<MaintenanceActivity> viewMaintenanceActivityByWeek(int week, int year) throws MaintenanceActivityException, NotValidParameterException {
+    public List<MaintenanceActivity> viewMaintenanceActivityByWeek(int week, int year) 
+            throws MaintenanceActivityException, NotValidParameterException {
         
         if (maintenanceActivityDao == null || requiredSkillsDao == null) {
-            throw new NotValidParameterException("Failure to retrieve data relating to maintenance activities");
+            throw new NotValidParameterException("Failure to retrieve data relating to activities");
         }
         try { 
             List<LocalDate> date = WeekConverter.getStartEndDate(week, year);

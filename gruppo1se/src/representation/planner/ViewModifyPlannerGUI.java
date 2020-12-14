@@ -16,7 +16,6 @@ import exception.NumberNotValidException;
 import exception.MaintenanceActivityException;
 import exception.MaterialException;
 import exception.NotValidParameterException;
-import exception.SiteException;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
@@ -30,14 +29,6 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
-import javax.swing.JOptionPane;
-import persistence.maintenanceactivity.EmployeeAppointmentDAOImpl;
-import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
-import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
-import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
-import persistence.maintenanceactivity.SiteDaoImpl;
-import persistence.user.MaintainerSkillDAOImpl;
-import persistence.user.UsersDAOImpl;
 import presentation.manager.MessageManager;
 
 /**
@@ -47,14 +38,14 @@ import presentation.manager.MessageManager;
 
 public class ViewModifyPlannerGUI extends javax.swing.JFrame {
     private final DefaultListModel<Material> listModel;
-    private final Planner planner = null;
+    private Planner planner = null;
     /**
      * Creates new form ViewModifyPlannerGUI1
      */
     //Method developed by Rosario Gaeta
     public ViewModifyPlannerGUI(Planner planner) {
         listModel = new DefaultListModel<>();
-        planner = planner;
+        this.planner = planner;
         initComponents();
         initializeField(false);
         weekTextField.setEnabled(false);

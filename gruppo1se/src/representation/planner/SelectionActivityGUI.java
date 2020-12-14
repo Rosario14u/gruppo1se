@@ -12,17 +12,10 @@ import exception.MaintenanceActivityException;
 import exception.NotValidParameterException;
 import java.awt.Dimension;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
-import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
-import persistence.maintenanceactivity.EmployeeAppointmentDAOImpl;
-import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
-import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
-import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
-import persistence.maintenanceactivity.SiteDaoImpl;
-import persistence.user.MaintainerSkillDAOImpl;
-import persistence.user.UsersDAOImpl;
 import presentation.manager.MessageManager;
 
 /**
@@ -69,12 +62,11 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
         jPanel1.setForeground(new java.awt.Color(187, 187, 100));
 
         jLabel1.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Week n°:");
 
         weekComboBox.setModel(new javax.swing.DefaultComboBoxModel<>());
-        int numberOfWeeks = WeekConverter.getNumberOfWeeksInYear(LocalDate.now().getYear());
-
+        int numberOfWeeks = WeekConverter.getNumberOfWeeksInYear(LocalDate.now());
+        System.out.println("--> " + numberOfWeeks);
         for(int i=1;i<=numberOfWeeks;i++){
             weekComboBox.addItem(i);
         }
@@ -186,9 +178,8 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void weekComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_weekComboBoxActionPerformed
-        int year = LocalDate.now().getYear();
-        
-        populateTable(weekComboBox.getSelectedIndex()+1, year);
+        LocalDate date = LocalDate.now();
+        populateTable(weekComboBox.getSelectedIndex()+1, WeekConverter.getYear(date));
     }//GEN-LAST:event_weekComboBoxActionPerformed
 
     /**
