@@ -38,7 +38,7 @@ public class ManageTypologies extends javax.swing.JFrame {
      * @param systemAdministrator
      * @throws exception.TypologyException
      */
-    public ManageTypologies(SystemAdministrator systemAdministrator) throws TypologyException{
+    public ManageTypologies(SystemAdministrator systemAdministrator) {
         this.systemAdministrator = systemAdministrator;
         initComponents();
         tableModel = (DefaultTableModel) jTable.getModel();
@@ -72,7 +72,7 @@ public class ManageTypologies extends javax.swing.JFrame {
             rowSorter.setRowFilter(RowFilter.regexFilter("^(?i)"+text,0));
     }
     
-    public void addRowsToTable() throws TypologyException{
+    public void addRowsToTable() {
         try {
             list = systemAdministrator.readTypologies();
             Object[] rows = new Object[1];
@@ -80,7 +80,7 @@ public class ManageTypologies extends javax.swing.JFrame {
                 rows[0] = list.get(i);
                 tableModel.addRow(rows);
             }
-        } catch (NotValidParameterException ex) {
+        } catch (NotValidParameterException | TypologyException ex) {
             MessageManager.errorMessage(this,ex.getMessage());
         }
     }
@@ -349,12 +349,8 @@ public class ManageTypologies extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                try {
-                    new ManageTypologies(new SystemAdministrator("ProvaUsername","ProvaPassword",new MaintenanceProcedureDAOImpl(),
-                            new UsersDAOImpl(),new TypologyDAOImpl())).setVisible(true);
-                } catch (TypologyException ex) {
-                    Logger.getLogger(ManageTypologies.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                new ManageTypologies(new SystemAdministrator("ProvaUsername","ProvaPassword",new MaintenanceProcedureDAOImpl(),
+                        new UsersDAOImpl(),new TypologyDAOImpl())).setVisible(true);
             }
         });
     }

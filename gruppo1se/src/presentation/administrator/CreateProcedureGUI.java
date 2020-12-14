@@ -12,9 +12,6 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
-import persistence.maintenanceactivity.TypologyDAOImpl;
-import persistence.user.UsersDAOImpl;
 import presentation.manager.MessageManager;
 /**
  *
@@ -25,15 +22,15 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
     private final static String RELATIVE_PROJECT_PATH = "/src/smp/";
     private final static String FILE_EXTENSION = ".pdf";
     private File fileChoosen;
-    private SystemAdministrator admin;
+    
+    private SystemAdministrator administrator;
     
     /**
      * Creates new form CreateProcedureGUI
      */
-    public CreateProcedureGUI() {
+    public CreateProcedureGUI(SystemAdministrator administrator) {
+        this.administrator = administrator;
         fileChoosen = null;
-        admin = new SystemAdministrator("admin","admin", new MaintenanceProcedureDAOImpl(),
-                new UsersDAOImpl(), new TypologyDAOImpl());
         initComponents();
         setField(false);
     }
@@ -159,7 +156,7 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
             builder.append(PROJECT_PATH).append(RELATIVE_PROJECT_PATH).append(newName).append(FILE_EXTENSION);
             boolean choosen = fileChoosen.renameTo(new File(builder.toString()));       // renaming of file
             if (choosen == true){
-                admin.saveSmpProcedure(newName,oldName); // if the file is successfully renamed, the smp file is stored in the system 
+                administrator.saveSmpProcedure(newName,oldName); // if the file is successfully renamed, the smp file is stored in the system 
                 MessageManager.infoMessage(this,"Procedura aggiunta con successo");
                 setField(false); 
                 procedureTextField.setText("");
@@ -190,41 +187,38 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CreateProcedureGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CreateProcedureGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CreateProcedureGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CreateProcedureGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CreateProcedureGUI().setVisible(true);
-            }
-        });
-    }
-    /**
-     * This method set 
-     * @param enable 
-     */
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(CreateProcedureGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(CreateProcedureGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(CreateProcedureGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(CreateProcedureGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new CreateProcedureGUI().setVisible(true);
+//            }
+//        });
+//    }
+    
     private void setField(boolean enable){
         procedureTextField.setEnabled(enable);
         RenameLabel.setVisible(enable);

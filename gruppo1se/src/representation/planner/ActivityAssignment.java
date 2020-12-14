@@ -145,7 +145,6 @@ public class ActivityAssignment extends javax.swing.JDialog {
         weekLabelDialog = new javax.swing.JLabel();
         dayLabel = new javax.swing.JLabel();
         dayLabelNumber = new javax.swing.JLabel();
-        availabilityLabel = new javax.swing.JLabel();
         sendButton = new javax.swing.JButton();
         clearButton = new javax.swing.JButton();
 
@@ -233,11 +232,6 @@ public class ActivityAssignment extends javax.swing.JDialog {
         dayLabelNumber.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         dayLabelNumber.setOpaque(true);
 
-        availabilityLabel.setBackground(new java.awt.Color(250, 250, 250));
-        availabilityLabel.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        availabilityLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        availabilityLabel.setOpaque(true);
-
         sendButton.setText("SEND");
         sendButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -263,22 +257,14 @@ public class ActivityAssignment extends javax.swing.JDialog {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(workspaceNotesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(29, 29, 29)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(maintainerLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGap(76, 76, 76))
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(sendButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(availabilityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(sendButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(maintainerLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -311,11 +297,9 @@ public class ActivityAssignment extends javax.swing.JDialog {
                             .addComponent(dayLabelNumber, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(dayLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(workspaceNotesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(maintainerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(availabilityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(workspaceNotesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(maintainerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(23, 23, 23)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -381,14 +365,15 @@ public class ActivityAssignment extends javax.swing.JDialog {
 
     private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
         try {
-            activity.setDate(newDate);
-            if (!planner.saveAppointments(maintainer.getUsername(), activity, appointmentList)) {
-                System.out.println("if");
-                MessageManager.errorMessage(this,"Saving failed");
-            } else {
-                System.out.println("else");
-                this.dispose();
-            }
+            if(!planner.verifyActivityAssignment(activity.getActivityId(), activity.getEstimatedInterventionTime())){
+                activity.setDate(newDate);
+                if (!planner.saveAppointments(maintainer.getUsername(), activity, appointmentList)) {
+                    MessageManager.errorMessage(this, "Saving failed");
+                } else {
+                    this.dispose();
+                }
+            }else
+                MessageManager.errorMessage(this, "Activity already assign");
         } catch (AppointmentException | MaintenanceActivityException | NotValidParameterException ex) {
             MessageManager.errorMessage(this,ex.getMessage());
         }
@@ -450,7 +435,6 @@ public class ActivityAssignment extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel activityInfoLabelDialog;
     private javax.swing.JLabel activityToAssignLabel;
-    private javax.swing.JLabel availabilityLabel;
     private javax.swing.JButton clearButton;
     private javax.swing.JLabel dayLabel;
     private javax.swing.JLabel dayLabelNumber;

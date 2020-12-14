@@ -11,7 +11,6 @@ import business.user.Planner;
 import exception.MaintenanceActivityException;
 import exception.NotValidParameterException;
 import java.util.LinkedList;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;

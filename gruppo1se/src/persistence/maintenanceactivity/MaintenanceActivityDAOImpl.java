@@ -5,7 +5,6 @@
  */
 package persistence.maintenanceactivity;
 import business.maintenanceactivity.*;
-import exception.DateException;
 import exception.MaintenanceActivityException;
 import exception.NotValidParameterException;
 import exception.SiteException;
@@ -13,8 +12,6 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import persistence.database.ConnectionDB;
 /**
  *
@@ -147,9 +144,10 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     
     
     /**
-     * This method allows to modify an existent Maintenance activity into databse, acccording to actvityId parameter
+     * This method allows to modify an existent Maintenance activity into databse, 
+     * acccording to actvityId parameter
      * @param newActivity intance of Mintenance activity that contains the new fields to set
-     * @return {@code true} if the the change is successful, false otherwise
+     * @return {@code true} if the the change is successful, {@code false} otherwise
      * @throws exception.MaintenanceActivityException
      * @throws exception.NotValidParameterException
      */
@@ -166,6 +164,8 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
             throw new MaintenanceActivityException("Modifying maintenance activity failed");
         }
     }
+    
+    
     /**
      * This method retrieve a list of MaintenanceActivity according to startDate and stopDate
      * SiteDAO required

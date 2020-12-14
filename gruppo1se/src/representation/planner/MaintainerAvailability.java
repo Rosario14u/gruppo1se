@@ -13,6 +13,8 @@ import business.maintenanceactivity.Skill;
 import business.user.Planner;
 import business.user.WeekConverter;
 import dto.MaintainerDTO;
+import exception.AppointmentException;
+import exception.MaintenanceActivityException;
 
 import exception.NotValidParameterException;
 
@@ -45,7 +47,6 @@ import presentation.manager.MessageManager;
  * @author gorra
  */
 public class MaintainerAvailability extends javax.swing.JFrame {
-
     private MaintenanceActivity activity;
     private Planner planner;
     private DefaultTableModel tableModel;
@@ -55,10 +56,8 @@ public class MaintainerAvailability extends javax.swing.JFrame {
     /**
      * Creates new form MaintainerAvailability
      */
-    public MaintainerAvailability(MaintenanceActivity activity) {
-        this.planner = new Planner("planner", "planner", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
-                new RequiredMaterialForMaintenanceDAOImpl(), new UsersDAOImpl(), new EmployeeAppointmentDAOImpl(),
-                new RequiredSkillForMaintenanceDAOImpl(), new MaintainerSkillDAOImpl());
+    public MaintainerAvailability(MaintenanceActivity activity, Planner planner) {
+        this.planner = planner;
         this.activity = activity;
         initComponents();
         tableModel = (DefaultTableModel) maintainerAvailabilityTable.getModel();
@@ -68,26 +67,31 @@ public class MaintainerAvailability extends javax.swing.JFrame {
     }
 
     private void initializeFields() {
-        LocalDate date = activity.getDate();
-        WeekFields weekFields = WeekFields.of(Locale.getDefault());
-        int weekNumber = date.get(weekFields.weekOfWeekBasedYear());
-        weekLabel.setText(Integer.toString(weekNumber));
-        activityInfoLabel.setText(Integer.toString(activity.getActivityId()) + " - " + activity.getSite().getArea()
-                + " - " + activity.getTypology() + " - " + Integer.toString(activity.getEstimatedInterventionTime()) + "'");
-        if (activity.getMaintenanceProcedure().getSkills() != null) {
-            StringBuilder builder2 = new StringBuilder();
-            for (Skill skill : activity.getMaintenanceProcedure().getSkills()) {
-                builder2.append(skill.toString()).append("\n");
+        try {
+            setAssignedLabel();
+            LocalDate date = activity.getDate();
+            WeekFields weekFields = WeekFields.of(Locale.getDefault());
+            int weekNumber = date.get(weekFields.weekOfWeekBasedYear());
+            weekLabel.setText(Integer.toString(weekNumber));
+            this.activity = activity;
+            activityInfoLabel.setText(Integer.toString(activity.getActivityId()) + " - " + activity.getSite().getArea()
+                    + " - " + activity.getTypology() + " - " + Integer.toString(activity.getEstimatedInterventionTime()) + "'");
+            if (activity.getMaintenanceProcedure().getSkills() != null) {
+                StringBuilder builder2 = new StringBuilder();
+                for (Skill skill : activity.getMaintenanceProcedure().getSkills()) {
+                    builder2.append(skill.toString() + "\n");
+                }
+                skillTextArea.setText(builder2.toString());
+                skillTextArea.setEnabled(false);
             }
-            skillTextArea.setText(builder2.toString());
-            skillTextArea.setEnabled(false);
+            populateTable();
+        } catch (MaintenanceActivityException | NotValidParameterException | AppointmentException ex) {
+            MessageManager.errorMessage(this, ex.getMessage());
         }
-        populateTable(weekNumber);
     }
 
-    private void populateTable(int weekNumber) {
+    private void populateTable() {
         try {
-            
             int numProcedureSkill = activity.getMaintenanceProcedure().getSkills().size();
             
             maintainerList = planner.viewEmployeeAvailability(WeekConverter.getWeek(activity.getDate()), WeekConverter.getYear(activity.getDate()));
@@ -136,6 +140,7 @@ public class MaintainerAvailability extends javax.swing.JFrame {
         activityInfoLabel = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         weekLabel = new javax.swing.JLabel();
+        assignedLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -216,6 +221,12 @@ public class MaintainerAvailability extends javax.swing.JFrame {
         weekLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         weekLabel.setOpaque(true);
 
+        assignedLabel.setBackground(new java.awt.Color(0, 200, 0));
+        assignedLabel.setForeground(new java.awt.Color(0, 0, 0));
+        assignedLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        assignedLabel.setText("ASSEGNATA");
+        assignedLabel.setOpaque(true);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -230,13 +241,16 @@ public class MaintainerAvailability extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 567, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 481, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(assignedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(4, 4, 4)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(activityInfoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(activityInfoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(25, 25, 25))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -254,10 +268,12 @@ public class MaintainerAvailability extends javax.swing.JFrame {
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(weekLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                    .addComponent(assignedLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(44, 44, 44))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -295,11 +311,13 @@ public class MaintainerAvailability extends javax.swing.JFrame {
                 jDialogGUI.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosed(WindowEvent e) {
-                        LocalDate date = activity.getDate();
-                        WeekFields weekFields = WeekFields.of(Locale.getDefault());
-                        int weekNumber = date.get(weekFields.weekOfWeekBasedYear());
-                        tableModel.setRowCount(0);
-                        populateTable(weekNumber);
+                        try {
+                            tableModel.setRowCount(0);
+                            populateTable();
+                            setAssignedLabel();
+                        } catch (MaintenanceActivityException | NotValidParameterException | AppointmentException ex) {
+                            MessageManager.confirmRequest(e.getComponent().getParent(), ex.getMessage(), "CONFIRM");
+                        }
                     }
                 });
                 jDialogGUI.setVisible(true);
@@ -307,6 +325,18 @@ public class MaintainerAvailability extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_maintainerAvailabilityTableMouseClicked
 
+    
+    private void setAssignedLabel() throws MaintenanceActivityException, NotValidParameterException, AppointmentException{
+        if(!planner.verifyActivityAssignment(activity.getActivityId(), activity.getEstimatedInterventionTime())){
+            assignedLabel.setBackground(new Color(255, 0, 0));
+            assignedLabel.setText("Not Assigned");
+        }else{
+            assignedLabel.setBackground(new Color(0, 255, 0));
+            assignedLabel.setText("Assigned");
+        }
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -354,6 +384,7 @@ public class MaintainerAvailability extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel activityInfoLabel;
+    private javax.swing.JLabel assignedLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

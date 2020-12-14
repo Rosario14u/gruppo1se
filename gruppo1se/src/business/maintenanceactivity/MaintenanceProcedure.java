@@ -84,6 +84,6 @@ public class MaintenanceProcedure {
      */
     @Override
     public String toString() {
-        return "MaintenanceProcedure{" + "smp=" + smp + "skills=" + skills +'}';
+        return "MaintenanceProcedure{" + "smp=" + smp + " skills=" + skills +'}';
     }
 }

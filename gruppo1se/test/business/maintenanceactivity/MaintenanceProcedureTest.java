@@ -6,6 +6,8 @@
 package business.maintenanceactivity;
 
 import exception.NotValidParameterException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
@@ -25,6 +27,12 @@ public class MaintenanceProcedureTest {
     
     public MaintenanceProcedureTest() {
         instance = new MaintenanceProcedure("Smp");
+        List<Skill> skills = new ArrayList<>(){{
+            add(new Skill("Skill1"));
+            add(new Skill("Skill2"));
+            add(new Skill("Skill3"));
+        }};
+        instance.setSkills(skills);
     }
     
     @BeforeClass
@@ -100,7 +108,12 @@ public class MaintenanceProcedureTest {
      */
     @Test
     public void testToString() {
-        String expResult = "MaintenanceProcedure{" + "smp=" + "Smp" + '}';
+        List<Skill> skills = new ArrayList<>(){{
+            add(new Skill("Skill1"));
+            add(new Skill("Skill2"));
+            add(new Skill("Skill3"));
+        }};
+        String expResult = "MaintenanceProcedure{" + "smp=" + "Smp" + " skills=" + skills +'}';
         String result = instance.toString();
         assertEquals(expResult, result);
     }
