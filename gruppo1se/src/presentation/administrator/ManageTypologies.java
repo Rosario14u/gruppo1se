@@ -18,6 +18,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
+import persistence.maintenanceactivity.SiteDaoImpl;
 import persistence.maintenanceactivity.TypologyDAOImpl;
 import persistence.user.UsersDAOImpl;
 import presentation.manager.MessageManager;
@@ -353,7 +354,7 @@ public class ManageTypologies extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ManageTypologies(new SystemAdministrator("ProvaUsername","ProvaPassword",new MaintenanceProcedureDAOImpl(),
-                        new UsersDAOImpl(),new TypologyDAOImpl())).setVisible(true);
+                        new UsersDAOImpl(),new TypologyDAOImpl(), new SiteDaoImpl())).setVisible(true);
             }
         });
     }

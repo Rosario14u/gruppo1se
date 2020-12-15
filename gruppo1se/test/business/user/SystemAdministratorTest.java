@@ -5,12 +5,14 @@
  */
 package business.user;
 
+import business.maintenanceactivity.Site;
 import dto.MaintainerDTO;
 import dto.PlannerDTO;
 import dto.SystemAdministratorDTO;
 import dto.UserDTO;
 import exception.NotValidParameterException;
 import exception.ProcedureException;
+import exception.SiteException;
 import exception.TypologyException;
 import exception.UsersException;
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import stub.MaintenanceProcedureDAOStub;
+import stub.SiteDaoStub;
 import stub.TypologyDAOStub;
 import stub.UsersDAOStub;
 
@@ -36,12 +39,12 @@ public class SystemAdministratorTest {
     private final UserDTO systemAdministrator;
     private final SystemAdministrator instance = new SystemAdministrator("systemAdministratorUsername","systemAdministratorPassword",
             new MaintenanceProcedureDAOStub(),
-            new UsersDAOStub(),new TypologyDAOStub());
+            new UsersDAOStub(),new TypologyDAOStub(), new SiteDaoStub());
     private final String username = "maintainerUsername"; 
     private final String password = "maintainerPassword";
     
     public SystemAdministratorTest() throws NotValidParameterException {
-        admin = new SystemAdministrator("admin","admin",new MaintenanceProcedureDAOStub(),new UsersDAOStub(),new TypologyDAOStub());
+        admin = new SystemAdministrator("admin","admin",new MaintenanceProcedureDAOStub(),new UsersDAOStub(),new TypologyDAOStub(), new SiteDaoStub());
         planner =  new PlannerDTO("newUsername", "newPassword");
         maintainer = new MaintainerDTO("newUsername", "newPassword");
         systemAdministrator = new SystemAdministratorDTO(username, password);
@@ -336,8 +339,8 @@ public class SystemAdministratorTest {
         String typology = "TypologyException";
         instance.removeTypology(typology);
     }
-    /*=======================================================Test of makeUser==================================================================================*/
-    /*Test methods developed by Alessio Citro*/
+    /*=======================================================Test of makeUser, makeSite and removeSite==================================================================================*/
+    /*Test methods developed by Alessio Citro, amico di quella super bona*/
     
     /**
      * Test of makeUser method, of class SystemAdministrator.
@@ -364,6 +367,94 @@ public class SystemAdministratorTest {
             System.out.println("makeUserExceptionTest");
             boolean result = instance.makeUser(username, null, UserRole.MAINTAINER);
         } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
+    }
+    
+    /**
+     * Test of makeSite method, of class SystemAdministrator.
+     * @throws SiteException
+     */
+    @Test
+    public void testMakeSite() throws SiteException {
+        try{
+            System.out.println("makeSiteTest");
+            boolean result = instance.makeSite(new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes"));
+            assertEquals(true, result);
+        } catch (NotValidParameterException ex){
+            fail("NotValidParameterException");
+        }
+    }
+    
+    /**
+     * Test of makeSite method, of class SystemAdministrator.
+     * @throws exception.SiteException
+     */
+    @Test(expected = SiteException.class)
+    public void testMakeSiteException() throws SiteException {
+        try{
+            System.out.println("makeSiteExceptionTest");
+            boolean result = instance.makeSite(new Site("Exception", "ProvaArea", "ProvaWorkspaceNotes"));
+        } catch (NotValidParameterException ex){
+            fail("NotValidParameterException");
+        }
+    }
+    
+    /**
+     * Test of makeSite method, of class SystemAdministrator.
+     * @throws SiteException
+     */
+    @Test
+    public void testMakeSiteFalse() throws SiteException {
+        try{
+            System.out.println("makeSiteFalseTest");
+            boolean result = instance.makeSite(new Site("False", "ProvaArea", "ProvaWorkspaceNotes"));
+            assertEquals(false, result);
+        } catch (NotValidParameterException ex){
+            fail("NotValidParameterException");
+        }
+    }
+    
+    /**
+     * Test of removeSite method, of class SystemAdministrator
+     * @throws SiteException 
+     */
+    @Test 
+    public void testRemoveSite() throws SiteException {
+        try{
+            System.out.println("removeSiteTest");
+            boolean result = instance.removeSite(new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes"));
+            assertEquals(true, result);
+        } catch (NotValidParameterException ex){
+            fail("NotValidParameterException");
+        }
+    }
+    
+    /**
+     * Test of removeSite method, of class SystemAdministrator
+     * @throws SiteException 
+     */
+    @Test(expected = SiteException.class)
+    public void testRemoveSiteException() throws SiteException {
+        try{
+            System.out.println("removeSiteExceptionTest");
+            boolean result = instance.removeSite(new Site("Exception", "ProvaArea", "ProvaWorkspaceNotes"));
+        } catch (NotValidParameterException ex){
+            fail("NotValidParameterException");
+        }
+    }
+    
+    /**
+     * Test of removeSite method, of class SystemAdministrator
+     * @throws SiteException 
+     */
+    @Test 
+    public void testRemoveSiteFalse() throws SiteException {
+        try{
+            System.out.println("removeSiteFalseTest");
+            boolean result = instance.removeSite(new Site("False", "ProvaArea", "ProvaWorkspaceNotes"));
+            assertEquals(false, result);
+        } catch (NotValidParameterException ex){
             fail("NotValidParameterException");
         }
     }

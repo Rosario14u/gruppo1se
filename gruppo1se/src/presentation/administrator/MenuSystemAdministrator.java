@@ -7,6 +7,7 @@ package presentation.administrator;
 
 import business.user.SystemAdministrator;
 import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
+import persistence.maintenanceactivity.SiteDaoImpl;
 import persistence.maintenanceactivity.TypologyDAOImpl;
 import persistence.user.UsersDAOImpl;
 
@@ -21,7 +22,7 @@ public class MenuSystemAdministrator extends javax.swing.JFrame {
      * Creates new form MenuSystemAdministrator
      */
     public MenuSystemAdministrator() {
-        administrator = new SystemAdministrator("admin","admin", new MaintenanceProcedureDAOImpl(),new UsersDAOImpl(),new TypologyDAOImpl());
+        administrator = new SystemAdministrator("admin","admin", new MaintenanceProcedureDAOImpl(),new UsersDAOImpl(),new TypologyDAOImpl(), new SiteDaoImpl());
         initComponents();
     }
 

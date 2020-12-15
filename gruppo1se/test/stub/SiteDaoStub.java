@@ -32,4 +32,38 @@ public class SiteDaoStub implements SiteDao {
         }
     }
     
+    /**
+     * 
+     * @param site
+     * @return
+     * @throws SiteException 
+     */
+    /*Developed by Alessio Citro*/
+    @Override
+    public boolean addSite(Site site) throws SiteException {
+        if(site.getBranchOffice().equals("False"))
+            return false;
+        else if(site.getBranchOffice().equals("Exception"))
+            throw new SiteException();
+        else 
+            return true;
+    }
+
+    /**
+     * 
+     * @param site
+     * @return
+     * @throws SiteException 
+     */
+    /*Developed by Alessio Citro*/
+    @Override
+    public boolean deleteSite(Site site) throws SiteException {
+         if(site.getBranchOffice().equals("False"))
+            return false;
+        else if(site.getBranchOffice().equals("Exception"))
+            throw new SiteException();
+        else 
+            return true;
+    }
+    
 }

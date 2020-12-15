@@ -321,7 +321,7 @@ public class CreateUser extends javax.swing.JFrame {
 //        /* Create and display the form */
 //        java.awt.EventQueue.invokeLater(new Runnable() {
 //            public void run() {
-//                new CreateUser(new SystemAdministrator("user","pass", new MaintenanceProcedureDAOImpl(), new UsersDAOImpl(), new TypologyDAOImpl())).setVisible(true);
+//                new CreateUser(new SystemAdministrator("user","pass", new MaintenanceProcedureDAOImpl(), new UsersDAOImpl(), new TypologyDAOImpl(), new SiteDaoImpl())).setVisible(true);
 //            }
 //        });
 //    }
