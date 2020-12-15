@@ -50,7 +50,12 @@ public class ActivityAssignment extends javax.swing.JDialog {
     private Frame parent;
 
     /**
-     * Creates new form ActivityAssignment
+     * 
+     * @param parent
+     * @param modal
+     * @param activity
+     * @param newDate
+     * @param mantainer 
      */
     public ActivityAssignment(java.awt.Frame parent, boolean modal, MaintenanceActivity activity, LocalDate newDate, MaintainerDTO mantainer) {
         super(parent, modal);
@@ -71,6 +76,10 @@ public class ActivityAssignment extends javax.swing.JDialog {
         initializeFields();
     }
 
+    
+    /**
+     * This method inizialize all fields of GUI
+     */
     private void initializeFields() {
         int weekNumber = WeekConverter.getWeek(newDate);
         weekLabelDialog.setText(Integer.toString(weekNumber));
@@ -81,10 +90,16 @@ public class ActivityAssignment extends javax.swing.JDialog {
         activityInfoLabelDialog.setText(Integer.toString(activity.getActivityId()) + " - " + activity.getSite().getArea()
                 + " - " + activity.getTypology() + " - " + Integer.toString(activity.getEstimatedInterventionTime()) + "'");
         workspaceNotesTextArea.setText(activity.getSite().getWorkSpaceNotes());
-        populateTable(weekNumber);
+        populateTable();
     }
 
-    private void populateTable(int weekNumber) {
+    
+    /**
+     * This method allows you to populate the table 
+     * according to the availability of the maintainer
+     * @param weekNumber 
+     */
+    private void populateTable() {
         int numProcedureSkill = activity.getMaintenanceProcedure().getSkills().size();
         String[] rowTable = new String[]{"", "", "60 min", "60 min", "60 min", "60 min", "60 min", "60 min", "60 min"};
         rowTable[0] = maintainer.getUsername();
@@ -92,6 +107,7 @@ public class ActivityAssignment extends javax.swing.JDialog {
         rowTable[1] = maintainer.getSkills().size() + "/" + numProcedureSkill;
         for (Appointment appointment : maintainer.getAppointmentsInWeek()) {
             LocalDateTime dateTime = appointment.getStartDateAndTime();
+            //takes the activities scheduled for the selected day
             if (dateTime.toLocalDate().equals(newDate)) {
                 switch (dateTime.getHour()) {
                     case 8:
@@ -329,15 +345,22 @@ public class ActivityAssignment extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    /**
+     * This method handles clicks on cells
+     * @param evt 
+     */
     private void maintainerAvailabilityDayTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_maintainerAvailabilityDayTableMouseClicked
+        //pattern to look for in the table header
         Pattern p = Pattern.compile("[0-9]?[0-9]:[0-9][0-9] - [0-9]?[0-9]:[0-9][0-9]");
+        //row and col indicate which cell was clicked
         int row = maintainerAvailabilityDayTable.rowAtPoint(evt.getPoint());
         int col = maintainerAvailabilityDayTable.columnAtPoint(evt.getPoint());
         if (col >= 2 && col <= 8 && row != -1) {
             String availabilityValue = String.valueOf(maintainerAvailabilityDayTable.getValueAt(row, col)).split(" ")[0];
             int availableMinutes = Integer.valueOf(availabilityValue);
-            System.out.println("Available minutes in the selected cell --> " + availableMinutes);
             if (availableMinutes == 0) {
+                //check if the cell has minutes available
                 MessageManager.infoMessage(this,"Busy Maintainer");
             } else {
                 if (remainEstimatedInterventionTime <= 0) {
@@ -345,17 +368,16 @@ public class ActivityAssignment extends javax.swing.JDialog {
                 } else {
                     int duration = remainEstimatedInterventionTime > availableMinutes ? availableMinutes : remainEstimatedInterventionTime;
                     remainEstimatedInterventionTime = remainEstimatedInterventionTime - duration;
-                    System.out.println("remainEstimatedInterventionTime --> " + remainEstimatedInterventionTime);
                     tableModel.setValueAt(availableMinutes - duration + " min", row, col);
                     if (remainEstimatedInterventionTime == 0) {
                         sendButton.setEnabled(true);
                     }
-                    System.out.println("remainEstimatedInterventionTime" + remainEstimatedInterventionTime);
                     String colName = maintainerAvailabilityDayTable.getColumnName(col);
 
                     Matcher matcher = p.matcher(colName);
                     int hour;
                     if (matcher.find()) {
+                        //takes the first part of the time slot. Ex: 10:00 - 11:00 --> 10
                         hour = Integer.valueOf(matcher.group(0).split(" - ")[0].split(":")[0]);
                         appointmentList.add(new Appointment(activity.getActivityId(), newDate.atTime(hour, 00), duration));
                     }
@@ -364,6 +386,12 @@ public class ActivityAssignment extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_maintainerAvailabilityDayTableMouseClicked
 
+    
+    /**
+     * If pressed this button allows to associate 
+     * the maintenance activity with the maintainer 
+     * @param evt 
+     */
     private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
         try {
             if(!planner.verifyActivityAssignment(activity.getActivityId(), activity.getEstimatedInterventionTime())){
@@ -380,13 +408,18 @@ public class ActivityAssignment extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_sendButtonActionPerformed
 
+    
+    /**
+     * This button allows to clean the cells 
+     * that have been previously selected
+     * @param evt 
+     */
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
         appointmentList.clear();
         tableModel.removeRow(0);
         remainEstimatedInterventionTime = activity.getEstimatedInterventionTime();
         sendButton.setEnabled(false);
-        int weekNumber = WeekConverter.getWeek(newDate);
-        populateTable(weekNumber);
+        populateTable();
     }//GEN-LAST:event_clearButtonActionPerformed
     
     

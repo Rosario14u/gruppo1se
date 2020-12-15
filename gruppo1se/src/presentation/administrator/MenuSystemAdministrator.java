@@ -179,22 +179,46 @@ public class MenuSystemAdministrator extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * When the dedicated button is pressed it opens ManageTypology GUI
+     * @param evt 
+     */
     private void viewTypologyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTypologyButtonActionPerformed
         new ManageTypologies(administrator).setVisible(true);
     }//GEN-LAST:event_viewTypologyButtonActionPerformed
 
+    
+    /**
+     * When the dedicated button is pressed it opens CreateProcedure GUI
+     * @param evt 
+     */
     private void createProcedureButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createProcedureButtonActionPerformed
         new CreateProcedureGUI(administrator).setVisible(true);
     }//GEN-LAST:event_createProcedureButtonActionPerformed
 
+    
+    /**
+     * When the dedicated button is pressed it opens CreateUser GUI
+     * @param evt 
+     */
     private void createUserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createUserButtonActionPerformed
         new CreateUser(administrator).setVisible(true);
     }//GEN-LAST:event_createUserButtonActionPerformed
 
+    
+    /**
+     * When the dedicated button is pressed it opens CreateTypology GUI
+     * @param evt 
+     */
     private void createTypologyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createTypologyButtonActionPerformed
         new CreateTypology(administrator).setVisible(true);
     }//GEN-LAST:event_createTypologyButtonActionPerformed
 
+    
+    /**
+     * When the dedicated button is pressed it opens ViewUsers GUI
+     * @param evt 
+     */
     private void viewUsersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewUsersButtonActionPerformed
         new ViewUsers(administrator).setVisible(true);
     }//GEN-LAST:event_viewUsersButtonActionPerformed

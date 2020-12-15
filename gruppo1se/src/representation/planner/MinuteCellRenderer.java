@@ -12,11 +12,23 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
 /**
- *
+ * This Class allows to renderize cell in different color.
  * @author gorra
  */
 public class MinuteCellRenderer implements TableCellRenderer{
     private static final TableCellRenderer RENDERER = new DefaultTableCellRenderer();
+    
+    /**
+     * This method returns a Color object 
+     * in dependence of the type and value of cell
+     * @param table
+     * @param value
+     * @param isSelected
+     * @param hasFocus
+     * @param row
+     * @param column
+     * @return {@code Color}
+     */
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
        Component c = RENDERER.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -44,6 +56,12 @@ public class MinuteCellRenderer implements TableCellRenderer{
     }
     
     
+    /**
+     * This method returns a Color object 
+     * in dependence of the value of cell
+     * @param percentage
+     * @return {@code Color}
+     */
     private Color skillsRenderer(float percentage) {
         Color color = Color.lightGray;
         if(percentage>0.8 && percentage<=1){
@@ -61,6 +79,12 @@ public class MinuteCellRenderer implements TableCellRenderer{
     }
     
     
+    /**
+     * This method returns a Color object 
+     * in dependence of the value of cell
+     * @param availableMinutes
+     * @return {@code Color}
+     */
     private Color minuteRenderer(float availableMinutes) {
         Color color = Color.lightGray;
         if(availableMinutes>48 && availableMinutes<=60){

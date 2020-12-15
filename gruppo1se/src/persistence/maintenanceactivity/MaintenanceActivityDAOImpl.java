@@ -162,7 +162,7 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     /**
      * This method allows to modify an existent Maintenance
      * activity into databse acccording to actvityId parameter
-     * @param newActivity intance of Mintenance activity 
+     * @param newActivity instance of Mintenance activity 
      * that contains the new fields to set
      * @return {@code true} if the the change
      * is successful, {@code false} otherwise
