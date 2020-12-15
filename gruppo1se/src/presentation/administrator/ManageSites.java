@@ -180,6 +180,7 @@ public class ManageSites extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jModify = new javax.swing.JButton();
+        jDelete = new javax.swing.JButton();
 
         jDialog.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         jDialog.setMinimumSize(new java.awt.Dimension(410, 261));
@@ -320,18 +321,27 @@ public class ManageSites extends javax.swing.JFrame {
             }
         });
 
+        jDelete.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jDelete.setText("Delete");
+        jDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jDeleteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jModify, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(310, 310, 310)
+                        .addComponent(jDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jModify, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(110, 110, 110)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(22, 22, 22)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -352,6 +362,10 @@ public class ManageSites extends javax.swing.JFrame {
                             .addGap(18, 18, 18)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(38, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(217, 217, 217))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -373,7 +387,9 @@ public class ManageSites extends javax.swing.JFrame {
                 .addGap(27, 27, 27)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jModify, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jModify, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+                    .addComponent(jDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(21, 21, 21))
         );
 
@@ -385,7 +401,7 @@ public class ManageSites extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 464, Short.MAX_VALUE)
         );
 
         pack();
@@ -434,6 +450,31 @@ public class ManageSites extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jConfirmActionPerformed
 
+    /*Method developed by Alessio Citro*/
+    private void jDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDeleteActionPerformed
+        int[] selectedIndex = jTable.getSelectedRows();
+            if(selectedIndex.length == 1){
+                int dialogResult = MessageManager.confirmMessage(this,"Are you sure you wish to delete this site");
+                if(dialogResult == JOptionPane.YES_OPTION){
+                    String branchOffice = String.valueOf(tableModel.getValueAt(selectedIndex[0], 0)); // Get the selected branch office
+                    String area = String.valueOf(tableModel.getValueAt(selectedIndex[0], 1)); // Get the selected area
+                    String workspaceNotes = String.valueOf(tableModel.getValueAt(selectedIndex[0], 2)); // Get the selected workspace notes
+                    Site site = new Site(branchOffice, area, workspaceNotes);
+                    try {
+                        systemAdministrator.removeSite(site); // Removes the selected site
+                        for(int i: selectedIndex){
+                            tableModel.removeRow(jTable.convertRowIndexToModel(i)); // Updates the content of jTable
+                        }
+                    } catch (SiteException | NotValidParameterException ex) {
+                        MessageManager.errorMessage(this,"Cannot remove this typology");
+                    }
+                    jTable.clearSelection();
+                }
+            }else {
+                MessageManager.infoMessage(this,selectedIndex.length < 1 ? "Select one row" : "Too many rows selected");
+            } 
+    }//GEN-LAST:event_jDeleteActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -461,6 +502,8 @@ public class ManageSites extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -476,6 +519,7 @@ public class ManageSites extends javax.swing.JFrame {
     private javax.swing.JTextField jArea;
     private javax.swing.JTextField jBranchOffice;
     private javax.swing.JButton jConfirm;
+    private javax.swing.JButton jDelete;
     private javax.swing.JDialog jDialog;
     private javax.swing.JComboBox<String> jFilter;
     private javax.swing.JLabel jLabel1;
