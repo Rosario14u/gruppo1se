@@ -103,6 +103,12 @@ public class UsersDAOImpl implements UsersDAO {
         }
     }
     
+    
+    /**
+     * This method allows to create a query
+     * @param size the number of times to chain string
+     * @return a string representing the query to prepare
+     */
     private String queryBuilder(int size){
         StringBuilder builder = new StringBuilder(DELETE_USER);
         for(int i = 1; i < size; i++){
@@ -112,6 +118,18 @@ public class UsersDAOImpl implements UsersDAO {
     }
     
     
+    /**
+     * this method allows you to modify a user 
+     * already present in the database
+     * @param oldUsername old username of the 
+     * user to be modified
+     * @param newUser dto of the new user, 
+     * containing the new information
+     * @return {@code true} if the the change
+     * is successful, {@code false} otherwise
+     * @throws UsersException  if there are problems 
+     * in modifyng user
+     */
     @Override
     public boolean updateUser(String oldUsername, UserDTO newUser) throws UsersException {       
         try {
@@ -133,6 +151,14 @@ public class UsersDAOImpl implements UsersDAO {
         }
     }
     
+    
+    /**
+     * this method returns a list of all the
+     * maintainers present in the database
+     * @return a list of {@code  MaintainerDTO}
+     * @throws UsersException if there are problems 
+     * in retrieving maintainers
+     */
     @Override
     public List<MaintainerDTO> readMaintainers() throws UsersException{
         List<MaintainerDTO> maintainers = new ArrayList<>();

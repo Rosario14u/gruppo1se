@@ -126,6 +126,19 @@ public class SystemAdministrator extends User {
     }
     
     
+    /**
+     * this method allows a System Administrator 
+     * to modify information relating to a user
+     * @param oldUsername olde username
+     * @param newUser user with the new information
+     * @return {@code true} if the user is correctly
+     * updateed, {@code false} otherwise
+     * @throws UsersException if there is a problem 
+     * in updating user
+     * @throws NotValidParameterException if the required 
+     * DAO (userDao) object is not correctly initialized
+     */
+    //developed by Antonio Gorrasi
     public boolean modifyUser(String oldUsername, UserDTO newUser) throws UsersException, NotValidParameterException{
         if(usersDao == null){
             throw new NotValidParameterException("Error in updating users");
@@ -137,12 +150,14 @@ public class SystemAdministrator extends User {
         return usersDao.updateUser(oldUsername, newUser);
     }
 
+    
     public boolean makeTypology(String typology) throws TypologyException, NotValidParameterException{
         if(typologyDao == null){
             throw new NotValidParameterException("Error in retrieving users");
         }
         return typologyDao.addTypology(typology);
     }
+    
     
     public List<String> readTypologies() throws TypologyException, NotValidParameterException{
         if(typologyDao == null){
@@ -151,13 +166,15 @@ public class SystemAdministrator extends User {
         return typologyDao.viewTypologies();
     }
     
+    
     public boolean updateTypology(String oldTypology, String newTypology) throws TypologyException, NotValidParameterException{
         if(typologyDao == null){
             throw new NotValidParameterException("Error in retrieving users");
         }
         return typologyDao.modifyTypology(oldTypology, newTypology);
     }
-        
+    
+    
     public boolean removeTypology(String typology) throws TypologyException, NotValidParameterException{
         if(typologyDao == null){
             throw new NotValidParameterException("Error in retrieving users");
