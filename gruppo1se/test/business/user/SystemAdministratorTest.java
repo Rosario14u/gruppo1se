@@ -340,7 +340,7 @@ public class SystemAdministratorTest {
         instance.removeTypology(typology);
     }
     /*=======================================================Test of makeUser, makeSite and removeSite==================================================================================*/
-    /*Test methods developed by Alessio Citro, amico di quella super bona*/
+    /*Test methods developed by Alessio Citro*/
     
     /**
      * Test of makeUser method, of class SystemAdministrator.
