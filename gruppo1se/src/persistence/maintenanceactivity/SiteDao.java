@@ -14,4 +14,6 @@ import exception.SiteException;
  */
 public interface SiteDao {
     public Site retrieveSiteDao(String branchOffice, String area) throws SiteException;
+    public boolean addSite(Site site) throws SiteException;
+    public boolean deleteSite(Site site) throws SiteException;
 }

@@ -6,16 +6,19 @@
 package business.user;
 
 import business.maintenanceactivity.MaintenanceProcedure;
+import business.maintenanceactivity.Site;
 import dto.MaintainerDTO;
 import dto.PlannerDTO;
 import dto.SystemAdministratorDTO;
 import dto.UserDTO;
 import exception.NotValidParameterException;
 import exception.ProcedureException;
+import exception.SiteException;
 import exception.TypologyException;
 import exception.UsersException;
 import java.util.List;
 import persistence.maintenanceactivity.MaintenanceProcedureDAO;
+import persistence.maintenanceactivity.SiteDao;
 import persistence.maintenanceactivity.TypologyDAO;
 import persistence.user.UsersDAO;
 
@@ -30,6 +33,7 @@ public class SystemAdministrator extends User {
     private final MaintenanceProcedureDAO procedureDao;
     private final UsersDAO usersDao;
     private final TypologyDAO typologyDao; 
+    private SiteDao siteDao;
    
     
     /**
@@ -41,11 +45,12 @@ public class SystemAdministrator extends User {
      * @param typologyDao Dao object of Typology
      */
     public SystemAdministrator(String username, String password, MaintenanceProcedureDAO procedureDao,
-            UsersDAO usersDao, TypologyDAO typologyDao) {
+            UsersDAO usersDao, TypologyDAO typologyDao, SiteDao siteDao) {
         super(username, password);
         this.procedureDao = procedureDao;
         this.typologyDao = typologyDao;
         this.usersDao = usersDao;
+        this.siteDao = siteDao;
     }
     
     /**
@@ -216,6 +221,36 @@ public class SystemAdministrator extends User {
             throw new NotValidParameterException("Error in retrieving users");
         }
         return typologyDao.deleteTypology(typology);
+    }
+    
+    /**
+     * 
+     * @param site
+     * @return {@code boolean} true if site is inserted into database
+     * @throws SiteException if there's an SQL error inserting into site table
+     */
+    /*Developed by Alessio Citro*/
+    public boolean makeSite(Site site) throws SiteException, NotValidParameterException{
+        if(siteDao == null)
+           throw new NotValidParameterException("Error in creating user");
+        if(site == null)
+            throw new SiteException();
+        return siteDao.addSite(site);
+    }
+    
+    /**
+     * 
+     * @param site
+     * @return {@code boolean} true if site is deleted from database
+     * @throws SiteException if there's an SQL error deleting from site table
+     */
+    /*Developed by Alessio Citro*/
+    public boolean removeSite(Site site) throws SiteException, NotValidParameterException{
+        if(siteDao == null)
+           throw new NotValidParameterException("Error in creating user");
+        if(site == null)
+            throw new SiteException();
+        return siteDao.deleteSite(site);
     }
 }
 

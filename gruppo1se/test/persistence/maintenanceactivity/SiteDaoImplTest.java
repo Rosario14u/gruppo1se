@@ -28,7 +28,7 @@ import persistence.database.ConnectionDB;
 public class SiteDaoImplTest {
     private static Connection conn;
     private static final String DELETE_FROM_SITE = "DELETE FROM Site WHERE branchOffice = ? and area = ?";
-    private static final String INSERT_FROM_SITE = "INSERT INTO Site (branchOffice,area,workspaceNotes) "
+    private static final String INSERT_INTO_SITE = "INSERT INTO Site (branchOffice,area,workspaceNotes) "
                     + "VALUES (?,?,?)";
     SiteDao siteDao;
     public SiteDaoImplTest() {
@@ -81,7 +81,7 @@ public class SiteDaoImplTest {
     public void testRetrieveSiteDao() {
         try {
             deleteFromSite("ProvaBranch", "ProvaBranch");
-            PreparedStatement pstm = conn.prepareStatement(INSERT_FROM_SITE);
+            PreparedStatement pstm = conn.prepareStatement(INSERT_INTO_SITE);
             pstm.setString(1, "ProvaBranch");
             pstm.setString(2, "ProvaArea");
             pstm.setString(3, "ProvaWorkspaceNotes");
@@ -127,6 +127,87 @@ public class SiteDaoImplTest {
             pstm.executeUpdate();
         } catch (SQLException ex) {
             throw ex;
+        }
+    }
+    
+    //==========================================Test addSite and deleteSite=============================================================
+    /*Test methods developed by Alessio Citro*/
+    
+    /*Utility method developed by Alessio Citro*/
+    private void insertIntoSite(String branchOffice, String area, String workspaceNotes) throws SQLException{
+        PreparedStatement pstm = conn.prepareStatement(INSERT_INTO_SITE);
+        pstm.setString(1, branchOffice);
+        pstm.setString(2, area);
+        pstm.setString(3, workspaceNotes);
+        pstm.executeUpdate();
+    }
+    
+    /**
+     * 
+     * @throws SiteException 
+     */
+    @Test
+    public void testAddSite() throws SiteException{
+        try {
+            System.out.println("addSite");
+            Site site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
+            deleteFromSite(site.getBranchOffice(), site.getArea());
+            boolean result = siteDao.addSite(site);
+            assertEquals(true, result);
+            conn.rollback();
+        } catch (SQLException ex) {
+            System.out.println("Error on: connection rollback");
+        }
+    }
+    
+    /**
+     * 
+     * @throws SiteException 
+     */
+    @Test(expected = SiteException.class)
+    public void testAddSiteException() throws SiteException{
+        try {
+            System.out.println("addSiteException");
+            Site site = null;
+            boolean result = siteDao.addSite(site);
+            conn.rollback();
+        } catch (SQLException ex) {
+            System.out.println("Error on: connection rollback");
+        }
+    }
+    
+    /**
+     * 
+     * @throws SiteException 
+     */
+    @Test
+    public void testDeleteSite() throws SiteException{
+        try {
+            System.out.println("deleteSite");
+            Site site = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
+            deleteFromSite(site.getBranchOffice(), site.getArea());
+            insertIntoSite(site.getBranchOffice(), site.getArea(), site.getWorkSpaceNotes());
+            boolean result = siteDao.deleteSite(site);
+            assertEquals(true, result);
+            conn.rollback();
+        } catch (SQLException ex) {
+            System.out.println("Error on: connection rollback");
+        }
+    }
+    
+    /**
+     * 
+     * @throws SiteException 
+     */
+    @Test(expected = SiteException.class)
+    public void testDeleteSiteException() throws SiteException{
+        try {
+            System.out.println("deleteSiteException");
+            Site site = null;
+            boolean result = siteDao.deleteSite(site);
+            conn.rollback();
+        } catch (SQLException ex) {
+            System.out.println("Error on: connection rollback");
         }
     }
     
