@@ -58,7 +58,7 @@ public class VerifyActivity extends javax.swing.JFrame {
             if (activity.getMaintenanceProcedure().getSkills() != null){
                 StringBuilder builder2 = new StringBuilder();
                 for(Skill skill : activity.getMaintenanceProcedure().getSkills()){
-                    builder2.append(skill.toString() + "\n");
+                    builder2.append(skill.getName()).append("\n");
                 }
                 jSkillsNeeded.setText(builder2.toString());
             } else

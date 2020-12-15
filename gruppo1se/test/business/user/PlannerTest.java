@@ -28,9 +28,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -64,8 +62,8 @@ public class PlannerTest {
     private final String typology = "ProvaTypology";
     private final String activityDescription = "ProvaActivityDescription";
     private final int estimatedInterventionTime = 30;
-    private String date = "2050-11-25";
-    private final String maintenanceProcedure = "ProvaPDF";
+    private LocalDate date = LocalDate.parse("2050-11-25");
+    private final MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
     private final ArrayList<Material> materials = new ArrayList<>();
     private final ArrayList<Skill> skills = new ArrayList<>();
     private boolean interruptibleActivity = false;
@@ -77,11 +75,9 @@ public class PlannerTest {
             new RequiredMaterialForMaintenanceDAOStub(), new UsersDAOStub(),
             new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub(),new MaintainerSkillDAOImpl(), new TypologyDAOStub());
     private final Site site = new Site(branchOffice,area,workspaceNotes);
-    private final MaintenanceProcedure mProc;
     
     
     public PlannerTest() throws NotValidParameterException {
-        mProc = new MaintenanceProcedure(maintenanceProcedure);
     }
     
     @BeforeClass
@@ -118,8 +114,8 @@ public class PlannerTest {
     @Test
     public void testSuccessfulModifyPlannedMaintenanceActivity(){
         try{
-            assertTrue(planner.modifyMaintenanceActivity(1, "branchOffice1", "area1", "typology1",
-                    "description1", 1, LocalDate.now().toString(), true, Typology.PLANNED));
+            assertTrue(planner.modifyMaintenanceActivity(1, new Site("branchOffice1", "area1"), "typology1",
+                    "description1", 1, LocalDate.now(), true, Typology.PLANNED));
         }catch(MaintenanceActivityException ex){
             fail("MaintenanceActivityException");     
         } catch (NotValidParameterException ex) {
@@ -134,8 +130,8 @@ public class PlannerTest {
     @Test
     public void testUnsuccessfulModifyPlannedMaintenanceActivity() {
         try{
-            assertFalse(planner.modifyMaintenanceActivity(2, "branchOffice2", "area2", "typology2",
-                    "description2", 2, LocalDate.now().toString(), true, Typology.PLANNED));
+            assertFalse(planner.modifyMaintenanceActivity(2, new Site("branchOffice2", "area2"), "typology2",
+                    "description2", 2, LocalDate.now(), true, Typology.PLANNED));
         }catch(MaintenanceActivityException ex){
             fail("MaintenanceActivityException");     
         }catch (NotValidParameterException ex) {
@@ -146,12 +142,13 @@ public class PlannerTest {
     
     /**
      * Test of modifyMaintenanceActivity method, of class Planner.
+     * @throws exception.MaintenanceActivityException
      */
     @Test(expected = MaintenanceActivityException.class)
     public void testExceptionModifyPlannedMaintenanceActivity() throws MaintenanceActivityException{
         try {
-            planner.modifyMaintenanceActivity(3, "branchOffice3", "area3", "typology3",  
-                    "description3", 3, LocalDate.now().toString(), true, Typology.PLANNED);
+            planner.modifyMaintenanceActivity(3,new Site ("branchOffice3", "area3"), "typology3",  
+                    "description3", 3, LocalDate.now(), true, Typology.PLANNED);
         } catch (NotValidParameterException ex) {
             fail("NotValidParameterException");
         }
@@ -164,8 +161,8 @@ public class PlannerTest {
     @Test
     public void testSuccessfulModifyEwoMaintenanceActivity() {
         try{
-            assertTrue(planner.modifyMaintenanceActivity(4, "branchOffice4", "area4", "typology4",
-                    "description4", 4, LocalDate.now().toString(), true, Typology.EWO));
+            assertTrue(planner.modifyMaintenanceActivity(4,new Site("branchOffice4", "area4"), "typology4",
+                    "description4", 4, LocalDate.now(), true, Typology.EWO));
         }catch(MaintenanceActivityException ex){
             fail("MaintenanceActivityException");     
         } catch (NotValidParameterException ex) {
@@ -180,8 +177,8 @@ public class PlannerTest {
     @Test
     public void testUnsuccessfulModifyEwoMaintenanceActivity() {
         try{
-            assertFalse(planner.modifyMaintenanceActivity(5, "branchOffice5", "area5", "typology5",
-                    "description5", 5, LocalDate.now().toString(), true, Typology.EWO));
+            assertFalse(planner.modifyMaintenanceActivity(5, new Site("branchOffice5", "area5"), "typology5",
+                    "description5", 5, LocalDate.now(), true, Typology.EWO));
         }catch(MaintenanceActivityException ex){
             fail("MaintenanceActivityException");     
         }catch (NotValidParameterException ex) {
@@ -192,12 +189,13 @@ public class PlannerTest {
     
     /**
      * Test of modifyMaintenanceActivity method, of class Planner.
+     * @throws exception.MaintenanceActivityException
      */
     @Test(expected = MaintenanceActivityException.class)
     public void testExceptionModifyEwoMaintenanceActivity() throws MaintenanceActivityException{
         try {
-            planner.modifyMaintenanceActivity(6, "branchOffice6", "area6", "typology6",
-                    "description6", 6, LocalDate.now().toString(), true, Typology.EWO);
+            planner.modifyMaintenanceActivity(6, new Site("branchOffice6", "area6"), "typology6",
+                    "description6", 6, LocalDate.now(), true, Typology.EWO);
         } catch (NotValidParameterException ex) {
             fail("NotValidParameterException");
         }
@@ -209,8 +207,8 @@ public class PlannerTest {
     @Test
     public void testSuccessfulModifyExtraMaintenanceActivity() {
         try{
-            assertTrue(planner.modifyMaintenanceActivity(7, "branchOffice7", "area7", "typology7",
-                    "description7", 7, LocalDate.now().toString(), true, Typology.EXTRA));
+            assertTrue(planner.modifyMaintenanceActivity(7, new Site("branchOffice7", "area7"), "typology7",
+                    "description7", 7, LocalDate.now(), true, Typology.EXTRA));
         }catch(MaintenanceActivityException ex){
             fail("MaintenanceActivityException");     
         } catch (NotValidParameterException ex) {
@@ -225,8 +223,8 @@ public class PlannerTest {
     @Test
     public void testUnsuccessfulModifyExtraMaintenanceActivity() {
         try{
-            assertFalse(planner.modifyMaintenanceActivity(8, "branchOffice8", "area8", "typology8",
-                    "description8", 8, LocalDate.now().toString(), true, Typology.EXTRA));
+            assertFalse(planner.modifyMaintenanceActivity(8, new Site("branchOffice8", "area8"), "typology8",
+                    "description8", 8, LocalDate.now(), true, Typology.EXTRA));
         }catch(MaintenanceActivityException ex){
             fail("MaintenanceActivityException");     
         }  catch (NotValidParameterException ex) {
@@ -237,12 +235,13 @@ public class PlannerTest {
     
     /**
      * Test of modifyMaintenanceActivity method, of class Planner.
+     * @throws exception.MaintenanceActivityException
      */
     @Test(expected = MaintenanceActivityException.class)
     public void testExceptionModifyExtraMaintenanceActivity() throws MaintenanceActivityException{
         try {
-            planner.modifyMaintenanceActivity(9, "branchOffice9", "area9", "typology9", 
-                    "description9", 9, LocalDate.now().toString(), true, Typology.EXTRA);
+            planner.modifyMaintenanceActivity(9, new Site("branchOffice9", "area9"), "typology9", 
+                    "description9", 9, LocalDate.now(), true, Typology.EXTRA);
         } catch (NotValidParameterException ex) {
             fail("NotValidParameterException");
         }
@@ -375,8 +374,9 @@ public class PlannerTest {
         try {
             System.out.println("makeMaintenanceActivity");
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription,
-                    estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, Typology.PLANNED);
+            boolean result = planner.makeMaintenanceActivity(activityId, new Site(branchOffice, area, workspaceNotes), typology,
+                    activityDescription, estimatedInterventionTime, date, maintenanceProcedure,
+                    materials, interruptibleActivity, Typology.PLANNED);
             assertEquals(true, result);
             conn.rollback();
         } catch (SQLException ex) {
@@ -391,9 +391,9 @@ public class PlannerTest {
         try {
             System.out.println("makeMaintenanceActivityWrong");
             activityId = 2;
-            date = "2020-11-24";
+            date = LocalDate.parse("2020-11-24");
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes, typology, activityDescription,
+            boolean result = planner.makeMaintenanceActivity(activityId, new Site(branchOffice, area, workspaceNotes), typology, activityDescription,
                     estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity, Typology.PLANNED);
             conn.rollback();
         } catch (SQLException ex) {
@@ -410,7 +410,7 @@ public class PlannerTest {
             extraActivity = true;
             plannedActivity = false;
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes,
+            boolean result = planner.makeMaintenanceActivity(activityId, new Site(branchOffice, area, workspaceNotes),
                     typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials,
                     interruptibleActivity, Typology.EXTRA);
             assertEquals(true, result);
@@ -429,9 +429,9 @@ public class PlannerTest {
             activityId = 2;
             plannedActivity = false;
             extraActivity = true;
-            date = "2020-11-24";
+            date = LocalDate.parse("2020-11-24");
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes,
+            boolean result = planner.makeMaintenanceActivity(activityId, new Site(branchOffice, area, workspaceNotes),
                     typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials,
                     interruptibleActivity, Typology.EXTRA);
             conn.rollback();
@@ -449,8 +449,8 @@ public class PlannerTest {
             plannedActivity = false;
             ewo = true;
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area,
-                    workspaceNotes, typology, activityDescription, estimatedInterventionTime, date,
+            boolean result = planner.makeMaintenanceActivity(activityId, new Site(branchOffice, area,
+                    workspaceNotes), typology, activityDescription, estimatedInterventionTime, date,
                     maintenanceProcedure, materials, interruptibleActivity, Typology.EWO);
             assertEquals(true, result);
             conn.rollback();
@@ -468,9 +468,9 @@ public class PlannerTest {
             activityId = 2;
             ewo = true;
             plannedActivity = false;
-            date = "2020-11-24";
+            date = LocalDate.parse("2020-11-24");
             //planner.removeMaintenanceActivity(activityId);
-            boolean result = planner.makeMaintenanceActivity(activityId, branchOffice, area, workspaceNotes,
+            boolean result = planner.makeMaintenanceActivity(activityId, new Site (branchOffice, area, workspaceNotes),
                     typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials,
                     interruptibleActivity, Typology.EWO);
             conn.rollback();
@@ -1006,6 +1006,58 @@ public class PlannerTest {
         } catch (AppointmentException ex) {
             fail("AppointmentException");
         }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
+    }
+    
+    /*===============================================test verifyActivityAssignment============================================================*/
+    /**
+     * This test assert that verifyActivityAssignment correctly returns true when total duration of<br>
+     * of appointments connected to the activity is equal to estimatedInterventionTime
+     */
+    @Test
+    public void testVerifyActivityAssignmentTrue()  {
+        try {
+            int estimatedInterventionTime = 100;
+            int activityId = 1;
+            boolean returnedResult = planner.verifyActivityAssignment(activityId, estimatedInterventionTime);
+            assertTrue("verifyActivityAssignmentTrue", returnedResult);
+        }catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        } catch (AppointmentException ex) {
+            fail("AppointmentException");
+        }
+    }
+    
+    /**
+     * This test assert that verifyActivityAssignment correctly returns false when total duration of<br>
+     * of appointments connected to the activity is not equal to estimatedInterventionTime
+     */
+    @Test
+    public void testVerifyActivityAssignmentFalse()  {
+        try {
+            int estimatedInterventionTime = 110;
+            int activityId = 1;
+            boolean returnedResult = planner.verifyActivityAssignment(activityId, estimatedInterventionTime);
+            assertFalse("verifyActivityAssignmentFalse", returnedResult);
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        } catch (AppointmentException ex) {
+            fail("AppointmentException");
+        }
+    }
+    
+    /**
+     * This test assert that verifyActivityAssignment correctly returns false when total duration of<br>
+     * of appointments connected to the activity is not equal to estimatedInterventionTime
+     */
+    @Test(expected = AppointmentException.class)
+    public void testVerifyActivityAssignmentAppointmentException() throws AppointmentException  {
+        try {
+            int estimatedInterventionTime = 110;
+            int activityId = 2;
+            boolean returnedResult = planner.verifyActivityAssignment(activityId, estimatedInterventionTime);
+        } catch (NotValidParameterException ex) {
             fail("NotValidParameterException");
         }
     }

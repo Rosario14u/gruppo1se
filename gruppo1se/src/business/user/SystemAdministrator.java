@@ -68,7 +68,8 @@ public class SystemAdministrator extends User {
         }
         MaintenanceProcedure procedure = new MaintenanceProcedure(newSmp);
         if (oldSmp != null && !oldSmp.trim().replaceAll("  +", " ").equals("")){
-            retVal = procedureDao.updateSmp(procedure,oldSmp); // This method tries to update the smp only if there was a ridenomination of smp
+             // This method tries to update the smp only if there was a ridenomination of smp
+            retVal = procedureDao.updateSmp(procedure,oldSmp);
         }
         if (retVal == false){
             procedureDao.addSmp(procedure); // Saving of the procedure in the system 

@@ -7,12 +7,16 @@ package representation.planner;
 
 import business.maintenanceactivity.MaintenanceActivityFactory.Typology;
 import business.maintenanceactivity.Material;
+import business.maintenanceactivity.Site;
 import business.user.Planner;
 import exception.MaintenanceActivityException;
 import exception.NotValidParameterException;
 import exception.TypologyException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -379,11 +383,11 @@ public class CreateActivity extends javax.swing.JFrame {
             int activityId = Integer.parseInt(jActivityId.getText());
             String branchOffice = jBranchOffice.getText();
             String area = jArea.getText();
+            Site site = new Site(branchOffice,area);
             String typology = (String) jTypology.getSelectedItem();
             String activityDescription = jActivityDescription.getText();
             int estimatedInterventionTime = Integer.parseInt(jEstimatedInterventionTime.getText());
-            String date = jDate.getText();
-            
+            LocalDate date = LocalDate.parse(jDate.getText());
             LinkedList<Material> materials = new LinkedList<>();
             String materialString = jMaterials.getText();
             if (!materialString.equals("")){
@@ -400,8 +404,8 @@ public class CreateActivity extends javax.swing.JFrame {
                 typologyOfActivity = Typology.EWO;
             else
                 typologyOfActivity = Typology.EXTRA;
-            planner.makeMaintenanceActivity(activityId, branchOffice, area, "", typology, activityDescription,
-                    estimatedInterventionTime, date, " ", materials, interruptibleActivity, typologyOfActivity);
+            planner.makeMaintenanceActivity(activityId, site, typology, activityDescription,
+                    estimatedInterventionTime, date, null, materials, interruptibleActivity, typologyOfActivity);
             jActivityId.setText("");
             jBranchOffice.setText("");
             jArea.setText("");
@@ -414,6 +418,8 @@ public class CreateActivity extends javax.swing.JFrame {
             jCreate.setEnabled(false);
         } catch (MaintenanceActivityException | NotValidParameterException ex) {
             MessageManager.errorMessage(this,ex.getMessage());
+        }catch(DateTimeParseException ex){
+            MessageManager.errorMessage(this, "Not valid date format");
         }
     }//GEN-LAST:event_jCreateActionPerformed
 

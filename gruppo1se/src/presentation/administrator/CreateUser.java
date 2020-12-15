@@ -114,7 +114,7 @@ public class CreateUser extends javax.swing.JFrame {
         jPassword.setFont(new java.awt.Font("Rockwell", 0, 12));
 
         jRole.setFont(new java.awt.Font("Rockwell", 0, 12));
-        jRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"", "Planner", "Maintainer","System Administrator"}));
+        jRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"", "PLANNER", "MAINTAINER","ADMINISTRATOR"}));
 
         jClear.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jClear.setText("Clear");

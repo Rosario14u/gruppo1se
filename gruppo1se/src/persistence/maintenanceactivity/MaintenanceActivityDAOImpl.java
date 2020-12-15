@@ -127,7 +127,6 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     /*Method developed by Rosario Gaeta*/
     private MaintenanceActivity makeMaintenanceActivity(ResultSet rs) throws SQLException, SiteException, MaintenanceActivityException{
         try {
-            Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             String typologyOfActivity = rs.getString("typologyOfActivity").toUpperCase();
             String typologyOfUnplanned = rs.getString("typologyOfUnplannedActivity");
             typologyOfUnplanned = typologyOfUnplanned == null ? null : typologyOfUnplanned.toUpperCase();
@@ -138,11 +137,14 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
             String branchOffice = rs.getString("branchOffice");
             String area = rs.getString("area");
             Site site = siteDao.retrieveSiteDao(branchOffice, area);
+            MaintenanceProcedure procedure = null;
+            String smp = rs.getString("smp");
+            if (smp != null)
+                procedure = new MaintenanceProcedure(smp);
             if (site != null){
-                return MaintenanceActivityFactory.make(type, rs.getInt("activityId"), site.getBranchOffice(), site.getArea(),site.getWorkSpaceNotes(), 
-                            rs.getString("typologyName"), rs.getString("activityDescription"), 
-                            rs.getInt("estimatedInterventionTime"), rs.getString("dateActivity"),
-                            rs.getString("smp"), null, rs.getBoolean("interruptibleActivity"));
+                return MaintenanceActivityFactory.make(type, rs.getInt("activityId"), site,  rs.getString("typologyName"),
+                        rs.getString("activityDescription"), rs.getInt("estimatedInterventionTime"),
+                        LocalDate.parse(rs.getString("dateActivity")),procedure, null, rs.getBoolean("interruptibleActivity"));
             }
             throw new SiteException(); 
         } catch (SQLException ex) {
