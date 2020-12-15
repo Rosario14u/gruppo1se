@@ -96,10 +96,10 @@ public class SystemAdministrator extends User {
      * @param password
      * @param role
      * @return {@code boolean} true if the user is inserted into the database
-     * @throws UsersException
-     * @throws NotValidParameterException 
+     * @throws UsersException if there's an SQL error while inserting into the Users table
+     * @throws NotValidParameterException if this SystemAdministrator has no UsersDAO
      */
-    /* Method developed by Alessio Citro*/
+    /*Developed by Alessio Citro*/
     public boolean makeUser(String username, String password, UserRole role) throws UsersException, NotValidParameterException{
         if(usersDao == null){
             throw new NotValidParameterException("Error in creating user");

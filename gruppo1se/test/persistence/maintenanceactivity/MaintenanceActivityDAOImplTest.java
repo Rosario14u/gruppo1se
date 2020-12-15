@@ -534,11 +534,12 @@ public class MaintenanceActivityDAOImplTest {
         } 
     }
     
-  //=======================================================================================================================================
-    
+//================================================Test of addMaintenanceActivity=======================================================================================
+    /*Developed by Alessio Citro*/
 
     /**
      * Test of addMaintenanceActivity method, of class MaintenanceActivityDAOImpl.
+     * @throws exception.MaintenanceActivityException
      */
     @Test
     public void testAddMaintenanceActivity() throws MaintenanceActivityException {
@@ -555,6 +556,10 @@ public class MaintenanceActivityDAOImplTest {
         }
     }
     
+    /**
+     * Test of addMaintenanceActivity method, of class MaintenanceActivityDAOImpl.
+     * @throws exception.MaintenanceActivityException
+     */
     @Test(expected = MaintenanceActivityException.class)
     public void testAddMaintenanceActivityWrongDate() throws MaintenanceActivityException {
         try {
@@ -568,21 +573,11 @@ public class MaintenanceActivityDAOImplTest {
            fail("NotValidParameterException");
         }
     }
-    /*
-    @Test(expected = MaintenanceActivityException.class)
-    public void testAddMaintenanceActivityWrongActivityID() throws MaintenanceActivityException {
-        try {
-            PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(0, site, typology,
-                    activityDescription, 300, LocalDate.of(2050, 11, 25), maintenanceProcedure, materials,false);
-            deleteMaintenaceActivity(activity.getActivityId());
-            maintenanceActivityDAO.addMaintenanceActivity(activity);
-        } catch (SQLException ex) {
-            System.out.println("Error on: connection rollback");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
-    }
-    */
+
+    /**
+     * Test of addMaintenanceActivity method, of class MaintenanceActivityDAOImpl.
+     * @throws exception.MaintenanceActivityException
+     */
     @Test
     public void testAddMaintenanceActivityUnplanned() throws MaintenanceActivityException {
         try {

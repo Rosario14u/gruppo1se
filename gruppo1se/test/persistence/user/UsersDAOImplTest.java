@@ -109,9 +109,13 @@ public class UsersDAOImplTest{
             }
             else{
                 System.out.println("SA");
-                assertEquals("System Administrator", set.getString("role"));            }
+                assertEquals("System Administrator", set.getString("role"));            
+            }
         }
     }
+    //=====================================================Test of addUser============================================================================
+    /*Test methods developed by Alessio Citro*/
+    
     /**
      * Test of addUser method, of class UsersDAO.
      * @throws exception.UsersException

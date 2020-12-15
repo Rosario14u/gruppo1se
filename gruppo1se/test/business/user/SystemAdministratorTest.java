@@ -338,7 +338,8 @@ public class SystemAdministratorTest {
         String typology = "TypologyException";
         instance.removeTypology(typology);
     }
-//=========================================================================================================================================
+    /*=======================================================Test of makeUser==================================================================================*/
+    /*Test methods developed by Alessio Citro*/
     
     /**
      * Test of makeUser method, of class SystemAdministrator.
@@ -355,6 +356,10 @@ public class SystemAdministratorTest {
         }
     }
     
+    /**
+     * Test of makeUser method, of class SystemAdministrator.
+     * @throws exception.UsersException
+     */
     @Test(expected = UsersException.class)
     public void testMakeUserException() throws UsersException {
         try {

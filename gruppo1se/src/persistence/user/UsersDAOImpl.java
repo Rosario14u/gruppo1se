@@ -31,10 +31,10 @@ public class UsersDAOImpl implements UsersDAO {
     /**
      * 
      * @param user
-     * @return {@code boolean} true if an user is inserted into the database
-     * @throws UsersException 
+     * @return {@code boolean} true if the user is inserted into the database
+     * @throws UsersException if there's an SQL error while inserting into the Users table
      */
-    /* Method developed by Alessio Citro*/
+    /*Developed by Alessio Citro*/
     @Override
     public boolean addUser(UserDTO user) throws UsersException{
         try {

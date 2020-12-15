@@ -285,7 +285,7 @@ public class ManageTypologies extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jConfirmActionPerformed
 
-    
+    /*Developed by Alessio Citro*/
     private void jDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDeleteActionPerformed
             int[] selectedIndex = jTable.getSelectedRows();
             if(selectedIndex.length == 1){

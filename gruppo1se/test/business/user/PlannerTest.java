@@ -28,9 +28,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -365,10 +363,12 @@ public class PlannerTest {
         }
     }
     
-    /*===========================================================================================================================*/
+    /*=================================================Test of makeMaintenanceActivity==========================================================================*/
+    /*Test methods developed by Alessio Citro*/
     
     /**
      * Test of makeMaintenanceActivity method, of class Planner.
+     * @throws exception.MaintenanceActivityException
      */
     @Test
     public void testMakeMaintenanceActivity() throws  MaintenanceActivityException {
@@ -386,6 +386,10 @@ public class PlannerTest {
         }
     }
 
+    /**
+     * Test of makeMaintenanceActivity method, of class Planner.
+     * @throws exception.MaintenanceActivityException
+     */
     @Test(expected = MaintenanceActivityException.class)
     public void testMakeMaintenanceActivityWrong() throws  MaintenanceActivityException {
         try {
@@ -403,6 +407,10 @@ public class PlannerTest {
         }
     }
     
+    /**
+     * Test of makeMaintenanceActivity method, of class Planner.
+     * @throws exception.MaintenanceActivityException
+     */
     @Test
     public void testMakeMaintenanceActivityExtraActivity() throws  MaintenanceActivityException{
         try {
@@ -422,6 +430,10 @@ public class PlannerTest {
         }
     }
     
+    /**
+     * Test of makeMaintenanceActivity method, of class Planner.
+     * @throws exception.MaintenanceActivityException
+     */
     @Test(expected = MaintenanceActivityException.class)
     public void testMakeMaintenanceActivityExtraActivityWrong() throws  MaintenanceActivityException{
         try {
@@ -442,6 +454,10 @@ public class PlannerTest {
         }
     }
     
+    /**
+     * Test of makeMaintenanceActivity method, of class Planner.
+     * @throws exception.MaintenanceActivityException
+     */
     @Test
     public void testMakeMaintenanceActivityEwo() throws  MaintenanceActivityException{
         try {
@@ -461,6 +477,10 @@ public class PlannerTest {
         }
     }
     
+    /**
+     * Test of makeMaintenanceActivity method, of class Planner.
+     * @throws exception.MaintenanceActivityException
+     */
     @Test(expected = MaintenanceActivityException.class)
     public void testMakeMaintenanceActivityEwoWrong() throws MaintenanceActivityException {
         try {

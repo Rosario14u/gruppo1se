@@ -169,10 +169,10 @@ public class Planner extends User {
      * @param interruptibleActivity
      * @param typologyOfActivity
      * @return {@code boolean} true if MaintenanceActivity and materials are inserted into the database 
-     * @throws MaintenanceActivityException
-     * @throws NotValidParameterException 
+     * @throws MaintenanceActivityException if there's an SQL error while inserting into the MaintenanceActivity table
+     * @throws NotValidParameterException if this planner has no MaintenanceActivityDAO
      */
-    /* Method developed by Alessio Citro*/
+    /*Developed by Alessio Citro*/
     public boolean makeMaintenanceActivity(int activityId, String branchOffice, String area, String workspaceNotes, String typology, String activityDescription, int estimatedInterventionTime,
             String date, String smp, List<Material> materials, boolean interruptibleActivity,
             Typology typologyOfActivity) throws MaintenanceActivityException, NotValidParameterException {
@@ -332,7 +332,6 @@ public class Planner extends User {
      * @throws TypologyException
      * @throws NotValidParameterException 
      */
-    /* Method developed by Alessio Citro*/
     public List<String> readTypologies() throws TypologyException, NotValidParameterException{
         if(typologyDao == null){
             throw new NotValidParameterException("Error in retrieving users");

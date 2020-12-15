@@ -37,6 +37,13 @@ public class UsersDAOStub implements UsersDAO {
         return users;
     }
     
+    /**
+     * 
+     * @param user
+     * @return
+     * @throws UsersException 
+     */
+    /*Developed by Alessio Citro*/
     @Override
     public boolean addUser(UserDTO user) throws UsersException {
         if (user.getUsername() != null && user.getPassword() != null)
