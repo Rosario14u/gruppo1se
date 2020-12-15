@@ -121,12 +121,8 @@ public class MaintenanceActivityDAOImplTest {
             MaintenanceActivity activity = maintenanceActivityDAO.retrieveMaintenanceActivityDao(1);
             assertMaintenanceActivity(activity,1,"ProvaDescrizione1",121,LocalDate.parse("2050-11-21"),true, 
                     "Planned",null,"ProvaTypologyName1","ProvaBranch","ProvaArea", "ProvaWorkSpaceNotes","smp1");
-        } catch (SQLException ex) {
-            fail("SQLException");
-        }catch (MaintenanceActivityException ex) {
-            fail("MaintenanceActivityException");
-        } catch (NotValidParameterException ex) {
-           fail("NotValidParameterException");
+        }catch(SQLException | MaintenanceActivityException | NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -143,12 +139,8 @@ public class MaintenanceActivityDAOImplTest {
             MaintenanceActivity activity = maintenanceActivityDAO.retrieveMaintenanceActivityDao(2);
             assertMaintenanceActivity(activity,2,"ProvaDescrizione2",122,LocalDate.parse("2050-11-22"),true, 
                     "Unplanned","EWO","ProvaTypologyName2","ProvaBranch","ProvaArea", "ProvaWorkSpaceNotes","smp2");
-        } catch (SQLException ex) {
-            fail("SQLException");
-        } catch (MaintenanceActivityException ex) {
-            fail("MaintenanceActivityException");
-        } catch (NotValidParameterException ex) {
-           fail("NotValidParameterException");
+        }catch(SQLException | MaintenanceActivityException | NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     /**
@@ -164,12 +156,8 @@ public class MaintenanceActivityDAOImplTest {
             MaintenanceActivity activity = maintenanceActivityDAO.retrieveMaintenanceActivityDao(3);
             assertMaintenanceActivity(activity,3,"ProvaDescrizione3",123,LocalDate.parse("2050-11-23"),false, 
                     "Unplanned","Extra","ProvaTypologyName3","ProvaBranch","ProvaArea", "ProvaWorkSpaceNotes","smp3");
-        } catch (SQLException ex) {
-            fail("SQLException");
-        } catch (MaintenanceActivityException ex) {
-            fail("MaintenanceActivityException");
-        } catch (NotValidParameterException ex) {
-           fail("NotValidParameterException");
+        }catch(SQLException | MaintenanceActivityException | NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -183,12 +171,8 @@ public class MaintenanceActivityDAOImplTest {
             deleteMaintenaceActivity(1);
             MaintenanceActivity activity = maintenanceActivityDAO.retrieveMaintenanceActivityDao(1);
             assertNull("MaintenanceActivityImpl error", activity);
-        } catch (SQLException ex) {
-            fail("SQLException");
-        } catch (MaintenanceActivityException ex) {
-            fail("MaintenanceActivityException");
-        } catch (NotValidParameterException ex) {
-           fail("NotValidParameterException");
+        }catch(SQLException | MaintenanceActivityException | NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }   
     }
     
@@ -203,10 +187,8 @@ public class MaintenanceActivityDAOImplTest {
             insertMaintenanceActivity(4,"ProvaDescrizione4",124,"2050-11-24",false, 
                     "Unplanned","Extra","ProvaTypologyName4","ProvaBranch4","ProvaArea4","smp4");
             MaintenanceActivity activity = maintenanceActivityDAO.retrieveMaintenanceActivityDao(4);
-        } catch (SQLException ex) {
-            fail("SQLException");
-        }  catch (NotValidParameterException ex) {
-           fail("NotValidParameterException");
+        }catch(SQLException | NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -221,10 +203,8 @@ public class MaintenanceActivityDAOImplTest {
             insertMaintenanceActivity(5,"ProvaDescrizione5",125,"2050-11-25",false, 
                     "Unplanned","Extra","ProvaTypologyName5","ProvaBranch4","ProvaArea4", "smp5");
             MaintenanceActivity activity = maintenanceActivityDAO.retrieveMaintenanceActivityDao(5);
-        } catch (SQLException ex) {
-            fail("SQLException");
-        } catch (NotValidParameterException ex) {
-           fail("NotValidParameterException");
+        }catch(SQLException | NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -682,11 +662,9 @@ public class MaintenanceActivityDAOImplTest {
             assertEquals("Len resultList error",resultList.size(),1);
             assertMaintenanceActivity(resultList.get(0),1,"ProvaDescrizione1",121,LocalDate.parse("2050-11-21"),true, 
                     "Planned",null,"ProvaTypologyName1","ProvaBranch","ProvaArea", "ProvaWorkSpaceNotes","smp1");
-        }catch(MaintenanceActivityException ex){
-            fail("MaterialException was thrown");
-        } catch (NotValidParameterException ex) {
-           fail("NotValidParameterException");
-        }  
+        }catch(MaintenanceActivityException | NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
+        } 
     }
     
     /**
@@ -707,10 +685,8 @@ public class MaintenanceActivityDAOImplTest {
                     "Unplanned","EWO","ProvaTypologyName2","ProvaBranch","ProvaArea", "ProvaWorkSpaceNotes","smp2");
             assertMaintenanceActivity(resultList.get(2),3,"ProvaDescrizione3",123,LocalDate.parse("2050-11-23"),false, 
                     "Unplanned","Extra","ProvaTypologyName3","ProvaBranch","ProvaArea", "ProvaWorkSpaceNotes","smp3");
-        }catch(MaintenanceActivityException ex){
-            fail("MaintenanceActivityException was thrown");
-        } catch (NotValidParameterException ex) {
-           fail("NotValidParameterException");
+        }catch(MaintenanceActivityException | NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
         
     }
@@ -727,10 +703,8 @@ public class MaintenanceActivityDAOImplTest {
                     LocalDate.parse("2050-11-20"));
             Collections.sort(resultList);
             assertTrue(resultList.isEmpty());
-        }catch(MaintenanceActivityException ex){
-            fail("MaintenanceActivityException was thrown");
-        } catch (NotValidParameterException ex) {
-           fail("NotValidParameterException");
+        }catch(MaintenanceActivityException | NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }   
     }
     
@@ -745,8 +719,8 @@ public class MaintenanceActivityDAOImplTest {
             initializeRange();
             List<MaintenanceActivity> resultList = maintenanceActivityDAO.retrieveMaintenanceActivityFromRange(LocalDate.parse("2050-11-23"),
                     LocalDate.parse("2050-11-21"));
-        } catch (NotValidParameterException ex) {
-           fail("NotValidParameterException");
+        }catch(NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -761,8 +735,8 @@ public class MaintenanceActivityDAOImplTest {
             initializeRange();
             List<MaintenanceActivity> resultList = maintenanceActivityDAO.retrieveMaintenanceActivityFromRange(null,
                     LocalDate.parse("2050-11-21"));
-        } catch (NotValidParameterException ex) {
-           fail("NotValidParameterException");
+        }catch(NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -777,8 +751,8 @@ public class MaintenanceActivityDAOImplTest {
             initializeRange();
             List<MaintenanceActivity> resultList = maintenanceActivityDAO.retrieveMaintenanceActivityFromRange(LocalDate.parse("2050-11-23"),
                     null);
-        }  catch (NotValidParameterException ex) {
-           fail("NotValidParameterException");
+        }catch(NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -793,8 +767,8 @@ public class MaintenanceActivityDAOImplTest {
             initializeRange();
             List<MaintenanceActivity> resultList = maintenanceActivityDAO.retrieveMaintenanceActivityFromRange(
                     LocalDate.parse("2050-11-21"), LocalDate.parse("2050-11-28"));
-        } catch (NotValidParameterException ex) {
-           fail("NotValidParameterException");
+        }catch(NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }   
     }
     
@@ -812,8 +786,8 @@ public class MaintenanceActivityDAOImplTest {
                     "Unplanned", "Extra", "ProvaTypologyName3", "ProvaBranch", "ProvaArea","smp3");
             insertMaintenanceActivity(4, "ProvaDescrizione4", 124, "2050-11-24", false,
                     "Unplanned", "Extra", "ProvaTypologyName4", "ProvaBranch4", "ProvaArea4","smp4");
-        } catch(SQLException ex){
-            fail("SQLException was thrown");
+        }catch(SQLException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
 }

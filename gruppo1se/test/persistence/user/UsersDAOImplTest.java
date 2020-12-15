@@ -10,6 +10,7 @@ import dto.PlannerDTO;
 import dto.SystemAdministratorDTO;
 import dto.UserDTO;
 import exception.NotValidParameterException;
+import exception.SiteException;
 import exception.UsersException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -430,10 +431,8 @@ public class UsersDAOImplTest{
             for(String username: usernameList){
                 isEmptyResultSet(username);
             }
-        } catch (SQLException ex) {
-            fail("SQL_EXCEPTION");
-        } catch (UsersException ex) {
-            fail("USERS_EXCEPTION");
+        }catch(SQLException | UsersException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -454,10 +453,8 @@ public class UsersDAOImplTest{
             removeUser("username6");
             int numOfDeletedRow = instance.deleteUsers(usernameList);
             assertEquals(numOfDeletedRow,0);
-        } catch (SQLException ex) {
-            fail("SQL_EXCEPTION");
-        } catch (UsersException ex) {
-            fail("USERS_EXCEPTION");
+        }catch(SQLException | UsersException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -471,8 +468,8 @@ public class UsersDAOImplTest{
             List<String> usernameList = new ArrayList<>();
             int numOfDeletedRow = instance.deleteUsers(usernameList);
             assertEquals(numOfDeletedRow,0);
-        } catch (UsersException ex) {
-            fail("USERS_EXCEPTION");
+        }catch(UsersException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -485,8 +482,8 @@ public class UsersDAOImplTest{
         try {
             int numOfDeletedRow = instance.deleteUsers(null);
             assertEquals(numOfDeletedRow,0);
-        } catch (UsersException ex) {
-            fail("USERS_EXCEPTION");
+        }catch(UsersException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     

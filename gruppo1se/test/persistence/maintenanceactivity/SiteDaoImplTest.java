@@ -7,6 +7,7 @@ package persistence.maintenanceactivity;
 
 import business.maintenanceactivity.Site;
 import exception.SiteException;
+import exception.SkillException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -88,10 +89,8 @@ public class SiteDaoImplTest {
             pstm.executeUpdate();
             Site site = siteDao.retrieveSiteDao("ProvaBranch", "ProvaArea");
             assertEquals("retrieveSiteDao", site, new Site("ProvaBranch", "ProvaArea", "ProvaWorkspaceNotes"));
-        } catch (SQLException ex) {
-            fail("SQLException");
-        } catch (SiteException ex) {
-            fail("SiteException");
+        }catch(SQLException | SiteException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     /**
@@ -105,10 +104,8 @@ public class SiteDaoImplTest {
             deleteFromSite("ProvaBranch", "ProvaBranch");
             Site site = new SiteDaoImpl().retrieveSiteDao("ProvaBranch", "ProvaArea");
             assertNull("retrieveSiteDaoNotDatabase error", site);
-        } catch (SQLException ex) {
-            fail("SQLException");
-        } catch (SiteException ex) {
-            fail("SiteException");
+        }catch(SQLException | SiteException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
 
     }
