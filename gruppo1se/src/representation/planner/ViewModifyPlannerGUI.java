@@ -400,13 +400,19 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
             MessageManager.errorMessage(this,ex.getMessage());
         }
     }//GEN-LAST:event_viewButtonActionPerformed
-
+    /**
+     * This method allows to modify maintenance activity.
+     * @param evt 
+     */
     private void modifyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyButtonActionPerformed
         getField();
         clearField();
         initializeField(false);       
     }//GEN-LAST:event_modifyButtonActionPerformed
-  
+    /**
+     * This method allows to associate a material to a maintenance activity.
+     * @param evt 
+     */
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         int selectedIndex = materialComboBox.getSelectedIndex();
         if(selectedIndex != -1){
@@ -423,7 +429,10 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         }else
             MessageManager.infoMessage(this,"No material selected");
     }//GEN-LAST:event_addButtonActionPerformed
-
+    /**
+     * This method allows to delete the association of a material to a maintenance activity.
+     * @param evt 
+     */
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         List<Material> listMaterialsToDelete = new ArrayList<>();
         int[] selectedIndex =  listOfMaterialsJList.getSelectedIndices();
@@ -444,12 +453,18 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
-
+    /**
+     * This method allows to disable GUI fields when a key is pressed on activityId text field.
+     * @param evt 
+     */
     private void activityIdTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_activityIdTextFieldKeyPressed
         initializeField(false);
     }//GEN-LAST:event_activityIdTextFieldKeyPressed
 
-
+    /**
+     * This method get the value in the GUI fields and passes them to modifyMaintenanceActivity.<br>
+     * modifyMaintenanceActivity method will update info of maintenance activity in the system.
+     */
     private void getField(){
         try {
             String area =  areaTextField.getText();
@@ -472,6 +487,12 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
          
     
     //==================== VEDERE ================================  
+    /**
+     * This method checks if the string can be converted in a positive int
+     * @param number
+     * @return {@code int} number
+     * @throws NumberNotValidException if the parameter is not a positive number.
+     */
     private int getCheckedNumberParameter(String number) throws NumberNotValidException{
         number = number.trim().replaceAll("  +", " ");
         try{
@@ -577,7 +598,9 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
             calendarDateChooser.setDate(Date.from(activity.getDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
         }
     }
-    
+    /**
+     * This method cleans GUI fields.
+     */
     private void clearField() {
         activityDescriptionTextArea.setText("");
         areaTextField.setText("");

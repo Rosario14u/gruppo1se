@@ -12,7 +12,6 @@ import exception.MaintenanceActivityException;
 import exception.NotValidParameterException;
 import java.awt.Dimension;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
@@ -65,7 +64,6 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
 
         weekComboBox.setModel(new javax.swing.DefaultComboBoxModel<>());
         int numberOfWeeks = WeekConverter.getNumberOfWeeksInYear(LocalDate.now());
-        System.out.println("--> " + numberOfWeeks);
         for(int i=1;i<=numberOfWeeks;i++){
             weekComboBox.addItem(i);
         }
