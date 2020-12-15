@@ -33,9 +33,10 @@ import persistence.user.MaintainerSkillDAO;
 import persistence.user.UsersDAO;
 
 /**
- * <p> An object of the class Planner provides a series of method to manage Maintenance Activity<br>
- * and to assign this activities to maintainers. This class requires a series of dao object (as attributes) to performs this
- * operation. </p> 
+ * <p>An object of the class Planner provides a series of 
+ * method to manage Maintenance Activity<br>
+ * and to assign this activities to maintainers. This class requires a 
+ * series of dao object (as attributes) to performs this operation.</p> 
  * @author rosar
  */
 public class Planner extends User {
@@ -110,18 +111,22 @@ public class Planner extends User {
     /**
      * This method allows to modify an existent Maintenance
      * activity acccording to actvityId parameter
-     * @param activityId ID of maintenance activity
-     * @param site
-     * @param typology
-     * @param activityDescription
-     * @param estimatedInterventionTime
-     * @param date
-     * @param interruptibleActivity
-     * @param typologyOfActivity
+     * @param activityId identifier of maintenance activity
+     * @param branchOffice branch office of ​​activity
+     * @param area area of ​​activity
+     * @param typology type of activity
+     * @param activityDescription description of activity
+     * @param estimatedInterventionTime estimated time
+     * @param date date of maintenance activity
+     * @param interruptibleActivity represents 
+     * whether an activity is interruptible or not 
+     * @param typologyOfActivity  
      * @return {@code true} if the the change
      * is successful, {@code false} otherwise
-     * @throws MaintenanceActivityException
-     * @throws NotValidParameterException 
+     * @throws MaintenanceActivityException it there is a 
+     * problem in modifyng the activity
+     * @throws NotValidParameterException if the required DAO 
+     * (MaintenanceActivityDao) object is not correctly initialized
      */
     //Developed by Antonio Gorrasi
     public boolean modifyMaintenanceActivity(int activityId, Site site, 
@@ -199,30 +204,83 @@ public class Planner extends User {
         return requiredMaterialsDao.retrieveMaterialsByActivityId(activityId);
     }
 
+    
+    /**
+     * This method allows to associate materials with an activity
+     * @param activityId identifier of maintenance activity
+     * @param requiredMaterial list of materials to associate
+     * @return {@code true} if the materials are successfully 
+     * associated, {@code false} otherwise
+     * @throws MaterialException if there are problems in adding materials
+     * @throws NotValidParameterException if the required DAO 
+     * (requiredMaterialsDao) object is not correctly initialized
+     */
     //Developed by Antonio Gorrasi
-    public boolean addRequiredMaterial(int activityId, List<Material> requiredMaterial) throws MaterialException, NotValidParameterException {
+    public boolean addRequiredMaterial(int activityId, List<Material> requiredMaterial) 
+            throws MaterialException, NotValidParameterException {
+        
         if (requiredMaterialsDao == null) {
-            throw new NotValidParameterException("Failure to associate materials to maintenance activity");
+            throw new NotValidParameterException("Failure to associate materials to activity");
         }
         return requiredMaterialsDao.addRequiredMaterial(activityId, requiredMaterial);
     }
 
+    
+    /**
+     * This method allows to delete materials previously
+     * associated with maintenance activities
+     * @param activityId identifier of activity
+     * @param requiredMaterial list of materials to remove
+     * @return {@code true} if the materials are successfully 
+     * removed, {@code false} otherwise
+     * @throws MaterialException if there are 
+     * problems in removing materials
+     * @throws NotValidParameterException if the required DAO 
+     * (requiredMaterialsDao) object is not correctly initialized 
+     */
     //Developed by Antonio Gorrasi
-    public boolean removeRequiredMaterial(int activityId, List<Material> requiredMaterial) throws MaterialException, NotValidParameterException {
+    public boolean removeRequiredMaterial(int activityId, List<Material> requiredMaterial) 
+            throws MaterialException, NotValidParameterException {
         if (requiredMaterialsDao == null) {
-            throw new NotValidParameterException("Failure to remove assoicated materials from maintenance activity");
+            throw new NotValidParameterException("Failure to remove assoicated materials of the activity");
         }
         return requiredMaterialsDao.removeRequiredMaterial(activityId, requiredMaterial);
     }
 
+    
+    /**
+     * This method returns a list of available materials that
+     * have not yet been associated with the maintenance activity
+     * @param activityId identifier of activity
+     * @return a list of available materials
+     * @throws MaterialException if there are 
+     * problems in retrieving available materials
+     * @throws NotValidParameterException if the required DAO 
+     * (requiredMaterialsDao) object is not correctly initialized 
+     */
     //Developed by Antonio Gorrasi
-    public List<Material> retrieveAvaliableMaterialToAdd(int activityId) throws MaterialException, NotValidParameterException {
+    public List<Material> retrieveAvaliableMaterialToAdd(int activityId) 
+            throws MaterialException, NotValidParameterException {
         if (requiredMaterialsDao == null) {
-            throw new NotValidParameterException("Failure to retrive associated materials to maintenance activity");
+            throw new NotValidParameterException("Failure to retrive associated materials to activity");
         }
         return requiredMaterialsDao.retrieveAvailableMaterialToAdd(activityId);
     }
 
+    
+    /**
+     * This method returns a list of maintenance 
+     * activities in a specific week of the year
+     * @param week desired week
+     * @param year year relative to the desired week
+     * @return a list of Maintenance Activity
+     * in a week 
+     * @throws MaintenanceActivityException if there 
+     * are problems in retrieving activities materials
+     * @throws NotValidParameterException if the required 
+     * DAO (maintenanceActivityDao, requiredSkillsDao) <br>
+     * objects are not correctly initialized 
+     */
     //Developed by Antonio Gorrasi
     public List<MaintenanceActivity> viewMaintenanceActivityByWeek(int week, int year) 
             throws MaintenanceActivityException, NotValidParameterException {
@@ -235,8 +293,8 @@ public class Planner extends User {
             LocalDate startDateOfWeek = date.get(0);
             LocalDate endDateOfWeek = date.get(1);
             
-            List<MaintenanceActivity> listOfMaintenanceActivity = maintenanceActivityDao.
-                    retrieveMaintenanceActivityFromRange(startDateOfWeek, endDateOfWeek);
+            List<MaintenanceActivity> listOfMaintenanceActivity = maintenanceActivityDao
+                    .retrieveMaintenanceActivityFromRange(startDateOfWeek, endDateOfWeek);
             
             listOfMaintenanceActivity = filterActivityWithoutProcedure(listOfMaintenanceActivity);
             
@@ -252,6 +310,7 @@ public class Planner extends User {
         }
     }
     
+    
     /**
      * This method allows to filter a list of maintenance activity,
      * getting only the activity that have a not null procedure.
@@ -262,8 +321,21 @@ public class Planner extends User {
         return listActivity.stream().filter(activity -> activity.getMaintenanceProcedure() != null).collect(Collectors.toList());
     }
 
+    
+    /**
+     * This method returns the availability of the maintainers
+     * @param week desired week
+     * @param year year relative to the desired week
+     * @return the availability of the maintainers
+     * @throws UsersException if there are problems in 
+     * retrieving maintainers availability
+     * @throws NotValidParameterException if the required 
+     * DAO (userDao, maintainerSkillDao, employeeAppointmentDao) 
+     * <br>objects are not correctly initialized 
+     */
     //Developed by Antonio Gorrasi
-    public List<MaintainerDTO> viewEmployeeAvailability(int week, int year) throws UsersException, NotValidParameterException {
+    public List<MaintainerDTO> viewEmployeeAvailability(int week, int year) 
+            throws UsersException, NotValidParameterException {
         if (userDao == null || employeeAppointmentDao == null || maintainerSkillDao == null) {
                 throw new NotValidParameterException("Failure to retrieve data relating to Maintainers");
         }
@@ -273,7 +345,8 @@ public class Planner extends User {
             LocalDate startDateOfWeek = date.get(0);
             LocalDate endDateOfWeek = date.get(1);
             for (MaintainerDTO maintainer : maintainers) {
-                maintainer.setAppointmentsInWeek(employeeAppointmentDao.getEmployeeAvailability(maintainer.getUsername(), startDateOfWeek, endDateOfWeek));
+                maintainer.setAppointmentsInWeek(employeeAppointmentDao
+                        .getEmployeeAvailability(maintainer.getUsername(), startDateOfWeek, endDateOfWeek));
                 maintainer.setSkills(maintainerSkillDao.getMaintainerSkills(maintainer.getUsername()));
             }
             return maintainers;
@@ -281,6 +354,7 @@ public class Planner extends User {
             throw new UsersException(ex.getMessage());
         }
     }
+    
     
     /**
      * This method allows to save appointments of a maintainer associated with a maintenance activity and<br>
@@ -314,14 +388,32 @@ public class Planner extends User {
         return false;
     }
 
+    
+    /**
+     * This method allows to check if an activity 
+     * has already been previously associated
+     * @param activityId identifier of activity
+     * @param estimatedInterventionTime time of 
+     * intervention
+     * @return {@code true} if the task was previously 
+     * assigned, {@code false} otherwise
+     * @throws NotValidParameterException if 
+     * required dao (employeeAppointmentDao)
+     * are not correctly initialized.
+     * @throws AppointmentException if there are 
+     * problems in verifyng maintainers availability
+     */
     //Developed by Antonio Gorrasi
-    public boolean verifyActivityAssignment(int activityId, int estimatedInterventionTime) throws NotValidParameterException, AppointmentException {
+    public boolean verifyActivityAssignment(int activityId, int estimatedInterventionTime)
+            throws NotValidParameterException, AppointmentException {
+        
         if (employeeAppointmentDao == null) {
             throw new NotValidParameterException("Failure to verify appointment");
         }
         int totalTimeAssigned = employeeAppointmentDao.getDurationOfAssignedActivity(activityId);
         return totalTimeAssigned==estimatedInterventionTime;
     }
+    
     
     /**
      * 

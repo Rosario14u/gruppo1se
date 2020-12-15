@@ -6,10 +6,11 @@
 package presentation.administrator;
 
 
-import business.user.Maintainer;
-import business.user.Planner;
+import business.user.UserRole;
 import business.user.SystemAdministrator;
 import business.user.User;
+import dto.MaintainerDTO;
+import dto.PlannerDTO;
 import dto.UserDTO;
 import exception.NotValidParameterException;
 import exception.UsersException;
@@ -89,12 +90,12 @@ public class ViewUsers extends javax.swing.JFrame {
             for(int i = 0; i < list.size(); i++) {
                 rows[0] = list.get(i).getUsername();
                 rows[1] = list.get(i).getPassword();
-                if(Planner.class.isInstance(list.get(i)))
-                    rows[2] = "Planner";
-                else if (Maintainer.class.isInstance(list.get(i)))
-                    rows[2] = "Maintainer";
+                if(PlannerDTO.class.isInstance(list.get(i)))
+                    rows[2] = UserRole.PLANNER.toString();
+                else if (MaintainerDTO.class.isInstance(list.get(i)))
+                    rows[2] = UserRole.MAINTAINER.toString();
                 else
-                    rows[2] = "System Administrator";
+                    rows[2] = UserRole.ADMINISTRATOR.toString();
                 tableModel.addRow(rows);
             }
         } catch (UsersException | NotValidParameterException ex) {

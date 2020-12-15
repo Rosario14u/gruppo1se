@@ -134,6 +134,19 @@ public class SystemAdministrator extends User {
     }
     
     
+    /**
+     * this method allows a System Administrator 
+     * to modify information relating to a user
+     * @param oldUsername olde username
+     * @param newUser user with the new information
+     * @return {@code true} if the user is correctly
+     * updateed, {@code false} otherwise
+     * @throws UsersException if there is a problem 
+     * in updating user
+     * @throws NotValidParameterException if the required 
+     * DAO (userDao) object is not correctly initialized
+     */
+    //developed by Antonio Gorrasi
     public boolean modifyUser(String oldUsername, UserDTO newUser) throws UsersException, NotValidParameterException{
         if(usersDao == null){
             throw new NotValidParameterException("Error in updating users");

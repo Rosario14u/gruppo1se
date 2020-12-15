@@ -145,14 +145,29 @@ public class MenuPlanner extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    /**
+     * When the dedicated button is pressed it opens ViewModifyPlannerGUI
+     * @param evt 
+     */
     private void viewModifyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewModifyButtonActionPerformed
         new ViewModifyPlannerGUI(planner).setVisible(true);
     }//GEN-LAST:event_viewModifyButtonActionPerformed
 
+    
+    /**
+     * When the dedicated button is pressed it opens DeleteActivity GUI
+     * @param evt 
+     */
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         new DeleteActivity(planner).setVisible(true);
     }//GEN-LAST:event_deleteButtonActionPerformed
 
+    
+    /**
+     * When the dedicated button is pressed it opens CreateActivity GUI
+     * @param evt 
+     */
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         try {
             new CreateActivity(planner).setVisible(true);
@@ -161,6 +176,11 @@ public class MenuPlanner extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_addButtonActionPerformed
 
+    
+    /**
+     * When the dedicated button is pressed it opens SelectionActivityGUI GUI
+     * @param evt 
+     */
     private void selectionActivityButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectionActivityButtonActionPerformed
         new SelectionActivityGUI(planner).setVisible(true);
     }//GEN-LAST:event_selectionActivityButtonActionPerformed

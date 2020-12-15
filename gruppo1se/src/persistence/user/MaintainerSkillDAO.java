@@ -6,7 +6,6 @@
 package persistence.user;
 
 import business.maintenanceactivity.Skill;
-import exception.NotValidParameterException;
 import exception.SkillException;
 import java.util.List;
 
@@ -15,5 +14,5 @@ import java.util.List;
  * @author gorra
  */
 public interface MaintainerSkillDAO {
-    public List<Skill> getMaintainerSkills(String username) throws SkillException, NotValidParameterException;
+    public List<Skill> getMaintainerSkills(String username) throws SkillException;
 }

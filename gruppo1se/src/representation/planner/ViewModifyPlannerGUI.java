@@ -22,14 +22,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import presentation.manager.MessageManager;
 
@@ -371,6 +367,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
             pack();
         }// </editor-fold>//GEN-END:initComponents
 
+    
     private void interruptibleActivityCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_interruptibleActivityCheckBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_interruptibleActivityCheckBoxActionPerformed
