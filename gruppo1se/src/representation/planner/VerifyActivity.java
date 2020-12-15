@@ -8,19 +8,13 @@ package representation.planner;
 import business.maintenanceactivity.MaintenanceActivity;
 import business.maintenanceactivity.Skill;
 import business.user.Planner;
-import exception.AppointmentException;
-import exception.MaintenanceActivityException;
-import exception.NotValidParameterException;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import presentation.manager.MessageManager;
 
 /**
  *
@@ -33,9 +27,11 @@ public class VerifyActivity extends javax.swing.JFrame {
     private final static String PROJECT_PATH = System.getProperty("user.dir");
     private final static String RELATIVE_PROJECT_PATH = "/src/smp/";
     private final static String FILE_EXTENSION = ".pdf";
+    
     /**
      * Creates new form VerifyActivity
      * @param activity
+     * @param planner
      */
     public VerifyActivity(MaintenanceActivity activity, Planner planner) {
         initComponents();
@@ -44,7 +40,10 @@ public class VerifyActivity extends javax.swing.JFrame {
         this.oldWorkspaceNotes = activity.getSite().getWorkSpaceNotes();
         fillFields();
     }
-    
+
+    /**
+     * Fills this jFrame's text areas based on the attributes of the activity passed to this class' constructor. 
+     */    
     private void fillFields(){
         LocalDate date = activity.getDate();
         WeekFields weekFields = WeekFields.of(Locale.getDefault());

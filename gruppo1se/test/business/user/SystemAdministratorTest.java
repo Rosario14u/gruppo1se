@@ -15,6 +15,8 @@ import exception.TypologyException;
 import exception.UsersException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -62,10 +64,12 @@ public class SystemAdministratorTest {
     @After
     public void tearDown() {
     }
-
+    
+    /*=======================================================saveSmpProcedure Test=====================================================*/
+    /*Test of saveSmpProcedure developed by Rosario Gaeta*/
     /**
-     * this test assert that saveSmpProcedure correctly returns true when addSmp returns true because there is an insert
-     * and there is a ridenomination
+     * this test assert that saveSmpProcedure correctly returns true when addSmp returns true because there is an insert<br>
+     * and there is a ridenomination.
      */
     @Test
     public void testSaveSmpProcedureInsert() {
@@ -80,8 +84,8 @@ public class SystemAdministratorTest {
     }
     
     /**
-     * this test assert that saveSmpProcedure correctly returns true when addSmp returns true because there is an insert
-     * and there isn't a ridenomination
+     * this test assert that saveSmpProcedure correctly returns true when addSmp returns true because there is an insert<br>
+     * and there isn't a ridenomination.
      */
     @Test
     public void testSaveSmpProcedureInsertNotRename1() {
@@ -96,8 +100,8 @@ public class SystemAdministratorTest {
     }
     
     /**
-     * this test assert that saveSmpProcedure correctly returns true when addSmp returns true because there is an insert
-     * and there isn't a ridenomination
+     * this test assert that saveSmpProcedure correctly returns true when addSmp returns true because there is an insert<br>
+     * and there isn't a ridenomination.
      */
     @Test
     public void testSaveSmpProcedureInsertNotRename2() {
@@ -112,8 +116,8 @@ public class SystemAdministratorTest {
     }
     
     /**
-     * this test assert that saveSmpProcedure correctly returns true when updateProcedure returns true because there is an update
-     * and there is a ridenomination
+     * this test assert that saveSmpProcedure correctly returns true when updateProcedure returns true because there is an update<br>
+     * and there is a ridenomination.
      */
     @Test
     public void testSaveSmpProcedureUpdate() {
@@ -128,8 +132,8 @@ public class SystemAdministratorTest {
     }
     
     /**
-     * this test assert that saveSmpProcedure correctly raises exception when addSmp raises exception because the procedure
-     * is already present
+     * this test assert that saveSmpProcedure correctly raises exception when addSmp <br>
+     * raises exception because the procedure is already present.
      * @throws exception.ProcedureException
      */
     @Test(expected = ProcedureException.class)
@@ -143,7 +147,7 @@ public class SystemAdministratorTest {
     }
     
     /**
-     * this test assert that saveSmpProcedure correctly raises exception when procedure passed is empty string
+     * this test assert that saveSmpProcedure correctly raises exception when procedure passed is empty string.
      * @throws exception.ProcedureException
      */
     @Test(expected = ProcedureException.class)
@@ -157,7 +161,7 @@ public class SystemAdministratorTest {
     }
     
     /**
-     * this test assert that saveSmpProcedure correctly raises exception when procedure passed is null
+     * this test assert that saveSmpProcedure correctly raises exception when procedure passed is null.
      * @throws exception.ProcedureException
      */
     @Test(expected = ProcedureException.class)
@@ -169,12 +173,13 @@ public class SystemAdministratorTest {
         }
     }
     
-//=========================================================================================================================================
+//============================= Test of viewUser, makeTypology, readTypology, removeTypology and updateTypology =====================================
+    /*Test methods developed by Vincenza Coppola*/
+   
     /**
      * Test of viewUser method, of class SystemAdministrator.
      * @throws exception.UsersException
      */
-    
     @Test
     public void testViewUser() throws UsersException {
         try {
@@ -194,7 +199,6 @@ public class SystemAdministratorTest {
      * Test of makeTypology method, of class SystemAdministrator.
      * @throws exception.TypologyException
      */
-    
     @Test
     public void testMakeTypology() throws TypologyException{
         try {
@@ -207,6 +211,10 @@ public class SystemAdministratorTest {
         }
     }
     
+    /**
+     * Test of makeTypology method, of class SystemAdministrator.
+     * @throws exception.TypologyException
+     */    
     @Test(expected = TypologyException.class)
     public void testMakeTypologyException() throws TypologyException{
         try {
@@ -218,7 +226,10 @@ public class SystemAdministratorTest {
         }
     }
     
-    
+    /**
+     * Test of makeTypology method, of class SystemAdministrator.
+     * @throws exception.TypologyException
+     */    
     @Test
     public void testMakeTypologyFalse() throws TypologyException{
         try {
@@ -234,8 +245,8 @@ public class SystemAdministratorTest {
     /**
      * Test of readTypologies method, of class SystemAdministrator.
      * @throws exception.TypologyException
+     * @throws exception.NotValidParameterException
      */
-    
     @Test 
     public void testReadTypologies() throws TypologyException, NotValidParameterException{
         System.out.println("readTypologiesTest");
@@ -251,7 +262,6 @@ public class SystemAdministratorTest {
      * Tests of updateTypology method, of class SystemAdministrator.
      * @throws exception.TypologyException
      */
-    
     @Test 
     public void testUpdateTypology() throws TypologyException {
         try {
@@ -264,6 +274,10 @@ public class SystemAdministratorTest {
         }
     }
     
+    /**
+     * Tests of updateTypology method, of class SystemAdministrator.
+     * @throws exception.TypologyException
+     */   
     @Test 
     public void testUpdateTypologyFalse() throws TypologyException {
         System.out.println("incorrect updateTypologyTest");
@@ -276,6 +290,11 @@ public class SystemAdministratorTest {
         }
     }
     
+    /**
+     * Tests of updateTypology method, of class SystemAdministrator.
+     * @throws exception.TypologyException
+     * @throws exception.NotValidParameterException
+     */   
     @Test(expected = TypologyException.class) 
     public void testUpdateTypologyException() throws TypologyException, NotValidParameterException {
         System.out.println("updateTypologyExceptionTest");
@@ -289,21 +308,30 @@ public class SystemAdministratorTest {
      * @throws exception.TypologyException
      * @throws exception.NotValidParameterException
      */
-    
     @Test
     public void testRemoveTypology() throws TypologyException, NotValidParameterException {
         System.out.println("removeTypologyTest");
         String typology = "TypologyTrue";
         assertEquals(true,instance.removeTypology(typology));
     }
-    
+
+    /**
+     * Tests of removeTypology method, of class SystemAdministrator.
+     * @throws exception.TypologyException
+     * @throws exception.NotValidParameterException
+     */    
     @Test
     public void testRemoveTypologyFalse() throws TypologyException, NotValidParameterException {
         System.out.println("removeTypologyFalseTest");
         String typology = "TypologyFalse";
         assertEquals(false,instance.removeTypology(typology));
     }
-    
+
+    /**
+     * Tests of removeTypology method, of class SystemAdministrator.
+     * @throws exception.TypologyException
+     * @throws exception.NotValidParameterException
+     */    
     @Test(expected = TypologyException.class)
     public void testRemoveTypologyException() throws TypologyException, NotValidParameterException {
         System.out.println("removeTypologyExceptionTest");
@@ -339,14 +367,15 @@ public class SystemAdministratorTest {
     
     
     
-    //=========================================================================================================================================
+    /*=======================================================removeUsers Test=====================================================*/
+    
+    /*Test of removeUsers developed by Rosario Gaeta*/
     
     /**
-     * this test assert that removeUsers correctly returns the number of deleted rows when addSmp returns true because there is an insert
-     * and there is a ridenomination
+     * This test assert that removeUsers correctly returns the number of rows deleted.
      */
     @Test
-    public void testRemoveUsers() throws NotValidParameterException{
+    public void testRemoveUsers() {
         try {
             List<String> usernameList = new ArrayList<>() {{
                 add("username1");
@@ -358,10 +387,76 @@ public class SystemAdministratorTest {
             assertEquals(returnedNumberOfDeletedRow,usernameList.size());
         } catch (UsersException ex) {
             fail("UsersException");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
         }
     }
-
     
+    /**
+     * This test assert that removeUsers correctly returns the number of rows deleted.
+     */
+    @Test
+    public void testRemoveUsersZero() {
+        try {
+            List<String> usernameList = new ArrayList<>() {{
+                add("username1");
+            }};
+            int returnedNumberOfDeletedRow = admin.removeUsers(usernameList);
+            assertEquals(returnedNumberOfDeletedRow,0);
+        } catch (UsersException ex) {
+            fail("UsersException");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }        
+    }
+    
+    /**
+     * This test assert that removeUsers correctly returns 0 if an empty list is passed.
+     */
+    @Test
+    public void testRemoveUsersIsEmpty() {
+        try {
+            List<String> usernameList = new ArrayList<>();
+            int returnedNumberOfDeletedRow = admin.removeUsers(usernameList);
+            assertEquals(returnedNumberOfDeletedRow,usernameList.size());
+        } catch (UsersException ex) {
+            fail("UsersException");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
+    }
+    
+    /**
+     * This test assert that removeUsers correctly returns 0 if null is passed.
+     */
+    @Test
+    public void testRemoveUsersNull(){
+        try {
+            int returnedNumberOfDeletedRow = admin.removeUsers(null);
+            assertEquals(returnedNumberOfDeletedRow,0);
+        } catch (UsersException ex) {
+            fail("UsersException");
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
+    }
+    
+    /**
+     * This test assert that removeUsers correctly raises an UsersException <br>
+     * when deleteUsers raises an exception.
+     */
+    @Test(expected = UsersException.class)
+    public void testRemoveUsersRaisesException() throws UsersException{
+        try {
+            List<String> usernameList = new ArrayList<>() {{
+                add("username1");
+                add("username2");
+            }};
+            int returnedNumberOfDeletedRow = admin.removeUsers(usernameList);
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
+    }
     
 //=========================================================================================================================================
 
@@ -374,18 +469,7 @@ public class SystemAdministratorTest {
         }
     }
     
-    @Test
-    public void testRemoveUsersZero() throws NotValidParameterException{
-        try {
-            List<String> usernameList = new ArrayList<>() {{
-                add("username1");
-            }};
-            int returnedNumberOfDeletedRow = admin.removeUsers(usernameList);
-            assertEquals(returnedNumberOfDeletedRow,0);
-        } catch (UsersException ex) {
-            
-        }        
-    }
+    
     
     public void testModifyUserUnsuccessfulUpdateToPlanner() throws NotValidParameterException{
         try{
@@ -394,37 +478,7 @@ public class SystemAdministratorTest {
             fail("UsersException");
         }
     }
-    
-    @Test
-    public void testRemoveUsersIsEmpty() throws NotValidParameterException{
-        try {
-            List<String> usernameList = new ArrayList<>();
-            int returnedNumberOfDeletedRow = admin.removeUsers(usernameList);
-            assertEquals(returnedNumberOfDeletedRow,usernameList.size());
-        } catch (UsersException ex) {
-            fail("UsersException");
-        }
-    }
-    
-    @Test
-    public void testRemoveUsersNull() throws NotValidParameterException{
-        try {
-            int returnedNumberOfDeletedRow = admin.removeUsers(null);
-            assertEquals(returnedNumberOfDeletedRow,0);
-        } catch (UsersException ex) {
-            fail("UsersException");
-        }
-    }
-    
-    @Test(expected = UsersException.class)
-    public void testRemoveUsersRaisesException() throws UsersException, NotValidParameterException{
-        List<String> usernameList = new ArrayList<>() {{
-            add("username1");
-            add("username2");
-        }};
-        int returnedNumberOfDeletedRow = admin.removeUsers(usernameList);
-    }
-    
+   
     
     @Test(expected = UsersException.class)
     public void testModifyUserUpdateToPlannerException() throws UsersException, NotValidParameterException{

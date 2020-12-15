@@ -17,7 +17,6 @@ import exception.DateException;
 import exception.MaintenanceActivityException;
 import exception.MaterialException;
 import exception.NotValidParameterException;
-import exception.SiteException;
 import exception.SkillException;
 import exception.TypologyException;
 import exception.UsersException;
@@ -33,19 +32,20 @@ import persistence.user.MaintainerSkillDAO;
 import persistence.user.UsersDAO;
 
 /**
- *
+ * <p>An object of the class Planner provides a series of method to manage Maintenance Activity<br>
+ * and to assign this activities to maintainers. This class requires a series of dao object (as attributes) to performs this
+ * operation.</p> 
  * @author rosar
  */
 public class Planner extends User {
 
-    private MaintenanceActivityDAO maintenanceActivityDao;
-    private RequiredMaterialForMaintenanceDAO requiredMaterialsDao;
-    private RequiredSkillForMaintenanceDAO requiredSkillsDao;
-    private UsersDAO userDao;
-    private EmployeeAppointmentDAO employeeAppointmentDao;
-    private MaintainerSkillDAO maintainerSkillDao;
-    private TypologyDAO typologyDao;
-    
+    private final MaintenanceActivityDAO maintenanceActivityDao;
+    private final RequiredMaterialForMaintenanceDAO requiredMaterialsDao;
+    private final RequiredSkillForMaintenanceDAO requiredSkillsDao;
+    private final UsersDAO userDao;
+    private final EmployeeAppointmentDAO employeeAppointmentDao;
+    private final MaintainerSkillDAO maintainerSkillDao;
+    private final TypologyDAO typologyDao;
     
     /**
      * Constructor of Planner
@@ -72,14 +72,10 @@ public class Planner extends User {
         this.typologyDao = typologyDao;
     }
 
-    /**
-     * 
-     * @return RequiredMaterialDAO object
-     */
     public RequiredMaterialForMaintenanceDAO getRequiredMaterialsDao() {
         return requiredMaterialsDao;
     }
-    
+
     /**
      * This method returns Maintenance Activity with the passed activityId if
      * exists, null otherwise<br>
@@ -108,10 +104,12 @@ public class Planner extends User {
         }
     }
 
+   
     /**
-     *
-     * @param activityId
-     * @param branchOffice
+     * This method allows to modify an existent Maintenance
+     * activity acccording to actvityId parameter
+     * @param activityId ID of maintenance activity
+     * @param branchOffice 
      * @param area
      * @param typology
      * @param activityDescription
@@ -119,25 +117,36 @@ public class Planner extends User {
      * @param date
      * @param interruptibleActivity
      * @param typologyOfActivity
-     * @return
+     * @return {@code true} if the the change
+     * is successful, {@code false} otherwise
      * @throws MaintenanceActivityException
-     * @throws exception.NotValidParameterException
+     * @throws NotValidParameterException 
      */
     //Developed by Antonio Gorrasi
-    public boolean modifyMaintenanceActivity(int activityId, String branchOffice, String area, String typology, String activityDescription,
-            int estimatedInterventionTime, String date, boolean interruptibleActivity,
-            Typology typologyOfActivity) throws MaintenanceActivityException, NotValidParameterException {
+    public boolean modifyMaintenanceActivity(int activityId, String branchOffice, String area, 
+            String typology, String activityDescription, int estimatedInterventionTime, 
+            String date, boolean interruptibleActivity, Typology typologyOfActivity)
+            throws MaintenanceActivityException, NotValidParameterException {
 
         if (maintenanceActivityDao == null) {
-            throw new NotValidParameterException("Failure to modify data relating to maintenance activities");
+            throw new NotValidParameterException("Failure to modify data relating to activities");
         }
 
-        MaintenanceActivity newActivity = MaintenanceActivityFactory.make(typologyOfActivity, activityId, branchOffice, area, null, typology, activityDescription,
+        MaintenanceActivity newActivity = MaintenanceActivityFactory.make(typologyOfActivity, 
+                activityId, branchOffice, area, null, typology, activityDescription, 
                 estimatedInterventionTime, date, null, null, interruptibleActivity);
 
         return maintenanceActivityDao.modifyMaintenaceActivity(newActivity);
     }
 
+    /**
+     * 
+     * @param activityId
+     * @return {@code boolean} true if MaintenanceActivity is removed from database.
+     * @throws MaintenanceActivityException if there's an SQL error while deleting the activity.
+     * @throws NotValidParameterException if this Planner has no MaintenanceActivityDAO.
+     */
+    /*Developed by Vincenza Coppola*/    
     public boolean removeMaintenanceActivity(int activityId) throws MaintenanceActivityException, NotValidParameterException {
         if (maintenanceActivityDao == null) {
             throw new NotValidParameterException("Failure to remove data relating to maintenance activities");
@@ -182,6 +191,13 @@ public class Planner extends User {
             throw new MaintenanceActivityException(ex.getMessage());
         }
     }
+    
+    public List<Material> viewRequiredMaterialsByActivityId(int activityId) throws MaterialException, NotValidParameterException {
+        if (requiredMaterialsDao == null) {
+            throw new NotValidParameterException("Failure to create data relating to maintenance activities");
+        }
+        return requiredMaterialsDao.retrieveMaterialsByActivityId(activityId);
+    }
 
     //Developed by Antonio Gorrasi
     public boolean addRequiredMaterial(int activityId, List<Material> requiredMaterial) throws MaterialException, NotValidParameterException {
@@ -208,10 +224,11 @@ public class Planner extends User {
     }
 
     //Developed by Antonio Gorrasi
-    public List<MaintenanceActivity> viewMaintenanceActivityByWeek(int week, int year) throws MaintenanceActivityException, NotValidParameterException {
+    public List<MaintenanceActivity> viewMaintenanceActivityByWeek(int week, int year) 
+            throws MaintenanceActivityException, NotValidParameterException {
         
         if (maintenanceActivityDao == null || requiredSkillsDao == null) {
-            throw new NotValidParameterException("Failure to retrieve data relating to maintenance activities");
+            throw new NotValidParameterException("Failure to retrieve data relating to activities");
         }
         try { 
             List<LocalDate> date = WeekConverter.getStartEndDate(week, year);
@@ -234,7 +251,13 @@ public class Planner extends User {
             throw new MaintenanceActivityException(ex.getMessage());
         }
     }
-
+    
+    /**
+     * This method allows to filter a list of maintenance activity,
+     * getting only the activity that have a not null procedure.
+     * @param listActivity list of activity
+     * @return {@code List<MaintenanceActivity>} listOfMaintenanceActivity
+     */
     private List<MaintenanceActivity> filterActivityWithoutProcedure(List<MaintenanceActivity> listActivity) {
         return listActivity.stream().filter(activity -> activity.getMaintenanceProcedure() != null).collect(Collectors.toList());
     }
@@ -262,7 +285,7 @@ public class Planner extends User {
     /**
      * This method allows to save appointments of a maintainer associated with a maintenance activity and<br>
      * updates the maintenance activity date. Returns true if the operation is successful, false otherwise.<br>
-     * EmployeeAppointmentDao and MaintenanceActivityDao are required
+     * EmployeeAppointmentDao and MaintenanceActivityDao are required.
      * @param username Username of the maintainer
      * @param activity Maintenance activity to be assigned to the maintainer
      * @param appointments Appointments to save
@@ -270,7 +293,7 @@ public class Planner extends User {
      * @throws AppointmentException if username is not valid or appointemnts list is null
      * @throws MaintenanceActivityException if activity passed is null
      * @throws NotValidParameterException if required dao ( EmployeeAppointmentDao and MaintenanceActivityDao) <br>
-     * are not correctly initialized
+     * are not correctly initialized.
      */
     /*Developed by Rosario Gaeta*/
     public boolean saveAppointments(String username, MaintenanceActivity activity, List<Appointment> appointments)

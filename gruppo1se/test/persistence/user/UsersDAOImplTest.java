@@ -5,7 +5,6 @@
  */
 package persistence.user;
 
-import business.user.*;
 import dto.MaintainerDTO;
 import dto.PlannerDTO;
 import dto.SystemAdministratorDTO;
@@ -24,16 +23,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import persistence.database.ConnectionDB;
-import persistence.maintenanceactivity.MaintenanceProcedureDAO;
 import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
 import persistence.maintenanceactivity.TypologyDAOImpl;
-import stub.EmployeeAppointmentDAOStub;
-import stub.MaintenanceActivityDAOStub;
-import stub.MaintenanceProcedureDAOStub;
-import stub.RequiredMaterialForMaintenanceDAOStub;
-import stub.RequiredSkillForMaintenanceDAOStub;
-import stub.TypologyDAOStub;
-import stub.UsersDAOStub;
 
 /**
  *
@@ -45,6 +36,7 @@ public class UsersDAOImplTest{
     private static final String DELETE_USERS = "DELETE FROM Users WHERE username=?";
     private static final String INSERT_USERS = "INSERT INTO Users (username, password, role) VALUES (?,?,?)";
     private static final String SELECT_USERS = "SELECT * FROM Users WHERE username=?";
+    private static final String DELETE_ALL_USERS = "DELETE FROM USERS";
     private final UsersDAOImpl instance = new UsersDAOImpl();
     private final UsersDAOImpl instance2 = new UsersDAOImpl();
     private final TypologyDAOImpl typology = new TypologyDAOImpl();
@@ -168,7 +160,8 @@ public class UsersDAOImplTest{
         conn.rollback();
     }
     
-//===============================================================================================================================================
+//==================================Test of method readUser==============================================================================
+    /*Test method developed by Vincenza Coppola*/
     
     private void insertUserDefault(Statement stm, UserDTO user) throws SQLException{
         String insert = "INSERT INTO Users VALUES ('"+user.getUsername()+"','"+user.getPassword()+"'";
@@ -183,8 +176,10 @@ public class UsersDAOImplTest{
     
     /**
      * Test of readUser method, of class UsersDAOImpl.
+     * @throws exception.UsersException
+     * @throws java.sql.SQLException
      */
-  @Test
+    @Test
     public void testReadUsers() throws UsersException, SQLException{
         try {
             System.out.println("readUsers");
@@ -405,11 +400,12 @@ public class UsersDAOImplTest{
             Logger.getLogger(UsersDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    //===============================================================================================================================================
+    /*==================================================test deleteUsers==================================================================================*/
     
+    /*Test of deleteUsers method developed by Rosario Gaeta*/
     
     /**
-     * this method assert that deleteUsers correctly delete the rows in database
+     * This method assert that deleteUsers correctly deletes the rows in database.
      */
     @Test
     public void testDeleteUsers(){
@@ -439,7 +435,7 @@ public class UsersDAOImplTest{
     
     
     /**
-     * this method assert that deleteUsers correctly return 0 if there aren't the searched username in database
+     * This method assert that deleteUsers correctly return 0 if the searched username is not present in the database.
      */
     @Test
     public void testDeleteUsersZero(){
@@ -463,7 +459,7 @@ public class UsersDAOImplTest{
     
     
     /**
-     * this method assert that deleteUsers correctly return 0 if an empty list is passed
+     * This method asserts that deleteUsers correctly return 0 if an empty list is passed.
      */
     @Test
     public void testDeleteUsersZero2(){
@@ -478,7 +474,7 @@ public class UsersDAOImplTest{
     
     
     /**
-     * this method assert that deleteUsers correctly return 0 if null is passed
+     * This method assert that deleteUsers correctly return 0 if null is passed.
      */
     @Test
     public void testDeleteUsersZero3(){
@@ -491,7 +487,7 @@ public class UsersDAOImplTest{
     }
     
  //======================================================================================================================
-    private static String DELETE_ALL_USERS = "DELETE FROM USERS";
+    
     
     
     @Test

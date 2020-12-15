@@ -43,7 +43,7 @@ import persistence.user.UsersDAOImpl;
 import presentation.manager.MessageManager;
 
 /**
- *
+ * GUI to visualize Maintainer Availability in a specific week
  * @author gorra
  */
 public class MaintainerAvailability extends javax.swing.JFrame {
@@ -52,7 +52,7 @@ public class MaintainerAvailability extends javax.swing.JFrame {
     private DefaultTableModel tableModel;
     private List<MaintainerDTO> maintainerList;
     private ActivityAssignment jDialogGUI;
-
+    private static final int NUM_COL = 9; 
     /**
      * Creates new form MaintainerAvailability
      */
@@ -65,7 +65,9 @@ public class MaintainerAvailability extends javax.swing.JFrame {
         PercentageCellRenderer renderer = new PercentageCellRenderer(); // Cell renderer to color cells of the table 
         maintainerAvailabilityTable.setDefaultRenderer(Object.class, renderer);
     }
-
+    /**
+     * This method initializes the fields of the GUI.
+     */
     private void initializeFields() {
         try {
             setAssignedLabel();
@@ -73,13 +75,12 @@ public class MaintainerAvailability extends javax.swing.JFrame {
             WeekFields weekFields = WeekFields.of(Locale.getDefault());
             int weekNumber = date.get(weekFields.weekOfWeekBasedYear());
             weekLabel.setText(Integer.toString(weekNumber));
-            this.activity = activity;
             activityInfoLabel.setText(Integer.toString(activity.getActivityId()) + " - " + activity.getSite().getArea()
                     + " - " + activity.getTypology() + " - " + Integer.toString(activity.getEstimatedInterventionTime()) + "'");
             if (activity.getMaintenanceProcedure().getSkills() != null) {
                 StringBuilder builder2 = new StringBuilder();
                 for (Skill skill : activity.getMaintenanceProcedure().getSkills()) {
-                    builder2.append(skill.toString() + "\n");
+                    builder2.append(skill.toString()).append("\n");
                 }
                 skillTextArea.setText(builder2.toString());
                 skillTextArea.setEnabled(false);
@@ -89,31 +90,34 @@ public class MaintainerAvailability extends javax.swing.JFrame {
             MessageManager.errorMessage(this, ex.getMessage());
         }
     }
-
+    
+    /**
+     * This method allows to fill the jTable with information about Maintainer (username, skills accordance and days availability<br>
+     * of the maintainers in a specific week. 
+     */
+    /*Method developed by Rosario Gaeta*/
     private void populateTable() {
         try {
-            int numProcedureSkill = activity.getMaintenanceProcedure().getSkills().size();
-            
-            maintainerList = planner.viewEmployeeAvailability(WeekConverter.getWeek(activity.getDate()), WeekConverter.getYear(activity.getDate()));
+            int numProcedureSkill = activity.getMaintenanceProcedure().getSkills().size(); // get the list of activity skills
+            maintainerList = planner.viewEmployeeAvailability(WeekConverter.getWeek(activity.getDate()),
+                    WeekConverter.getYear(activity.getDate())); // get a list of maintainer with their skills and appointments
             for (MaintainerDTO maintainer : maintainerList) {
-                String[] rowTable = new String[]{"", "", "100%", "100%", "100%", "100%", "100%", "100%", "100%"};
-                //float[] rowTable = new float[] {100,100,100,100,100,100,100};
-                rowTable[0] = maintainer.getUsername();
+                String[] rowTable = new String[]{"", "", "100%", "100%", "100%", "100%", "100%", "100%", "100%"}; // initial row
+                rowTable[0] = maintainer.getUsername(); // adding of the maintainer username to the row
                 maintainer.getSkills().retainAll(activity.getMaintenanceProcedure().getSkills());
-                rowTable[1] = maintainer.getSkills().size() + "/" + numProcedureSkill;
+                rowTable[1] = maintainer.getSkills().size() + "/" + numProcedureSkill; // adding of the skills to the row
                 for (Appointment appointment : maintainer.getAppointmentsInWeek()) {
                     System.out.println(maintainer.getUsername() + " " + appointment.toString());
-                    int index = appointment.getStartDateAndTime().getDayOfWeek().getValue();
+                    int index = appointment.getStartDateAndTime().getDayOfWeek().getValue(); // conversion of the day of the week in an index
                     float totalCellPercentage=  Float.valueOf(rowTable[index+1].replaceAll("%", ""));
+                    // subtracts the duration of an appointment from the total (in percentage)
                     totalCellPercentage = (totalCellPercentage - ((float) appointment.getDuration() * 100) / 420);
                     rowTable[index+1] = totalCellPercentage + "%";
                 }
-                for(int index=2; index < 9; index++){
-                    rowTable[index] = Math.round(Float.valueOf(rowTable[index].replaceAll("%", ""))) + "%";
+                for(int index=2; index < NUM_COL ; index++){
+                    rowTable[index] = Math.round(Float.valueOf(rowTable[index].replaceAll("%", ""))) + "%"; // final rounding
                 }
-                
-                tableModel.addRow(rowTable);
-                
+                tableModel.addRow(rowTable); // inserting of a row
             }
         } catch (UsersException | NotValidParameterException ex) {
             MessageManager.errorMessage(this,ex.getMessage());
@@ -325,7 +329,13 @@ public class MaintainerAvailability extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_maintainerAvailabilityTableMouseClicked
 
-    
+    /**
+     * This method sets the label to "assigned" if the label is already assigned (using the method verifyActivityAssignmentMethod),
+     * not assigned if otherwise.
+     * @throws MaintenanceActivityException
+     * @throws NotValidParameterException
+     * @throws AppointmentException 
+     */
     private void setAssignedLabel() throws MaintenanceActivityException, NotValidParameterException, AppointmentException{
         if(!planner.verifyActivityAssignment(activity.getActivityId(), activity.getEstimatedInterventionTime())){
             assignedLabel.setBackground(new Color(255, 0, 0));

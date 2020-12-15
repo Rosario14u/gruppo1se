@@ -82,7 +82,14 @@ public class EmployeeAppointmentDAOImplTest {
             Logger.getLogger(EmployeeAppointmentDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    
+    /*=============================================testSetEmployeeAvailability=================================================================*/
+    
+    /* test of getEmployeeAvailability developed by Rosario Gaeta */
+    /**
+     * This test method assert that getEmployeeAvailability correctly returns a list of Appointments.
+     */
     @Test
     public void testGetEmployeeAvailabilitySuccessfulRetrieve() {
         try{
@@ -107,6 +114,10 @@ public class EmployeeAppointmentDAOImplTest {
         }
     }
     
+    /**
+     * This test method assert that getEmployeeAvailability correctly returns an empty list when<br>
+     * there aren't appointments for that maintainer in the specified range of date.
+     */
     @Test
     public void testGetEmployeeAvailabilityNotIncluded() {
         try{
@@ -130,7 +141,11 @@ public class EmployeeAppointmentDAOImplTest {
         }
     }
     
-    
+    /**
+     * This test method assert that getEmployeeAvailability correctly raises a DateException when<br>
+     * start date is after end date.
+     * @throws exception.DateException
+     */
     @Test(expected = DateException.class)
     public void testGetEmployeeAvailabilityWrongStartAndStop() throws DateException {
         try{
@@ -150,6 +165,11 @@ public class EmployeeAppointmentDAOImplTest {
         }
     }
     
+    /**
+     * This test method assert that getEmployeeAvailability correctly raises a AppointmentException when<br>
+     * a null username is passed.
+     * @throws AppointmentException 
+     */
     @Test(expected = AppointmentException.class)
     public void testGetEmployeeAvailabilityUsernameNull() throws AppointmentException {
         try{
@@ -169,6 +189,11 @@ public class EmployeeAppointmentDAOImplTest {
         }
     }
     
+    /**
+     * This test method assert that getEmployeeAvailability correctly raises a AppointmentException when<br>
+     * an empty username string is passed.
+     * @throws AppointmentException 
+     */
     @Test(expected = AppointmentException.class)
     public void testGetEmployeeAvailabilityUsernameEmpty() throws AppointmentException {
         try{
@@ -190,6 +215,13 @@ public class EmployeeAppointmentDAOImplTest {
     
     //=============================================testSetEmployeeAvailability=================================================================
     
+    /* test of setEmployeeAvailability developed by Rosario Gaeta */
+    
+    
+    /**
+     * This method assert that addEmployeeAvailability correctly stores a list of appointments<br>
+     * in the database and returns true.
+     */
     @Test
     public void testAddEmployeeAvailabilitySuccessful() {
         try{
@@ -208,7 +240,10 @@ public class EmployeeAppointmentDAOImplTest {
         }
     }
     
-    
+    /**
+     * This method assert that addEmployeeAvailability correctly returns false if<br>
+     * an empty list of appointments is passed.
+     */
     @Test
     public void testAddEmployeeAvailabilityUnsuccessfulEmpty() {
         try{
@@ -219,6 +254,11 @@ public class EmployeeAppointmentDAOImplTest {
         }
     }
     
+    /**
+     * This method assert that addEmployeeAvailability correctly raises an AppointmentException if<br>
+     * appointments are already present.
+     * @throws exception.AppointmentException
+     */
     @Test(expected = AppointmentException.class)
     public void testAddEmployeeAvailabilityUnsuccessful() throws AppointmentException {
         try{
@@ -233,12 +273,22 @@ public class EmployeeAppointmentDAOImplTest {
         }
     }
     
+    
+    /**
+     * This method assert that addEmployeeAvailability correctly raises an AppointmentException if<br>
+     * a null list is passed.
+     * @throws exception.AppointmentException
+     */
     @Test(expected = AppointmentException.class)
     public void testAddEmployeeAvailabilityAppointmentNull() throws AppointmentException {
         employeeAppointmentDAO.addEmployeeAvailability("username", null);
     }
     
-     
+    /**
+     * This method assert that addEmployeeAvailability correctly raises an AppointmentException if<br>
+     * a null username is passed.
+     * @throws exception.AppointmentException
+     */ 
     @Test(expected = AppointmentException.class)
     public void testAddEmployeeAvailabilityUsernameNull() throws AppointmentException {
         try{
@@ -254,6 +304,11 @@ public class EmployeeAppointmentDAOImplTest {
         }
     }
     
+    /**
+     * This method assert that addEmployeeAvailability correctly raises an AppointmentException if<br>
+     * a empty username is passed.
+     * @throws exception.AppointmentException
+     */ 
     @Test(expected = AppointmentException.class)
     public void testAddEmployeeAvailabilityUsernameEmpty() throws AppointmentException {
         try{
@@ -272,6 +327,12 @@ public class EmployeeAppointmentDAOImplTest {
     
     //=============================================testGetDurationOfAssignedActivity=================================================================
     
+    /* test of getDurationOfAssignedActivity developed by Rosario Gaeta */
+    
+    /**
+     * This method assert that getDurationOfAssignedActivity correctly returns the sum of duration appoitments<br>
+     * associated with a specific Maintenance activity.
+     */
     @Test
     public void testGetDurationOfAssignedActivitySucceful() {
         try{
@@ -288,13 +349,16 @@ public class EmployeeAppointmentDAOImplTest {
             int returnedSum = employeeAppointmentDAO.getDurationOfAssignedActivity(1);
             assertEquals("sum of duration not equal",returnedSum,expectedSum);
         }catch(SQLException ex){
-           Logger.getLogger(EmployeeAppointmentDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
+           fail("SQLException");
         } catch (AppointmentException ex) {
-            fail("AppointmentException");
+           fail("AppointmentException");
         }
     }
     
-    
+    /**
+     * This method assert that getDurationOfAssignedActivity correctly returns 0 if there aren't appoitments<br>
+     * associated with a specific Maintenance activity.
+     */
     @Test
     public void testGetDurationOfAssignedActivitySuccefulZero() {
         try{
@@ -308,21 +372,12 @@ public class EmployeeAppointmentDAOImplTest {
             int returnedSum = employeeAppointmentDAO.getDurationOfAssignedActivity(1);
             assertEquals("sum of duration not equal",returnedSum,expectedSum);
         }catch(SQLException ex){
-           Logger.getLogger(EmployeeAppointmentDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
+           fail("SQLException");
         } catch (AppointmentException ex) {
             fail("AppointmentException");
         }
     }
     
-    @Test(expected = AppointmentException.class)
-    public void testGetDurationOfAssignedActivitySuccefulZeroId() throws AppointmentException {
-        int returnedSum = employeeAppointmentDAO.getDurationOfAssignedActivity(0);
-    }
-    
-    @Test(expected = AppointmentException.class)
-    public void testGetDurationOfAssignedActivitySuccefulNegativeId() throws AppointmentException {
-        int returnedSum = employeeAppointmentDAO.getDurationOfAssignedActivity(-1);
-    }
     
     
     //=============================================function of utility=================================================================

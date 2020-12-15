@@ -70,7 +70,14 @@ public class MaintenanceProcedureDAOImplTest {
             Logger.getLogger(MaintenanceProcedureDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    /*===========================================================test addSmp=================================================*/
+    
+    /*test of addSmp developed by Rosario Gaeta*/
+    
+    /**
+     * This method asserts that addSmp correctly add a smp file procedure in database and returns true. 
+     */
     @Test
     public void testAddSmpTrue() {
         try {
@@ -84,6 +91,10 @@ public class MaintenanceProcedureDAOImplTest {
         }       
     }
     
+    /**
+     * This method asserts that addSmp correctly raises a ProcedureException when addSmp tries<br>
+     * to add a smp already present in database. 
+     */
     @Test(expected = ProcedureException.class)
     public void testAddSmpAlreadyPresent() throws ProcedureException {
         try {
@@ -95,6 +106,10 @@ public class MaintenanceProcedureDAOImplTest {
         }     
     }
     
+    /**
+     * This method asserts that addSmp correctly raises a ProcedureException when a null<br>
+     * smp is passed. 
+     */
     @Test(expected = ProcedureException.class)
     public void testAddSmpNull() throws ProcedureException {
         try {
@@ -106,18 +121,33 @@ public class MaintenanceProcedureDAOImplTest {
         
     }
     
+    /**
+     * This method performs an insert of a smp in the database.
+     * @param smp
+     * @throws SQLException 
+     */
     private void insert_procedure(String smp) throws SQLException{
         PreparedStatement pstm = conn.prepareStatement(INSERT_PROCEDURE);
         pstm.setString(1, smp);
         pstm.executeUpdate();
     }
     
+    /**
+     * This method performs a delete of a smp in the database.
+     * @param smp
+     * @throws SQLException 
+     */
     private void delete_procedure(String smp) throws SQLException{
         PreparedStatement pstm = conn.prepareStatement(DELETE_PROCEDURE);
         pstm.setString(1, smp);
         pstm.executeUpdate();
     }
     
+    /**
+     * This method performs a select of a smp in the database.
+     * @param smp
+     * @throws SQLException 
+     */
     private void select_procedure(String smp) throws SQLException{
         PreparedStatement pstm = conn.prepareStatement(SELECT_PROCEDURE);
         pstm.setString(1, smp);
@@ -131,6 +161,13 @@ public class MaintenanceProcedureDAOImplTest {
         
     }
     
+     /*===========================================================test addSmp=================================================*/
+    
+    /*test of updateSmp developed by Rosario Gaeta*/
+    
+    /**
+     * This method asserts that updateSmp correctly update a smp in database and returns true (when oldSmp is present).
+     */
     @Test
     public void updateSmpSuccessfulUpdate() {
         try {
@@ -147,6 +184,9 @@ public class MaintenanceProcedureDAOImplTest {
         } 
     }
     
+    /**
+     * This method asserts that updateSmp correctly returns false if oldSmp is not present in database.
+     */
     @Test
     public void updateSmpUnsuccessfulUpdate() {
         try {
@@ -161,6 +201,10 @@ public class MaintenanceProcedureDAOImplTest {
         } 
     }
     
+    /**
+     * This method asserts that updateSmp correctly raises a ProcedureException when oldSmp is null.
+     * @throws ProcedureException 
+     */
     @Test(expected = ProcedureException.class)
     public void updateSmpUnsuccessfulUpdateException1() throws ProcedureException {
         try {
@@ -173,6 +217,10 @@ public class MaintenanceProcedureDAOImplTest {
         } 
     }
     
+    /**
+     * This method asserts that updateSmp correctly raises a ProcedureException when oldSmp is an empty string.
+     * @throws ProcedureException 
+     */
     @Test(expected = ProcedureException.class)
     public void updateSmpUnsuccessfulUpdateException2() throws ProcedureException {
         try {
@@ -185,6 +233,10 @@ public class MaintenanceProcedureDAOImplTest {
         } 
     }
     
+    /**
+     * This method asserts that updateSmp correctly raises a ProcedureException when newProcedure is null.
+     * @throws ProcedureException 
+     */
     @Test(expected = ProcedureException.class)
     public void updateSmpUnsuccessfulUpdateException3() throws ProcedureException {
         try {
@@ -197,16 +249,21 @@ public class MaintenanceProcedureDAOImplTest {
         } 
     }
     
-    
-    @Test(expected = ProcedureException.class)
-    public void updateSmpUnsuccessfulUpdateException5() throws ProcedureException {
+    /**
+     * This method asserts that updateSmp correctly returns false when newProcedure and oldSmp are equals.
+     */
+    @Test
+    public void updateSmpUnsuccessfulUpdateException4() {
         try {
             MaintenanceProcedure procedure = new MaintenanceProcedure("ProvaSmp1");
             delete_procedure("ProvaSmp1");
             insert_procedure("ProvaSmp1");
             boolean retVal = procedureDao.updateSmp(procedure, "ProvaSmp1");
+            assertFalse("UnsuccessfulUpdate", retVal);
         } catch (SQLException ex) {
             fail("SQLEXception");
+        } catch (ProcedureException ex) {
+            fail("ProcedureException");
         } 
     }
 }

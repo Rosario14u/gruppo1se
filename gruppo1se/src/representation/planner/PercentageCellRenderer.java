@@ -12,11 +12,21 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
 /**
- *
+ * This Class allows to renderize cell in different color.
  * @author rosar
  */
 public class PercentageCellRenderer implements TableCellRenderer{
     private static final TableCellRenderer RENDERER = new DefaultTableCellRenderer();
+    /**
+     * This method returns a Color object in dependence of the type and value of cell
+     * @param table the table to renderize
+     * @param value 
+     * @param isSelected
+     * @param hasFocus
+     * @param row
+     * @param column
+     * @return The Color
+     */
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
        Component c = RENDERER.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -42,7 +52,11 @@ public class PercentageCellRenderer implements TableCellRenderer{
        c.setBackground(color);
        return c;
     }
-    
+    /**
+     * 
+     * @param percentage
+     * @return A Color
+     */
     private Color renderer(float percentage) {
         Color color = Color.lightGray;
         if(percentage>0.8 && percentage<=1){

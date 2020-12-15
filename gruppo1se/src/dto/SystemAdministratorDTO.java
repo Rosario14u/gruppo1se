@@ -6,13 +6,19 @@
 package dto;
 
 /**
- *
+ * The {@code SystemAdministratorDTO} class, implements
+ * the Data transfer object of SystemAdministrator
  * @author gorra
  */
-public class SystemAdministratorDTO extends UserDTO{
-    
+public class SystemAdministratorDTO extends UserDTO {
+
     public SystemAdministratorDTO(String username, String password) {
         super(username, password);
+    }
+
+    @Override
+    public String toString() {
+        return "SystemAdministratorDTO " + super.toString();
     }
     
 }

@@ -5,10 +5,6 @@
  */
 package stub;
 
-import business.user.Maintainer;
-import business.user.Planner;
-import business.user.SystemAdministrator;
-import business.user.User;
 import dto.MaintainerDTO;
 import dto.PlannerDTO;
 import dto.SystemAdministratorDTO;
@@ -17,10 +13,7 @@ import exception.NotValidParameterException;
 import exception.UsersException;
 import java.util.ArrayList;
 import java.util.List;
-import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
-import persistence.maintenanceactivity.TypologyDAOImpl;
 import persistence.user.UsersDAO;
-import persistence.user.UsersDAOImpl;
 
 /**
  *
@@ -28,6 +21,13 @@ import persistence.user.UsersDAOImpl;
  */
 public class UsersDAOStub implements UsersDAO {
 
+    /**
+     * 
+     * @return
+     * @throws UsersException
+     * @throws NotValidParameterException 
+     */
+    /*Developed by Vincenza Coppola*/
     @Override
     public List<UserDTO> readUsers() throws UsersException, NotValidParameterException {
         List<UserDTO> users = new ArrayList<>();
@@ -45,6 +45,13 @@ public class UsersDAOStub implements UsersDAO {
             throw new UsersException();
     }
     
+    /*Stub method of deleteUsers*/
+    /**
+     * Simulates the behaviour of deleteUsers of UsersDAO.
+     * @param usernameList
+     * @return
+     * @throws UsersException 
+     */
     @Override
     public int deleteUsers(List<String> usernameList) throws UsersException{
         if (usernameList == null){           // case in which a null parameter is passed  
@@ -60,6 +67,7 @@ public class UsersDAOStub implements UsersDAO {
         }      
     }
     
+    @Override
     public boolean updateUser(String oldUsername, UserDTO newUser) throws UsersException{
         if (oldUsername==null || newUser==null || newUser.getUsername()==null || newUser.getPassword()==null
                 || oldUsername.equals("") || newUser.getUsername().equals("")){

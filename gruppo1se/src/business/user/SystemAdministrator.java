@@ -20,13 +20,16 @@ import persistence.maintenanceactivity.TypologyDAO;
 import persistence.user.UsersDAO;
 
 /**
- *
+ * <p>An object of the class System Administrator provides a series of method to manage Users<br>
+ * and other aspect of the system, like maintenance procedure and typology of activity. <br>
+ * This class requires a series of dao object (as attributes) to performs this
+ * operation.</p> 
  * @author rosar
  */
 public class SystemAdministrator extends User {
-    private MaintenanceProcedureDAO procedureDao;
-    private UsersDAO usersDao;
-    private TypologyDAO typologyDao; 
+    private final MaintenanceProcedureDAO procedureDao;
+    private final UsersDAO usersDao;
+    private final TypologyDAO typologyDao; 
    
     
     /**
@@ -73,6 +76,13 @@ public class SystemAdministrator extends User {
         return true;
     }
     
+    /**
+     * 
+     * @return {@code List<UserDTO>} the list of the users table's rows.
+     * @throws UsersException if there is an SQL error while reading the users table.
+     * @throws NotValidParameterException  if this SystemAdministrator has no UsersDAO.
+     */
+    /*Developed by Vincenza Coppola*/    
     public List<UserDTO> viewUsers() throws UsersException, NotValidParameterException{
         if(usersDao == null){
             throw new NotValidParameterException("Error in retrieving users");
@@ -106,7 +116,7 @@ public class SystemAdministrator extends User {
     
     /**
      * this method allows to remove users from the database. Returns the number of deleted users
-     * UsersDao object required
+     * UsersDao object required.
      * @param usernameList List of users to delete
      * @return {@code int} number of deleted rows
      * @throws UsersException if there are problems in deleting users
@@ -134,27 +144,59 @@ public class SystemAdministrator extends User {
         return usersDao.updateUser(oldUsername, newUser);
     }
 
+    /**
+     * 
+     * @param typology
+     * @return {@code boolean} true if the typology is inserted into database.
+     * @throws TypologyException if there is an SQL error while inserting into the typology table.
+     * @throws NotValidParameterException if this SystemAdministrator has no TypologyDAO.
+     */
+    /*Developed by Vincenza Coppola*/    
     public boolean makeTypology(String typology) throws TypologyException, NotValidParameterException{
         if(typologyDao == null){
             throw new NotValidParameterException("Error in retrieving users");
         }
         return typologyDao.addTypology(typology);
     }
-    
+
+    /**
+     * 
+     * @return {@code List<String>} the list of the typology table's rows.
+     * @throws TypologyException if there is an SQL error while reading from the typology table.
+     * @throws NotValidParameterException if this SystemAdministrator has no TypologyDAO.
+     */
+    /*Developed by Vincenza Coppola*/    
     public List<String> readTypologies() throws TypologyException, NotValidParameterException{
         if(typologyDao == null){
             throw new NotValidParameterException("Error in retrieving users");
         }        
         return typologyDao.viewTypologies();
     }
-    
+
+    /**
+     * 
+     * @param oldTypology
+     * @param newTypology
+     * @return{@code boolean} true if the typology is updated into the database.
+     * @throws TypologyException if there is an SQL error while updating a row into the typology table.
+     * @throws NotValidParameterException if this SystemAdministrator has no TypologyDAO.
+     */
+    /*Developed by Vincenza Coppola*/    
     public boolean updateTypology(String oldTypology, String newTypology) throws TypologyException, NotValidParameterException{
         if(typologyDao == null){
             throw new NotValidParameterException("Error in retrieving users");
         }
         return typologyDao.modifyTypology(oldTypology, newTypology);
     }
-        
+    
+    /**
+     * 
+     * @param typology
+     * @return {@code boolean} true if the typology is removed from the database.
+     * @throws TypologyException if there is an SQL error while deleting from the typology table.
+     * @throws NotValidParameterException if this SystemAdministrator has no TypologyDAO.
+     */
+     /*Developed by Vincenza Coppola*/    
     public boolean removeTypology(String typology) throws TypologyException, NotValidParameterException{
         if(typologyDao == null){
             throw new NotValidParameterException("Error in retrieving users");

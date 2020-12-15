@@ -11,9 +11,7 @@ import business.maintenanceactivity.MaintenanceActivity;
 import business.maintenanceactivity.MaintenanceProcedure;
 import business.maintenanceactivity.PlannedMaintenanceActivity;
 import business.maintenanceactivity.Site;
-import exception.DateException;
 import exception.MaintenanceActivityException;
-import exception.SiteException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -67,7 +65,13 @@ public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
         else return false;
     }
 
-
+    /**
+     * 
+     * @param activityId
+     * @return true if activityId = 1, false if activityId = 2, throws the exception otherwise.
+     * @throws MaintenanceActivityException 
+     */
+    /*Developed by Vincenza Coppola*/
     @Override
     public boolean deleteMaintenanceActivity(int activityId) throws MaintenanceActivityException {
         switch(activityId){
@@ -79,37 +83,44 @@ public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
                 throw new MaintenanceActivityException();
         }
     }
-
-
+    
+    
+    /*method developed by ROsario Gaeta*/
+    /**
+     * Simulates the behaviour of retrieveMaintenanceActivityDao of MaintenanceActivityDAO.
+     * @param activityId
+     * @return
+     * @throws MaintenanceActivityException 
+     */
     @Override
     public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId) throws  MaintenanceActivityException {
         switch (activityId) {
             case 1:
-                return new PlannedMaintenanceActivity(activityId, new Site("ProvaBranchOffice1", "ProvaArea1", "ProvaWorkspaceNotes1"),
-                        "ProvaTypology1", "ProvaDescription1", 121, LocalDate.parse("2020-12-21"),
-                        new MaintenanceProcedure("ProvaSmp1"), null,true);
-            case 2:
-                return new Ewo(activityId, new Site("ProvaBranchOffice2", "ProvaArea2", "ProvaWorkspaceNotes2"),
-                        "ProvaTypology2", "ProvaDescription2", 122, LocalDate.parse("2020-12-22"),
-                        new MaintenanceProcedure("ProvaSmp2"), null, false);
-            case 3:
-                return new ExtraActivity(activityId, new Site("ProvaBranchOffice3", "ProvaArea3", "ProvaWorkspaceNotes3"),
-                        "ProvaTypology3", "ProvaDescription3", 123, LocalDate.parse("2020-12-23"),
-                        new MaintenanceProcedure("ProvaSmp3"), null, false);
-            case 4:
-                return null;
-            case 5:
-                throw new MaintenanceActivityException("SiteException");
-            case 6:
-                throw new MaintenanceActivityException("MaintenanceActivityException");
-            case 7:
-                return new PlannedMaintenanceActivity(activityId, new Site("ProvaBranchOffice7", "ProvaArea7", "ProvaWorkspaceNotes7"),
-                        "ProvaTypology7", "ProvaDescription7", 127, LocalDate.parse("2020-12-27"),
+                return new PlannedMaintenanceActivity(activityId, new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes"),
+                        "ProvaTypology", "ProvaDescription", 120, LocalDate.parse("2020-12-20"),
                         null, null,false);
+            case 2:
+                return new PlannedMaintenanceActivity(activityId, new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes"),
+                        "ProvaTypology", "ProvaDescription", 120, LocalDate.parse("2020-12-20"),
+                        null, null,false);
+            case 3:
+                return new PlannedMaintenanceActivity(activityId, new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes"),
+                        "ProvaTypology", "ProvaDescription", 120, LocalDate.parse("2020-12-20"),
+                        new MaintenanceProcedure("ProvaSmp"), null,true);
+            case 4:
+                return new Ewo(activityId,  new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes"),
+                        "ProvaTypology", "ProvaDescription", 120, LocalDate.parse("2020-12-20"),
+                        new MaintenanceProcedure("ProvaSmp"), null,true);
+            case 5:
+                return new ExtraActivity(activityId, new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes"),
+                        "ProvaTypology", "ProvaDescription", 120, LocalDate.parse("2020-12-20"),
+                        new MaintenanceProcedure("ProvaSmp"), null,true);
+            case 6:
+                return null;
+            case 7:
+                throw new MaintenanceActivityException("SiteException");
             default:
-                return new PlannedMaintenanceActivity(activityId, new Site("ProvaBranchOffice8", "ProvaArea8", "ProvaWorkspaceNotes8"),
-                        "ProvaTypology8", "ProvaDescription8", 128, LocalDate.parse("2020-12-28"),
-                        new MaintenanceProcedure("ProvaSmp8"), null,true);
+                throw new MaintenanceActivityException("MaintenanceActivityException");
         }
     }
 

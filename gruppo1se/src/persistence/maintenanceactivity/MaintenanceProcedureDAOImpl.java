@@ -56,7 +56,7 @@ public class MaintenanceProcedureDAOImpl implements MaintenanceProcedureDAO{
                 || oldSmp.trim().replaceAll("  +", " ").equals(""))
             throw new ProcedureException("Error in saving procedure");
         if (newProcedure.getSmp().equals(oldSmp))
-            throw new ProcedureException("new file name and old file name are equals");
+            return false;
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             PreparedStatement pstm = conn.prepareStatement(UPDATE_PROCEDURE);

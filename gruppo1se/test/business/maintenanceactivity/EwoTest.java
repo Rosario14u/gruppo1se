@@ -9,11 +9,9 @@ import exception.NotValidParameterException;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 import org.junit.Test;
+
 /**
  *
  * @author VincenzaCoppola <v.coppola38@studenti.unisa.it>
@@ -32,8 +30,6 @@ public class EwoTest {
         maintenanceProcedure = new MaintenanceProcedure("smp1");
         instance = new Ewo(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials,true);
     }
-    
-    
 
     /**
      * Test of getActivityId method, of class Ewo.
@@ -123,7 +119,6 @@ public class EwoTest {
         assertEquals(expResult, result);
     }
     
-    
     /**
      * Test of isInterruptibleActivity method, of class Ewo.
      */
@@ -147,7 +142,6 @@ public class EwoTest {
         assertEquals(instance.getMaterials(), materialsAdd);
     }
     
-    
     @Test 
     public void isInstanceOfExtraActivity(){
         System.out.println("instance is an instance of Ewo");
@@ -155,6 +149,9 @@ public class EwoTest {
         assertEquals(result,true);
     }
     
+    /**
+     * Test of equals method, of class Ewo.
+     */    
     @Test
     public void testEqualsEwo() {
         System.out.println("test Equals Ewo");
@@ -162,7 +159,10 @@ public class EwoTest {
         boolean result = instance.equals(ewo);
         assertEquals(result,true);
     }
-    
+
+    /**
+     * Test of equals method, of class Ewo.
+     */    
     @Test
     public void testNotEqualsEwo() {
         System.out.println("test Not Equals Ewo");
