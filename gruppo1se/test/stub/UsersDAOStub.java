@@ -5,10 +5,6 @@
  */
 package stub;
 
-import business.user.Maintainer;
-import business.user.Planner;
-import business.user.SystemAdministrator;
-import business.user.User;
 import dto.MaintainerDTO;
 import dto.PlannerDTO;
 import dto.SystemAdministratorDTO;
@@ -17,10 +13,7 @@ import exception.NotValidParameterException;
 import exception.UsersException;
 import java.util.ArrayList;
 import java.util.List;
-import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
-import persistence.maintenanceactivity.TypologyDAOImpl;
 import persistence.user.UsersDAO;
-import persistence.user.UsersDAOImpl;
 
 /**
  *
@@ -28,6 +21,13 @@ import persistence.user.UsersDAOImpl;
  */
 public class UsersDAOStub implements UsersDAO {
 
+    /**
+     * 
+     * @return
+     * @throws UsersException
+     * @throws NotValidParameterException 
+     */
+    /*Developed by Vincenza Coppola*/
     @Override
     public List<UserDTO> readUsers() throws UsersException, NotValidParameterException {
         List<UserDTO> users = new ArrayList<>();

@@ -15,7 +15,13 @@ import persistence.maintenanceactivity.TypologyDAO;
  * @author VincenzaCoppola <v.coppola38@studenti.unisa.it>
  */
 public class TypologyDAOStub implements TypologyDAO {
-
+    
+    /**
+     * 
+     * @param typology
+     * @return 
+     * @throws TypologyException 
+     */
     @Override
     public boolean addTypology(String typology) throws TypologyException {
         switch (typology) {
@@ -28,7 +34,11 @@ public class TypologyDAOStub implements TypologyDAO {
         }
     }
     
-    
+    /**
+     * 
+     * @return
+     * @throws TypologyException 
+     */    
     @Override
     public List<String> viewTypologies() throws TypologyException {
         List<String> typology = new ArrayList<>();
@@ -38,6 +48,13 @@ public class TypologyDAOStub implements TypologyDAO {
         return typology;
     }
 
+    /**
+     * 
+     * @param oldTypology
+     * @param newTypology
+     * @return
+     * @throws TypologyException 
+     */
     @Override
     public boolean modifyTypology(String oldTypology, String newTypology) throws TypologyException {
         if(oldTypology.equals(newTypology))
@@ -47,7 +64,13 @@ public class TypologyDAOStub implements TypologyDAO {
         else
             return true;
     }
-    
+
+    /**
+     * 
+     * @param typology
+     * @return
+     * @throws TypologyException 
+     */    
     @Override
     public boolean deleteTypology(String typology) throws TypologyException {
         switch (typology) {

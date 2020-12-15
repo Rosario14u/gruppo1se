@@ -13,9 +13,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import persistence.database.ConnectionDB;
+
 /**
  *
- * @author aless & vincy
+ * @author aless & vcoppola38
  */
 public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     private static final String INSERT_ACTIVITY = "INSERT INTO MaintenanceActivity (activityDescription,"
@@ -40,7 +41,6 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
         this.siteDao = siteDao;
     }
     
-    
     /**
      * 
      * @param activity
@@ -62,8 +62,14 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
         }
     }
     
-    
-    //Returns true if at least one row has been deleted
+    /**
+     * 
+     * @param activityId
+     * @return {@code boolean} true if at least one row has been deleted, false otherwise.
+     * @throws MaintenanceActivityException if there is an SQL error while deleting an activity from the MaintenanceActivity table.
+     * @throws NotValidParameterException if this MaintenanceActivityDAOImpl has no SiteDAO. 
+     */
+    /*Developed by Vincenza Coppola*/
     @Override
     public boolean deleteMaintenanceActivity(int activityId) throws MaintenanceActivityException, NotValidParameterException{
         checkDao(siteDao,"Error in deleting activity");

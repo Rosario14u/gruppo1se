@@ -10,10 +10,9 @@ import exception.NotValidParameterException;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import static org.junit.Assert.*;
 import org.junit.*;
+
 /**
  *
  * @author VincenzaCoppola <v.coppola38@studenti.unisa.it>
@@ -32,8 +31,6 @@ public class ExtraActivityTest {
         skills.add(new Skill("skill1"));
         instance = new ExtraActivity(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials, true);
     }
-    
-    
 
     /**
      * Test of getActivityId method, of class ExtraActivity.
@@ -123,7 +120,6 @@ public class ExtraActivityTest {
         assertEquals(expResult, result);
     }
     
-    
     /**
      * Test of isInterruptibleActivity method, of class ExtraActivity.
      */
@@ -147,9 +143,6 @@ public class ExtraActivityTest {
         assertEquals(instance.getMaterials(), materialsAdd);
     }
     
-
-    
-    
     @Test
     public void isInstanceOfExtraActivity(){
         System.out.println("instance is an instance of ExtraActivity");
@@ -157,6 +150,9 @@ public class ExtraActivityTest {
         assertEquals(result,true);
     }
     
+    /**
+     * Test of equals method, of class ExtraActivity.
+     */
     @Test
     public void testEqualsExtraActivity() {
         System.out.println("test Equals Extra Activity");
@@ -165,6 +161,9 @@ public class ExtraActivityTest {
         assertEquals(result,true);
     }
     
+    /**
+     * Test of equals method, of class ExtraActivity.
+     */
     @Test
     public void testNotEqualsExtraActivity() {
         System.out.println("test Not Equals Extra Activity");

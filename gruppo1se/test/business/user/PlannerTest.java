@@ -481,10 +481,12 @@ public class PlannerTest {
         }
     }
     
- //===========================================================================================================================================   
-  /**
- * Test of removeMaintenanceActivity method, of class Planner.
- */
+ //================================== Test of removeMaintenanceActivity =======================================================================   
+    /*Test methods developed by Vincenza Coppola*/
+    /**
+    * Test of removeMaintenanceActivity method, of class Planner.
+    * @throws exception.MaintenanceActivityException
+    */
     @Test
     public void testRemoveMaintenanceActivity() throws MaintenanceActivityException {
         try {
@@ -499,7 +501,10 @@ public class PlannerTest {
         }
     }
     
-    
+    /**
+    * Test of removeMaintenanceActivity method, of class Planner.
+    * @throws exception.MaintenanceActivityException
+    */
     @Test
     public void testRemoveMaintenanceActivityWithWrongId() throws MaintenanceActivityException {
         try {
@@ -513,7 +518,11 @@ public class PlannerTest {
             fail("NotValidParameterException");
         }
     }
-    
+
+    /**
+    * Test of removeMaintenanceActivity method, of class Planner.
+    * @throws exception.MaintenanceActivityException
+    */    
     @Test(expected = MaintenanceActivityException.class)
     public void testRemoveMaintenanceActivityException() throws MaintenanceActivityException {
         try {
@@ -526,7 +535,6 @@ public class PlannerTest {
             fail("NotValidParameterException");
         }
     }
-    
     
     //========================Test of viewMaintenanceActivity================================================
     /*Test methods of viewMaintenanceActivity developed by Rosario Gaeta*/

@@ -17,7 +17,6 @@ import exception.DateException;
 import exception.MaintenanceActivityException;
 import exception.MaterialException;
 import exception.NotValidParameterException;
-import exception.SiteException;
 import exception.SkillException;
 import exception.TypologyException;
 import exception.UsersException;
@@ -138,6 +137,14 @@ public class Planner extends User {
         return maintenanceActivityDao.modifyMaintenaceActivity(newActivity);
     }
 
+    /**
+     * 
+     * @param activityId
+     * @return {@code boolean} true if MaintenanceActivity is removed from database.
+     * @throws MaintenanceActivityException if there's an SQL error while deleting the activity.
+     * @throws NotValidParameterException if this Planner has no MaintenanceActivityDAO.
+     */
+    /*Developed by Vincenza Coppola*/    
     public boolean removeMaintenanceActivity(int activityId) throws MaintenanceActivityException, NotValidParameterException {
         if (maintenanceActivityDao == null) {
             throw new NotValidParameterException("Failure to remove data relating to maintenance activities");

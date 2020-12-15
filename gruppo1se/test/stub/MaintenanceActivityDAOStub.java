@@ -11,9 +11,7 @@ import business.maintenanceactivity.MaintenanceActivity;
 import business.maintenanceactivity.MaintenanceProcedure;
 import business.maintenanceactivity.PlannedMaintenanceActivity;
 import business.maintenanceactivity.Site;
-import exception.DateException;
 import exception.MaintenanceActivityException;
-import exception.SiteException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -67,7 +65,13 @@ public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
         else return false;
     }
 
-
+    /**
+     * 
+     * @param activityId
+     * @return true if activityId = 1, false if activityId = 2, throws the exception otherwise.
+     * @throws MaintenanceActivityException 
+     */
+    /*Developed by Vincenza Coppola*/
     @Override
     public boolean deleteMaintenanceActivity(int activityId) throws MaintenanceActivityException {
         switch(activityId){

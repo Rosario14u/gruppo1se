@@ -10,8 +10,6 @@ import exception.NotValidParameterException;
 import exception.TypologyException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.event.DocumentEvent;
@@ -33,10 +31,10 @@ public class ManageTypologies extends javax.swing.JFrame {
     private List<String> list = new ArrayList<>();
     private final DefaultTableModel tableModel;
     private final TableRowSorter<TableModel> rowSorter;
+    
     /**
      * Creates new form ViewTypologies
      * @param systemAdministrator
-     * @throws exception.TypologyException
      */
     public ManageTypologies(SystemAdministrator systemAdministrator) {
         this.systemAdministrator = systemAdministrator;
@@ -63,7 +61,10 @@ public class ManageTypologies extends javax.swing.JFrame {
         jTable.setRowSorter(rowSorter);
         addRowsToTable();
     }
-    
+
+    /**
+     * Filter the content of the jTable based on the content of jFilter.
+     */    
     private void filterTypologies(){
         String text = jFilter.getText();
         if(text.trim().length() == 0)
@@ -71,10 +72,13 @@ public class ManageTypologies extends javax.swing.JFrame {
         else 
             rowSorter.setRowFilter(RowFilter.regexFilter("^(?i)"+text,0));
     }
-    
+
+    /**
+     * Fills the jTable with the rows of the SQL table Typology.
+     */    
     public void addRowsToTable() {
         try {
-            list = systemAdministrator.readTypologies();
+            list = systemAdministrator.readTypologies(); // Creates a list of string containing all the database's typologies
             Object[] rows = new Object[1];
             for(int i = 0; i < list.size(); i++) {
                 rows[0] = list.get(i);
@@ -251,7 +255,6 @@ public class ManageTypologies extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-
     
     private void jModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jModifyActionPerformed
         int[] indexOfSelectedRow = jTable.getSelectedRows();
@@ -262,19 +265,18 @@ public class ManageTypologies extends javax.swing.JFrame {
             MessageManager.infoMessage(this,indexOfSelectedRow.length < 1 ? "Select one row" : "Too many rows selected");
         }
     }//GEN-LAST:event_jModifyActionPerformed
+   
     
-
-        
     private void jConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jConfirmActionPerformed
         int result = MessageManager.confirmRequest(this,"Are you sure you want to modify this typology?", "CONFIRM");
         if (result==EXIT_ON_CLOSE){
             try {
                 int[] indexOfSelectedRow = jTable.getSelectedRows();
-                String oldTypology = String.valueOf(tableModel.getValueAt(indexOfSelectedRow[0], 0));
-                String newTypology = jTypology.getText();
+                String oldTypology = String.valueOf(tableModel.getValueAt(indexOfSelectedRow[0], 0)); // Get the old typology
+                String newTypology = jTypology.getText(); // Get the new typology
                 if(!(oldTypology.equals(newTypology))){
-                    systemAdministrator.updateTypology(oldTypology, newTypology);
-                    tableModel.setValueAt(newTypology, indexOfSelectedRow[0], 0);
+                    systemAdministrator.updateTypology(oldTypology, newTypology); // Updates the old typology with the new typology
+                    tableModel.setValueAt(newTypology, indexOfSelectedRow[0], 0); // Updates the jTable
                 }       
             } catch (TypologyException | NotValidParameterException ex) {
                 JOptionPane.showMessageDialog(this, "Error while trying to modify this typology", "Error", JOptionPane.ERROR_MESSAGE);
@@ -283,16 +285,17 @@ public class ManageTypologies extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jConfirmActionPerformed
 
+    
     private void jDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDeleteActionPerformed
             int[] selectedIndex = jTable.getSelectedRows();
             if(selectedIndex.length == 1){
                 int dialogResult = MessageManager.confirmMessage(this,"Are you sure you wish to delete these users");
                 if(dialogResult == JOptionPane.YES_OPTION){
-                    String typology = String.valueOf(tableModel.getValueAt(selectedIndex[0], 0));
+                    String typology = String.valueOf(tableModel.getValueAt(selectedIndex[0], 0)); // Get the selected typology
                     try {
-                        systemAdministrator.removeTypology(typology);
+                        systemAdministrator.removeTypology(typology); // Removes the selected typology
                         for(int i: selectedIndex){
-                            tableModel.removeRow(jTable.convertRowIndexToModel(i));
+                            tableModel.removeRow(jTable.convertRowIndexToModel(i)); // Updates the content of jTable
                         }
                     } catch (TypologyException | NotValidParameterException ex) {
                         MessageManager.errorMessage(this,"Cannot remove this typology");

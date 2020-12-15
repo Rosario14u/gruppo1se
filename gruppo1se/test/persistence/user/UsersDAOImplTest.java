@@ -5,7 +5,6 @@
  */
 package persistence.user;
 
-import business.user.*;
 import dto.MaintainerDTO;
 import dto.PlannerDTO;
 import dto.SystemAdministratorDTO;
@@ -24,16 +23,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import persistence.database.ConnectionDB;
-import persistence.maintenanceactivity.MaintenanceProcedureDAO;
 import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
 import persistence.maintenanceactivity.TypologyDAOImpl;
-import stub.EmployeeAppointmentDAOStub;
-import stub.MaintenanceActivityDAOStub;
-import stub.MaintenanceProcedureDAOStub;
-import stub.RequiredMaterialForMaintenanceDAOStub;
-import stub.RequiredSkillForMaintenanceDAOStub;
-import stub.TypologyDAOStub;
-import stub.UsersDAOStub;
 
 /**
  *
@@ -168,7 +159,8 @@ public class UsersDAOImplTest{
         conn.rollback();
     }
     
-//===============================================================================================================================================
+//==================================Test of method readUser==============================================================================
+    /*Test method developed by Vincenza Coppola*/
     
     private void insertUserDefault(Statement stm, UserDTO user) throws SQLException{
         String insert = "INSERT INTO Users VALUES ('"+user.getUsername()+"','"+user.getPassword()+"'";
@@ -183,8 +175,10 @@ public class UsersDAOImplTest{
     
     /**
      * Test of readUser method, of class UsersDAOImpl.
+     * @throws exception.UsersException
+     * @throws java.sql.SQLException
      */
-  @Test
+    @Test
     public void testReadUsers() throws UsersException, SQLException{
         try {
             System.out.println("readUsers");

@@ -10,11 +10,7 @@ import business.user.Planner;
 import exception.MaintenanceActivityException;
 import exception.MaterialException;
 import exception.NotValidParameterException;
-import exception.SiteException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import persistence.maintenanceactivity.EmployeeAppointmentDAOImpl;
@@ -26,6 +22,7 @@ import persistence.maintenanceactivity.TypologyDAOImpl;
 import persistence.user.MaintainerSkillDAOImpl;
 import persistence.user.UsersDAOImpl;
 import presentation.manager.MessageManager;
+
 /**
  *
  * @author VincenzaCoppola <v.coppola38@studenti.unisa.it>
@@ -33,9 +30,9 @@ import presentation.manager.MessageManager;
 public class DeleteActivity extends javax.swing.JFrame {
     private Planner planner = null;
     
-     
     /**
      * Creates new form DeleteActivity
+     * @param planner
      */
     public DeleteActivity(Planner planner) {
         this.planner = planner;
@@ -159,12 +156,12 @@ public class DeleteActivity extends javax.swing.JFrame {
 
     private void jActivityIDKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jActivityIDKeyPressed
         char ch = evt.getKeyChar();
-        if( Character.isLetter(ch)){
-            jActivityID.setEditable(false);
+        if( Character.isLetter(ch)){ // if a letter is inserted into jActivityID 
+            jActivityID.setEditable(false);  // make jActivityID not editable
             jError.setText("Enter digits only!");
         }
         else{
-            jActivityID.setEditable(true);
+            jActivityID.setEditable(true); // make jActivityID editable
             jError.setText("");
         }
     }//GEN-LAST:event_jActivityIDKeyPressed
@@ -172,11 +169,11 @@ public class DeleteActivity extends javax.swing.JFrame {
     private void jSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSearchActionPerformed
         try {
             int activityId = Integer.parseInt(jActivityID.getText());
-            MaintenanceActivity activity = planner.viewMaintenanceActivity(activityId);
+            MaintenanceActivity activity = planner.viewMaintenanceActivity(activityId); // Get the activity with the wanted ID
             StringBuilder builder = new StringBuilder();
-            List<Material> materials = activity.getMaterials();
-            if (activity!= null){
-                jDelete.setEnabled(true);
+            List<Material> materials = activity.getMaterials(); 
+            if (activity!= null){ // if an activity is retrieved
+                jDelete.setEnabled(true); // enable jDelete
                 if (materials != null)
                     for(Material m : activity.getMaterials()){
                         builder.append(m.getName());
@@ -217,10 +214,10 @@ public class DeleteActivity extends javax.swing.JFrame {
     private void jDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDeleteActionPerformed
         try {
             int activityId = Integer.parseInt(jActivityID.getText());
-            MaintenanceActivity activity = planner.viewMaintenanceActivity(activityId);
-            List<Material> materials = planner.getRequiredMaterialsDao().retrieveMaterialsByActivityId(activityId);
-            planner.getRequiredMaterialsDao().removeRequiredMaterial(activityId, materials);
-            planner.removeMaintenanceActivity(activityId);
+            MaintenanceActivity activity = planner.viewMaintenanceActivity(activityId); // Get the activity with the wanted ID
+            List<Material> materials = planner.getRequiredMaterialsDao().retrieveMaterialsByActivityId(activityId); // Get this activity's materials
+            planner.getRequiredMaterialsDao().removeRequiredMaterial(activityId, materials); // Remove the entry from the RequiredMaterial table
+            planner.removeMaintenanceActivity(activityId); // Remove the wanted MaintenanceActivity
             jActivityID.setText("");
             jMaintenanceActivity.setText("");
             jSearch.setEnabled(false);
@@ -250,6 +247,9 @@ public class DeleteActivity extends javax.swing.JFrame {
             checkField();
         }
         
+        /**
+         * Enables the jSearch button if the TextField is being used. 
+         */        
         public void checkField(){
             boolean fieldHasText= true;
             if(jActivityID.getText().trim().isEmpty())

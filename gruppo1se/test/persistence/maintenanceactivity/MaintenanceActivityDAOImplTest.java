@@ -13,10 +13,8 @@ import business.maintenanceactivity.Material;
 import business.maintenanceactivity.PlannedMaintenanceActivity;
 import business.maintenanceactivity.Site;
 import business.maintenanceactivity.Skill;
-import exception.DateException;
 import exception.MaintenanceActivityException;
 import exception.NotValidParameterException;
-import exception.SiteException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -562,12 +560,14 @@ public class MaintenanceActivityDAOImplTest {
         }
     }
     
-  //=========================================================================================================================================
-   
+  //=====================================Test of deleteMaintenanceActivity ==========================================================================
+    /*Test methods developed by Vincenza Coppola*/
+    
     /**
      * Test of deleteMaintenanceActivity method, of class MaintenanceActivityDAOImpl.
+     * @throws exception.MaintenanceActivityException
+     * @throws java.sql.SQLException
      */
-    
     @Test
     public void testDeleteMaintenanceActivity() throws MaintenanceActivityException, SQLException {
         try {
@@ -580,8 +580,12 @@ public class MaintenanceActivityDAOImplTest {
            fail("NotValidParameterException");
         }
     }
-   
     
+    /**
+     * Test of deleteMaintenanceActivity method, of class MaintenanceActivityDAOImpl.
+     * @throws exception.MaintenanceActivityException
+     * @throws java.sql.SQLException
+     */   
     @Test
     public void testDeleteMaintenanceActivityWithWrongId() throws MaintenanceActivityException, SQLException {
         try {
@@ -593,6 +597,11 @@ public class MaintenanceActivityDAOImplTest {
         }
     }
     
+    /**
+     * Test of deleteMaintenanceActivity method, of class MaintenanceActivityDAOImpl.
+     * @throws exception.MaintenanceActivityException
+     * @throws java.sql.SQLException
+     */   
     @Test
     public void testDeleteMaintenanceActivityEwo() throws MaintenanceActivityException, SQLException {
         try {
@@ -606,7 +615,11 @@ public class MaintenanceActivityDAOImplTest {
         }
     }
     
-    
+    /**
+     * Test of deleteMaintenanceActivity method, of class MaintenanceActivityDAOImpl.
+     * @throws exception.MaintenanceActivityException
+     * @throws java.sql.SQLException
+     */   
     @Test
     public void testDeleteMaintenanceActivityExtraActivity() throws MaintenanceActivityException, SQLException {
         try {
