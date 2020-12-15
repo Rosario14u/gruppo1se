@@ -332,6 +332,7 @@ public class Planner extends User {
      * @throws TypologyException
      * @throws NotValidParameterException 
      */
+    /*Developed by Vincenza Coppola*/   
     public List<String> readTypologies() throws TypologyException, NotValidParameterException{
         if(typologyDao == null){
             throw new NotValidParameterException("Error in retrieving users");
