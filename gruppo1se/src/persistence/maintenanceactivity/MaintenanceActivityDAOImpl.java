@@ -17,7 +17,7 @@ import persistence.database.ConnectionDB;
 
 /**
  *
- * @author aless & vincy
+ * @author aless & vcoppola38
  */
 public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     private static final String INSERT_ACTIVITY = "INSERT INTO MaintenanceActivity (activityDescription,"
@@ -31,7 +31,6 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
             + " typologyOfUnplannedActivity=?, typologyName=?, branchOffice=?, area=? WHERE activityId = ?";
     private static final String SELECT_ACTIVITY_DATE_RANGE = "SELECT * FROM MaintenanceActivity WHERE dateActivity between ? and ?"
             + "order by activityId";
-    
     private final SiteDao siteDao;
     
     /**
@@ -42,15 +41,14 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
         this.siteDao = siteDao;
     }
     
-    
     /**
      * 
      * @param activity
      * @return {@code boolean} true if the MaintenanceActivity is inserted into the database
-     * @throws MaintenanceActivityException
-     * @throws NotValidParameterException 
+     * @throws MaintenanceActivityException if there's an SQL error while inserting into the MaintenanceActivity table
+     * @throws NotValidParameterException if this MaintenanceActivityDAOImpl has no SiteDao
      */
-    /* Method developed by Alessio Citro*/
+    /*Developed by Alessio Citro*/
     @Override
     public boolean addMaintenanceActivity(MaintenanceActivity activity) throws MaintenanceActivityException, NotValidParameterException{
         checkDao(siteDao,"Error in storing activity");
@@ -65,8 +63,14 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
         }
     }
     
-    
-    //Returns true if at least one row has been deleted
+    /**
+     * 
+     * @param activityId
+     * @return {@code boolean} true if at least one row has been deleted, false otherwise.
+     * @throws MaintenanceActivityException if there is an SQL error while deleting an activity from the MaintenanceActivity table.
+     * @throws NotValidParameterException if this MaintenanceActivityDAOImpl has no SiteDAO. 
+     */
+    /*Developed by Vincenza Coppola*/
     @Override
     public boolean deleteMaintenanceActivity(int activityId) throws MaintenanceActivityException, NotValidParameterException{
         checkDao(siteDao,"Error in deleting activity");
@@ -127,7 +131,6 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     /*Method developed by Rosario Gaeta*/
     private MaintenanceActivity makeMaintenanceActivity(ResultSet rs) throws SQLException, SiteException, MaintenanceActivityException{
         try {
-            Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             String typologyOfActivity = rs.getString("typologyOfActivity").toUpperCase();
             String typologyOfUnplanned = rs.getString("typologyOfUnplannedActivity");
             typologyOfUnplanned = typologyOfUnplanned == null ? null : typologyOfUnplanned.toUpperCase();
@@ -138,11 +141,14 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
             String branchOffice = rs.getString("branchOffice");
             String area = rs.getString("area");
             Site site = siteDao.retrieveSiteDao(branchOffice, area);
+            MaintenanceProcedure procedure = null;
+            String smp = rs.getString("smp");
+            if (smp != null)
+                procedure = new MaintenanceProcedure(smp);
             if (site != null){
-                return MaintenanceActivityFactory.make(type, rs.getInt("activityId"), site.getBranchOffice(), site.getArea(),site.getWorkSpaceNotes(), 
-                            rs.getString("typologyName"), rs.getString("activityDescription"), 
-                            rs.getInt("estimatedInterventionTime"), rs.getString("dateActivity"),
-                            rs.getString("smp"), null, rs.getBoolean("interruptibleActivity"));
+                return MaintenanceActivityFactory.make(type, rs.getInt("activityId"), site,  rs.getString("typologyName"),
+                        rs.getString("activityDescription"), rs.getInt("estimatedInterventionTime"),
+                        LocalDate.parse(rs.getString("dateActivity")),procedure, null, rs.getBoolean("interruptibleActivity"));
             }
             throw new SiteException(); 
         } catch (SQLException ex) {

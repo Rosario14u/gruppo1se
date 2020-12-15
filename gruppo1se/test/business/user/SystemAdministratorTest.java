@@ -15,8 +15,6 @@ import exception.TypologyException;
 import exception.UsersException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -173,12 +171,13 @@ public class SystemAdministratorTest {
         }
     }
     
-//=========================================================================================================================================
+//============================= Test of viewUser, makeTypology, readTypology, removeTypology and updateTypology =====================================
+    /*Test methods developed by Vincenza Coppola*/
+   
     /**
      * Test of viewUser method, of class SystemAdministrator.
      * @throws exception.UsersException
      */
-    
     @Test
     public void testViewUser() throws UsersException {
         try {
@@ -198,7 +197,6 @@ public class SystemAdministratorTest {
      * Test of makeTypology method, of class SystemAdministrator.
      * @throws exception.TypologyException
      */
-    
     @Test
     public void testMakeTypology() throws TypologyException{
         try {
@@ -211,6 +209,10 @@ public class SystemAdministratorTest {
         }
     }
     
+    /**
+     * Test of makeTypology method, of class SystemAdministrator.
+     * @throws exception.TypologyException
+     */    
     @Test(expected = TypologyException.class)
     public void testMakeTypologyException() throws TypologyException{
         try {
@@ -222,7 +224,10 @@ public class SystemAdministratorTest {
         }
     }
     
-    
+    /**
+     * Test of makeTypology method, of class SystemAdministrator.
+     * @throws exception.TypologyException
+     */    
     @Test
     public void testMakeTypologyFalse() throws TypologyException{
         try {
@@ -238,8 +243,8 @@ public class SystemAdministratorTest {
     /**
      * Test of readTypologies method, of class SystemAdministrator.
      * @throws exception.TypologyException
+     * @throws exception.NotValidParameterException
      */
-    
     @Test 
     public void testReadTypologies() throws TypologyException, NotValidParameterException{
         System.out.println("readTypologiesTest");
@@ -255,7 +260,6 @@ public class SystemAdministratorTest {
      * Tests of updateTypology method, of class SystemAdministrator.
      * @throws exception.TypologyException
      */
-    
     @Test 
     public void testUpdateTypology() throws TypologyException {
         try {
@@ -268,6 +272,10 @@ public class SystemAdministratorTest {
         }
     }
     
+    /**
+     * Tests of updateTypology method, of class SystemAdministrator.
+     * @throws exception.TypologyException
+     */   
     @Test 
     public void testUpdateTypologyFalse() throws TypologyException {
         System.out.println("incorrect updateTypologyTest");
@@ -280,6 +288,11 @@ public class SystemAdministratorTest {
         }
     }
     
+    /**
+     * Tests of updateTypology method, of class SystemAdministrator.
+     * @throws exception.TypologyException
+     * @throws exception.NotValidParameterException
+     */   
     @Test(expected = TypologyException.class) 
     public void testUpdateTypologyException() throws TypologyException, NotValidParameterException {
         System.out.println("updateTypologyExceptionTest");
@@ -293,28 +306,38 @@ public class SystemAdministratorTest {
      * @throws exception.TypologyException
      * @throws exception.NotValidParameterException
      */
-    
     @Test
     public void testRemoveTypology() throws TypologyException, NotValidParameterException {
         System.out.println("removeTypologyTest");
         String typology = "TypologyTrue";
         assertEquals(true,instance.removeTypology(typology));
     }
-    
+
+    /**
+     * Tests of removeTypology method, of class SystemAdministrator.
+     * @throws exception.TypologyException
+     * @throws exception.NotValidParameterException
+     */    
     @Test
     public void testRemoveTypologyFalse() throws TypologyException, NotValidParameterException {
         System.out.println("removeTypologyFalseTest");
         String typology = "TypologyFalse";
         assertEquals(false,instance.removeTypology(typology));
     }
-    
+
+    /**
+     * Tests of removeTypology method, of class SystemAdministrator.
+     * @throws exception.TypologyException
+     * @throws exception.NotValidParameterException
+     */    
     @Test(expected = TypologyException.class)
     public void testRemoveTypologyException() throws TypologyException, NotValidParameterException {
         System.out.println("removeTypologyExceptionTest");
         String typology = "TypologyException";
         instance.removeTypology(typology);
     }
-//=========================================================================================================================================
+    /*=======================================================Test of makeUser==================================================================================*/
+    /*Test methods developed by Alessio Citro*/
     
     /**
      * Test of makeUser method, of class SystemAdministrator.
@@ -331,6 +354,10 @@ public class SystemAdministratorTest {
         }
     }
     
+    /**
+     * Test of makeUser method, of class SystemAdministrator.
+     * @throws exception.UsersException
+     */
     @Test(expected = UsersException.class)
     public void testMakeUserException() throws UsersException {
         try {

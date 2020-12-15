@@ -119,7 +119,7 @@ public class MaintenanceActivityDAOImplTest {
             insertMaintenanceActivity(1,"ProvaDescrizione1",121,"2050-11-21",true, 
                     "Planned",null,"ProvaTypologyName1","ProvaBranch","ProvaArea","smp1");
             MaintenanceActivity activity = maintenanceActivityDAO.retrieveMaintenanceActivityDao(1);
-            assertMaintenanceActivity(activity,1,"ProvaDescrizione1",121,"2050-11-21",true, 
+            assertMaintenanceActivity(activity,1,"ProvaDescrizione1",121,LocalDate.parse("2050-11-21"),true, 
                     "Planned",null,"ProvaTypologyName1","ProvaBranch","ProvaArea", "ProvaWorkSpaceNotes","smp1");
         } catch (SQLException ex) {
             fail("SQLException");
@@ -141,7 +141,7 @@ public class MaintenanceActivityDAOImplTest {
             insertMaintenanceActivity(2,"ProvaDescrizione2",122,"2050-11-22",true, 
                     "Unplanned","EWO","ProvaTypologyName2","ProvaBranch","ProvaArea","smp2");
             MaintenanceActivity activity = maintenanceActivityDAO.retrieveMaintenanceActivityDao(2);
-            assertMaintenanceActivity(activity,2,"ProvaDescrizione2",122,"2050-11-22",true, 
+            assertMaintenanceActivity(activity,2,"ProvaDescrizione2",122,LocalDate.parse("2050-11-22"),true, 
                     "Unplanned","EWO","ProvaTypologyName2","ProvaBranch","ProvaArea", "ProvaWorkSpaceNotes","smp2");
         } catch (SQLException ex) {
             fail("SQLException");
@@ -162,7 +162,7 @@ public class MaintenanceActivityDAOImplTest {
             insertMaintenanceActivity(3,"ProvaDescrizione3",123,"2050-11-23",false, 
                     "Unplanned","Extra","ProvaTypologyName3","ProvaBranch","ProvaArea","smp3");
             MaintenanceActivity activity = maintenanceActivityDAO.retrieveMaintenanceActivityDao(3);
-            assertMaintenanceActivity(activity,3,"ProvaDescrizione3",123,"2050-11-23",false, 
+            assertMaintenanceActivity(activity,3,"ProvaDescrizione3",123,LocalDate.parse("2050-11-23"),false, 
                     "Unplanned","Extra","ProvaTypologyName3","ProvaBranch","ProvaArea", "ProvaWorkSpaceNotes","smp3");
         } catch (SQLException ex) {
             fail("SQLException");
@@ -292,7 +292,7 @@ public class MaintenanceActivityDAOImplTest {
      */
     private void assertMaintenanceActivity(MaintenanceActivity activity, 
         int activityId,String descrizione,int estimatedInterventionTime,
-        String date,boolean InterruptibleActivity, String typologyOfActivity,
+        LocalDate date,boolean InterruptibleActivity, String typologyOfActivity,
         String typologyOfUnplannedActivity, String typologyName,String branchOffice,
         String area, String workSpaceNotes,String smp){
             Class activityClass = null;
@@ -306,8 +306,7 @@ public class MaintenanceActivityDAOImplTest {
             assertEquals("activityId error",activityId, activity.getActivityId());
             assertEquals("activityDescription error",descrizione, activity.getActivityDescription());
             assertEquals("estimatedInterventionTime error",estimatedInterventionTime, activity.getEstimatedInterventionTime());
-            assertEquals("dateActivity error",date,
-                    activity.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            assertEquals("dateActivity error",date, activity.getDate());
             assertEquals("interruptibleActivity error",InterruptibleActivity, activity.isInterruptibleActivity());
             assertTrue("typologyOfActivity error", activityClass.isInstance(activity));
             assertEquals("typologyName error", typologyName, activity.getTypology());
@@ -534,11 +533,12 @@ public class MaintenanceActivityDAOImplTest {
         } 
     }
     
-  //=======================================================================================================================================
-    
+//================================================Test of addMaintenanceActivity=======================================================================================
+    /*Developed by Alessio Citro*/
 
     /**
      * Test of addMaintenanceActivity method, of class MaintenanceActivityDAOImpl.
+     * @throws exception.MaintenanceActivityException
      */
     @Test
     public void testAddMaintenanceActivity() throws MaintenanceActivityException {
@@ -555,6 +555,10 @@ public class MaintenanceActivityDAOImplTest {
         }
     }
     
+    /**
+     * Test of addMaintenanceActivity method, of class MaintenanceActivityDAOImpl.
+     * @throws exception.MaintenanceActivityException
+     */
     @Test(expected = MaintenanceActivityException.class)
     public void testAddMaintenanceActivityWrongDate() throws MaintenanceActivityException {
         try {
@@ -568,21 +572,11 @@ public class MaintenanceActivityDAOImplTest {
            fail("NotValidParameterException");
         }
     }
-    /*
-    @Test(expected = MaintenanceActivityException.class)
-    public void testAddMaintenanceActivityWrongActivityID() throws MaintenanceActivityException {
-        try {
-            PlannedMaintenanceActivity activity = new PlannedMaintenanceActivity(0, site, typology,
-                    activityDescription, 300, LocalDate.of(2050, 11, 25), maintenanceProcedure, materials,false);
-            deleteMaintenaceActivity(activity.getActivityId());
-            maintenanceActivityDAO.addMaintenanceActivity(activity);
-        } catch (SQLException ex) {
-            System.out.println("Error on: connection rollback");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
-    }
-    */
+
+    /**
+     * Test of addMaintenanceActivity method, of class MaintenanceActivityDAOImpl.
+     * @throws exception.MaintenanceActivityException
+     */
     @Test
     public void testAddMaintenanceActivityUnplanned() throws MaintenanceActivityException {
         try {
@@ -598,12 +592,14 @@ public class MaintenanceActivityDAOImplTest {
         }
     }
     
-  //=========================================================================================================================================
-   
+  //=====================================Test of deleteMaintenanceActivity ==========================================================================
+    /*Test methods developed by Vincenza Coppola*/
+    
     /**
      * Test of deleteMaintenanceActivity method, of class MaintenanceActivityDAOImpl.
+     * @throws exception.MaintenanceActivityException
+     * @throws java.sql.SQLException
      */
-    
     @Test
     public void testDeleteMaintenanceActivity() throws MaintenanceActivityException, SQLException {
         try {
@@ -616,8 +612,12 @@ public class MaintenanceActivityDAOImplTest {
            fail("NotValidParameterException");
         }
     }
-   
     
+    /**
+     * Test of deleteMaintenanceActivity method, of class MaintenanceActivityDAOImpl.
+     * @throws exception.MaintenanceActivityException
+     * @throws java.sql.SQLException
+     */   
     @Test
     public void testDeleteMaintenanceActivityWithWrongId() throws MaintenanceActivityException, SQLException {
         try {
@@ -629,6 +629,11 @@ public class MaintenanceActivityDAOImplTest {
         }
     }
     
+    /**
+     * Test of deleteMaintenanceActivity method, of class MaintenanceActivityDAOImpl.
+     * @throws exception.MaintenanceActivityException
+     * @throws java.sql.SQLException
+     */   
     @Test
     public void testDeleteMaintenanceActivityEwo() throws MaintenanceActivityException, SQLException {
         try {
@@ -642,7 +647,11 @@ public class MaintenanceActivityDAOImplTest {
         }
     }
     
-    
+    /**
+     * Test of deleteMaintenanceActivity method, of class MaintenanceActivityDAOImpl.
+     * @throws exception.MaintenanceActivityException
+     * @throws java.sql.SQLException
+     */   
     @Test
     public void testDeleteMaintenanceActivityExtraActivity() throws MaintenanceActivityException, SQLException {
         try {
@@ -671,7 +680,7 @@ public class MaintenanceActivityDAOImplTest {
             List<MaintenanceActivity> resultList = maintenanceActivityDAO.retrieveMaintenanceActivityFromRange(LocalDate.parse("2050-11-21"),
                     LocalDate.parse("2050-11-21"));
             assertEquals("Len resultList error",resultList.size(),1);
-            assertMaintenanceActivity(resultList.get(0),1,"ProvaDescrizione1",121,"2050-11-21",true, 
+            assertMaintenanceActivity(resultList.get(0),1,"ProvaDescrizione1",121,LocalDate.parse("2050-11-21"),true, 
                     "Planned",null,"ProvaTypologyName1","ProvaBranch","ProvaArea", "ProvaWorkSpaceNotes","smp1");
         }catch(MaintenanceActivityException ex){
             fail("MaterialException was thrown");
@@ -692,11 +701,11 @@ public class MaintenanceActivityDAOImplTest {
                     LocalDate.parse("2050-11-23"));
             assertEquals("Len resultList error",resultList.size(),3);
             Collections.sort(resultList);
-            assertMaintenanceActivity(resultList.get(0),1,"ProvaDescrizione1",121,"2050-11-21",true, 
+            assertMaintenanceActivity(resultList.get(0),1,"ProvaDescrizione1",121,LocalDate.parse("2050-11-21"),true, 
                     "Planned",null,"ProvaTypologyName1","ProvaBranch","ProvaArea", "ProvaWorkSpaceNotes","smp1");
-            assertMaintenanceActivity(resultList.get(1),2,"ProvaDescrizione2",122,"2050-11-22",true, 
+            assertMaintenanceActivity(resultList.get(1),2,"ProvaDescrizione2",122,LocalDate.parse("2050-11-22"),true, 
                     "Unplanned","EWO","ProvaTypologyName2","ProvaBranch","ProvaArea", "ProvaWorkSpaceNotes","smp2");
-            assertMaintenanceActivity(resultList.get(2),3,"ProvaDescrizione3",123,"2050-11-23",false, 
+            assertMaintenanceActivity(resultList.get(2),3,"ProvaDescrizione3",123,LocalDate.parse("2050-11-23"),false, 
                     "Unplanned","Extra","ProvaTypologyName3","ProvaBranch","ProvaArea", "ProvaWorkSpaceNotes","smp3");
         }catch(MaintenanceActivityException ex){
             fail("MaintenanceActivityException was thrown");

@@ -55,8 +55,6 @@ public class MaintenanceProcedureDAOImpl implements MaintenanceProcedureDAO{
         if (newProcedure == null || newProcedure.getSmp().trim().replaceAll("  +", " ").equals("") || oldSmp == null
                 || oldSmp.trim().replaceAll("  +", " ").equals(""))
             throw new ProcedureException("Error in saving procedure");
-        if (newProcedure.getSmp().equals(oldSmp))
-            return false;
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
             PreparedStatement pstm = conn.prepareStatement(UPDATE_PROCEDURE);

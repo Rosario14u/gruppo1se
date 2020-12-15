@@ -5,7 +5,15 @@
  */
 package presentation.administrator;
 
+
 import business.user.SystemAdministrator;
+import business.user.UserRole;
+import dto.MaintainerDTO;
+import dto.PlannerDTO;
+import dto.SystemAdministratorDTO;
+import dto.UserDTO;
+import exception.NotValidParameterException;
+import exception.UsersException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import presentation.manager.MessageManager;
@@ -80,7 +88,7 @@ public class ModifyUser extends javax.swing.JDialog {
         roleLabel.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         roleLabel.setText("Role:");
 
-        roleComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Planner", "Maintainer", "System Administrator"}));
+        roleComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(UserRole.values()));
 
         cancelButton.setText("Cancel");
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
@@ -142,7 +150,7 @@ public class ModifyUser extends javax.swing.JDialog {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelButton)
                     .addComponent(confirmButton))
-                .addGap(21, 21, 21))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -153,65 +161,99 @@ public class ModifyUser extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 223, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    /**
+     * When the designated button is pressed the administrator
+     * can decide whether to discard all changes
+     * @param evt 
+     */
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         int result = MessageManager.confirmRequest(this,"Are you sure? All modifies will be lost", "CANCEL");
         if (result == EXIT_ON_CLOSE)
             this.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
 
+    
+    /**
+     * When the designated button is pressed the 
+     * administrator can decide to modify the user
+     * @param evt 
+     */
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
         int result = MessageManager.confirmRequest(this,"Are you sure you want to modify this user?", "CONFIRM");
         if (result == EXIT_ON_CLOSE) {
-            //try {
+            try {
                 String newUsername = usernameTextField.getText();
                 String newPassword = passwordTextField.getText();
                 String newRole = String.valueOf(roleComboBox.getSelectedItem());
 
                 if (checkIfModified(oldUsername, oldPassword, oldRole, newUsername, newPassword, newRole)) {
-                   // if (administrator.modifyUser(oldUsername, makeUser(newUsername, newPassword, newRole))) {
-                    if (true) {
+                   if (administrator.modifyUser(oldUsername, makeUser(newUsername, newPassword, newRole))) {
                         tableModel.setValueAt(newUsername, tableIndex, 0);
                         tableModel.setValueAt(newPassword, tableIndex, 1);
-                        System.out.println(newRole);
                         tableModel.setValueAt(newRole, tableIndex, 2);
                     }
                 }
-//            } catch (UsersException ex) {
-//                JOptionPane.showMessageDialog(this, "Error while trying to modify this user", "Error", JOptionPane.ERROR_MESSAGE);
-//            }
+            } catch (UsersException | NotValidParameterException ex) {
+                JOptionPane.showMessageDialog(this, "Error while trying to modify this user", "Error", JOptionPane.ERROR_MESSAGE);
+            }
             this.dispose();
         }
     }//GEN-LAST:event_confirmButtonActionPerformed
 
 
+    /**
+     * This method allows to inizialize all fields in the GUI
+     * @param username username of the user to set in the text field
+     * @param password password of the user to set in the text field
+     * @param role role of the user to set in the comboBox
+     */
     private void inizializeField(String username, String password, String role){
         usernameTextField.setText(username);
         passwordTextField.setText(password);
-        roleComboBox.setSelectedItem(role);
+        roleComboBox.setSelectedItem(UserRole.valueOf(role));
     }    
     
     
-//    private User makeUser(String newUsername, String newPassword, String newRole){
-//        if (newRole.equals("Planner")){
-//            return new Planner(newUsername, newPassword);
-//        }
-//        else if (newRole.equals("Maintainer")){
-//            return new Maintainer(newUsername, newPassword);
-//        }
-//        else{
-//            return new SystemAdministrator(newUsername, newPassword);
-//        }
-//    }
+    /**
+     * This method allows you to create the right
+     * data transfer object for the user
+     * @param newUsername new username of the user
+     * @param newPassword new password of the user
+     * @param newRole new role of the user
+     * @return {@code UserDTO}
+     */
+    private UserDTO makeUser(String newUsername, String newPassword, String newRole){
+        if (newRole.equals("PLANNER")){
+            return new PlannerDTO(newUsername, newPassword);
+        }
+        else if (newRole.equals("MAINTAINER")){
+            return new MaintainerDTO(newUsername, newPassword);
+        }
+        else{ 
+            return new SystemAdministratorDTO(newUsername, newPassword);
+        } 
+    }
     
     
 
-
+    /**
+     * This method checks if the user information has changed
+     * @param oldUsername old usernme of the user 
+     * @param oldPassword old password of the user
+     * @param oldRole old role of the user
+     * @param newUsername new username of the user
+     * @param newPassword new password of the user 
+     * @param newRole new role of the user
+     * @return {@code true} if the user is modified,
+     * {@code false} otherwise
+     */
     private boolean checkIfModified(String oldUsername, String oldPassword, String oldRole, String newUsername, String newPassword, String newRole) {
         return !(oldUsername.equals(newUsername)
                 && oldPassword.equals(newPassword)
@@ -268,7 +310,7 @@ public class ModifyUser extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JTextField passwordTextField;
-    private javax.swing.JComboBox<String> roleComboBox;
+    private javax.swing.JComboBox<UserRole> roleComboBox;
     private javax.swing.JLabel roleLabel;
     private javax.swing.JLabel usernameLabel;
     private javax.swing.JTextField usernameTextField;

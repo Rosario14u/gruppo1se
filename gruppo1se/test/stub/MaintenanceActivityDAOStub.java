@@ -24,7 +24,14 @@ import persistence.maintenanceactivity.MaintenanceActivityDAO;
  */
 public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
 
-     @Override
+    /**
+     * 
+     * @param activity
+     * @return
+     * @throws MaintenanceActivityException 
+     */
+    /*Developed by Alessio Citro*/
+    @Override
     public boolean addMaintenanceActivity(MaintenanceActivity activity) throws MaintenanceActivityException {
         if (activity.getActivityId() == 1 && activity.getSite().getBranchOffice().equals("ProvaBranchOffice") && activity.getSite().getArea().equals("ProvaArea") &&
                 activity.getSite().getWorkSpaceNotes().equals("ProvaWorkspaceNotes") && activity.getTypology().equals("ProvaTypology") && 
@@ -65,7 +72,13 @@ public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
         else return false;
     }
 
-
+    /**
+     * 
+     * @param activityId
+     * @return true if activityId = 1, false if activityId = 2, throws the exception otherwise.
+     * @throws MaintenanceActivityException 
+     */
+    /*Developed by Vincenza Coppola*/
     @Override
     public boolean deleteMaintenanceActivity(int activityId) throws MaintenanceActivityException {
         switch(activityId){
@@ -79,41 +92,42 @@ public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
     }
     
     
-    /*method developed by ROsario Gaeta*/
+    /*Method developed by ROsario Gaeta*/
     /**
      * Simulates the behaviour of retrieveMaintenanceActivityDao of MaintenanceActivityDAO.
      * @param activityId
      * @return
-     * @throws MaintenanceActivityException 
+     * @throws MaintenanceActivityException if activity id is >=7
      */
     @Override
     public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId) throws  MaintenanceActivityException {
         switch (activityId) {
-            case 1:
+            case 1: /*Case in which an activity is returned.*/
                 return new PlannedMaintenanceActivity(activityId, new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes"),
                         "ProvaTypology", "ProvaDescription", 120, LocalDate.parse("2020-12-20"),
                         null, null,false);
-            case 2:
+            case 2: /*Case in which an activity is returned (This two case are paired with the cases in 1 and 2 of 
+                retrieveMaterialsByActivityId of RequiredMaterialForMaintenanceDAOStub).*/
                 return new PlannedMaintenanceActivity(activityId, new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes"),
                         "ProvaTypology", "ProvaDescription", 120, LocalDate.parse("2020-12-20"),
                         null, null,false);
-            case 3:
+            case 3: /*Case in which a Planned activity is returned.*/
                 return new PlannedMaintenanceActivity(activityId, new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes"),
                         "ProvaTypology", "ProvaDescription", 120, LocalDate.parse("2020-12-20"),
                         new MaintenanceProcedure("ProvaSmp"), null,true);
-            case 4:
+            case 4: /*Case in which an Ewo is returned.*/
                 return new Ewo(activityId,  new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes"),
                         "ProvaTypology", "ProvaDescription", 120, LocalDate.parse("2020-12-20"),
                         new MaintenanceProcedure("ProvaSmp"), null,true);
-            case 5:
+            case 5: /*Case in which an ExtraActivity is returned.*/
                 return new ExtraActivity(activityId, new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes"),
                         "ProvaTypology", "ProvaDescription", 120, LocalDate.parse("2020-12-20"),
                         new MaintenanceProcedure("ProvaSmp"), null,true);
-            case 6:
+            case 6: /*Case in which is returned a ExtraActivity activity.*/
                 return null;
-            case 7:
+            case 7: /*Case in which site dao returns an exception.*/
                 throw new MaintenanceActivityException("SiteException");
-            default:
+            default: /*in the other cases the stub raises an exception */
                 throw new MaintenanceActivityException("MaintenanceActivityException");
         }
     }

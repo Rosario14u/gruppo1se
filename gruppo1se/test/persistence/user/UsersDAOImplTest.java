@@ -5,7 +5,6 @@
  */
 package persistence.user;
 
-import business.user.*;
 import dto.MaintainerDTO;
 import dto.PlannerDTO;
 import dto.SystemAdministratorDTO;
@@ -110,9 +109,13 @@ public class UsersDAOImplTest{
             }
             else{
                 System.out.println("SA");
-                assertEquals("System Administrator", set.getString("role"));            }
+                assertEquals("System Administrator", set.getString("role"));            
+            }
         }
     }
+    //=====================================================Test of addUser============================================================================
+    /*Test methods developed by Alessio Citro*/
+    
     /**
      * Test of addUser method, of class UsersDAO.
      * @throws exception.UsersException
@@ -161,7 +164,8 @@ public class UsersDAOImplTest{
         conn.rollback();
     }
     
-//===============================================================================================================================================
+//==================================Test of method readUser==============================================================================
+    /*Test method developed by Vincenza Coppola*/
     
     private void insertUserDefault(Statement stm, UserDTO user) throws SQLException{
         String insert = "INSERT INTO Users VALUES ('"+user.getUsername()+"','"+user.getPassword()+"'";
@@ -176,8 +180,10 @@ public class UsersDAOImplTest{
     
     /**
      * Test of readUser method, of class UsersDAOImpl.
+     * @throws exception.UsersException
+     * @throws java.sql.SQLException
      */
-  @Test
+    @Test
     public void testReadUsers() throws UsersException, SQLException{
         try {
             System.out.println("readUsers");

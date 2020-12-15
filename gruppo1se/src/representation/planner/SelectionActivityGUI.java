@@ -12,7 +12,6 @@ import exception.MaintenanceActivityException;
 import exception.NotValidParameterException;
 import java.awt.Dimension;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
@@ -176,6 +175,13 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    
+    /**
+     * Populates the table passing the number 
+     * of the week (choosed from ComboBox) and 
+     * the year for that week
+     * @param evt 
+     */
     private void weekComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_weekComboBoxActionPerformed
         LocalDate date = LocalDate.now();
         populateTable(weekComboBox.getSelectedIndex()+1, WeekConverter.getYear(date));
@@ -217,6 +223,9 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
 //    }
     
 
+    /**
+     * This method initializes all fields of the GUI
+     */
     private void inizializeField() {
         LocalDate date = LocalDate.now();
         int weekNumber = WeekConverter.getWeek(date);
@@ -226,6 +235,12 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
     }
     
     
+    /**
+     * This method populates the table based on
+     * the week and the year for that week
+     * @param weekNumber
+     * @param year 
+     */
     public void populateTable(int weekNumber, int year){
         tableModel.setRowCount(0);
         try {

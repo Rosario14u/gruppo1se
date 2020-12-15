@@ -17,7 +17,6 @@ import exception.UsersException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  *
  * @author VincenzaCoppola <v.coppola38@studenti.unisa.it>
@@ -29,6 +28,13 @@ public class UsersDAOImpl implements UsersDAO {
     private final String SELECT_MAINTAINER = "SELECT * FROM Users WHERE role = 'Maintainer' ORDER BY username";
     private final String SQL_UPDATE = "UPDATE users SET username=?, password=?, role=? WHERE username = ?";
     
+    /**
+     * 
+     * @param user
+     * @return {@code boolean} true if the user is inserted into the database
+     * @throws UsersException if there's an SQL error while inserting into the Users table
+     */
+    /*Developed by Alessio Citro*/
     @Override
     public boolean addUser(UserDTO user) throws UsersException{
         try {
@@ -49,8 +55,14 @@ public class UsersDAOImpl implements UsersDAO {
         }
     }
     
-
-    
+    /**
+     * 
+     * @return {@code List<UserDTO>} the list of the users table's rows.
+     * @throws UsersException if there is an SQL error while reading the users table.
+     * @throws NotValidParameterException 
+     */
+    /*Developed by Vincenza Coppola*/
+    @Override
     public List<UserDTO> readUsers() throws UsersException, NotValidParameterException{
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
@@ -62,7 +74,15 @@ public class UsersDAOImpl implements UsersDAO {
             throw new UsersException();
         }
     }
-    
+
+    /**
+     * 
+     * @param set
+     * @return {@code List<UserDTO>} the list of the users table's rows.
+     * @throws UsersException if there is an SQL error while reading the users table.
+     * @throws NotValidParameterException 
+     */
+    /*Developed by Vincenza Coppola*/    
     private List<UserDTO> makeUsers(ResultSet set) throws UsersException, NotValidParameterException{
         List<UserDTO> users = new ArrayList<>();
         try {

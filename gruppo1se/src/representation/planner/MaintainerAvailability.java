@@ -80,7 +80,7 @@ public class MaintainerAvailability extends javax.swing.JFrame {
             if (activity.getMaintenanceProcedure().getSkills() != null) {
                 StringBuilder builder2 = new StringBuilder();
                 for (Skill skill : activity.getMaintenanceProcedure().getSkills()) {
-                    builder2.append(skill.toString()).append("\n");
+                    builder2.append(skill.getName()).append("\n");
                 }
                 skillTextArea.setText(builder2.toString());
                 skillTextArea.setEnabled(false);
@@ -92,8 +92,8 @@ public class MaintainerAvailability extends javax.swing.JFrame {
     }
     
     /**
-     * This method allows to fill the jTable with information about Maintainer (username, skills accordance and days availability<br>
-     * of the maintainers in a specific week. 
+     * This method allows to fill the jTable with information about Maintainer <br> 
+     * (username, skills accordance and days availability of the maintainers in a specific week. 
      */
     /*Method developed by Rosario Gaeta*/
     private void populateTable() {

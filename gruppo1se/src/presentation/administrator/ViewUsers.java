@@ -40,8 +40,6 @@ public class ViewUsers extends javax.swing.JFrame {
     /**
      * Creates new form ViewUser
      * @param systemAdministrator
-     * @throws exception.UsersException
-     * @throws exception.NotValidParameterException
      */
     public ViewUsers(SystemAdministrator systemAdministrator) {
         initComponents();
@@ -81,7 +79,10 @@ public class ViewUsers extends javax.swing.JFrame {
         jTable.setRowSorter(rowSorter);
         addRowsToTable();
     }
-    
+
+    /**
+     * Fills the jTable with the rows of the SQL table Users.
+     */    
     public void addRowsToTable() {
         try {
             list = systemAdministrator.viewUsers();
@@ -101,7 +102,10 @@ public class ViewUsers extends javax.swing.JFrame {
             MessageManager.errorMessage(this, ex.getMessage());
         }
     }
-    
+
+    /**
+     * Enables the TextField/ComboBox if the filter Username/Role is chosen. 
+     */    
     public void selectFilter(){
         if (jFilter.getSelectedItem().equals("Username")){
             jUsername.setEditable(true);
@@ -120,19 +124,29 @@ public class ViewUsers extends javax.swing.JFrame {
             jRole.setEnabled(false);
         }
     }
-    
+
+    /**
+     * Allows to choose a role to be used as a filter.
+     */    
     public void selectRole(){
         String filter = jRole.getSelectedItem().toString();
         filterRole(filter);
     }
-    
+
+    /**
+     * Filter the contents of jTable based on filter.
+     * @param filter 
+     */    
     private void filterRole(String filter){
         if(!filter.equals(" "))
             rowSorter.setRowFilter(RowFilter.regexFilter(filter,2));
         else
             rowSorter.setRowFilter(null);      
     }
-    
+
+    /**
+     * Filter the content of the jTable based on the content of jUsername.
+     */    
     private void filterUser(){
         String text = jUsername.getText();
         if(text.trim().length() == 0)
@@ -141,8 +155,6 @@ public class ViewUsers extends javax.swing.JFrame {
             rowSorter.setRowFilter(RowFilter.regexFilter("^(?i)"+text,0));
     }
     
-
-        
         
     /**
      * This method is called from within the constructor to initialize the form.

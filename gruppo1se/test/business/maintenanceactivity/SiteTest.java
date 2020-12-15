@@ -19,7 +19,6 @@ public class SiteTest{
         instance = new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes");
     }
 
-
     /**
      * Test of getBranchOffice method, of class Site.
      */
@@ -69,7 +68,6 @@ public class SiteTest{
         boolean result = instance.equals(expSite);
         assertTrue(result);
     }
-    
     
     /**
      * Test of equals method, of class Site.
@@ -121,6 +119,9 @@ public class SiteTest{
         assertEquals(expResult, result);
     }
     
+    /**
+     * Test of equals method, of class Site.
+     */
     @Test
     public void testEquals(){
         System.out.println("equals");
@@ -129,6 +130,9 @@ public class SiteTest{
         assertEquals(result, true);
     }
     
+    /**
+     * Test of equals method, of class Site.
+     */
     @Test
     public void testNotEquals(){
         System.out.println("equals");

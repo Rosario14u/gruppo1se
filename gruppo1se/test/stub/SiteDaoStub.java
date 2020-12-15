@@ -18,14 +18,16 @@ public class SiteDaoStub implements SiteDao {
      * Simulates the behaviour of retrieveSiteDao of SiteDao.
      * @param branchOffice
      * @param area
-     * @return
+     * @return {@ Site}
      * @throws SiteException when branchOffice = "ProvaBranch4" and area = "ProvaArea4"
      */
     @Override
     public Site retrieveSiteDao(String branchOffice, String area) throws SiteException{
         if(branchOffice.compareTo("ProvaBranch4") == 0 && area.compareTo("ProvaArea4") == 0){
+            /*This case simulate a case in which branch office or area are not found*/
             throw new SiteException("Site retriving error");
         }else {
+            /*This case simulate a case in which the method correctly returns a site*/
             return new Site(branchOffice, area, "ProvaWorkSpaceNotes");
         }
     }

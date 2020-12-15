@@ -5,10 +5,6 @@
  */
 package stub;
 
-import business.user.Maintainer;
-import business.user.Planner;
-import business.user.SystemAdministrator;
-import business.user.User;
 import dto.MaintainerDTO;
 import dto.PlannerDTO;
 import dto.SystemAdministratorDTO;
@@ -17,10 +13,7 @@ import exception.NotValidParameterException;
 import exception.UsersException;
 import java.util.ArrayList;
 import java.util.List;
-import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
-import persistence.maintenanceactivity.TypologyDAOImpl;
 import persistence.user.UsersDAO;
-import persistence.user.UsersDAOImpl;
 
 /**
  *
@@ -28,6 +21,13 @@ import persistence.user.UsersDAOImpl;
  */
 public class UsersDAOStub implements UsersDAO {
 
+    /**
+     * 
+     * @return
+     * @throws UsersException
+     * @throws NotValidParameterException 
+     */
+    /*Developed by Vincenza Coppola*/
     @Override
     public List<UserDTO> readUsers() throws UsersException, NotValidParameterException {
         List<UserDTO> users = new ArrayList<>();
@@ -37,6 +37,13 @@ public class UsersDAOStub implements UsersDAO {
         return users;
     }
     
+    /**
+     * 
+     * @param user
+     * @return
+     * @throws UsersException 
+     */
+    /*Developed by Alessio Citro*/
     @Override
     public boolean addUser(UserDTO user) throws UsersException {
         if (user.getUsername() != null && user.getPassword() != null)
@@ -50,19 +57,19 @@ public class UsersDAOStub implements UsersDAO {
      * Simulates the behaviour of deleteUsers of UsersDAO.
      * @param usernameList
      * @return
-     * @throws UsersException 
+     * @throws UsersException in default cases
      */
     @Override
     public int deleteUsers(List<String> usernameList) throws UsersException{
-        if (usernameList == null){           // case in which a null parameter is passed  
+        if (usernameList == null || usernameList.size() == 1 || usernameList.isEmpty()){
+            /*case in which a null parameter is passed, in which a non empty list is passed
+            but there wasn't element in database  or an empty list is passed*/             
             return 0;
-        }else if(usernameList.size() == 3){  // case in which a non empty list is passed and the elements are deleted  
+        }else if(usernameList.size() == 3){ 
+            /*case in which a non empty list is passed and the elements are deleted*/
             return 3;
-        }else if (usernameList.size() == 1){ // case in which a non empty list is passed but there wasn't element in database  
-            return 0;
-        }else if (usernameList.isEmpty()){   // case in which an empty list is passed 
-            return 0;
-        }else{                               // case in which a deleteUsers method raise an exception
+        }else{
+            /*case in which a deleteUsers method raise an exception*/
             throw new UsersException();
         }      
     }

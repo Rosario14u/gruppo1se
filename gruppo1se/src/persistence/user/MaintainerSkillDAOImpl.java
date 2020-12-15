@@ -6,7 +6,6 @@
 package persistence.user;
 
 import business.maintenanceactivity.Skill;
-import exception.NotValidParameterException;
 import exception.SkillException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,13 +21,13 @@ public class MaintainerSkillDAOImpl implements MaintainerSkillDAO{
 
     
     /**
-    * 
-    * @param username
-    * @return
-    * @throws SkillException 
-    */
+     * This method returns a list of skills associated with a maintainer
+     * @param username username of maintainer
+     * @return a list of skills
+     * @throws SkillException if there are problems in retrieving skills
+     */
     @Override
-    public List<Skill> getMaintainerSkills(String username) throws SkillException, NotValidParameterException{
+    public List<Skill> getMaintainerSkills(String username) throws SkillException {
         if (username == null || username.trim().replace("  +", " ").equals(""))
             throw new SkillException("Error in skills loading");
         try {

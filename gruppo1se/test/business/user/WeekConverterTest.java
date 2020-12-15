@@ -150,6 +150,9 @@ public class WeekConverterTest {
         assertEquals(53, WeekConverter.getNumberOfWeeksInYear(LocalDate.of(2021, 1, 1)));
     }
     
+    /**
+     * This method assert tht getYearOfWeek returns year based on the week
+     */
     @Test
     public void testGetYearOfWeekSameYear(){
         int expectedYear = 2020;
@@ -157,6 +160,9 @@ public class WeekConverterTest {
         assertEquals(expectedYear,resultedYear);
     }
     
+    /**
+     * This method assert tht getYearOfWeek returns year based on the week
+     */
     @Test
     public void testGetYearOfWeekDifferentYear(){
         int expectedYear = 2020;

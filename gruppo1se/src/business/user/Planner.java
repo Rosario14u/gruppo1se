@@ -11,6 +11,7 @@ import business.maintenanceactivity.MaintenanceActivityFactory;
 import business.maintenanceactivity.MaintenanceActivityFactory.Typology;
 import business.maintenanceactivity.MaintenanceProcedure;
 import business.maintenanceactivity.Material;
+import business.maintenanceactivity.Site;
 import dto.MaintainerDTO;
 import exception.AppointmentException;
 import exception.DateException;
@@ -58,6 +59,7 @@ public class Planner extends User {
      * @param employeeAppointmentDao Dao object to access the appointments of activity
      * @param requiredSkillForMaintenanceDao Dao object to access the required skill of a maintenance
      * @param maintainerSkillDao Dao object to access the skills of a maintainer
+     * @param typologyDao
      */
     public Planner(String username, String password, MaintenanceActivityDAO maintenanceActivityDao,
             RequiredMaterialForMaintenanceDAO requiredMaterialsDao,
@@ -73,8 +75,10 @@ public class Planner extends User {
         this.typologyDao = typologyDao;
     }
 
-    
-    
+    public RequiredMaterialForMaintenanceDAO getRequiredMaterialsDao() {
+        return requiredMaterialsDao;
+    }
+
     /**
      * This method returns Maintenance Activity with the passed activityId if
      * exists, null otherwise<br>
@@ -125,24 +129,30 @@ public class Planner extends User {
      * (MaintenanceActivityDao) object is not correctly initialized
      */
     //Developed by Antonio Gorrasi
-    public boolean modifyMaintenanceActivity(int activityId, String branchOffice, String area, 
+    public boolean modifyMaintenanceActivity(int activityId, Site site, 
             String typology, String activityDescription, int estimatedInterventionTime, 
-            String date, boolean interruptibleActivity, Typology typologyOfActivity)
-            throws NotValidParameterException, MaintenanceActivityException {
+            LocalDate date, boolean interruptibleActivity, Typology typologyOfActivity)
+            throws MaintenanceActivityException, NotValidParameterException {
 
         if (maintenanceActivityDao == null) {
             throw new NotValidParameterException("Failure to modify data relating to activities");
         }
 
         MaintenanceActivity newActivity = MaintenanceActivityFactory.make(typologyOfActivity, 
-                activityId, branchOffice, area, null, typology, activityDescription, 
+                activityId, site, typology, activityDescription, 
                 estimatedInterventionTime, date, null, null, interruptibleActivity);
 
         return maintenanceActivityDao.modifyMaintenaceActivity(newActivity);
     }
 
-    
-    
+    /**
+     * 
+     * @param activityId
+     * @return {@code boolean} true if MaintenanceActivity is removed from database.
+     * @throws MaintenanceActivityException if there's an SQL error while deleting the activity.
+     * @throws NotValidParameterException if this Planner has no MaintenanceActivityDAO.
+     */
+    /*Developed by Vincenza Coppola*/    
     public boolean removeMaintenanceActivity(int activityId) throws MaintenanceActivityException, NotValidParameterException {
         if (maintenanceActivityDao == null) {
             throw new NotValidParameterException("Failure to remove data relating to maintenance activities");
@@ -153,31 +163,30 @@ public class Planner extends User {
     /**
      * 
      * @param activityId
-     * @param branchOffice
-     * @param area
-     * @param workspaceNotes
+     * @param site
      * @param typology
+     * @param procedure
      * @param activityDescription
      * @param estimatedInterventionTime
      * @param date
-     * @param smp
      * @param materials
      * @param interruptibleActivity
      * @param typologyOfActivity
      * @return {@code boolean} true if MaintenanceActivity and materials are inserted into the database 
-     * @throws MaintenanceActivityException
-     * @throws NotValidParameterException 
+     * @throws MaintenanceActivityException if there's an SQL error while inserting into the MaintenanceActivity table
+     * @throws NotValidParameterException if this planner has no MaintenanceActivityDAO
      */
     /* Method developed by Alessio Citro*/
-    public boolean makeMaintenanceActivity(int activityId, String branchOffice, String area, String workspaceNotes, String typology, String activityDescription, int estimatedInterventionTime,
-            String date, String smp, List<Material> materials, boolean interruptibleActivity,
+    public boolean makeMaintenanceActivity(int activityId, Site site, String typology, String activityDescription, int estimatedInterventionTime,
+            LocalDate date, MaintenanceProcedure procedure, List<Material> materials, boolean interruptibleActivity,
             Typology typologyOfActivity) throws MaintenanceActivityException, NotValidParameterException {
         if (maintenanceActivityDao == null) {
             throw new NotValidParameterException("Failure to create data relating to maintenance activities");
         } 
         try{       
-            MaintenanceActivity activity = MaintenanceActivityFactory.make(typologyOfActivity, activityId, branchOffice, area, workspaceNotes, typology, activityDescription, estimatedInterventionTime,
-                    date, smp, materials, interruptibleActivity);
+            MaintenanceActivity activity = MaintenanceActivityFactory.make(typologyOfActivity, activityId,
+                    site, typology, activityDescription, estimatedInterventionTime,
+                    date, procedure, materials, interruptibleActivity);
             if (materials != null) {
                 return maintenanceActivityDao.addMaintenanceActivity(activity) && requiredMaterialsDao.addRequiredMaterial(activityId, materials);
             } else {
@@ -386,8 +395,8 @@ public class Planner extends User {
      * @param activityId identifier of activity
      * @param estimatedInterventionTime time of 
      * intervention
-     * @return
-     * @throws MaintenanceActivityException
+     * @return {@code true} if the task was previously 
+     * assigned, {@code false} otherwise
      * @throws NotValidParameterException if 
      * required dao (employeeAppointmentDao)
      * are not correctly initialized.
@@ -396,13 +405,10 @@ public class Planner extends User {
      */
     //Developed by Antonio Gorrasi
     public boolean verifyActivityAssignment(int activityId, int estimatedInterventionTime)
-            throws MaintenanceActivityException, NotValidParameterException, AppointmentException {
+            throws NotValidParameterException, AppointmentException {
         
         if (employeeAppointmentDao == null) {
             throw new NotValidParameterException("Failure to verify appointment");
-        }
-        if (activityId <= 0) {
-            throw new MaintenanceActivityException();
         }
         int totalTimeAssigned = employeeAppointmentDao.getDurationOfAssignedActivity(activityId);
         return totalTimeAssigned==estimatedInterventionTime;
@@ -415,7 +421,7 @@ public class Planner extends User {
      * @throws TypologyException
      * @throws NotValidParameterException 
      */
-    /* Method developed by Alessio Citro*/
+    /*Developed by Vincenza Coppola*/   
     public List<String> readTypologies() throws TypologyException, NotValidParameterException{
         if(typologyDao == null){
             throw new NotValidParameterException("Error in retrieving users");

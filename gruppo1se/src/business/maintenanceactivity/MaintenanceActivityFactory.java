@@ -5,7 +5,7 @@
  */
 package business.maintenanceactivity;
 
-import exception.NotValidParameterException;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -27,9 +27,7 @@ public abstract class MaintenanceActivityFactory {
      *
      * @param type typology of MaintenanceActivity
      * @param activityId Id of MaintenanceActivity that needs to be instantiate
-     * @param branchOffice branchOffice of Site
-     * @param area area of Site
-     * @param workspaceNotes workspaceNotes of Site
+     * @param site
      * @param typology typology of MaintenanceActivity that needs to be
      * instantiate
      * @param activityDescription activity description of MaintenanceActivity
@@ -37,27 +35,23 @@ public abstract class MaintenanceActivityFactory {
      * @param estimatedInterventionTime estimated intervention time of
      * MaintenanceActivity that needs to be instantiate
      * @param date date of maintenance activity that needs to be Instantiate
-     * @param smp smp of MaintenanceProcedure
      * @param materials materials of Maintenance Activity that needs to be
      * Instantiate
-     * @param skills skills of Maintenance Activity that needs to be
-     * instantiated
      * @param interruptibleActivity interruptible activity of Maintenance
      * Activity that needs to be Instantiate
      * @return the required instance of maintenance activity
      */
-    public static MaintenanceActivity make(Typology type, int activityId, String branchOffice, String area,
-            String workspaceNotes,String typology, String activityDescription, int estimatedInterventionTime, String date,
-            String smp, List<Material> materials, boolean interruptibleActivity){
+    public static MaintenanceActivity make(Typology type, int activityId, Site site,String typology, String activityDescription,
+            int estimatedInterventionTime, LocalDate date, MaintenanceProcedure procedure,
+            List<Material> materials, boolean interruptibleActivity){
         MaintenanceActivityFactory factory = null;
         if (type == Typology.PLANNED) {
-            System.out.println("sono qua");
             factory = new PlannedActivityFactory();
         } else {
             factory = new UnplannedActivityFactory();
         }
-        return factory.build(type, activityId, branchOffice, area, workspaceNotes, typology, activityDescription,
-                estimatedInterventionTime, date, smp, materials, interruptibleActivity);
+        return factory.build(type, activityId, site, typology, activityDescription,
+                estimatedInterventionTime, date, procedure, materials, interruptibleActivity);
     }
 
     /**
@@ -85,17 +79,11 @@ public abstract class MaintenanceActivityFactory {
      * Activity that needs to be Instantiate
      * @return the required instance of maintenance activity
      */
-    private MaintenanceActivity build(Typology type, int activityId, String branchOffice, String area,
-            String workspaceNotes,String typology, String activityDescription, int estimatedInterventionTime, String date,
-            String smp, List<Material> materials, boolean interruptibleActivity) {
-        Site site = new Site(branchOffice, area, workspaceNotes);
-        LocalDate localDate = LocalDate.parse(date);
-        MaintenanceProcedure procedure = null;
-        if(smp != null){
-            procedure = new MaintenanceProcedure(smp); 
-        }         
+    private MaintenanceActivity build(Typology type, int activityId, Site site,String typology, String activityDescription,
+            int estimatedInterventionTime, LocalDate date, MaintenanceProcedure procedure, List<Material> materials,
+            boolean interruptibleActivity) {        
         return this.selectMaintenanceActivity(type, activityId, site, typology, activityDescription,
-                estimatedInterventionTime, localDate, procedure, materials, interruptibleActivity);
+                estimatedInterventionTime, date, procedure, materials, interruptibleActivity);
     }
 
     /**

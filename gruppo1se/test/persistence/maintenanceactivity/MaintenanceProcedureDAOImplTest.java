@@ -249,21 +249,4 @@ public class MaintenanceProcedureDAOImplTest {
         } 
     }
     
-    /**
-     * This method asserts that updateSmp correctly returns false when newProcedure and oldSmp are equals.
-     */
-    @Test
-    public void updateSmpUnsuccessfulUpdateException4() {
-        try {
-            MaintenanceProcedure procedure = new MaintenanceProcedure("ProvaSmp1");
-            delete_procedure("ProvaSmp1");
-            insert_procedure("ProvaSmp1");
-            boolean retVal = procedureDao.updateSmp(procedure, "ProvaSmp1");
-            assertFalse("UnsuccessfulUpdate", retVal);
-        } catch (SQLException ex) {
-            fail("SQLEXception");
-        } catch (ProcedureException ex) {
-            fail("ProcedureException");
-        } 
-    }
 }

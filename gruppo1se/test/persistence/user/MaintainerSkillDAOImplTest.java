@@ -101,8 +101,6 @@ public class MaintainerSkillDAOImplTest {
             fail("SQLException");
         } catch (SkillException ex) {
             fail("SkillException");
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
         }
     }
     
@@ -125,8 +123,6 @@ public class MaintainerSkillDAOImplTest {
             fail("SQLException");
         } catch (SkillException ex) {
             fail("SkillException");
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
         }
     }
     

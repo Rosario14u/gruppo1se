@@ -7,12 +7,16 @@ package representation.planner;
 
 import business.maintenanceactivity.MaintenanceActivityFactory.Typology;
 import business.maintenanceactivity.Material;
+import business.maintenanceactivity.Site;
 import business.user.Planner;
 import exception.MaintenanceActivityException;
 import exception.NotValidParameterException;
 import exception.TypologyException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -91,6 +95,11 @@ public class CreateActivity extends javax.swing.JFrame {
         });
     }
 
+    /**
+     * Fills the jTypology comboBox with all the entries from the typology table in the database
+     * @throws TypologyException
+     * @throws NotValidParameterException 
+     */
     private void fillTypology() throws TypologyException, NotValidParameterException{
         List<String> typologiesList = planner.readTypologies();
         String[] strings = new String[typologiesList.size()+1];
@@ -379,14 +388,14 @@ public class CreateActivity extends javax.swing.JFrame {
             int activityId = Integer.parseInt(jActivityId.getText());
             String branchOffice = jBranchOffice.getText();
             String area = jArea.getText();
+            Site site = new Site(branchOffice,area);
             String typology = (String) jTypology.getSelectedItem();
             String activityDescription = jActivityDescription.getText();
             int estimatedInterventionTime = Integer.parseInt(jEstimatedInterventionTime.getText());
-            String date = jDate.getText();
-            
+            LocalDate date = LocalDate.parse(jDate.getText());
             LinkedList<Material> materials = new LinkedList<>();
             String materialString = jMaterials.getText();
-            if (!materialString.equals("")){
+            if (!materialString.equals("")){ //checks if jMaterials textField is empty
                 String[] materialStringList = materialString.split(",");
                 for (String material : materialStringList)
                     materials.add(new Material(material.trim()));
@@ -400,8 +409,9 @@ public class CreateActivity extends javax.swing.JFrame {
                 typologyOfActivity = Typology.EWO;
             else
                 typologyOfActivity = Typology.EXTRA;
-            planner.makeMaintenanceActivity(activityId, branchOffice, area, "", typology, activityDescription,
-                    estimatedInterventionTime, date, " ", materials, interruptibleActivity, typologyOfActivity);
+            //insert maintenanceActivity into the database
+            planner.makeMaintenanceActivity(activityId, site, typology, activityDescription,
+                    estimatedInterventionTime, date, null, materials, interruptibleActivity, typologyOfActivity); 
             jActivityId.setText("");
             jBranchOffice.setText("");
             jArea.setText("");
@@ -414,27 +424,29 @@ public class CreateActivity extends javax.swing.JFrame {
             jCreate.setEnabled(false);
         } catch (MaintenanceActivityException | NotValidParameterException ex) {
             MessageManager.errorMessage(this,ex.getMessage());
+        }catch(DateTimeParseException ex){
+            MessageManager.errorMessage(this, "Not valid date format");
         }
     }//GEN-LAST:event_jCreateActionPerformed
 
     private void jActivityIdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jActivityIdKeyPressed
         char c = evt.getKeyChar();
-        if(Character.isLetter(c)){
-            jActivityId.setEditable(false);
+        if(Character.isLetter(c)){ //if letters are used in the jActivityId textField
+            jActivityId.setEditable(false); //make jActivityId not editable
             jErrorActivityId.setText("Enter digits only!");
         }else {
-            jActivityId.setEditable(true);
+            jActivityId.setEditable(true); //make jActivityId editable
             jErrorActivityId.setText("");
         }
     }//GEN-LAST:event_jActivityIdKeyPressed
 
     private void jEstimatedInterventionTimeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jEstimatedInterventionTimeKeyPressed
         char c = evt.getKeyChar();
-        if(Character.isLetter(c)){
-            jEstimatedInterventionTime.setEditable(false);
+        if(Character.isLetter(c)){ //if letters are used in the jEstimatedInterventionTime textField
+            jEstimatedInterventionTime.setEditable(false); //make jEstimatedInterventionTime not editable
             jErrorEstimatedInterventionTime.setText("Enter digits only!");
         }else {
-            jEstimatedInterventionTime.setEditable(true);
+            jEstimatedInterventionTime.setEditable(true); //make jEstimatedInterventionTime editable
             jErrorEstimatedInterventionTime.setText("");
         }
     }//GEN-LAST:event_jEstimatedInterventionTimeKeyPressed
@@ -459,8 +471,11 @@ public class CreateActivity extends javax.swing.JFrame {
             checkFields();
         }
 
-        // if any changes to any document (any of the above methods called)
-        // check if all JTextfields have text. If so, activate the action
+        /**
+         * If any change happens to any document checks if all JTextfields have text. <br>
+         * If so, set allFieldsHaveText variable to true.
+         * @return {@code boolean} allFieldsHaveText
+         */
         public boolean checkTextFields() {
             boolean allFieldsHaveText = true;
             for (int i = 0; i<textFields.length-1;i++) {
@@ -473,6 +488,9 @@ public class CreateActivity extends javax.swing.JFrame {
 
     }
     
+    /**
+     * Enables the jCreate button, if all fields have been used, disables it otherwise.
+     */ 
     private void checkFields(){
         if (interruptible && typeOfActivity && typologyBool && myDocumentListener.checkTextFields()){
             jCreate.setEnabled(true);

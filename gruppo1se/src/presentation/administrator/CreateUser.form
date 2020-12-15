@@ -173,7 +173,7 @@
               <Connection code="new java.awt.Font(&quot;Rockwell&quot;, 0, 12)" type="code"/>
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] {&quot;&quot;, &quot;Planner&quot;, &quot;Maintainer&quot;,&quot;System Administrator&quot;})" type="code"/>
+              <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] {&quot;&quot;, &quot;PLANNER&quot;, &quot;MAINTAINER&quot;,&quot;ADMINISTRATOR&quot;})" type="code"/>
             </Property>
           </Properties>
           <AuxValues>
