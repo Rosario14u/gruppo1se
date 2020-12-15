@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import persistence.database.ConnectionDB;
 
+
 /**
  *
  * @author aless & vcoppola38
@@ -48,6 +49,7 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
      * @throws MaintenanceActivityException
      * @throws NotValidParameterException 
      */
+    /* Method developed by Alessio Citro*/
     @Override
     public boolean addMaintenanceActivity(MaintenanceActivity activity) throws MaintenanceActivityException, NotValidParameterException{
         checkDao(siteDao,"Error in storing activity");
@@ -85,6 +87,7 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
         }   
     }
     
+    
     /**
      * 
      * This method recover from a database the maintenance activity if exists, according to activityId parameter.<br>
@@ -92,7 +95,7 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
      * @param activityId activity id of the maintenance activity to retrieve
      * @return {@code MaintenanceActivity} MaintenanceActivity if exists a maintenance activity
      * with corresponding id in database, null otherwise.
-     * @throws exception.MaintenanceActivityException it there are problems in retrieving activity
+     * @throws exception.MaintenanceActivityException if there are problems in retrieving activity
      * @throws exception.NotValidParameterException if sitedao object is not correctly
      */
     /*Method developed by Rosario Gaeta*/
@@ -156,16 +159,21 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     
     
     /**
-     * This method allows to modify an existent Maintenance activity into databse, 
-     * acccording to actvityId parameter
-     * @param newActivity intance of Mintenance activity that contains the new fields to set
-     * @return {@code true} if the the change is successful, {@code false} otherwise
+     * This method allows to modify an existent Maintenance
+     * activity into databse acccording to actvityId parameter
+     * @param newActivity intance of Mintenance activity 
+     * that contains the new fields to set
+     * @return {@code true} if the the change
+     * is successful, {@code false} otherwise
      * @throws exception.MaintenanceActivityException
-     * @throws exception.NotValidParameterException
+     * if there are problems in modifyng activity
+     * @throws exception.NotValidParameterException if 
+     * required dao (siteDao) is not correctly initialized.
      */
     /*Developed by Antonio Gorrasi*/
     @Override
-    public boolean modifyMaintenaceActivity(MaintenanceActivity newActivity) throws MaintenanceActivityException, NotValidParameterException{
+    public boolean modifyMaintenaceActivity(MaintenanceActivity newActivity) 
+            throws MaintenanceActivityException, NotValidParameterException{
         checkDao(siteDao,"Error in deleting activity");
         try {
             Connection conn = ConnectionDB.getInstanceConnection().getConnection();
@@ -173,7 +181,7 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
             setPreparedStatement(pstm, newActivity);
             return pstm.executeUpdate()!=0;
         } catch (SQLException ex) {
-            throw new MaintenanceActivityException("Modifying maintenance activity failed");
+            throw new MaintenanceActivityException("Modifying activity failed");
         }
     }
     
@@ -211,6 +219,13 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
         }
     }
     
+    
+    /**
+     * This method prepare a statement
+     * @param preparedStatement statement to prepare
+     * @param activity Maintenace activity 
+     * @throws SQLException if there is a problem preparing the statement
+     */
     private void setPreparedStatement(PreparedStatement preparedStatement, MaintenanceActivity activity) throws SQLException{
         preparedStatement.setString(1, activity.getActivityDescription());
         preparedStatement.setInt(2, activity.getEstimatedInterventionTime());
@@ -232,6 +247,14 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
         preparedStatement.setInt(10, activity.getActivityId());
     }
     
+    
+    /**
+     * This method checks that the siteDao parameter 
+     * is valid, otherwise it throws an exception.
+     * @param siteDao data access object for site
+     * @param message Error message
+     * @throws NotValidParameterException if siteDao is {@code null}
+     */
     private void checkDao(SiteDao siteDao, String message) throws NotValidParameterException{
         if(siteDao == null)
             throw new NotValidParameterException(message);

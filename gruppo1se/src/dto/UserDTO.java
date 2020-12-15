@@ -8,10 +8,12 @@ package dto;
 import java.util.Objects;
 
 /**
- *
+ * This abstract class provides default 
+ * implementations of user Data transfer object  
  * @author gorra
  */
 public abstract class UserDTO {
+
     private final String username;
     private final String password;
 
@@ -59,8 +61,6 @@ public abstract class UserDTO {
 
     @Override
     public String toString() {
-        return "UserDTO{" + "username=" + username + ", password=" + password + '}';
+        return '{' + "username=" + username + ", password=" + password + '}';
     }
-    
-    
 }

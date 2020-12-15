@@ -10,13 +10,15 @@ import business.maintenanceactivity.Skill;
 import java.util.List;
 
 /**
- *
+ * The {@code MaintainerDTO} class, implements
+ * the Data transfer object of Maintainer
  * @author gorra
  */
-public class MaintainerDTO extends UserDTO{
+public class MaintainerDTO extends UserDTO {
+
     private List<Appointment> appointmentsInWeek;
     private List<Skill> skills;
-    
+
     public MaintainerDTO(String username, String password) {
         super(username, password);
     }
@@ -36,6 +38,10 @@ public class MaintainerDTO extends UserDTO{
     public void setSkills(List<Skill> skills) {
         this.skills = skills;
     }
-    
+
+    @Override
+    public String toString() {
+        return "MaintainerDTO " + super.toString();
+    }
     
 }

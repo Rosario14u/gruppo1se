@@ -45,6 +45,13 @@ public class UsersDAOStub implements UsersDAO {
             throw new UsersException();
     }
     
+    /*Stub method of deleteUsers*/
+    /**
+     * Simulates the behaviour of deleteUsers of UsersDAO.
+     * @param usernameList
+     * @return
+     * @throws UsersException 
+     */
     @Override
     public int deleteUsers(List<String> usernameList) throws UsersException{
         if (usernameList == null){           // case in which a null parameter is passed  
@@ -60,6 +67,7 @@ public class UsersDAOStub implements UsersDAO {
         }      
     }
     
+    @Override
     public boolean updateUser(String oldUsername, UserDTO newUser) throws UsersException{
         if (oldUsername==null || newUser==null || newUser.getUsername()==null || newUser.getPassword()==null
                 || oldUsername.equals("") || newUser.getUsername().equals("")){

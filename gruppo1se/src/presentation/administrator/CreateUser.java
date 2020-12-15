@@ -114,7 +114,7 @@ public class CreateUser extends javax.swing.JFrame {
         jPassword.setFont(new java.awt.Font("Rockwell", 0, 12));
 
         jRole.setFont(new java.awt.Font("Rockwell", 0, 12));
-        jRole.setModel(new javax.swing.DefaultComboBoxModel<>(UserRole.values()));
+        jRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"", "Planner", "Maintainer","System Administrator"}));
 
         jClear.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jClear.setText("Clear");
@@ -326,7 +326,7 @@ public class CreateUser extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jPassword;
-    private javax.swing.JComboBox<UserRole> jRole;
+    private javax.swing.JComboBox<String> jRole;
     private javax.swing.JTextField jUsername;
     // End of variables declaration//GEN-END:variables
 }
