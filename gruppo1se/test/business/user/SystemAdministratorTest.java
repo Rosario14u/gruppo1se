@@ -174,7 +174,7 @@ public class SystemAdministratorTest {
         }
     }
     
-//============================= Test of viewUser, makeTypology, readTypology, removeTypology and updateTypology =====================================
+//=================== Test of viewUser, makeTypology, readTypology, removeTypology, updateTypology, readSite and updateSite  =======================
     /*Test methods developed by Vincenza Coppola*/
    
     /**
@@ -339,7 +339,67 @@ public class SystemAdministratorTest {
         String typology = "TypologyException";
         instance.removeTypology(typology);
     }
-    /*=======================================================Test of makeUser, makeSite and removeSite==================================================================================*/
+    
+        /**
+     * Tests of readSites method, of class SystemAdministrator.
+     * @throws SiteException
+     * @throws NotValidParameterException 
+     */
+    @Test 
+    public void testReadSites() throws SiteException, NotValidParameterException{
+        System.out.println("readSitesTest");
+        List<Site> expected = new ArrayList<>();
+        expected.add(new Site("BranchOffice1","Area1","WorkspaceNotes1"));
+        expected.add(new Site("BranchOffice2","Area2","WorkspaceNotes2"));
+        expected.add(new Site("BranchOffice3","Area3","WorkspaceNotes3"));
+        List<Site> sites = instance.readSites();
+        assertEquals(true,expected.equals(sites));  
+    }
+    /**
+     * Tests of updateSite method, of class SystemAdministrator.
+     * @throws exception.SiteException
+     */
+    @Test 
+    public void testUpdateSite() throws SiteException {
+        try {
+            System.out.println("correct updateSiteTest");
+            Site oldSite = new Site("BranchOffice1","Area1","WorkspaceNotes1");
+            Site newSite = new Site("BranchOffice2","Area2","WorkspaceNotes2");
+            assertEquals(true,instance.updateSite(oldSite, newSite));
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
+    }
+    
+    /**
+     * Tests of updateSite method, of class SystemAdministrator.
+     * @throws SiteException 
+     */
+    @Test 
+    public void testUpdateSiteFalse() throws SiteException {
+        System.out.println("incorrect updateSiteTest");
+        Site oldSite = new Site("BranchOffice1","Area1","WorkspaceNotes1");
+        try {
+            assertEquals(false,instance.updateSite(oldSite,oldSite));
+        } catch (NotValidParameterException ex) {
+            fail("NotValidParameterException");
+        }
+    }
+    
+    /**
+     * Tests of updateSite method, of class SystemAdministrator.
+     * @throws exception.SiteException
+     * @throws exception.NotValidParameterException
+     */   
+    @Test(expected = SiteException.class) 
+    public void testUpdateSiteException() throws SiteException, NotValidParameterException {
+        System.out.println("updateSiteExceptionTest");
+        Site oldSite = new Site("BranchOffice1","Area1","WorkspaceNotes1");
+        Site newSite = new Site("Exception","Area2","WorkspaceNotes2");
+        instance.updateSite(oldSite, newSite);
+    }
+    
+ /*=======================================================Test of makeUser, makeSite and removeSite==================================================================================*/
     /*Test methods developed by Alessio Citro*/
     
     /**

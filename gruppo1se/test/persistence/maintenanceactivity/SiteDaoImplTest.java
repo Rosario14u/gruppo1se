@@ -6,11 +6,15 @@
 package persistence.maintenanceactivity;
 
 import business.maintenanceactivity.Site;
+import exception.NotValidParameterException;
 import exception.SiteException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
@@ -210,5 +214,76 @@ public class SiteDaoImplTest {
             System.out.println("Error on: connection rollback");
         }
     }
+//==========================================Test viewSites and updateSite=============================================================
+    /*Test methods developed by Vincenza Coppola*/
     
+    /**
+     * 
+     * @throws SiteException
+     * @throws SQLException 
+     */
+    @Test
+    public void testViewSites() throws SiteException, SQLException{
+        System.out.println("viewSites");
+        Site site1 = new Site("BranchOffice1","Area1","WorkspaceNotes1");
+        Site site2 = new Site("BranchOffice2","Area2","WorkspaceNotes2");
+        Site site3 = new Site("BranchOffice3","Area3","WorkspaceNotes3");
+        deleteAllFromSite();
+        List<Site> expectedList = new ArrayList<>();
+        expectedList.add(site1);
+        expectedList.add(site2);
+        expectedList.add(site3);
+        List<Site> siteList = new ArrayList<>();
+        insertIntoSite(site1.getBranchOffice(),site1.getArea(),site1.getWorkSpaceNotes());
+        insertIntoSite(site2.getBranchOffice(),site2.getArea(),site2.getWorkSpaceNotes());
+        insertIntoSite(site3.getBranchOffice(),site3.getArea(),site3.getWorkSpaceNotes());
+        siteList = siteDao.viewSites();
+        assertEquals(true,siteList.equals(expectedList));
+        conn.rollback();
+    }
+
+    /**
+     * 
+     * @throws SiteException
+     * @throws SQLException
+     * @throws NotValidParameterException 
+     */
+    @Test
+    public void testModifySite() throws SiteException, SQLException, NotValidParameterException{
+        System.out.println("modifySite");
+        Site site1 = new Site("BranchOffice1","Area1","WorkspaceNotes1");
+        Site site2 = new Site("BranchOffice2","Area2","WorkspaceNotes2");
+        deleteAllFromSite();
+        insertIntoSite(site1.getBranchOffice(),site1.getArea(),site1.getWorkSpaceNotes());
+        boolean result = siteDao.modifySite(site1,site2);
+        ResultSet set = selectSiteDefault();
+        if(set.next()){
+            assertEquals(set.getString("BranchOffice"),site2.getBranchOffice());
+            assertEquals(set.getString("Area"),site2.getArea());
+            assertEquals(set.getString("WorkspaceNotes"),site2.getWorkSpaceNotes());
+            assertEquals(true, result);
+        }
+    }    
+    
+    /*Utility methods developed by Vincenza Coppola*/
+    /**
+     * Deletes all rows from Site table.
+     * @throws SQLException 
+     */
+    private void deleteAllFromSite() throws SQLException{
+        String delete = "DELETE FROM Site";
+        Statement stm = conn.createStatement();
+        stm.executeUpdate(delete);
+    }
+    
+    /**
+     * 
+     * @return {@code ResultSet} the ResultSet containing all Site table's rows.
+     * @throws SQLException 
+     */
+    private ResultSet selectSiteDefault() throws SQLException{
+        String select = "SELECT * FROM Site";
+        Statement stm = conn.createStatement();
+        return stm.executeQuery(select);
+    }
 }

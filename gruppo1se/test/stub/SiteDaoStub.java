@@ -6,7 +6,10 @@
 package stub;
 
 import business.maintenanceactivity.Site;
+import exception.NotValidParameterException;
 import exception.SiteException;
+import java.util.ArrayList;
+import java.util.List;
 import persistence.maintenanceactivity.SiteDao;
 
 /**
@@ -64,6 +67,40 @@ public class SiteDaoStub implements SiteDao {
             throw new SiteException();
         else 
             return true;
+    }
+    
+    /**
+     * 
+     * @return
+     * @throws SiteException 
+     */
+    /*Developed by Vincenza Coppola*/
+    @Override
+    public List<Site> viewSites() throws SiteException {
+        List<Site> sites = new ArrayList<>();
+        sites.add(new Site("BranchOffice1","Area1","WorkspaceNotes1"));
+        sites.add(new Site("BranchOffice2","Area2","WorkspaceNotes2"));
+        sites.add(new Site("BranchOffice3","Area3","WorkspaceNotes3"));
+        return sites;    
+    }
+    
+    /**
+     * 
+     * @param oldSite
+     * @param newSite
+     * @return
+     * @throws SiteException
+     * @throws NotValidParameterException 
+     */
+    /*Developed by Vincenza Coppola*/
+    @Override
+    public boolean modifySite(Site oldSite, Site newSite) throws SiteException, NotValidParameterException {
+        if(oldSite.equals(newSite))
+            return false;
+        else if(newSite.getBranchOffice().equals("Exception"))
+            throw new SiteException();
+        else
+            return true;   
     }
     
 }
