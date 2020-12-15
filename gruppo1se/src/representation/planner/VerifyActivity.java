@@ -22,7 +22,7 @@ import javax.swing.JOptionPane;
  */
 public class VerifyActivity extends javax.swing.JFrame {
     private final MaintenanceActivity activity;
-    private String oldWorkspaceNotes;
+    private final String oldWorkspaceNotes;
     private final Planner planner;
     private final static String PROJECT_PATH = System.getProperty("user.dir");
     private final static String RELATIVE_PROJECT_PATH = "/src/smp/";
@@ -35,6 +35,7 @@ public class VerifyActivity extends javax.swing.JFrame {
      */
     public VerifyActivity(MaintenanceActivity activity, Planner planner) {
         initComponents();
+        this.setLocationRelativeTo(null);
         this.planner = planner;
         this.activity = activity;
         this.oldWorkspaceNotes = activity.getSite().getWorkSpaceNotes();

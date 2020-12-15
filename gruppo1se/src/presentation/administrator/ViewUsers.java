@@ -224,7 +224,7 @@ public class ViewUsers extends javax.swing.JFrame {
         jLabel3.setText("Select a Role:");
 
         jRole.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
-        jRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "Maintainer", "Planner", "System Administrator" }));
+        jRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "MAINTAINER", "PLANNER", "ADMINISTRATOR" }));
         jRole.setEnabled(false);
 
         deleteButton.setText("Delete");

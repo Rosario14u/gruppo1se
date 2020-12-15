@@ -24,6 +24,7 @@ public class MenuSystemAdministrator extends javax.swing.JFrame {
         administrator = new SystemAdministrator("admin","admin", new MaintenanceProcedureDAOImpl(), 
                 new UsersDAOImpl(),new TypologyDAOImpl());
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**

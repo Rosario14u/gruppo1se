@@ -34,6 +34,7 @@ public class MenuPlanner extends javax.swing.JFrame {
                 new RequiredMaterialForMaintenanceDAOImpl(), new UsersDAOImpl(), new EmployeeAppointmentDAOImpl(),
                 new RequiredSkillForMaintenanceDAOImpl(),new MaintainerSkillDAOImpl(), new TypologyDAOImpl());
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**

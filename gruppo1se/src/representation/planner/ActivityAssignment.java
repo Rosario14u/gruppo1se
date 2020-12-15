@@ -48,6 +48,8 @@ public class ActivityAssignment extends javax.swing.JDialog {
     private int remainEstimatedInterventionTime;
     private Planner planner;
     private Frame parent;
+    private static final int INDEX_FIRST_AVAIL_COL = 2;
+    private static final int NUM_COL = 9; 
 
     /**
      * 
@@ -57,7 +59,8 @@ public class ActivityAssignment extends javax.swing.JDialog {
      * @param newDate
      * @param mantainer 
      */
-    public ActivityAssignment(java.awt.Frame parent, boolean modal, MaintenanceActivity activity, LocalDate newDate, MaintainerDTO mantainer) {
+    public ActivityAssignment(java.awt.Frame parent, boolean modal, MaintenanceActivity activity,
+            LocalDate newDate, MaintainerDTO mantainer, Planner planner) {
         super(parent, modal);
         this.activity = activity;
         this.newDate = newDate;
@@ -65,11 +68,9 @@ public class ActivityAssignment extends javax.swing.JDialog {
         this.appointmentList = new ArrayList<>();
         this.parent = parent;
         this.remainEstimatedInterventionTime = activity.getEstimatedInterventionTime();
-        this.planner = new Planner("planner", "planner", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
-                new RequiredMaterialForMaintenanceDAOImpl(), new UsersDAOImpl(), new EmployeeAppointmentDAOImpl(),
-                new RequiredSkillForMaintenanceDAOImpl(), new MaintainerSkillDAOImpl(), new TypologyDAOImpl());
+        this.planner = planner;
         initComponents();
-        this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(parent);
         tableModel = (DefaultTableModel) maintainerAvailabilityDayTable.getModel();
         renderer = new MinuteCellRenderer();
         maintainerAvailabilityDayTable.setDefaultRenderer(Object.class, renderer);
@@ -134,7 +135,6 @@ public class ActivityAssignment extends javax.swing.JDialog {
                 }
             }
         }
-        System.out.println(rowTable.toString());
         tableModel.addRow(rowTable);
     }
 
@@ -356,7 +356,7 @@ public class ActivityAssignment extends javax.swing.JDialog {
         //row and col indicate which cell was clicked
         int row = maintainerAvailabilityDayTable.rowAtPoint(evt.getPoint());
         int col = maintainerAvailabilityDayTable.columnAtPoint(evt.getPoint());
-        if (col >= 2 && col <= 8 && row != -1) {
+        if (col >= INDEX_FIRST_AVAIL_COL && col < NUM_COL && row != -1) {
             String availabilityValue = String.valueOf(maintainerAvailabilityDayTable.getValueAt(row, col)).split(" ")[0];
             int availableMinutes = Integer.valueOf(availabilityValue);
             if (availableMinutes == 0) {

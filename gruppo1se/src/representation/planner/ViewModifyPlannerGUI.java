@@ -46,6 +46,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         listModel = new DefaultListModel<>();
         this.planner = planner;
         initComponents();
+        this.setLocationRelativeTo(null);
         initializeField(false);
         weekTextField.setEnabled(false);
         weekTextField.setText("");

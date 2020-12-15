@@ -56,6 +56,7 @@ public class CreateActivity extends javax.swing.JFrame {
     public CreateActivity(Planner planner) throws TypologyException, NotValidParameterException {
         this.planner = planner;
         initComponents();
+        this.setLocationRelativeTo(null);
         myDocumentListener = new MyDocumentListener();
         textFields[0] = jActivityId;
         textFields[1] = jBranchOffice;
@@ -102,12 +103,8 @@ public class CreateActivity extends javax.swing.JFrame {
      */
     private void fillTypology() throws TypologyException, NotValidParameterException{
         List<String> typologiesList = planner.readTypologies();
-        String[] strings = new String[typologiesList.size()+1];
-        Object[] objArray = typologiesList.toArray();
-        strings[0] = "";
-        for(int i = 1; i<strings.length; i++)
-            strings[i] = (String) objArray[i-1];
-        jTypology.setModel(new DefaultComboBoxModel(strings));
+        for (String typology : typologiesList)
+            jTypology.addItem(typology);
     }
     
     /**

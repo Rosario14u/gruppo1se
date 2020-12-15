@@ -27,19 +27,9 @@ import java.awt.event.WindowEvent;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
-
 import java.util.List;
 import java.util.Locale;
 import javax.swing.table.DefaultTableModel;
-
-import persistence.maintenanceactivity.EmployeeAppointmentDAOImpl;
-import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
-import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
-
-import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
-import persistence.maintenanceactivity.SiteDaoImpl;
-import persistence.user.MaintainerSkillDAOImpl;
-import persistence.user.UsersDAOImpl;
 import presentation.manager.MessageManager;
 
 /**
@@ -52,6 +42,7 @@ public class MaintainerAvailability extends javax.swing.JFrame {
     private DefaultTableModel tableModel;
     private List<MaintainerDTO> maintainerList;
     private ActivityAssignment jDialogGUI;
+    private static final int INDEX_FIRST_AVAIL_COL = 2;
     private static final int NUM_COL = 9; 
     /**
      * Creates new form MaintainerAvailability
@@ -62,7 +53,9 @@ public class MaintainerAvailability extends javax.swing.JFrame {
         initComponents();
         tableModel = (DefaultTableModel) maintainerAvailabilityTable.getModel();
         initializeFields();
-        PercentageCellRenderer renderer = new PercentageCellRenderer(); // Cell renderer to color cells of the table 
+        this.setLocationRelativeTo(null);
+        /*This object performs the coloring of the cell of jTable*/
+        PercentageCellRenderer renderer = new PercentageCellRenderer();  
         maintainerAvailabilityTable.setDefaultRenderer(Object.class, renderer);
     }
     /**
@@ -77,7 +70,8 @@ public class MaintainerAvailability extends javax.swing.JFrame {
             weekLabel.setText(Integer.toString(weekNumber));
             activityInfoLabel.setText(Integer.toString(activity.getActivityId()) + " - " + activity.getSite().getArea()
                     + " - " + activity.getTypology() + " - " + Integer.toString(activity.getEstimatedInterventionTime()) + "'");
-            if (activity.getMaintenanceProcedure().getSkills() != null) {
+            /*Printing of the skills*/
+            if (activity.getMaintenanceProcedure()!= null && activity.getMaintenanceProcedure().getSkills() != null) {
                 StringBuilder builder2 = new StringBuilder();
                 for (Skill skill : activity.getMaintenanceProcedure().getSkills()) {
                     builder2.append(skill.getName()).append("\n");
@@ -93,31 +87,38 @@ public class MaintainerAvailability extends javax.swing.JFrame {
     
     /**
      * This method allows to fill the jTable with information about Maintainer <br> 
-     * (username, skills accordance and days availability of the maintainers in a specific week. 
+     * (username, skills accordance and days availability of the maintainers in a specific week). 
      */
     /*Method developed by Rosario Gaeta*/
     private void populateTable() {
         try {
-            int numProcedureSkill = activity.getMaintenanceProcedure().getSkills().size(); // get the list of activity skills
+            /*get the list of activity skills*/
+            int numProcedureSkill = activity.getMaintenanceProcedure().getSkills().size();
+            /*get a list of maintainer with their skills and appointments*/
             maintainerList = planner.viewEmployeeAvailability(WeekConverter.getWeek(activity.getDate()),
-                    WeekConverter.getYear(activity.getDate())); // get a list of maintainer with their skills and appointments
+                    WeekConverter.getYear(activity.getDate())); 
             for (MaintainerDTO maintainer : maintainerList) {
-                String[] rowTable = new String[]{"", "", "100%", "100%", "100%", "100%", "100%", "100%", "100%"}; // initial row
-                rowTable[0] = maintainer.getUsername(); // adding of the maintainer username to the row
+                /*initial row*/
+                String[] rowTable = new String[]{"", "", "100", "100", "100", "100", "100", "100", "100"};
+                /*adding of the maintainer username to the row*/
+                rowTable[0] = maintainer.getUsername(); 
                 maintainer.getSkills().retainAll(activity.getMaintenanceProcedure().getSkills());
-                rowTable[1] = maintainer.getSkills().size() + "/" + numProcedureSkill; // adding of the skills to the row
+                /*adding of the skills to the row*/
+                rowTable[1] = maintainer.getSkills().size() + "/" + numProcedureSkill; 
                 for (Appointment appointment : maintainer.getAppointmentsInWeek()) {
-                    System.out.println(maintainer.getUsername() + " " + appointment.toString());
-                    int index = appointment.getStartDateAndTime().getDayOfWeek().getValue(); // conversion of the day of the week in an index
-                    float totalCellPercentage=  Float.valueOf(rowTable[index+1].replaceAll("%", ""));
-                    // subtracts the duration of an appointment from the total (in percentage)
+                    /*conversion of the day of the week in an index*/
+                    int index = appointment.getStartDateAndTime().getDayOfWeek().getValue(); 
+                    float totalCellPercentage=  Float.valueOf(rowTable[index+1]);
+                    /*subtracts the duration of an appointment from the total (in percentage)*/
                     totalCellPercentage = (totalCellPercentage - ((float) appointment.getDuration() * 100) / 420);
-                    rowTable[index+1] = totalCellPercentage + "%";
+                    rowTable[index+1] = String.valueOf(totalCellPercentage);
                 }
-                for(int index=2; index < NUM_COL ; index++){
-                    rowTable[index] = Math.round(Float.valueOf(rowTable[index].replaceAll("%", ""))) + "%"; // final rounding
+                for(int index=INDEX_FIRST_AVAIL_COL; index < NUM_COL ; index++){
+                    /*final rounding*/
+                    rowTable[index] = Math.round(Float.valueOf(rowTable[index])) + "%"; 
                 }
-                tableModel.addRow(rowTable); // inserting of a row
+                /*inserting of a row in the table*/
+                tableModel.addRow(rowTable); 
             }
         } catch (UsersException | NotValidParameterException ex) {
             MessageManager.errorMessage(this,ex.getMessage());
@@ -305,13 +306,13 @@ public class MaintainerAvailability extends javax.swing.JFrame {
         int row = maintainerAvailabilityTable.rowAtPoint(evt.getPoint());
         int col = maintainerAvailabilityTable.columnAtPoint(evt.getPoint());
         LocalDate newDate = null;
-        if (col >= 2 && col <= 9 && row != -1) {
+        if (col >= INDEX_FIRST_AVAIL_COL && col <= NUM_COL && row != -1) {
             newDate = WeekConverter.getDayOfWeek(activity.getDate(), DayOfWeek.values()[col - 2]);
             if (newDate.isBefore(LocalDate.now())) {
                 MessageManager.infoMessage(this,"Invalid date!");
             } //new ActivityAssignment(this, activity, newDate, maintainerList.get(row)).setVisible(true);
             else {
-                jDialogGUI = new ActivityAssignment(this, true, activity, newDate, maintainerList.get(row));
+                jDialogGUI = new ActivityAssignment(this, true, activity, newDate, maintainerList.get(row), planner);
                 jDialogGUI.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosed(WindowEvent e) {

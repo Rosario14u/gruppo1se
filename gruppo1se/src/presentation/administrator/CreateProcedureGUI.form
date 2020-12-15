@@ -57,7 +57,7 @@
                       <Component id="chooserButton" max="32767" attributes="0"/>
                       <Component id="chooseFileLabel" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="30" max="32767" attributes="0"/>
+                  <EmptySpace pref="31" max="32767" attributes="0"/>
               </Group>
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
@@ -131,12 +131,12 @@
         </Component>
         <Component class="javax.swing.JLabel" name="RenameLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Rinomina File:"/>
+            <Property name="text" type="java.lang.String" value="Rename file:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="chooseFileLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Scegli il file"/>
+            <Property name="text" type="java.lang.String" value="Choose file"/>
           </Properties>
         </Component>
       </SubComponents>

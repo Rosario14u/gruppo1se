@@ -37,6 +37,7 @@ public class DeleteActivity extends javax.swing.JFrame {
     public DeleteActivity(Planner planner) {
         this.planner = planner;
         initComponents();
+        this.setLocationRelativeTo(null);
         jActivityID.getDocument().addDocumentListener(new DListener());
     }
 
