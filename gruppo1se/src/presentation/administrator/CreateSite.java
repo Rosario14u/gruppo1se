@@ -77,17 +77,17 @@ public class CreateSite extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel2.setText("Branch Office:");
 
-        jBranchOffice.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jBranchOffice.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setText("Area:");
 
-        jArea.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jArea.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setText("Workspace Notes:");
 
-        jWorkspaceNotes.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jWorkspaceNotes.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
 
         jCreate.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jCreate.setText("Create");

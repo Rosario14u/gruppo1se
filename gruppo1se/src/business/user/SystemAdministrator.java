@@ -173,7 +173,7 @@ public class SystemAdministrator extends User {
     /*Developed by Vincenza Coppola*/    
     public boolean makeTypology(String typology) throws TypologyException, NotValidParameterException{
         if(typologyDao == null){
-            throw new NotValidParameterException("Error in retrieving users");
+            throw new NotValidParameterException("Error in making typology");
         }
         return typologyDao.addTypology(typology);
     }
@@ -187,7 +187,7 @@ public class SystemAdministrator extends User {
     /*Developed by Vincenza Coppola*/    
     public List<String> readTypologies() throws TypologyException, NotValidParameterException{
         if(typologyDao == null){
-            throw new NotValidParameterException("Error in retrieving users");
+            throw new NotValidParameterException("Error in reading typologies");
         }        
         return typologyDao.viewTypologies();
     }
@@ -203,7 +203,7 @@ public class SystemAdministrator extends User {
     /*Developed by Vincenza Coppola*/    
     public boolean updateTypology(String oldTypology, String newTypology) throws TypologyException, NotValidParameterException{
         if(typologyDao == null){
-            throw new NotValidParameterException("Error in retrieving users");
+            throw new NotValidParameterException("Error in updating typology");
         }
         return typologyDao.modifyTypology(oldTypology, newTypology);
     }
@@ -218,7 +218,7 @@ public class SystemAdministrator extends User {
      /*Developed by Vincenza Coppola*/    
     public boolean removeTypology(String typology) throws TypologyException, NotValidParameterException{
         if(typologyDao == null){
-            throw new NotValidParameterException("Error in retrieving users");
+            throw new NotValidParameterException("Error in deleting typology");
         }
         return typologyDao.deleteTypology(typology);
     }
@@ -228,11 +228,12 @@ public class SystemAdministrator extends User {
      * @param site
      * @return {@code boolean} true if site is inserted into database
      * @throws SiteException if there's an SQL error inserting into site table
+     * @throws exception.NotValidParameterException if this System Administrator has no SiteDao.
      */
     /*Developed by Alessio Citro*/
     public boolean makeSite(Site site) throws SiteException, NotValidParameterException{
         if(siteDao == null)
-           throw new NotValidParameterException("Error in creating user");
+           throw new NotValidParameterException("Error in creating site");
         if(site == null)
             throw new SiteException();
         return siteDao.addSite(site);
@@ -243,14 +244,45 @@ public class SystemAdministrator extends User {
      * @param site
      * @return {@code boolean} true if site is deleted from database
      * @throws SiteException if there's an SQL error deleting from site table
+     * @throws exception.NotValidParameterException if this System Administrator has no SiteDao.
      */
     /*Developed by Alessio Citro*/
     public boolean removeSite(Site site) throws SiteException, NotValidParameterException{
         if(siteDao == null)
-           throw new NotValidParameterException("Error in creating user");
+           throw new NotValidParameterException("Error in deleting site");
         if(site == null)
             throw new SiteException();
         return siteDao.deleteSite(site);
+    }
+    
+    /**
+     * 
+     * @return{@code List<Site>} the list of the site table's rows.
+     * @throws SiteException if there's an SQL error reading from site table
+     * @throws NotValidParameterException if this System Administrator has no SiteDao.
+     */
+    /*Developed by Vincenza Coppola*/
+    public List<Site> readSites() throws SiteException, NotValidParameterException{
+        if(siteDao == null)
+            throw new NotValidParameterException("Error in reading sites");
+        return siteDao.viewSites();
+    }
+    
+    /**
+     * 
+     * @param oldSite
+     * @param newSite
+     * @return{@code boolean} true if the site is updated into the database.
+     * @throws SiteException if there's an SQL error updating from site table or if a parameter is null.
+     * @throws NotValidParameterException if this System Administrator has no SiteDao.
+     */
+    /*Developed by Vincenza Coppola*/
+    public boolean updateSite(Site oldSite, Site newSite) throws SiteException, NotValidParameterException{
+        if(siteDao == null)
+            throw new NotValidParameterException("Error in updating site");
+        if(oldSite == null || newSite == null)
+            throw new SiteException("Cannot update a null Site");
+        return siteDao.modifySite(oldSite, newSite);
     }
 }
 

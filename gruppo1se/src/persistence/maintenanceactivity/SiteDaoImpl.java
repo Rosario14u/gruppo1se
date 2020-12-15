@@ -6,11 +6,15 @@
 package persistence.maintenanceactivity;
 
 import business.maintenanceactivity.Site;
+import exception.NotValidParameterException;
 import exception.SiteException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import persistence.database.ConnectionDB;
 
 /**
@@ -21,6 +25,8 @@ public class SiteDaoImpl implements SiteDao {
     private final static String SELECT_SITE = "SELECT * FROM Site WHERE branchOffice = ? and area = ?";
     private final String SQL_INSERT = "INSERT INTO Site VALUES (?,?,?)";
     private final String SQL_DELETE = "DELETE FROM Site WHERE (branchoffice, area) = (?,?)";
+    private final String SQL_SELECT = "SELECT * FROM Site";
+    private final String SQL_UPDATE = "UPDATE Site SET branchOffice = ? , area = ?, workspaceNotes = ? WHERE (branchOffice, area) = (?,?)";
     
     /**
      * This method returns the site according to branchOffice and area attributes of the site object
@@ -89,6 +95,70 @@ public class SiteDaoImpl implements SiteDao {
             PreparedStatement stmt = conn.prepareStatement(SQL_DELETE);
             stmt.setString(1, site.getBranchOffice());
             stmt.setString(2, site.getArea());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            throw new SiteException();
+        }
+    }
+    
+    /**
+     * 
+     * @return {@code List<Site>} the list of sites, representing all the sites stored into the database
+     * @throws SiteException if there's an SQL error while selecting from the Site table
+     */
+    /*Developed by Vincenza Coppola*/
+    @Override
+    public List<Site> viewSites() throws SiteException {
+        try {
+            Connection conn = ConnectionDB.getInstanceConnection().getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet res = stmt.executeQuery(SQL_SELECT);
+            return this.makeSitesList(res);
+        } catch (SQLException ex) {
+            throw new SiteException();
+        }
+    }
+    
+    /**
+     * 
+     * @param res ResultSet containing all the entries from the site table
+     * @return{@code List<Site>} a list of Sites, representing all the sites stored into the database
+     * @throws SiteException if there's an SQL error while looping through the ResultSet
+     */
+    /*Developed by Vincenza Coppola*/
+    private List<Site> makeSitesList (ResultSet res) throws SiteException{
+        List<Site> sites = new ArrayList<>();
+        try {
+            while(res.next()){
+                sites.add(new Site(res.getString("BranchOffice"),res.getString("Area"), res.getString("WorkspaceNotes")));
+            }         
+            return sites;
+        } catch (SQLException ex) {
+            throw new SiteException();
+        }
+    }
+    
+    /**
+     * 
+     * @param oldSite
+     * @param newSite
+     * @return{@code boolean }true if the site is updated into the database
+     * @throws SiteException if there's an SQL error while updating into the Site table
+     * @throws exception.NotValidParameterException if one of the parameters is null.
+     */
+    /*Developed by Vincenza Coppola*/
+    @Override
+    public boolean modifySite(Site oldSite, Site newSite) throws SiteException, NotValidParameterException {
+        if(oldSite == null || newSite == null)
+            throw new NotValidParameterException();
+        try {
+            Connection conn = ConnectionDB.getInstanceConnection().getConnection();
+            PreparedStatement stmt = conn.prepareStatement(SQL_UPDATE);
+            stmt.setString(1, newSite.getBranchOffice());
+            stmt.setString(2, newSite.getArea());
+            stmt.setString(3, newSite.getWorkSpaceNotes());
+            stmt.setString(4, oldSite.getBranchOffice());
+            stmt.setString(5, oldSite.getArea());
             return stmt.executeUpdate() > 0;
         } catch (SQLException ex) {
             throw new SiteException();
