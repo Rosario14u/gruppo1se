@@ -29,7 +29,6 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
             + " typologyOfUnplannedActivity=?, typologyName=?, branchOffice=?, area=? WHERE activityId = ?";
     private static final String SELECT_ACTIVITY_DATE_RANGE = "SELECT * FROM MaintenanceActivity WHERE dateActivity between ? and ?"
             + "order by activityId";
-    
     private final SiteDao siteDao;
     
     /**

@@ -29,6 +29,13 @@ public class UsersDAOImpl implements UsersDAO {
     private final String SELECT_MAINTAINER = "SELECT * FROM Users WHERE role = 'Maintainer' ORDER BY username";
     private final String SQL_UPDATE = "UPDATE users SET username=?, password=?, role=? WHERE username = ?";
     
+    /**
+     * 
+     * @param user
+     * @return {@code boolean} true if an user is inserted into the database
+     * @throws UsersException 
+     */
+    /* Method developed by Alessio Citro*/
     @Override
     public boolean addUser(UserDTO user) throws UsersException{
         try {
