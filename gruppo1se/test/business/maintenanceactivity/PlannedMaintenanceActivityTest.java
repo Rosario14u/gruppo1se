@@ -30,7 +30,6 @@ public class PlannedMaintenanceActivityTest {
         instance = new PlannedMaintenanceActivity(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials,  true);
     }
     
-
     /**
      * Test of getActivityId method, of class PlannedMaintenanceActivity.
      */
@@ -148,16 +147,20 @@ public class PlannedMaintenanceActivityTest {
         assertEquals(PlannedMaintenanceActivity.class.isInstance(this.instance), true);
     }
 
-
-//    
-//    @Test
-//    public void testEquals(){
-//        System.out.println("equals");
-//        PlannedMaintenanceActivity obj = new PlannedMaintenanceActivity(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials,  true);
-//        boolean result = instance.equals(obj);
-//        assertEquals(result, true);
-//    }
+    /**
+     * Test of equals method, of class PlannedMaintenanceActivity.
+     */    
+    @Test
+    public void testEquals(){
+        System.out.println("equals");
+        PlannedMaintenanceActivity obj = new PlannedMaintenanceActivity(1, site, "ProvaTypology", "ProvaActivityDescription", 30, date, maintenanceProcedure, materials,  true);
+        boolean result = instance.equals(obj);
+        assertEquals(result, true);
+    }
     
+    /**
+     * Test of equals method, of class PlannedMaintenanceActivity.
+     */
     @Test
     public void testNotEquals(){
         System.out.println("not equals");
@@ -181,7 +184,6 @@ public class PlannedMaintenanceActivityTest {
         String result = instance.toString();
         assertEquals(expResult, result);
     }
-
 }
 
     

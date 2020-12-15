@@ -364,10 +364,12 @@ public class PlannerTest {
         }
     }
     
-    /*===========================================================================================================================*/
+    /*=================================================Test of makeMaintenanceActivity==========================================================================*/
+    /*Test methods developed by Alessio Citro*/
     
     /**
      * Test of makeMaintenanceActivity method, of class Planner.
+     * @throws exception.MaintenanceActivityException
      */
     @Test
     public void testMakeMaintenanceActivity() throws  MaintenanceActivityException {
@@ -386,6 +388,10 @@ public class PlannerTest {
         }
     }
 
+    /**
+     * Test of makeMaintenanceActivity method, of class Planner.
+     * @throws exception.MaintenanceActivityException
+     */
     @Test(expected = MaintenanceActivityException.class)
     public void testMakeMaintenanceActivityWrong() throws  MaintenanceActivityException {
         try {
@@ -403,6 +409,10 @@ public class PlannerTest {
         }
     }
     
+    /**
+     * Test of makeMaintenanceActivity method, of class Planner.
+     * @throws exception.MaintenanceActivityException
+     */
     @Test
     public void testMakeMaintenanceActivityExtraActivity() throws  MaintenanceActivityException{
         try {
@@ -422,6 +432,10 @@ public class PlannerTest {
         }
     }
     
+    /**
+     * Test of makeMaintenanceActivity method, of class Planner.
+     * @throws exception.MaintenanceActivityException
+     */
     @Test(expected = MaintenanceActivityException.class)
     public void testMakeMaintenanceActivityExtraActivityWrong() throws  MaintenanceActivityException{
         try {
@@ -442,6 +456,10 @@ public class PlannerTest {
         }
     }
     
+    /**
+     * Test of makeMaintenanceActivity method, of class Planner.
+     * @throws exception.MaintenanceActivityException
+     */
     @Test
     public void testMakeMaintenanceActivityEwo() throws  MaintenanceActivityException{
         try {
@@ -461,6 +479,10 @@ public class PlannerTest {
         }
     }
     
+    /**
+     * Test of makeMaintenanceActivity method, of class Planner.
+     * @throws exception.MaintenanceActivityException
+     */
     @Test(expected = MaintenanceActivityException.class)
     public void testMakeMaintenanceActivityEwoWrong() throws MaintenanceActivityException {
         try {
@@ -481,10 +503,12 @@ public class PlannerTest {
         }
     }
     
- //===========================================================================================================================================   
-  /**
- * Test of removeMaintenanceActivity method, of class Planner.
- */
+ //================================== Test of removeMaintenanceActivity =======================================================================   
+    /*Test methods developed by Vincenza Coppola*/
+    /**
+    * Test of removeMaintenanceActivity method, of class Planner.
+    * @throws exception.MaintenanceActivityException
+    */
     @Test
     public void testRemoveMaintenanceActivity() throws MaintenanceActivityException {
         try {
@@ -499,7 +523,10 @@ public class PlannerTest {
         }
     }
     
-    
+    /**
+    * Test of removeMaintenanceActivity method, of class Planner.
+    * @throws exception.MaintenanceActivityException
+    */
     @Test
     public void testRemoveMaintenanceActivityWithWrongId() throws MaintenanceActivityException {
         try {
@@ -513,7 +540,11 @@ public class PlannerTest {
             fail("NotValidParameterException");
         }
     }
-    
+
+    /**
+    * Test of removeMaintenanceActivity method, of class Planner.
+    * @throws exception.MaintenanceActivityException
+    */    
     @Test(expected = MaintenanceActivityException.class)
     public void testRemoveMaintenanceActivityException() throws MaintenanceActivityException {
         try {
@@ -526,7 +557,6 @@ public class PlannerTest {
             fail("NotValidParameterException");
         }
     }
-    
     
     //========================Test of viewMaintenanceActivity================================================
     /*Test methods of viewMaintenanceActivity developed by Rosario Gaeta*/

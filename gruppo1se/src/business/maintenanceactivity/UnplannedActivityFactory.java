@@ -26,7 +26,6 @@ public class UnplannedActivityFactory extends MaintenanceActivityFactory{
      * @param date date of maintenance activity to instantiate
      * @param maintenanceProcedure procedure of maintenance activity to instantiate
      * @param materials required materials for maintenance to instantiate
-     * @param skills required skills for maintenance to instantiate
      * @param interruptibleActivity indicates whether the activity is interruptible to instantiate
      * @return the correct instance of unplanned maintenance activity 
      */

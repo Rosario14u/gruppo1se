@@ -10,6 +10,7 @@ import business.maintenanceactivity.MaintenanceActivity;
 import business.maintenanceactivity.MaintenanceActivityFactory.Typology;
 import business.maintenanceactivity.Material;
 import business.maintenanceactivity.PlannedMaintenanceActivity;
+import business.maintenanceactivity.Site;
 import business.user.Planner;
 import business.user.WeekConverter;
 import com.toedter.calendar.JTextFieldDateEditor;
@@ -375,7 +376,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_interruptibleActivityCheckBoxActionPerformed
 
     /**
-     * This method allows to visualize a maintenance activity.
+     * This method allows to visualize a maintenance activity in the GUI.
      * @param evt 
      */
     //Method developed by Rosario Gaeta
@@ -411,7 +412,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         if(selectedIndex != -1){
             Material material = materialComboBox.getItemAt(selectedIndex);
             materialComboBox.removeItemAt(selectedIndex);
-            List<Material> listMaterialsToAdd = new ArrayList<>(Arrays.asList(material));
+            List<Material> listMaterialsToAdd = new ArrayList<>(){{add(material);}};
             try{
                 int activityId = getCheckedNumberParameter(activityIdTextField.getText());
                 planner.addRequiredMaterial(activityId, listMaterialsToAdd);
@@ -453,21 +454,18 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         try {
             String area =  areaTextField.getText();
             String branchOffice = branchOfficeTextField.getText();
+            Site site = new Site(branchOffice,area);
             Typology typologyOfActivity = Typology.valueOf(activityComboBox.getSelectedItem().toString());
             int estimatedInterventionTime = getCheckedNumberParameter(estimatedInterventionTimeTextField.getText());
             int activityId = getCheckedNumberParameter(activityIdTextField.getText());
             boolean interruptibleActivity = interruptibleActivityCheckBox.isSelected();
             String typology = typologyTextField.getText();
-            String activityDescrioption = activityDescriptionTextArea.getText();
-            String date = calendarDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString();
+            String activityDescription = activityDescriptionTextArea.getText();
+            LocalDate date = calendarDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             if(activityId >= 0 && estimatedInterventionTime >= 0)
-                try{
-                    planner.modifyMaintenanceActivity(activityId, branchOffice, area, typology, activityDescrioption, estimatedInterventionTime,
-                            date, interruptibleActivity, typologyOfActivity);
-                }catch(MaintenanceActivityException | NotValidParameterException ex){
-                    MessageManager.errorMessage(this, ex.getMessage());
-                }
-        } catch (NumberNotValidException ex) {
+                planner.modifyMaintenanceActivity(activityId, site, typology, activityDescription, estimatedInterventionTime,
+                        date, interruptibleActivity, typologyOfActivity);
+        } catch (NumberNotValidException | MaintenanceActivityException | NotValidParameterException ex) {
             MessageManager.errorMessage(this, ex.getMessage());
         }
     }
@@ -561,11 +559,11 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
     private void setField(MaintenanceActivity activity){
         if (activity !=null){
             if (activity instanceof PlannedMaintenanceActivity){
-                activityComboBox.setSelectedItem("Planned");
+                activityComboBox.setSelectedItem(Typology.PLANNED);
             }else if (activity instanceof Ewo){
-                activityComboBox.setSelectedItem("EWO");
+                activityComboBox.setSelectedItem(Typology.EWO);
             }else{
-                activityComboBox.setSelectedItem("Extra");
+                activityComboBox.setSelectedItem(Typology.EXTRA);
             }
             activityDescriptionTextArea.setText(activity.getActivityDescription());
             areaTextField.setText(activity.getSite().getArea());

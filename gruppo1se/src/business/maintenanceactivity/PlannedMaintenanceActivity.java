@@ -5,7 +5,7 @@
  */
 package business.maintenanceactivity;
 
-import exception.NotValidParameterException;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class PlannedMaintenanceActivity extends MaintenanceActivity{
         super(activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials, interruptibleActivity);
     }
    
-        @Override
+    @Override
     public String toString() {
         return "PlannedMaintenanceActivity" + super.toString();
     }

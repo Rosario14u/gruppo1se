@@ -74,8 +74,10 @@ public class Planner extends User {
         this.typologyDao = typologyDao;
     }
 
-    
-    
+    public RequiredMaterialForMaintenanceDAO getRequiredMaterialsDao() {
+        return requiredMaterialsDao;
+    }
+
     /**
      * This method returns Maintenance Activity with the passed activityId if
      * exists, null otherwise<br>
@@ -138,8 +140,14 @@ public class Planner extends User {
         return maintenanceActivityDao.modifyMaintenaceActivity(newActivity);
     }
 
-    
-    
+    /**
+     * 
+     * @param activityId
+     * @return {@code boolean} true if MaintenanceActivity is removed from database.
+     * @throws MaintenanceActivityException if there's an SQL error while deleting the activity.
+     * @throws NotValidParameterException if this Planner has no MaintenanceActivityDAO.
+     */
+    /*Developed by Vincenza Coppola*/    
     public boolean removeMaintenanceActivity(int activityId) throws MaintenanceActivityException, NotValidParameterException {
         if (maintenanceActivityDao == null) {
             throw new NotValidParameterException("Failure to remove data relating to maintenance activities");
@@ -160,8 +168,8 @@ public class Planner extends User {
      * @param interruptibleActivity
      * @param typologyOfActivity
      * @return {@code boolean} true if MaintenanceActivity and materials are inserted into the database 
-     * @throws MaintenanceActivityException
-     * @throws NotValidParameterException 
+     * @throws MaintenanceActivityException if there's an SQL error while inserting into the MaintenanceActivity table
+     * @throws NotValidParameterException if this planner has no MaintenanceActivityDAO
      */
     /* Method developed by Alessio Citro*/
     public boolean makeMaintenanceActivity(int activityId, Site site, String typology, String activityDescription, int estimatedInterventionTime,
@@ -321,7 +329,7 @@ public class Planner extends User {
      * @throws TypologyException
      * @throws NotValidParameterException 
      */
-    /* Method developed by Alessio Citro*/
+    /*Developed by Vincenza Coppola*/   
     public List<String> readTypologies() throws TypologyException, NotValidParameterException{
         if(typologyDao == null){
             throw new NotValidParameterException("Error in retrieving users");

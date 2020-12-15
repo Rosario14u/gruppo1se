@@ -24,7 +24,14 @@ import persistence.maintenanceactivity.MaintenanceActivityDAO;
  */
 public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
 
-     @Override
+    /**
+     * 
+     * @param activity
+     * @return
+     * @throws MaintenanceActivityException 
+     */
+    /*Developed by Alessio Citro*/
+    @Override
     public boolean addMaintenanceActivity(MaintenanceActivity activity) throws MaintenanceActivityException {
         if (activity.getActivityId() == 1 && activity.getSite().getBranchOffice().equals("ProvaBranchOffice") && activity.getSite().getArea().equals("ProvaArea") &&
                 activity.getSite().getWorkSpaceNotes().equals("ProvaWorkspaceNotes") && activity.getTypology().equals("ProvaTypology") && 
@@ -65,7 +72,13 @@ public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
         else return false;
     }
 
-
+    /**
+     * 
+     * @param activityId
+     * @return true if activityId = 1, false if activityId = 2, throws the exception otherwise.
+     * @throws MaintenanceActivityException 
+     */
+    /*Developed by Vincenza Coppola*/
     @Override
     public boolean deleteMaintenanceActivity(int activityId) throws MaintenanceActivityException {
         switch(activityId){

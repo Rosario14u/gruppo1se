@@ -20,17 +20,20 @@ public class RequiredMaterialForMaintenanceDAOStub implements RequiredMaterialFo
     /**
      * Simulates the behaviour of retrieveMaterialsByActivityId of RequiredMaterialForMaintenanceDAO.
      * @param activityId
-     * @return
+     * @return {@code List<Material>}
      * @throws MaterialException 
      */
     @Override
     public List<Material> retrieveMaterialsByActivityId(int activityId) throws MaterialException {
         switch (activityId) {
             case 1:
+                /*Simulate a case in which activity has no activity associated*/
                 return new ArrayList<>();
             case 2:
+                 /*Simulate a case in which the method raises an error*/
                 throw new MaterialException();
             default:
+                /*default cases is the normal case in which the method returns a list of material*/
                 return retrieveArrayList("Material1","Material2","Material3");
         }
     }

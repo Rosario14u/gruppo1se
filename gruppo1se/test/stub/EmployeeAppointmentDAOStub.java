@@ -49,21 +49,22 @@ public class EmployeeAppointmentDAOStub implements EmployeeAppointmentDAO {
      * Simulates the behaviour of addEmployeeAvailability of EmployeeAppointmentDAO.
      * @param username
      * @param listAppointment
-     * @return
-     * @throws AppointmentException 
+     * @return {@code booelan}
+     * @throws AppointmentException if username == null, empty string, listAppointment == null
+     * or username = "username2"
      */
     @Override
     public boolean addEmployeeAvailability(String username, List<Appointment> listAppointment) throws AppointmentException {
-        if(username == null || username.trim().replaceAll("  +", " ").equals("") || listAppointment == null ){
+        if(username == null || username.trim().replaceAll("  +", " ").equals("") || listAppointment == null ||
+                (username.equals("username2") && !listAppointment.isEmpty())){
+            /* This if simulate a series of cases in which the method throws an appointment exception. The case in which 
+            username.equals("username2") && !listAppointment.isEmpty() simulates the case of an username that already exists
+            and so this method throws an exception.*/
             throw new AppointmentException();
-        }else if(username.equals("username1") && !listAppointment.isEmpty()){
-             return true;
-        }else if(username.equals("username2") && !listAppointment.isEmpty()){
-            throw new AppointmentException();
-        }else if(listAppointment.isEmpty()){
+        }else if(listAppointment.isEmpty()){ /*Simulate the case in which the passed list is empty*/
             return false;
         }else{
-            return true;
+            return true; /*In the other cases the stub returns true*/
         }
     }
     /**
@@ -74,12 +75,13 @@ public class EmployeeAppointmentDAOStub implements EmployeeAppointmentDAO {
      */
     @Override
     public int getDurationOfAssignedActivity(int activityId) throws AppointmentException {
-        if(activityId <= 0){
-            throw new AppointmentException();
-        }else if(activityId == 1){
-            return 100;
-        }else{
-            return 0;
+        switch (activityId) {
+            case 1:
+                return 100;
+            case 2:
+                throw new AppointmentException();
+            default:
+                return 0;
         }
     }
         

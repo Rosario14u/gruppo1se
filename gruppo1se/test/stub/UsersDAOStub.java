@@ -21,6 +21,13 @@ import persistence.user.UsersDAO;
  */
 public class UsersDAOStub implements UsersDAO {
 
+    /**
+     * 
+     * @return
+     * @throws UsersException
+     * @throws NotValidParameterException 
+     */
+    /*Developed by Vincenza Coppola*/
     @Override
     public List<UserDTO> readUsers() throws UsersException, NotValidParameterException {
         List<UserDTO> users = new ArrayList<>();
@@ -30,6 +37,13 @@ public class UsersDAOStub implements UsersDAO {
         return users;
     }
     
+    /**
+     * 
+     * @param user
+     * @return
+     * @throws UsersException 
+     */
+    /*Developed by Alessio Citro*/
     @Override
     public boolean addUser(UserDTO user) throws UsersException {
         if (user.getUsername() != null && user.getPassword() != null)

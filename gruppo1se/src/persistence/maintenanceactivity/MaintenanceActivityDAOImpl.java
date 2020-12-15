@@ -17,7 +17,7 @@ import persistence.database.ConnectionDB;
 
 /**
  *
- * @author aless & vincy
+ * @author aless & vcoppola38
  */
 public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
     private static final String INSERT_ACTIVITY = "INSERT INTO MaintenanceActivity (activityDescription,"
@@ -31,7 +31,6 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
             + " typologyOfUnplannedActivity=?, typologyName=?, branchOffice=?, area=? WHERE activityId = ?";
     private static final String SELECT_ACTIVITY_DATE_RANGE = "SELECT * FROM MaintenanceActivity WHERE dateActivity between ? and ?"
             + "order by activityId";
-    
     private final SiteDao siteDao;
     
     /**
@@ -42,15 +41,14 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
         this.siteDao = siteDao;
     }
     
-    
     /**
      * 
      * @param activity
      * @return {@code boolean} true if the MaintenanceActivity is inserted into the database
-     * @throws MaintenanceActivityException
-     * @throws NotValidParameterException 
+     * @throws MaintenanceActivityException if there's an SQL error while inserting into the MaintenanceActivity table
+     * @throws NotValidParameterException if this MaintenanceActivityDAOImpl has no SiteDao
      */
-    /* Method developed by Alessio Citro*/
+    /*Developed by Alessio Citro*/
     @Override
     public boolean addMaintenanceActivity(MaintenanceActivity activity) throws MaintenanceActivityException, NotValidParameterException{
         checkDao(siteDao,"Error in storing activity");
@@ -65,8 +63,14 @@ public class MaintenanceActivityDAOImpl implements MaintenanceActivityDAO {
         }
     }
     
-    
-    //Returns true if at least one row has been deleted
+    /**
+     * 
+     * @param activityId
+     * @return {@code boolean} true if at least one row has been deleted, false otherwise.
+     * @throws MaintenanceActivityException if there is an SQL error while deleting an activity from the MaintenanceActivity table.
+     * @throws NotValidParameterException if this MaintenanceActivityDAOImpl has no SiteDAO. 
+     */
+    /*Developed by Vincenza Coppola*/
     @Override
     public boolean deleteMaintenanceActivity(int activityId) throws MaintenanceActivityException, NotValidParameterException{
         checkDao(siteDao,"Error in deleting activity");

@@ -49,6 +49,7 @@ public class TypologyDAOImplTest{
           Logger.getLogger(TypologyDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
     /**
      * Test of addTypology method, of class TypologyDAOImpl.
      * @throws exception.TypologyException
@@ -58,7 +59,8 @@ public class TypologyDAOImplTest{
         try {
             System.out.println("addTypology");
             String typology = "ProvaTypology";
-            //INSERIRE CANCELLAZIONE DEFAULT
+            Statement stm = conn.createStatement();
+            deleteAllTypologiesDefault(stm);
             boolean result = instance.addTypology(typology);
             assertEquals(true, result);
             conn.rollback();
@@ -67,6 +69,10 @@ public class TypologyDAOImplTest{
         }
     }
     
+    /**
+     * Test of addTypology method, of class TypologyDAOImpl.
+     * @throws exception.TypologyException
+     */
     @Test(expected = TypologyException.class)
     public void testAddTypologyException() throws TypologyException{
         try {
@@ -100,7 +106,6 @@ public class TypologyDAOImplTest{
      * @throws exception.TypologyException
      * @throws java.sql.SQLException
      */
-    
     @Test
     public void testViewTypologies() throws TypologyException, SQLException{
         System.out.println("viewTypologies");
@@ -119,6 +124,11 @@ public class TypologyDAOImplTest{
         conn.rollback();
     }
     
+    /**
+     * Test of modifyTypology method, of class TypologyDAOImpl
+     * @throws TypologyException
+     * @throws SQLException 
+     */
     @Test
     public void testModifyTypology() throws TypologyException, SQLException{
         System.out.println("modifyTypology");
@@ -139,7 +149,6 @@ public class TypologyDAOImplTest{
      * @throws exception.TypologyException
      * @throws java.sql.SQLException
      */
-    
     @Test
     public void testDeleteTypology() throws TypologyException, SQLException{
         System.out.println("deleteTypologyTrue");
@@ -152,6 +161,11 @@ public class TypologyDAOImplTest{
         conn.rollback();
     }
     
+    /**
+     * Test of deleteTypologies method, of class TypologyDAOImpl.
+     * @throws exception.TypologyException
+     * @throws java.sql.SQLException
+     */
     @Test
     public void testDeleteTypologyFalse() throws TypologyException, SQLException{
         System.out.println("deleteTypologyFalse");

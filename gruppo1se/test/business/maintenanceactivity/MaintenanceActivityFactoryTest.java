@@ -52,11 +52,9 @@ public class MaintenanceActivityFactoryTest {
                 500, "2020-12-30", "smpProva", true);
         MaintenanceActivity returnedActivity = MaintenanceActivityFactory.make(
                 MaintenanceActivityFactory.Typology.PLANNED,expectedActivity.getActivityId(),
-                expectedActivity.getSite().getBranchOffice(), expectedActivity.getSite().getArea(),
-                expectedActivity.getSite().getWorkSpaceNotes(),
-                expectedActivity.getTypology(), expectedActivity.getActivityDescription(),
-                expectedActivity.getEstimatedInterventionTime(), String.valueOf(expectedActivity.getDate()),
-                expectedActivity.getMaintenanceProcedure().getSmp(), expectedActivity.getMaterials(),
+                expectedActivity.getSite(), expectedActivity.getTypology(), expectedActivity.getActivityDescription(),
+                expectedActivity.getEstimatedInterventionTime(), expectedActivity.getDate(),
+                expectedActivity.getMaintenanceProcedure(), expectedActivity.getMaterials(),
                 expectedActivity.isInterruptibleActivity());
         assertEquals("Error in making of Planned Activity",returnedActivity, expectedActivity);
         
@@ -71,10 +69,9 @@ public class MaintenanceActivityFactoryTest {
                 "tipologiaProva", "DescrizioneProva", 500, "2020-12-30", "smpProva", true);
         MaintenanceActivity returnedActivity = MaintenanceActivityFactory.make(
                 MaintenanceActivityFactory.Typology.EWO,expectedActivity.getActivityId(),
-                expectedActivity.getSite().getBranchOffice(), expectedActivity.getSite().getArea(),
-                expectedActivity.getSite().getWorkSpaceNotes(), expectedActivity.getTypology(),
+                expectedActivity.getSite(), expectedActivity.getTypology(),
                 expectedActivity.getActivityDescription(), expectedActivity.getEstimatedInterventionTime(),
-                String.valueOf(expectedActivity.getDate()), expectedActivity.getMaintenanceProcedure().getSmp(),
+                expectedActivity.getDate(), expectedActivity.getMaintenanceProcedure(),
                 expectedActivity.getMaterials(), expectedActivity.isInterruptibleActivity());
         assertEquals("Error in making of Ewo Activity",returnedActivity, expectedActivity);
         
@@ -89,10 +86,9 @@ public class MaintenanceActivityFactoryTest {
                 "tipologiaProva", "DescrizioneProva", 500, "2020-12-30", "smpProva", true);
         MaintenanceActivity returnedActivity = MaintenanceActivityFactory.make(
                 MaintenanceActivityFactory.Typology.EXTRA,expectedActivity.getActivityId(),
-                expectedActivity.getSite().getBranchOffice(), expectedActivity.getSite().getArea(),
-                expectedActivity.getSite().getWorkSpaceNotes(), expectedActivity.getTypology(),
+                expectedActivity.getSite(), expectedActivity.getTypology(),
                 expectedActivity.getActivityDescription(), expectedActivity.getEstimatedInterventionTime(),
-                String.valueOf(expectedActivity.getDate()), expectedActivity.getMaintenanceProcedure().getSmp(),
+                expectedActivity.getDate(), expectedActivity.getMaintenanceProcedure(),
                 expectedActivity.getMaterials(),expectedActivity.isInterruptibleActivity());
         assertEquals("Error in making of Extra Activity",returnedActivity, expectedActivity);
     }

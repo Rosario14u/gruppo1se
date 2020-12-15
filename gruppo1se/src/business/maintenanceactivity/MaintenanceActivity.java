@@ -5,7 +5,7 @@
  */
 package business.maintenanceactivity;
 
-import exception.NotValidParameterException;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;

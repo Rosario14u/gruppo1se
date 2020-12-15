@@ -77,6 +77,13 @@ public class SystemAdministrator extends User {
         return true;
     }
     
+    /**
+     * 
+     * @return {@code List<UserDTO>} the list of the users table's rows.
+     * @throws UsersException if there is an SQL error while reading the users table.
+     * @throws NotValidParameterException  if this SystemAdministrator has no UsersDAO.
+     */
+    /*Developed by Vincenza Coppola*/    
     public List<UserDTO> viewUsers() throws UsersException, NotValidParameterException{
         if(usersDao == null){
             throw new NotValidParameterException("Error in retrieving users");
@@ -90,10 +97,10 @@ public class SystemAdministrator extends User {
      * @param password
      * @param role
      * @return {@code boolean} true if the user is inserted into the database
-     * @throws UsersException
-     * @throws NotValidParameterException 
+     * @throws UsersException if there's an SQL error while inserting into the Users table
+     * @throws NotValidParameterException if this SystemAdministrator has no UsersDAO
      */
-    /* Method developed by Alessio Citro*/
+    /*Developed by Alessio Citro*/
     public boolean makeUser(String username, String password, UserRole role) throws UsersException, NotValidParameterException{
         if(usersDao == null){
             throw new NotValidParameterException("Error in creating user");
@@ -138,27 +145,59 @@ public class SystemAdministrator extends User {
         return usersDao.updateUser(oldUsername, newUser);
     }
 
+    /**
+     * 
+     * @param typology
+     * @return {@code boolean} true if the typology is inserted into database.
+     * @throws TypologyException if there is an SQL error while inserting into the typology table.
+     * @throws NotValidParameterException if this SystemAdministrator has no TypologyDAO.
+     */
+    /*Developed by Vincenza Coppola*/    
     public boolean makeTypology(String typology) throws TypologyException, NotValidParameterException{
         if(typologyDao == null){
             throw new NotValidParameterException("Error in retrieving users");
         }
         return typologyDao.addTypology(typology);
     }
-    
+
+    /**
+     * 
+     * @return {@code List<String>} the list of the typology table's rows.
+     * @throws TypologyException if there is an SQL error while reading from the typology table.
+     * @throws NotValidParameterException if this SystemAdministrator has no TypologyDAO.
+     */
+    /*Developed by Vincenza Coppola*/    
     public List<String> readTypologies() throws TypologyException, NotValidParameterException{
         if(typologyDao == null){
             throw new NotValidParameterException("Error in retrieving users");
         }        
         return typologyDao.viewTypologies();
     }
-    
+
+    /**
+     * 
+     * @param oldTypology
+     * @param newTypology
+     * @return{@code boolean} true if the typology is updated into the database.
+     * @throws TypologyException if there is an SQL error while updating a row into the typology table.
+     * @throws NotValidParameterException if this SystemAdministrator has no TypologyDAO.
+     */
+    /*Developed by Vincenza Coppola*/    
     public boolean updateTypology(String oldTypology, String newTypology) throws TypologyException, NotValidParameterException{
         if(typologyDao == null){
             throw new NotValidParameterException("Error in retrieving users");
         }
         return typologyDao.modifyTypology(oldTypology, newTypology);
     }
-        
+    
+    /**
+     * 
+     * @param typology
+     * @return {@code boolean} true if the typology is removed from the database.
+     * @throws TypologyException if there is an SQL error while deleting from the typology table.
+     * @throws NotValidParameterException if this SystemAdministrator has no TypologyDAO.
+     */
+     /*Developed by Vincenza Coppola*/    
     public boolean removeTypology(String typology) throws TypologyException, NotValidParameterException{
         if(typologyDao == null){
             throw new NotValidParameterException("Error in retrieving users");

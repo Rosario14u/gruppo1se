@@ -15,9 +15,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
-import persistence.maintenanceactivity.TypologyDAOImpl;
-import persistence.user.UsersDAOImpl;
 import presentation.manager.MessageManager;
 
 /**
@@ -195,7 +192,7 @@ public class CreateUser extends javax.swing.JFrame {
             role = UserRole.valueOf(jRole.getSelectedItem().toString());
             int choice = JOptionPane.showConfirmDialog(this, "Are you sure you want to create this user?", "Confirm", JOptionPane.YES_NO_OPTION);
             if (choice == JOptionPane.YES_OPTION){
-                systemAdministrator.makeUser(username, password, role);
+                systemAdministrator.makeUser(username, password, role); //create an user
                 jUsername.setText("");
                 jPassword.setText("");
                 jRole.setSelectedIndex(0);
@@ -236,6 +233,11 @@ public class CreateUser extends javax.swing.JFrame {
             checkFields();
         }
         
+        /**
+         * If any change happens to any document checks if at least one JTextfield has text <br>
+         * If so, set atLeastOneField variable to true.
+         * @return {@code boolean} atLeastOneField
+         */
         public boolean checkAnyField(){
             boolean atLeastOneField = false;
             for (int i = 0; i<textFields.length; i++)
@@ -244,8 +246,11 @@ public class CreateUser extends javax.swing.JFrame {
             return atLeastOneField;
         }
         
-        // if any changes to any document (any of the above methods called)
-        // check if all JTextfields have text. If so, activate the action
+        /**
+         * If any change happens to any document checks if all JTextfields have text <br>
+         * If so, set allFieldsHaveText variable to true.
+         * @return {@code boolean} allFieldsHaveText
+         */
         public boolean checkTextFields() {
             boolean allFieldsHaveText = true;
             for (int i = 0; i<textFields.length;i++) {
@@ -258,6 +263,9 @@ public class CreateUser extends javax.swing.JFrame {
 
     }
     
+    /**
+     * Checks if a role has been picked from the comboBox.
+     */
     private void checkComboBox(){
         if(jRole.getSelectedIndex() == 0)
             roleCheck = false;
@@ -266,6 +274,9 @@ public class CreateUser extends javax.swing.JFrame {
         checkFields();
     }
     
+    /**
+     * Enables the jCreate button, if all fields have been used, disables it otherwise.
+     */
     private void checkFields(){
         if (roleCheck && myDocumentListener.checkTextFields())
             jCreate.setEnabled(true);

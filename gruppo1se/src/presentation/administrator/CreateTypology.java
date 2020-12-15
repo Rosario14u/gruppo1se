@@ -12,14 +12,13 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import presentation.manager.MessageManager;
 
-
-
 /**
  *
  * @author VincenzaCoppola <v.coppola38@studenti.unisa.it>
  */
 public class CreateTypology extends javax.swing.JFrame {
     private final SystemAdministrator systemAdministrator;
+    
     /**
      * Creates new form CreateTypology
      * @param systemAdministrator
@@ -113,7 +112,7 @@ public class CreateTypology extends javax.swing.JFrame {
     private void jCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCreateActionPerformed
         String typology =jTypology.getText().trim();
         try {
-            systemAdministrator.makeTypology(typology);
+            systemAdministrator.makeTypology(typology); // Creates a typology based on the content of the TextField
             jTypology.setText("");
         } catch (TypologyException | NotValidParameterException ex) {
             MessageManager.errorMessage(this,"Typology already existing!");
@@ -139,6 +138,9 @@ public class CreateTypology extends javax.swing.JFrame {
             checkField();
         }
         
+        /**
+         * Enables the jCreate button if jTypology is being used. 
+         */
         public void checkField(){
             boolean fieldHasText= true;
             if(jTypology.getText().trim().isEmpty())
