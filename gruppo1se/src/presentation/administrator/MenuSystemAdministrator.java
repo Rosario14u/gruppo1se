@@ -52,10 +52,11 @@ public class MenuSystemAdministrator extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Menu System Administrator");
 
-        jPanel1.setBackground(new java.awt.Color(187, 187, 100));
+        jPanel1.setBackground(new java.awt.Color(255, 153, 0));
         jPanel1.setForeground(new java.awt.Color(187, 187, 100));
 
         createUserButton.setBackground(new java.awt.Color(50, 50, 50));
+        createUserButton.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         createUserButton.setForeground(new java.awt.Color(255, 255, 255));
         createUserButton.setText("Create User");
         createUserButton.addActionListener(new java.awt.event.ActionListener() {
@@ -65,6 +66,7 @@ public class MenuSystemAdministrator extends javax.swing.JFrame {
         });
 
         createProcedureButton.setBackground(new java.awt.Color(50, 50, 50));
+        createProcedureButton.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         createProcedureButton.setForeground(new java.awt.Color(255, 255, 255));
         createProcedureButton.setText("Create Procedure");
         createProcedureButton.addActionListener(new java.awt.event.ActionListener() {
@@ -74,6 +76,7 @@ public class MenuSystemAdministrator extends javax.swing.JFrame {
         });
 
         viewUsersButton.setBackground(new java.awt.Color(50, 50, 50));
+        viewUsersButton.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         viewUsersButton.setForeground(new java.awt.Color(255, 255, 255));
         viewUsersButton.setText("View Users");
         viewUsersButton.addActionListener(new java.awt.event.ActionListener() {
@@ -83,6 +86,7 @@ public class MenuSystemAdministrator extends javax.swing.JFrame {
         });
 
         createTypologyButton.setBackground(new java.awt.Color(50, 50, 50));
+        createTypologyButton.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         createTypologyButton.setForeground(new java.awt.Color(255, 255, 255));
         createTypologyButton.setText("Create Typology");
         createTypologyButton.addActionListener(new java.awt.event.ActionListener() {
@@ -92,6 +96,7 @@ public class MenuSystemAdministrator extends javax.swing.JFrame {
         });
 
         viewTypologyButton.setBackground(new java.awt.Color(50, 50, 50));
+        viewTypologyButton.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         viewTypologyButton.setForeground(new java.awt.Color(255, 255, 255));
         viewTypologyButton.setText("View Typology");
         viewTypologyButton.addActionListener(new java.awt.event.ActionListener() {
@@ -100,7 +105,7 @@ public class MenuSystemAdministrator extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("MENU SYSTEM ADMINISTRATOR");
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/presentation/administrator/image/pdfIcon.png"))); // NOI18N
@@ -114,51 +119,60 @@ public class MenuSystemAdministrator extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(185, 185, 185)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(50, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(createUserButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(viewUsersButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(71, 71, 71)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(createProcedureButton)
-                    .addComponent(jLabel3))
-                .addGap(39, 39, 39)
-                .addComponent(jLabel2)
-                .addGap(32, 32, 32)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
-                    .addComponent(createTypologyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(viewTypologyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(50, 50, 50))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(createUserButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(viewUsersButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(238, 238, 238)
+                                        .addComponent(jLabel2))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(67, 67, 67)
+                                        .addComponent(jLabel3)))
+                                .addGap(32, 32, 32))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(createProcedureButton)
+                                .addGap(67, 67, 67)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(createTypologyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(viewTypologyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(50, 50, 50))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(166, 166, 166))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(82, 82, 82))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(70, 70, 70)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(createUserButton)
-                            .addComponent(createProcedureButton)
-                            .addComponent(createTypologyButton))))
-                .addGap(38, 38, 38)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel5)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(14, 14, 14)
+                                .addComponent(jLabel3)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(createUserButton)
+                    .addComponent(createProcedureButton)
+                    .addComponent(createTypologyButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(viewUsersButton)
                     .addComponent(viewTypologyButton))
