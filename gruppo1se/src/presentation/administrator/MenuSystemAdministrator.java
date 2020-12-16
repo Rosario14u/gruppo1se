@@ -100,7 +100,6 @@ public class MenuSystemAdministrator extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("MENU SYSTEM ADMINISTRATOR");
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/presentation/administrator/image/pdfIcon.png"))); // NOI18N
