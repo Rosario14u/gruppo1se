@@ -30,9 +30,9 @@ import persistence.user.UsersDAO;
  * @author rosar
  */
 public class SystemAdministrator extends User {
-    private final MaintenanceProcedureDAO procedureDao;
-    private final UsersDAO usersDao;
-    private final TypologyDAO typologyDao; 
+    private MaintenanceProcedureDAO procedureDao;
+    private UsersDAO usersDao;
+    private TypologyDAO typologyDao; 
     private SiteDao siteDao;
    
     
@@ -54,6 +54,39 @@ public class SystemAdministrator extends User {
         this.siteDao = siteDao;
     }
     
+    /**
+     * Set method of procedureDao attribute.
+     * @param procedureDao 
+     */
+    public void setProcedureDao(MaintenanceProcedureDAO procedureDao) {
+        this.procedureDao = procedureDao;
+    }
+    
+    /**
+     * Set method of usersDao attribute.
+     * @param usersDao 
+     */
+    public void setUsersDao(UsersDAO usersDao) {
+        this.usersDao = usersDao;
+    }
+    
+    /**
+     * Set method of typologyDao attribute.
+     * @param typologyDao 
+     */
+    public void setTypologyDao(TypologyDAO typologyDao) {
+        this.typologyDao = typologyDao;
+    }
+    
+    /**
+     * Set method of siteDao attribute.
+     * @param siteDao 
+     */
+    public void setSiteDao(SiteDao siteDao) {
+        this.siteDao = siteDao;
+    }
+    
+
     /**
      * This method allows to save a procedure in the system. Returns true if the operation is successful, false otherwise.<br>
      * ProcedureDao object required

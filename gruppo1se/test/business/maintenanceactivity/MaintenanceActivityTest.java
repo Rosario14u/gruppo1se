@@ -336,6 +336,21 @@ public class MaintenanceActivityTest {
         assertTrue(instance.equals(activity));
     }
     
+    /**
+     * Test that equals method correctly returns true when the both the object has an empty materials list.
+     */
+    @Test
+    public void testEqualsListMaterialsNull() {
+        List<Material> listMaterial = null;
+        MaintenanceActivity instance = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
+                "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
+                new MaintenanceProcedure("Provasmp"),listMaterial,true);
+        MaintenanceActivity activity = new MaintenanceActivityImpl(1,new Site("ProvaBranchOffice","ProvaArea","ProvaWorkspaceNotes"),
+                "ProvaTipologia","ProvaDescrizione",120,LocalDate.parse("2021-11-20"),
+                new MaintenanceProcedure("Provasmp"),listMaterial,true);
+        assertTrue(instance.equals(activity));
+    }
+    
     private List<Material> createListMaterial(String materialElement1, String materialElement2, String materialElement3){
         return new ArrayList<>() {{
             add(new Material(materialElement1));

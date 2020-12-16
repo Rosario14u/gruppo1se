@@ -41,13 +41,13 @@ import persistence.user.UsersDAO;
  */
 public class Planner extends User {
 
-    private final MaintenanceActivityDAO maintenanceActivityDao;
-    private final RequiredMaterialForMaintenanceDAO requiredMaterialsDao;
-    private final RequiredSkillForMaintenanceDAO requiredSkillsDao;
-    private final UsersDAO userDao;
-    private final EmployeeAppointmentDAO employeeAppointmentDao;
-    private final MaintainerSkillDAO maintainerSkillDao;
-    private final TypologyDAO typologyDao;
+    private  MaintenanceActivityDAO maintenanceActivityDao;
+    private  RequiredMaterialForMaintenanceDAO requiredMaterialsDao;
+    private  RequiredSkillForMaintenanceDAO requiredSkillsDao;
+    private  UsersDAO userDao;
+    private  EmployeeAppointmentDAO employeeAppointmentDao;
+    private  MaintainerSkillDAO maintainerSkillDao;
+    private  TypologyDAO typologyDao;
     
     /**
      * Constructor of Planner
@@ -74,8 +74,64 @@ public class Planner extends User {
         this.maintainerSkillDao = maintainerSkillDao;
         this.typologyDao = typologyDao;
     }
+    
+    /**
+     * Set method of maintenanceActivityDao attribute.
+     * @param maintenanceActivityDao 
+     */
+    public void setMaintenanceActivityDao(MaintenanceActivityDAO maintenanceActivityDao) {
+        this.maintenanceActivityDao = maintenanceActivityDao;
+    }
+    
+    /**
+     * Set method of requiredMaterialsDao attribute.
+     * @param requiredMaterialsDao 
+     */
+    public void setRequiredMaterialsDao(RequiredMaterialForMaintenanceDAO requiredMaterialsDao) {
+        this.requiredMaterialsDao = requiredMaterialsDao;
+    }
+    
+    /**
+     * Set method of requiredSkillsDao attribute.
+     * @param requiredSkillsDao 
+     */
+    public void setRequiredSkillsDao(RequiredSkillForMaintenanceDAO requiredSkillsDao) {
+        this.requiredSkillsDao = requiredSkillsDao;
+    }
+    
+    /**
+     * Set method of userDao attribute.
+     * @param userDao 
+     */
+    public void setUserDao(UsersDAO userDao) {
+        this.userDao = userDao;
+    }
+    
+    /**
+     * Set method of employeeAppointmentDao attribute.
+     * @param employeeAppointmentDao 
+     */
+    public void setEmployeeAppointmentDao(EmployeeAppointmentDAO employeeAppointmentDao) {
+        this.employeeAppointmentDao = employeeAppointmentDao;
+    }
+    
+    /**
+     * Set method of maintainerSkillDao attribute.
+     * @param maintainerSkillDao 
+     */
+    public void setMaintainerSkillDao(MaintainerSkillDAO maintainerSkillDao) {
+        this.maintainerSkillDao = maintainerSkillDao;
+    }
+    
+    /**
+     * Set method of typologyDao attribute.
+     * @param typologyDao 
+     */
+    public void setTypologyDao(TypologyDAO typologyDao) {
+        this.typologyDao = typologyDao;
+    }
 
-
+    
 
     /**
      * This method returns Maintenance Activity with the passed activityId if

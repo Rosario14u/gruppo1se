@@ -7,6 +7,7 @@ package business.maintenanceactivity;
 
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -55,7 +56,10 @@ public abstract class MaintenanceActivity implements Comparable<MaintenanceActiv
         this.estimatedInterventionTime = estimatedInterventionTime;
         this.date = date;
         this.maintenanceProcedure = maintenanceProcedure;
-        this.materials = materials;
+        if(materials == null)
+            this.materials = new ArrayList<>();
+        else
+            this.materials = materials;
         this.interruptibleActivity = interruptibleActivity;
     }
 

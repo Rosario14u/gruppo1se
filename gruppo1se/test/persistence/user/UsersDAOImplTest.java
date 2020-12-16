@@ -10,7 +10,6 @@ import dto.PlannerDTO;
 import dto.SystemAdministratorDTO;
 import dto.UserDTO;
 import exception.NotValidParameterException;
-import exception.SiteException;
 import exception.UsersException;
 import java.sql.*;
 import java.util.ArrayList;
