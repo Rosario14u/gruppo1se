@@ -56,7 +56,7 @@ public abstract class MaintenanceActivity implements Comparable<MaintenanceActiv
         this.estimatedInterventionTime = estimatedInterventionTime;
         this.date = date;
         this.maintenanceProcedure = maintenanceProcedure;
-        if (materials == null)
+        if(materials == null)
             this.materials = new ArrayList<>();
         else
             this.materials = materials;

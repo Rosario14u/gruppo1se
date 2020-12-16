@@ -10,7 +10,6 @@ import dto.MaintainerDTO;
 import dto.PlannerDTO;
 import dto.SystemAdministratorDTO;
 import dto.UserDTO;
-import exception.AppointmentException;
 import exception.NotValidParameterException;
 import exception.ProcedureException;
 import exception.SiteException;
@@ -141,7 +140,7 @@ public class SystemAdministratorTest {
     }
     
     /**
-     * this test assert that saveSmpProcedure correctly raises exception when procedure passed is empty string.
+     * this test assert that saveSmpProcedure correctly raises exception when the passed procedure is empty string.
      * @throws exception.ProcedureException
      */
     @Test(expected = ProcedureException.class)
@@ -155,7 +154,7 @@ public class SystemAdministratorTest {
     }
     
     /**
-     * this test assert that saveSmpProcedure correctly raises exception when procedure passed is null.
+     * this test assert that saveSmpProcedure correctly raises exception when the passed procedure is null.
      * @throws exception.ProcedureException
      */
     @Test(expected = ProcedureException.class)
@@ -583,6 +582,7 @@ public class SystemAdministratorTest {
     /**
      * This test assert that removeUsers correctly raises an UsersException <br>
      * when deleteUsers raises an exception.
+     * @throws exception.UsersException
      */
     @Test(expected = UsersException.class)
     public void testRemoveUsersRaisesException() throws UsersException{
