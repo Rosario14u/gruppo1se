@@ -132,6 +132,13 @@ public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
         }
     }
 
+    
+    /**
+     * 
+     * @param newActivity
+     * @return
+     * @throws MaintenanceActivityException 
+     */
     @Override
     public boolean modifyMaintenaceActivity(MaintenanceActivity newActivity) throws MaintenanceActivityException {
         if(newActivity.getActivityId()==1 && newActivity.getSite().getBranchOffice().equals("branchOffice1")
@@ -184,19 +191,22 @@ public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
         }   
     }
 
+    
+    /**
+     * This method simulates retrieveMaintenanceActivityFromRange
+     * @param startDate
+     * @param stopDate
+     * @return
+     * @throws MaintenanceActivityException 
+     */
     @Override
     public List<MaintenanceActivity> retrieveMaintenanceActivityFromRange(LocalDate startDate, LocalDate stopDate) throws MaintenanceActivityException {
         if(startDate.equals(LocalDate.of(2021, Month.JANUARY, 4))){
-            throw new MaintenanceActivityException();
-        }else if(startDate.equals(LocalDate.of(2021, Month.JANUARY, 11))){
-            throw new MaintenanceActivityException();
-        }else if(startDate.equals(LocalDate.of(2021, Month.JANUARY, 18))){
-            throw new MaintenanceActivityException();
-        }else if(startDate.equals(LocalDate.of(2021, Month.JANUARY, 25))){
             return new ArrayList<>(){{
-                add(new PlannedMaintenanceActivity(1, new Site("ProvaBranchOffice1", "ProvaArea1"), "ProvaTypology1", "ProvaDescription1", 1, LocalDate.of(2020, Month.JANUARY, 1), null, null, true));
-                add(new PlannedMaintenanceActivity(1, new Site("ProvaBranchOffice2", "ProvaArea2"), "ProvaTypology2", "ProvaDescription2", 2, LocalDate.of(2020, Month.JANUARY, 2), null, null,true));
-                add(new PlannedMaintenanceActivity(1, new Site("ProvaBranchOffice3", "ProvaArea3"), "ProvaTypology3", "ProvaDescription3", 3, LocalDate.of(2020, Month.JANUARY, 3), null, null,true));
+                add(new PlannedMaintenanceActivity(1, new Site("ProvaBranchOffice1", "ProvaArea1"), "ProvaTypology1", 
+                        "ProvaDescription1", 1, LocalDate.of(2050, Month.JANUARY, 1), new MaintenanceProcedure("smp1"), null, true));
+                add(new PlannedMaintenanceActivity(2, new Site("ProvaBranchOffice2", "ProvaArea2"), "ProvaTypology2",
+                        "ProvaDescription3", 2, LocalDate.of(2050, Month.JANUARY, 2), new MaintenanceProcedure("smp7"), null, true));
             }};
         }else{
             return new ArrayList();

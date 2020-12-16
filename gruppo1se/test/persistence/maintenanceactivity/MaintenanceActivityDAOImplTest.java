@@ -12,7 +12,6 @@ import business.maintenanceactivity.MaintenanceProcedure;
 import business.maintenanceactivity.Material;
 import business.maintenanceactivity.PlannedMaintenanceActivity;
 import business.maintenanceactivity.Site;
-import business.maintenanceactivity.Skill;
 import exception.MaintenanceActivityException;
 import exception.NotValidParameterException;
 import java.sql.Connection;
@@ -20,11 +19,9 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -56,7 +53,6 @@ public class MaintenanceActivityDAOImplTest {
     private final String activityDescription;
     private final MaintenanceProcedure maintenanceProcedure;
     private final ArrayList<Material> materials;
-    private final ArrayList<Skill> skills;
     private final String typology;
     private final MaintenanceActivityDAOImpl maintenanceActivityDAO;
 
@@ -66,7 +62,6 @@ public class MaintenanceActivityDAOImplTest {
         activityDescription = "ProvaActivityDescription";
         maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
         materials = new ArrayList<>();
-        skills = new ArrayList<>();
         typology = "ProvaTypology";
         maintenanceActivityDAO = new MaintenanceActivityDAOImpl(new SiteDaoStub());
         
@@ -228,240 +223,130 @@ public class MaintenanceActivityDAOImplTest {
         }
     }
     
-    //=======================Utilities to test retrieveMaintenanceActivityDao=========================================
     
-    /**
-     * This method delete an activity from database
-     * @param activityId
-     * @throws SQLException 
-     */
-    private void deleteMaintenaceActivity(int activityId) throws SQLException{
-        PreparedStatement pstm = conn.prepareStatement(DELETE_MAINTENANCE_ACTIVITY);
-        pstm.setInt(1, activityId);
-        pstm.executeUpdate();
-    }
-    
-    /**
-     * This method insert an activity with a series of parameters in database
-     * @param activityId
-     * @param descrizione
-     * @param estimatedInterventionTime
-     * @param date
-     * @param InterruptibleActivity
-     * @param typologyOfActivity
-     * @param typologyOfUnplannedActivity
-     * @param typologyName
-     * @param branchOffice
-     * @param area
-     * @param smp
-     * @throws SQLException 
-     */
-    private void insertMaintenanceActivity(int activityId,String descrizione,int estimatedInterventionTime,
-        String date,boolean InterruptibleActivity, String typologyOfActivity,String typologyOfUnplannedActivity,
-        String typologyName,String branchOffice,String area,String smp) throws SQLException{
-        PreparedStatement pstm = conn.prepareStatement(INSERT_MAINTENANCE_ACTIVITY);
-        pstm.setInt(1, activityId);
-        pstm.setString(2, descrizione);
-        pstm.setInt(3, estimatedInterventionTime);
-        pstm.setDate(4,Date.valueOf(date));
-        pstm.setBoolean(5, InterruptibleActivity);
-        pstm.setString(6, typologyOfActivity);
-        pstm.setString(7, typologyOfUnplannedActivity);
-        pstm.setString(8, typologyName);
-        pstm.setString(9, branchOffice);
-        pstm.setString(10, area);
-        pstm.setString(11, smp);
-        pstm.executeUpdate();
-    }
-    
-    /**
-     * This method performs the assert of activity attributes with a series of parameters
-     * @param activity
-     * @param activityId
-     * @param descrizione
-     * @param estimatedInterventionTime
-     * @param date
-     * @param InterruptibleActivity
-     * @param typologyOfActivity
-     * @param typologyOfUnplannedActivity
-     * @param typologyName
-     * @param branchOffice
-     * @param area
-     * @param workSpaceNotes
-     * @param smp 
-     */
-    private void assertMaintenanceActivity(MaintenanceActivity activity, 
-        int activityId,String descrizione,int estimatedInterventionTime,
-        LocalDate date,boolean InterruptibleActivity, String typologyOfActivity,
-        String typologyOfUnplannedActivity, String typologyName,String branchOffice,
-        String area, String workSpaceNotes,String smp){
-            Class activityClass = null;
-            if (typologyOfActivity.compareTo("Planned") == 0){
-                activityClass= PlannedMaintenanceActivity.class;
-            }else if(typologyOfUnplannedActivity.compareTo("EWO") == 0){
-                activityClass= Ewo.class;
-            }else{
-                activityClass= ExtraActivity.class;
-            }
-            assertEquals("activityId error",activityId, activity.getActivityId());
-            assertEquals("activityDescription error",descrizione, activity.getActivityDescription());
-            assertEquals("estimatedInterventionTime error",estimatedInterventionTime, activity.getEstimatedInterventionTime());
-            assertEquals("dateActivity error",date, activity.getDate());
-            assertEquals("interruptibleActivity error",InterruptibleActivity, activity.isInterruptibleActivity());
-            assertTrue("typologyOfActivity error", activityClass.isInstance(activity));
-            assertEquals("typologyName error", typologyName, activity.getTypology());
-            assertEquals("branchOffice error", branchOffice, activity.getSite().getBranchOffice());
-            assertEquals("area error", area, activity.getSite().getArea());
-            assertEquals("WorkSpaceNotes error", workSpaceNotes, activity.getSite().getWorkSpaceNotes());
-            assertEquals("smp error", smp, activity.getMaintenanceProcedure().getSmp());
-    }
-
-    //====================================== MODIFY ==============================================================================
+    //========================================= MODIFY ==================================================
+    //=========== Test methods of modifyMaintenaceActivity developed by Antonio Gorrasi =================
     
     /**
      * Test of modifyMaintenaceActivity method, of class MaintenanceActivityDao.<br>
      * This method assert that modifyMaintenaceActivity method correctly updates 
-     * Planned Maintenance activity to Unplanned EWO Maintenance actiity
+     * Planned Maintenance activity to Unplanned EWO Maintenance activity
      */
     @Test
     public void testModifyPlannedToEwoMaintenaceActivity() {
         try{
-            Statement stm = conn.createStatement();
             deleteMaintenaceActivity(1);
             insertMaintenanceActivity(1,"ProvaDescrizione1",121,"2050-11-21",true, 
-                    "Planned",null,"ProvaTypologyName1","ProvaBranch1","ProvaArea1",null);          
+                    "Planned",null,"ProvaTypologyName1","ProvaBranch1","ProvaArea1","smp1");          
             MaintenanceActivity newActivity = createMaintenanceActivity("EWO", 1);
-            assertEquals(true, maintenanceActivityDAO.modifyMaintenaceActivity(newActivity));
+            System.out.println(newActivity.toString());
+            assertTrue(maintenanceActivityDAO.modifyMaintenaceActivity(newActivity));
             verify(selectDefaultMaintenanceActivity(1), newActivity);
-        }catch(SQLException ex){
-            fail("SQLException was thrown");
-        }catch(MaintenanceActivityException ex){
-            fail("MaterialException was thrown");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(SQLException | MaintenanceActivityException | NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
         }
     }
     
     
-     /**
+    /**
      * Test of modifyMaintenaceActivity method, of class MaintenanceActivityDao.<br>
      * This method assert that modifyMaintenaceActivity method correctly updates 
-     * Planned Maintenance activity to Unplanned Extra Maintenance actiity
+     * Planned Maintenance activity to Unplanned Extra Maintenance activity
      */
-  @Test
+    @Test
     public void testModifyPlannedToExtraMaintenaceActivity(){
         try{
-            Statement stm = conn.createStatement();
             deleteMaintenaceActivity(2);
             insertMaintenanceActivity(2,"ProvaDescrizione2",122,"2050-11-22",true, 
                     "Planned",null,"ProvaTypologyName2","ProvaBranch2","ProvaArea2",null);           
             MaintenanceActivity newActivity = createMaintenanceActivity("Extra", 2);
-            assertEquals(true, maintenanceActivityDAO.modifyMaintenaceActivity(newActivity));
+            assertTrue(maintenanceActivityDAO.modifyMaintenaceActivity(newActivity));
             verify(selectDefaultMaintenanceActivity(2), newActivity);
-        }catch(SQLException ex){
-            fail("SQLException was thrown");
-        }catch(MaintenanceActivityException ex){
-            fail("MaintenanceActivityException was thrown");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(SQLException | MaintenanceActivityException | NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
         }
     }
-//    
-     /**
+
+    
+    /**
      * Test of modifyMaintenaceActivity method, of class MaintenanceActivityDao.<br>
      * This method assert that modifyMaintenaceActivity method correctly updates 
-     * Unplanned EWO Maintenance activity to Unplanned Extra Maintenance actiity
+     * Unplanned EWO Maintenance activity to Unplanned Extra Maintenance activity
      */
     @Test
     public void testModifyEwoToExtraMaintenaceActivity(){
         try{
-            Statement stm = conn.createStatement();
             deleteMaintenaceActivity(3);
             insertMaintenanceActivity(3,"ProvaDescrizione3",123,"2050-11-23",true, 
                     "Unplanned","EWO","ProvaTypologyName3","ProvaBranch3","ProvaArea3",null);
             MaintenanceActivity newActivity = createMaintenanceActivity("Extra", 3);
-            assertEquals(true, maintenanceActivityDAO.modifyMaintenaceActivity(newActivity));
+            assertTrue(maintenanceActivityDAO.modifyMaintenaceActivity(newActivity));
             verify(selectDefaultMaintenanceActivity(3), newActivity);
-        }catch(SQLException ex){
-            fail("SQLException was thrown");
-        }catch(MaintenanceActivityException ex){
-            fail("MaterialException was thrown");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(SQLException | MaintenanceActivityException | NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
         }
     }
     
-     /**
+    
+    /**
      * Test of modifyMaintenaceActivity method, of class MaintenanceActivityDao.<br>
      * This method assert that modifyMaintenaceActivity method correctly updates 
-     * Unplanned EWO Maintenance activity to Planned Maintenance actiity
+     * Unplanned EWO Maintenance activity to Planned Maintenance activity
      */
     @Test
     public void testModifyEwoToPlannedMaintenaceActivity(){
         try{
-            Statement stm = conn.createStatement();
             deleteMaintenaceActivity(4);
             insertMaintenanceActivity(4,"ProvaDescrizione4",124,"2050-11-24",false, 
                     "Unplanned","EWO","ProvaTypologyName4","ProvaBranch4","ProvaArea4",null);
             MaintenanceActivity newActivity = createMaintenanceActivity("Planned", 4);
-            assertEquals(true, maintenanceActivityDAO.modifyMaintenaceActivity(newActivity));
+            assertTrue(maintenanceActivityDAO.modifyMaintenaceActivity(newActivity));
             verify(selectDefaultMaintenanceActivity(4), newActivity);
-        }catch(SQLException ex){
-            fail("SQLException was thrown");
-        }catch(MaintenanceActivityException ex){
-            fail("MaterialException was thrown");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(SQLException | MaintenanceActivityException | NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
         }
     }
   
-     /**
+    
+    /**
      * Test of modifyMaintenaceActivity method, of class MaintenanceActivityDao.<br>
      * This method assert that modifyMaintenaceActivity method correctly updates 
-     * Unplanned Extra Maintenance activity to Planned Maintenance actiity
+     * Unplanned Extra Maintenance activity to Planned Maintenance activity
      */
     @Test
     public void testModifyExtraToPlannedMaintenaceActivity(){
         try{
-            Statement stm = conn.createStatement();
             deleteMaintenaceActivity(5);
             insertMaintenanceActivity(5,"ProvaDescrizione5",125,"2050-11-25",false, 
                     "Unplanned","Extra","ProvaTypologyName5","ProvaBranch5","ProvaArea5",null);
             MaintenanceActivity newActivity = createMaintenanceActivity("Planned", 5);
-            assertEquals(true, maintenanceActivityDAO.modifyMaintenaceActivity(newActivity));
+            assertTrue(maintenanceActivityDAO.modifyMaintenaceActivity(newActivity));
             verify(selectDefaultMaintenanceActivity(5), newActivity);
-        }catch(SQLException ex){
-            fail("SQLException was thrown");
-        }catch(MaintenanceActivityException ex){
-            fail("MaterialException was thrown");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }    
+        }catch(SQLException | MaintenanceActivityException | NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
+        }
     }
     
-     /**
+    
+    /**
      * Test of modifyMaintenaceActivity method, of class MaintenanceActivityDao.<br>
      * This method assert that modifyMaintenaceActivity method correctly updates 
-     * Unplanned Extra Maintenance activity to Unplanned EWO Maintenance actiity
+     * Unplanned Extra Maintenance activity to Unplanned EWO Maintenance activity
      */
     @Test
     public void testModifyExtraToEwoMaintenaceActivity(){
         try{
-            Statement stm = conn.createStatement();
             deleteMaintenaceActivity(6);
             insertMaintenanceActivity(6,"ProvaDescrizione6",126,"2050-11-26",false, 
                     "Unplanned","Extra","ProvaTypologyName6","ProvaBranch6","ProvaArea6",null);
             MaintenanceActivity newActivity = createMaintenanceActivity("EWO", 6);
-            assertEquals(true, maintenanceActivityDAO.modifyMaintenaceActivity(newActivity));
+            assertTrue(maintenanceActivityDAO.modifyMaintenaceActivity(newActivity));
             verify(selectDefaultMaintenanceActivity(6), newActivity);
-        }catch(SQLException ex){
-            fail("SQLException was thrown");
-        }catch(MaintenanceActivityException ex){
-            fail("MaterialException was thrown");
-        }  catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }  
+        }catch(SQLException | MaintenanceActivityException | NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
+        }
     }
+   
     
     /**
      * Test of modifyMaintenaceActivity method, of class MaintenanceActivityDao.<br>
@@ -471,22 +356,22 @@ public class MaintenanceActivityDAOImplTest {
     @Test
     public void testModifyActivityNotPresent(){
         try{
-            Statement stm = conn.createStatement();
             deleteMaintenaceActivity(7);
             MaintenanceActivity newActivity = createMaintenanceActivity("EWO", 7);
-            assertEquals(false, maintenanceActivityDAO.modifyMaintenaceActivity(newActivity));
-        }catch(SQLException ex){
-            fail("SQLException was thrown");
-        }catch(MaintenanceActivityException ex){
-            fail("MaterialException was thrown");
-        }  catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }  
+            assertFalse(maintenanceActivityDAO.modifyMaintenaceActivity(newActivity));
+        }catch(SQLException | MaintenanceActivityException | NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
+        } 
     }
     
     //=================== PRIVATE METHODS OF MODIFY ==============================================================================
     
-
+    /**
+     * 
+     * @param id
+     * @return
+     * @throws SQLException 
+     */
     private ResultSet selectDefaultMaintenanceActivity(int id) throws SQLException {
         PreparedStatement pstm = conn.prepareStatement(SELECT_MAINTENANCE_ACTIVITY);
         pstm.setInt(1, id);
@@ -498,7 +383,6 @@ public class MaintenanceActivityDAOImplTest {
         while(res.next()){
             isEmpty = false;
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            //System.out.println(newActivity.getDate().toString());
             assertEquals(newActivity.getActivityDescription(), res.getString("activityDescription"));
             assertEquals(newActivity.getEstimatedInterventionTime(), res.getInt("estimatedInterventionTime"));
             assertEquals(newActivity.getDate().toString(), df.format(res.getDate("dateActivity")));
@@ -521,15 +405,15 @@ public class MaintenanceActivityDAOImplTest {
     }  
     
      public MaintenanceActivity createMaintenanceActivity(String typeOfActivity, int id) throws NotValidParameterException {
-        if(typeOfActivity.compareTo("Planned")==0){
+        if(typeOfActivity.equals("Planned")){
             return new PlannedMaintenanceActivity(id, new Site("ProvaBranchOfficeMod"+id, "ProvaAreaMod"+id), "typologyNameMod"+id,
-                    "ProvaDescrizioneMod"+id, id, LocalDate.now(), null, null,id%2==0);
-        }else if(typeOfActivity.compareTo("EWO")==0){
+                    "ProvaDescrizioneMod"+id, id, LocalDate.now(), null, null, id%2==0);
+        }else if(typeOfActivity.equals("EWO")){
             return new Ewo(id, new Site("ProvaBranchOfficeMod"+id, "ProvaAreaMod"+id), "typologyNameMod"+id,
-                    "ProvaDescrizioneMod"+id, id, LocalDate.now(), null, null,id%2==0);
+                    "ProvaDescrizioneMod"+id, id, LocalDate.now(), null, null, id%2==0);
         }else{
             return new ExtraActivity(id, new Site("ProvaBranchOfficeMod"+id, "ProvaAreaMod"+id), "typologyNameMod"+id,
-                    "ProvaDescrizioneMod"+id, id, LocalDate.now(), null, null,id%2==0);
+                    "ProvaDescrizioneMod"+id, id, LocalDate.now(), null, null, id%2==0);
         } 
     }
     
@@ -592,8 +476,7 @@ public class MaintenanceActivityDAOImplTest {
         }
     }
     
-  //=====================================Test of deleteMaintenanceActivity ==========================================================================
-    /*Test methods developed by Vincenza Coppola*/
+  //===================================== Test of deleteMaintenanceActivity ==========================================
     
     /**
      * Test of deleteMaintenanceActivity method, of class MaintenanceActivityDAOImpl.
@@ -816,4 +699,96 @@ public class MaintenanceActivityDAOImplTest {
             fail("SQLException was thrown");
         }
     }
+    
+    
+    
+    
+    //============================= Testing utilities ============================================
+    
+    /**
+     * This method delete an activity from database
+     * @param activityId
+     * @throws SQLException 
+     */
+    private void deleteMaintenaceActivity(int activityId) throws SQLException{
+        PreparedStatement pstm = conn.prepareStatement(DELETE_MAINTENANCE_ACTIVITY);
+        pstm.setInt(1, activityId);
+        pstm.executeUpdate();
+    }
+    
+    /**
+     * This method insert an activity with a series of parameters in database
+     * @param activityId
+     * @param descrizione
+     * @param estimatedInterventionTime
+     * @param date
+     * @param InterruptibleActivity
+     * @param typologyOfActivity
+     * @param typologyOfUnplannedActivity
+     * @param typologyName
+     * @param branchOffice
+     * @param area
+     * @param smp
+     * @throws SQLException 
+     */
+    private void insertMaintenanceActivity(int activityId, String descrizione, int estimatedInterventionTime,
+        String date, boolean InterruptibleActivity, String typologyOfActivity, String typologyOfUnplannedActivity,
+        String typologyName, String branchOffice, String area, String smp) throws SQLException{
+        PreparedStatement pstm = conn.prepareStatement(INSERT_MAINTENANCE_ACTIVITY);
+        pstm.setInt(1, activityId);
+        pstm.setString(2, descrizione);
+        pstm.setInt(3, estimatedInterventionTime);
+        pstm.setDate(4,Date.valueOf(date));
+        pstm.setBoolean(5, InterruptibleActivity);
+        pstm.setString(6, typologyOfActivity);
+        pstm.setString(7, typologyOfUnplannedActivity);
+        pstm.setString(8, typologyName);
+        pstm.setString(9, branchOffice);
+        pstm.setString(10, area);
+        pstm.setString(11, smp);
+        pstm.executeUpdate();
+    }
+    
+    /**
+     * This method performs the assert of activity attributes with a series of parameters
+     * @param activity
+     * @param activityId
+     * @param descrizione
+     * @param estimatedInterventionTime
+     * @param date
+     * @param InterruptibleActivity
+     * @param typologyOfActivity
+     * @param typologyOfUnplannedActivity
+     * @param typologyName
+     * @param branchOffice
+     * @param area
+     * @param workSpaceNotes
+     * @param smp 
+     */
+    private void assertMaintenanceActivity(MaintenanceActivity activity, 
+        int activityId,String descrizione,int estimatedInterventionTime,
+        LocalDate date,boolean InterruptibleActivity, String typologyOfActivity,
+        String typologyOfUnplannedActivity, String typologyName,String branchOffice,
+        String area, String workSpaceNotes,String smp){
+            Class activityClass = null;
+            if (typologyOfActivity.compareTo("Planned") == 0){
+                activityClass= PlannedMaintenanceActivity.class;
+            }else if(typologyOfUnplannedActivity.compareTo("EWO") == 0){
+                activityClass= Ewo.class;
+            }else{
+                activityClass= ExtraActivity.class;
+            }
+            assertEquals("activityId error",activityId, activity.getActivityId());
+            assertEquals("activityDescription error",descrizione, activity.getActivityDescription());
+            assertEquals("estimatedInterventionTime error",estimatedInterventionTime, activity.getEstimatedInterventionTime());
+            assertEquals("dateActivity error",date, activity.getDate());
+            assertEquals("interruptibleActivity error",InterruptibleActivity, activity.isInterruptibleActivity());
+            assertTrue("typologyOfActivity error", activityClass.isInstance(activity));
+            assertEquals("typologyName error", typologyName, activity.getTypology());
+            assertEquals("branchOffice error", branchOffice, activity.getSite().getBranchOffice());
+            assertEquals("area error", area, activity.getSite().getArea());
+            assertEquals("WorkSpaceNotes error", workSpaceNotes, activity.getSite().getWorkSpaceNotes());
+            assertEquals("smp error", smp, activity.getMaintenanceProcedure().getSmp());
+    }
+
 }

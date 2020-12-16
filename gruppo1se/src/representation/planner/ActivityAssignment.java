@@ -109,28 +109,11 @@ public class ActivityAssignment extends javax.swing.JDialog {
             LocalDateTime dateTime = appointment.getStartDateAndTime();
             //takes the activities scheduled for the selected day
             if (dateTime.toLocalDate().equals(newDate)) {
-                switch (dateTime.getHour()) {
-                    case 8:
-                        rowTable[2] = String.valueOf(Integer.valueOf(rowTable[2].split(" ")[0]) - appointment.getDuration()) + " min";
-                        break;
-                    case 9:
-                        rowTable[3] = String.valueOf(Integer.valueOf(rowTable[3].split(" ")[0]) - appointment.getDuration()) + " min";
-                        break;
-                    case 10:
-                        rowTable[4] = String.valueOf(Integer.valueOf(rowTable[4].split(" ")[0]) - appointment.getDuration()) + " min";
-                        break;
-                    case 11:
-                        rowTable[5] = String.valueOf(Integer.valueOf(rowTable[5].split(" ")[0]) - appointment.getDuration()) + " min";
-                        break;
-                    case 14:
-                        rowTable[6] = String.valueOf(Integer.valueOf(rowTable[6].split(" ")[0]) - appointment.getDuration()) + " min";
-                        break;
-                    case 15:
-                        rowTable[7] = String.valueOf(Integer.valueOf(rowTable[7].split(" ")[0]) - appointment.getDuration()) + " min";
-                        break;
-                    case 16:
-                        rowTable[8] = String.valueOf(Integer.valueOf(rowTable[8].split(" ")[0]) - appointment.getDuration()) + " min";
-                        break;
+                int hour = dateTime.getHour();
+                if(hour >= 8 && hour <= 11){
+                    rowTable[hour-6] = Integer.valueOf(rowTable[hour-6].split(" ")[0]) - appointment.getDuration() + " min";
+                }else{
+                    rowTable[hour-8] = Integer.valueOf(rowTable[hour-8].split(" ")[0]) - appointment.getDuration() + " min";
                 }
             }
         }

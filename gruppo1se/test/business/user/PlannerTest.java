@@ -28,6 +28,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -43,6 +45,7 @@ import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.SiteDaoImpl;
 import persistence.user.MaintainerSkillDAOImpl;
 import stub.EmployeeAppointmentDAOStub;
+import stub.MaintainerSkillDAOStub;
 import stub.MaintenanceActivityDAOStub;
 import stub.RequiredMaterialForMaintenanceDAOStub;
 import stub.RequiredSkillForMaintenanceDAOStub;
@@ -73,7 +76,7 @@ public class PlannerTest {
     private MaintenanceActivityDAOImpl instance = new MaintenanceActivityDAOImpl(new SiteDaoImpl());
     private final Planner planner = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(),
             new RequiredMaterialForMaintenanceDAOStub(), new UsersDAOStub(),
-            new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub(),new MaintainerSkillDAOImpl(), new TypologyDAOStub());
+            new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub(),new MaintainerSkillDAOStub(), new TypologyDAOStub());
     private final Site site = new Site(branchOffice,area,workspaceNotes);
     
     
@@ -772,43 +775,41 @@ public class PlannerTest {
     @Test(expected = MaintenanceActivityException.class)
     public void viewMaintenanceActivityByWeekMaintenanceActivityException() throws MaintenanceActivityException, SiteException, DateException, SkillException{
         try {
-            planner.viewMaintenanceActivityByWeek(1, 2021);
+            planner.viewMaintenanceActivityByWeek(0, 2020);
         } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
         }
     } 
     
     
-    @Test(expected = MaintenanceActivityException.class)
+    @Test
     public void viewMaintenanceActivityByWeekSiteException() throws MaintenanceActivityException{
         try {
-            planner.viewMaintenanceActivityByWeek(2, 2021);
+            List<MaintenanceActivity> expectedList = new ArrayList<>(){{
+                add(new PlannedMaintenanceActivity(1, new Site("ProvaBranchOffice1", "ProvaArea1"),
+                        "ProvaTypology1", "ProvaDescription1", 1, LocalDate.of(2020, Month.JANUARY, 1),
+                        new MaintenanceProcedure("smp1"), null, true));
+                add(new PlannedMaintenanceActivity(1, new Site("ProvaBranchOffice3", "ProvaArea3"),
+                        "ProvaTypology3", "ProvaDescription3", 3, LocalDate.of(2020, Month.JANUARY, 3),
+                        new MaintenanceProcedure("smp7"), null, true));
+            }};
+            
+            expectedList.get(0).getMaintenanceProcedure().setSkills(new ArrayList<>(){{
+                    add(new Skill("Skill1"));
+                    add(new Skill("Skill2"));
+                    add(new Skill("Skill3"));
+                }});
+            
+            List<MaintenanceActivity> list = planner.viewMaintenanceActivityByWeek(1, 2021);
+            
+            assertEquals(expectedList.get(0), list.get(0));
+            
+            assertEquals(date, area);
         } catch (NotValidParameterException ex) {
             fail("NotValidParameterException");
         }
     }
     
-    @Test(expected = MaintenanceActivityException.class)
-    public void viewMaintenanceActivityByWeekDateException() throws MaintenanceActivityException{
-        try {
-            planner.viewMaintenanceActivityByWeek(3, 2021);
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
-    }
-    
-//    @Test
-//    public void viewMaintenanceActivityByWeek(){
-//        try{
-//            planner.viewMaintenanceActivityByWeek(4, 2021);
-//        }catch(MaintenanceActivityException ex){
-//            fail("MaintenanceActivityException");
-//        }catch(SiteException ex){
-//            fail("SiteException");
-//        }catch(DateException ex){
-//            fail("DateException");
-//        }
-//    }
     
     
     @Test
@@ -816,27 +817,61 @@ public class PlannerTest {
         try{
             List<MaintenanceActivity> listOfMaintenaceActivity= planner.viewMaintenanceActivityByWeek(5, 2021);
             assertEquals(listOfMaintenaceActivity.size(), 0);
-        }catch(MaintenanceActivityException ex){
-            fail("MaintenanceActivityException");
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        } catch(MaintenanceActivityException | NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
         }
     }
     
     //==================================================================================================================
     
-    @Test
-    public void testViewEmployeeAvailabilityWrongDate() {
+    /**
+     * this test simulates a wrong week number
+     * @throws UsersException 
+     */
+    //@Test(expected = UsersException.class)
+    public void testViewEmployeeAvailabilityWrongDate() throws UsersException {
         try {
-            List<MaintainerDTO> list = planner.viewEmployeeAvailability(20, 2020);
-            assertEquals(2, list.size());
-        } catch (UsersException ex) {
-            fail("UsersException");
+            List<MaintainerDTO> list = planner.viewEmployeeAvailability(0, 2020);
         } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
-        
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
+        }         
     }
+    
+    
+    /**
+     * This test asserts that viewEmployeeAvailability<br> 
+     * correctly returns a list of maintainers and<br>
+     * related skills and appointments
+     * @throws UsersException 
+     */
+    //@Test
+    public void testViewEmployeeAvailability() throws UsersException {
+        try {
+            List<MaintainerDTO> list = planner.viewEmployeeAvailability(1, 2020);
+            List<Skill> expectedMaintainer1Skills = new ArrayList<>(){{
+                add(new Skill("Skill1"));
+                add(new Skill("Skill2"));
+            }};
+            List<Appointment> expectedMaintainer1Appointments = new ArrayList<>(){{
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                add(new Appointment(1, LocalDateTime.parse("2020-01-05 00:00:00", formatter), 20));
+                add(new Appointment(2, LocalDateTime.parse("2020-01-05 00:00:00", formatter), 40));
+            }};
+            
+            MaintainerDTO maintainer1 = list.get(0);
+            MaintainerDTO maintainer2 = list.get(1);
+            
+            assertTrue(maintainer2.getSkills().isEmpty());
+            assertTrue(maintainer2.getAppointmentsInWeek().isEmpty());
+            
+            assertEquals(expectedMaintainer1Appointments, maintainer1.getAppointmentsInWeek());
+            assertEquals(expectedMaintainer1Skills, maintainer1.getSkills());
+        } catch (NotValidParameterException ex) {
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
+        }         
+    }
+    
+    
     
     //=================================================testSaveAppointments================================================================
     /*Test developed by Rosario Gaeta*/

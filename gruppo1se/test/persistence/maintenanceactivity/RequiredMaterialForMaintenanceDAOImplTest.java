@@ -135,6 +135,10 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
 //================================================================================================================================
     
     
+    /**
+     * This test assert that the method addRequiredMaterial 
+     * correctly associate a list of materials to maintenance activity
+     */
     @Test
     public void testAddRequiredMaterial(){
         try {
@@ -159,13 +163,17 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
                     assertEquals(listMaterials.size(),res.getRow());
                 }
             }  
-        } catch (SQLException ex) {
-            fail("SQLException");
-        } catch (MaterialException ex) {
-            fail("MaterialException");
-        }
+        }catch(SQLException | MaterialException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
+        } 
     }
-     
+    
+    
+    /**
+     * This test assert that the method removeRequiredMaterial 
+     * correctly removes a list of materials associated 
+     * with a maintenance task (present in the database)
+     */
     @Test
     public void testRemoveRequiredMaterialInDatabase(){
         try {
@@ -190,13 +198,17 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
             
             //returns false if there are no more rows to return
             assertFalse(res.next());
-        } catch (SQLException ex) {
-            fail("SQLException");
-        } catch (MaterialException ex) {
-            fail("MaterialException");
-        }
+        }catch(SQLException | MaterialException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
+        } 
     }
     
+    
+    /**
+     * This test assert that the method removeRequiredMaterial 
+     * correctly returns false in an attempt to delete
+     * materials not present in the database
+     */
     @Test
     public void testRemoveRequiredMaterialNotInDatabase(){
         try {
@@ -217,13 +229,17 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
             
             //returns false if there are no more rows to return
             assertFalse(res.next());
-        } catch (SQLException ex) {
-            fail("SQLException");
-        } catch (MaterialException ex) {
-            fail("MaterialException");
-        }
+        }catch(SQLException | MaterialException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
+        } 
     }
     
+    
+    /**
+     * This test asserts that the method retrieveAvailableMaterialToAdd 
+     * correctly returns a list of all the materials available but 
+     * which have not yet been associated with the maintenance activity
+     */
     @Test
     public void testRetrieveAvailableMaterialToAdd(){
         try {
@@ -248,13 +264,16 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
             
             Collections.sort(actualMaterialsList);
             assertEquals(expectedMaterialsList,actualMaterialsList);
-        } catch (SQLException ex) {
-            fail("SQLException");
-        } catch (MaterialException ex) {
-            fail("MaterialException");
-        }
+        }catch(SQLException | MaterialException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
+        } 
     }
     
+    
+    /**
+     * This test asserts that the method correctly returns
+     * an empty list 
+     */
     @Test
     public void testRetrieveAvaliableMaterialToAddEmpty(){
         try {
@@ -270,11 +289,9 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
             actualMaterialsList = materialForMaintenanceDao.retrieveAvailableMaterialToAdd(1);
             
             assertEquals(expectedMaterialsList,actualMaterialsList);
-        } catch (SQLException ex) {
-            fail("SQLException");
-        } catch (MaterialException ex) {
-            fail("MaterialException");
-        }
+        }catch(SQLException | MaterialException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
+        } 
     }
     
 }

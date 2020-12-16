@@ -23,8 +23,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import persistence.database.ConnectionDB;
-import persistence.maintenanceactivity.MaintenanceProcedureDAOImpl;
-import persistence.maintenanceactivity.TypologyDAOImpl;
 
 /**
  *
@@ -32,15 +30,13 @@ import persistence.maintenanceactivity.TypologyDAOImpl;
  */
 public class UsersDAOImplTest{
     private static Connection conn;
-    private static final String INSERTUSER = "INSERT INTO USERS (username, password, role) values (?,?,?)";
-    private static final String DELETE_USERS = "DELETE FROM Users WHERE username=?";
-    private static final String INSERT_USERS = "INSERT INTO Users (username, password, role) VALUES (?,?,?)";
-    private static final String SELECT_USERS = "SELECT * FROM Users WHERE username=?";
+    private static final String DELETE_USER = "DELETE FROM users WHERE username=?";
+    private static final String INSERT_USER = "INSERT INTO users (username, password, role) VALUES (?,?,?)";
+    private static final String SELECT_USER = "SELECT * FROM users WHERE username = ?";
     private static final String DELETE_ALL_USERS = "DELETE FROM USERS";
     private final UsersDAOImpl instance = new UsersDAOImpl();
-    private final UsersDAOImpl instance2 = new UsersDAOImpl();
-    private final TypologyDAOImpl typology = new TypologyDAOImpl();
-    private final MaintenanceProcedureDAOImpl maintenanceProcedure = new MaintenanceProcedureDAOImpl();
+    
+    
     
     public UsersDAOImplTest() {
     }
@@ -100,15 +96,12 @@ public class UsersDAOImplTest{
             assertEquals(user.getUsername(), set.getString("username"));
             assertEquals(user.getPassword(), set.getString("password"));
             if(PlannerDTO.class.isInstance(user)){
-                System.out.println("Planner");
                 assertEquals("Planner", set.getString("role"));
             }
             else if(MaintainerDTO.class.isInstance(user)){
-                System.out.println("maintainer");
                 assertEquals("Maintainer", set.getString("role"));
             }
             else{
-                System.out.println("SA");
                 assertEquals("System Administrator", set.getString("role"));            
             }
         }
@@ -206,14 +199,159 @@ public class UsersDAOImplTest{
             fail("NotValidParameterException");
         }
     }
+   
+        
     
-    //========================================== MODIFY USER =============================================================================
+    //======================================= TEST MODIFY ====================================================================================
+    // Test of updateUser method developed by Antonio Gorrasi
     
     
-    private static final String DELETE_USER = "DELETE FROM users WHERE username=?";
-    private static final String INSERT_USER = "INSERT INTO users (username, password, role) VALUES (?,?,?)";
-    private static final String SELECT_USER = "SELECT * FROM users WHERE username = ?";
-
+    /**
+     * This test asserts that the updateUser method 
+     * correctly updates a user from planner to maintainer
+     */
+    @Test
+    public void testUpdateUserPlannerToMaintainer() {        
+        try {
+            String username = "username";
+            removeUser(username);
+            insertUser(username, "password", "Planner");
+            UserDTO modifiedUser = createUser("newUsername", "newPassword", "Maintainer");
+            assertTrue(instance.updateUser(username, modifiedUser));
+            verifyUser(selectUser("newUsername"), modifiedUser);
+        } catch (SQLException | UsersException | NotValidParameterException ex) {
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
+        }
+    }
+    
+    
+    /**
+     * This test asserts that the updateUser method 
+     * correctly updates a user from planner to System 
+     * Administrator
+     */
+    @Test
+    public void testUpdateUserPlannerToSystemAdministrator() {        
+        try {
+            String username = "username";
+            removeUser(username);
+            insertUser(username, "password", "Planner");
+            UserDTO modifiedUser = createUser("newUsername", "newPassword", "System Administrator");
+            assertTrue(instance.updateUser(username, modifiedUser));
+            verifyUser(selectUser("newUsername"), modifiedUser); 
+        } catch (SQLException | UsersException | NotValidParameterException ex) {
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
+        }
+    }
+    
+    
+    /**
+     * This test asserts that the updateUser method 
+     * correctly updates a user from maintainer to planner
+     */
+    @Test
+    public void testUpdateUserMaintainerToPlanner() {        
+        try {
+            String username = "username";
+            removeUser(username);
+            insertUser(username, "password", "Maintainer");
+            UserDTO modifiedUser = createUser("newUsername", "newPassword", "Planner");
+            assertTrue(instance.updateUser(username, modifiedUser));
+            verifyUser(selectUser("newUsername"), modifiedUser);   
+        } catch (SQLException | UsersException | NotValidParameterException ex) {
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
+        }
+    }
+    
+    
+    /**
+     * This test asserts that the updateUser method 
+     * correctly updates a user from maintainer to
+     * System Administrator
+     */
+    @Test
+    public void testUpdateUserMaintainerToSystemAdministrator() {        
+        try {
+            String username = "username";
+            removeUser(username);
+            insertUser(username, "password", "Maintainer");
+            UserDTO modifiedUser = createUser("newUsername", "newPassword", "System Administrator");
+            assertTrue(instance.updateUser(username, modifiedUser));
+            verifyUser(selectUser("newUsername"), modifiedUser);
+        } catch (SQLException | UsersException | NotValidParameterException ex) {
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
+        }
+    }
+    
+    
+    /**
+     * This test asserts that the updateUser method 
+     * correctly updates a user from System Administrator
+     * to planner
+     */
+    @Test
+    public void testUpdateUserSystemAdministratorToPlanner() {        
+        try {
+            String username = "username";
+            removeUser(username);
+            insertUser(username, "password", "System Administrator");
+            UserDTO modifiedUser = createUser("newUsername", "newPassword", "Planner");
+            assertTrue(instance.updateUser(username, modifiedUser));
+            verifyUser(selectUser("newUsername"), modifiedUser);
+        } catch (SQLException | UsersException | NotValidParameterException ex) {
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
+        }
+    }
+    
+    
+    /**
+     * This test asserts that the updateUser method 
+     * correctly updates a user from System Administrator 
+     * to Maintainer
+     */
+    @Test
+    public void testUpdateUserSystemAdministratorToMaintainer() {        
+        try {
+            String username = "username";
+            removeUser(username);
+            insertUser(username, "password", "System Administrator");
+            UserDTO modifiedUser = createUser("newUsername", "newPassword", "Maintainer");
+            assertTrue(instance.updateUser(username, modifiedUser));
+            verifyUser(selectUser("newUsername"), modifiedUser);
+        } catch (SQLException | UsersException | NotValidParameterException ex) {
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
+        }
+    }
+    
+    
+    /**
+     * this test asserts that the updateUser method 
+     * correctly returns false when attempting to 
+     * modify a user who is not there
+     */
+    @Test
+    public void testModifyActivityNotPresent(){
+        try {
+            String username = "username";
+            removeUser(username);
+            UserDTO modifiedUser = createUser("newUsername", "newPassword", "Maintainer");
+            assertFalse(instance.updateUser(username, modifiedUser));            
+        } catch (SQLException | UsersException | NotValidParameterException ex) {
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
+        }
+    }
+    
+    
+    //====================================== PRIVATE METHODS =============================================
+    //Developed by Antonio Gorrasi
+    
+    /**
+     * This method inserts a user into the database
+     * @param username username of user
+     * @param password password of user
+     * @param role role of user
+     * @throws SQLException 
+     */
     private void insertUser(String username, String password, String role) throws SQLException{
         PreparedStatement pstm = conn.prepareStatement(INSERT_USER);
         pstm.setString(1, username);
@@ -222,29 +360,60 @@ public class UsersDAOImplTest{
         pstm.executeUpdate();
     }
 
+    
+    /**
+     * This method remove a user from the database
+     * @param username username of the user to remove
+     * @throws SQLException 
+     */
     private void removeUser(String username) throws SQLException{
         PreparedStatement pstm = conn.prepareStatement(DELETE_USER);
         pstm.setString(1, username);
         pstm.executeUpdate();
     }
     
+    
+    /**
+     * This method select a user into the database
+     * @param username username of the user
+     * @return {@code ResultSet} containing user information
+     * @throws SQLException 
+     */
     private ResultSet selectUser(String username) throws SQLException {
         PreparedStatement pstm = conn.prepareStatement(SELECT_USER);
         pstm.setString(1, username);
         return pstm.executeQuery();
     }
     
+    
+    /**
+     * This method creates a user based on the given role parameter 
+     * @param username username of the user
+     * @param password password of the user
+     * @param role role of the user
+     * @return {@code UserDTO}
+     * @throws NotValidParameterException 
+     */
     private UserDTO createUser(String username, String password, String role) throws NotValidParameterException{
         if(role.equals("Planner")){
             return new PlannerDTO(username, password);
         }else if(role.equals("Maintainer")){
             return new MaintainerDTO(username, password);
-        }else{
+        }else if(role.equals("System Administrator")){
             return new SystemAdministratorDTO(username, password);
-        }
+        }else{
+            throw new NotValidParameterException("Invalid role");
+        }            
     }
     
     
+    /**
+     * This method checks whether the information contained
+     * in the ResultSet is the same as desired
+     * @param res {@code ResulSet} containing the information
+     * @param newUser UserDTO containing the desired information
+     * @throws SQLException 
+     */
     private void verifyUser(ResultSet res, UserDTO newUser) throws SQLException {
         boolean isEmpty = true;
         while(res.next()){
@@ -261,6 +430,12 @@ public class UsersDAOImplTest{
         assertFalse(isEmpty);
     }
     
+    
+    /**
+     * This method verifies that the ResultSet is not empty
+     * @param username
+     * @throws SQLException 
+     */
     private void isEmptyResultSet(String username) throws SQLException{
         PreparedStatement pstm = conn.prepareStatement(SELECT_USER);
         pstm.setString(1, username);
@@ -271,139 +446,9 @@ public class UsersDAOImplTest{
         }
         assertTrue("isEmpty",isEmpty);
     }
-        
     
-    //======================================= TEST MODIFY ====================================================================================
-
-    @Test
-    public void testUpdateUserPlannerToMaintainer() {        
-        try {
-            String username = "username";
-            removeUser(username);
-            insertUser(username, "password", "Planner");
-            UserDTO modifiedUser = createUser("newUsername", "newPassword", "Maintainer");
-            assertTrue(instance.updateUser(username, modifiedUser));
-            verifyUser(selectUser("newUsername"), modifiedUser);
-            isEmptyResultSet(username);
-        } catch (SQLException ex) {
-            fail("SQLException");
-        } catch (UsersException ex){
-            fail("UsersException");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
-    }
     
-    @Test
-    public void testUpdateUserPlannerToSystemAdministrator() {        
-        try {
-            String username = "username";
-            removeUser(username);
-            insertUser(username, "password", "Planner");
-            UserDTO modifiedUser = createUser("newUsername", "newPassword", "System Administrator");
-            assertTrue(instance.updateUser(username, modifiedUser));
-            verifyUser(selectUser("newUsername"), modifiedUser); 
-            isEmptyResultSet(username);
-        } catch (SQLException ex) {
-            fail("SQLException");
-        } catch (UsersException ex){
-            fail("UsersException");
-        } catch (NotValidParameterException ex) {
-            Logger.getLogger(UsersDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
     
-    @Test
-    public void testUpdateUserMaintainerToPlanner() {        
-        try {
-            String username = "username";
-            removeUser(username);
-            insertUser(username, "password", "Maintainer");
-            UserDTO modifiedUser = createUser("newUsername", "newPassword", "Planner");
-            assertTrue(instance.updateUser(username, modifiedUser));
-            verifyUser(selectUser("newUsername"), modifiedUser);   
-            isEmptyResultSet(username);
-        } catch (SQLException ex) {
-            fail("SQLException");
-        } catch (UsersException ex){
-            fail("UsersException");
-        } catch (NotValidParameterException ex) {
-            Logger.getLogger(UsersDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    @Test
-    public void testUpdateUserMaintainerToSystemAdministrator() {        
-        try {
-            String username = "username";
-            removeUser(username);
-            insertUser(username, "password", "Maintainer");
-            UserDTO modifiedUser = createUser("newUsername", "newPassword", "System Administrator");
-            assertTrue(instance.updateUser(username, modifiedUser));
-            verifyUser(selectUser("newUsername"), modifiedUser);   
-            isEmptyResultSet(username);
-        } catch (SQLException ex) {
-            fail("SQLException");
-        } catch (UsersException ex){
-            fail("UsersException");
-        } catch (NotValidParameterException ex) {
-            Logger.getLogger(UsersDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    @Test
-    public void testUpdateUserSystemAdministratorToPlanner() {        
-        try {
-            String username = "username";
-            removeUser(username);
-            insertUser(username, "password", "System Administrator");
-            UserDTO modifiedUser = createUser("newUsername", "newPassword", "Planner");
-            assertTrue(instance.updateUser(username, modifiedUser));
-            verifyUser(selectUser("newUsername"), modifiedUser); 
-            isEmptyResultSet(username);
-        } catch (SQLException ex) {
-            fail("SQLException");
-        } catch (UsersException ex){
-            fail("UsersException");
-        } catch (NotValidParameterException ex) {
-            Logger.getLogger(UsersDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    @Test
-    public void testUpdateUserSystemAdministratorToMaintainer() {        
-        try {
-            String username = "username";
-            removeUser(username);
-            insertUser(username, "password", "System Administrator");
-            UserDTO modifiedUser = createUser("newUsername", "newPassword", "Maintainer");
-            assertTrue(instance.updateUser(username, modifiedUser));
-            verifyUser(selectUser("newUsername"), modifiedUser);   
-            isEmptyResultSet(username);
-        } catch (SQLException ex) {
-            fail("SQLException");
-        } catch (UsersException ex){
-            fail("UsersException");
-        } catch (NotValidParameterException ex) {
-            Logger.getLogger(UsersDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    @Test
-    public void testModifyActivityNotPresent(){
-        try {
-            String username = "username";
-            removeUser(username);
-            UserDTO modifiedUser = createUser("newUsername", "newPassword", "Maintainer");
-            assertFalse(instance.updateUser(username, modifiedUser));            
-        } catch (SQLException ex) {
-            fail("SQLException");
-        } catch (UsersException ex){
-            fail("UsersException");
-        } catch (NotValidParameterException ex) {
-            Logger.getLogger(UsersDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
     /*==================================================test deleteUsers==================================================================================*/
     
     /*Test of deleteUsers method developed by Rosario Gaeta*/

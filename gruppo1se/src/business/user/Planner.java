@@ -112,8 +112,6 @@ public class Planner extends User {
      * This method allows to modify an existent Maintenance
      * activity acccording to actvityId parameter
      * @param activityId identifier of maintenance activity
-     * @param branchOffice branch office of ​​activity
-     * @param area area of ​​activity
      * @param typology type of activity
      * @param activityDescription description of activity
      * @param estimatedInterventionTime estimated time
