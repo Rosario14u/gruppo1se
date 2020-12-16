@@ -24,7 +24,7 @@ import presentation.manager.MessageManager;
 public class SelectionActivityGUI extends javax.swing.JFrame {
     private List<MaintenanceActivity> list;
     private Planner planner = null;
-    private DefaultTableModel tableModel;
+    private final DefaultTableModel tableModel;
     
     
     /**

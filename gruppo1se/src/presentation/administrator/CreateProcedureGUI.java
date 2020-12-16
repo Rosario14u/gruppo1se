@@ -24,7 +24,7 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
     private final static String FILE_EXTENSION = ".pdf";
     private File fileChoosen;
     
-    private SystemAdministrator administrator;
+    private final SystemAdministrator administrator;
     
     /**
      * Creates new form CreateProcedureGUI

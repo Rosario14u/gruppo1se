@@ -37,13 +37,14 @@ import presentation.manager.MessageManager;
  * @author gorra
  */
 public class MaintainerAvailability extends javax.swing.JFrame {
-    private MaintenanceActivity activity;
-    private Planner planner;
-    private DefaultTableModel tableModel;
+    private final MaintenanceActivity activity;
+    private final Planner planner;
+    private final DefaultTableModel tableModel;
     private List<MaintainerDTO> maintainerList;
     private ActivityAssignment jDialogGUI;
     private static final int INDEX_FIRST_AVAIL_COL = 2;
     private static final int NUM_COL = 9; 
+    private static final int WORKING_MINUTES_IN_A_DAY = 420;
     /**
      * Creates new form MaintainerAvailability
      */
@@ -110,7 +111,7 @@ public class MaintainerAvailability extends javax.swing.JFrame {
                     int index = appointment.getStartDateAndTime().getDayOfWeek().getValue(); 
                     float totalCellPercentage=  Float.valueOf(rowTable[index+1]);
                     /*subtracts the duration of an appointment from the total (in percentage)*/
-                    totalCellPercentage = (totalCellPercentage - ((float) appointment.getDuration() * 100) / 420);
+                    totalCellPercentage = (totalCellPercentage - ((float) appointment.getDuration() * 100) / WORKING_MINUTES_IN_A_DAY);
                     rowTable[index+1] = String.valueOf(totalCellPercentage);
                 }
                 for(int index=INDEX_FIRST_AVAIL_COL; index < NUM_COL ; index++){

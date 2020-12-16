@@ -216,8 +216,8 @@ public class DeleteActivity extends javax.swing.JFrame {
         try {
             int activityId = Integer.parseInt(jActivityID.getText());
             MaintenanceActivity activity = planner.viewMaintenanceActivity(activityId); // Get the activity with the wanted ID
-            List<Material> materials = planner.getRequiredMaterialsDao().retrieveMaterialsByActivityId(activityId); // Get this activity's materials
-            planner.getRequiredMaterialsDao().removeRequiredMaterial(activityId, materials); // Remove the entry from the RequiredMaterial table
+            List<Material> materials = planner.viewRequiredMaterialsByActivityId(activityId); // Get this activity's materials
+            planner.removeRequiredMaterial(activityId, materials); // Remove the entry from the RequiredMaterial table
             planner.removeMaintenanceActivity(activityId); // Remove the wanted MaintenanceActivity
             jActivityID.setText("");
             jMaintenanceActivity.setText("");

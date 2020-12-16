@@ -43,6 +43,7 @@ public class SystemAdministrator extends User {
      * @param procedureDao Dao object of Procedure
      * @param usersDao Dao object of User
      * @param typologyDao Dao object of Typology
+     * @param siteDao Dao object of site
      */
     public SystemAdministrator(String username, String password, MaintenanceProcedureDAO procedureDao,
             UsersDAO usersDao, TypologyDAO typologyDao, SiteDao siteDao) {

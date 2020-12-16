@@ -561,7 +561,7 @@ public class PlannerTest {
     //========================Test of viewMaintenanceActivity================================================
     /*Test methods of viewMaintenanceActivity developed by Rosario Gaeta*/
     /**
-     * This test method assert that viewMaintenanceActivity correctly return a planned activity
+     * This test method asserts that viewMaintenanceActivity correctly return a planned activity.
      */
     @Test
     public void testviewMaintenanceActivityReturnPlanned()  {
@@ -581,7 +581,7 @@ public class PlannerTest {
         }
     }
     /**
-     * This test method assert that viewMaintenanceActivity correctly return an Ewo activity
+     * This test method asserts that viewMaintenanceActivity correctly return an Ewo activity.
      */
     @Test
     public void testviewMaintenanceActivityReturnEwo() {
@@ -601,7 +601,7 @@ public class PlannerTest {
         }
     }
     /**
-     * This test method assert that viewMaintenanceActivity correctly return a Extra activity
+     * This test method asserts that viewMaintenanceActivity correctly return a Extra activity.
      */
     @Test
     public void testviewMaintenanceActivityReturnExtra() {
@@ -622,7 +622,7 @@ public class PlannerTest {
     }
     
     /**
-     * This test method assert that viewMaintenanceActivity correctly return null when activity is not present
+     * This test method asserts that viewMaintenanceActivity correctly return null when activity is not present.
      */
     @Test
     public void testviewMaintenanceActivityNull(){
@@ -635,7 +635,7 @@ public class PlannerTest {
     }
     
     /**
-     * This test method assert that viewMaintenanceActivity correctly raises MaintenanceActivityException.
+     * This test method asserts that viewMaintenanceActivity correctly raises MaintenanceActivityException.
      * @throws exception.MaintenanceActivityException
      */
     @Test(expected = MaintenanceActivityException.class)
@@ -676,6 +676,7 @@ public class PlannerTest {
     }
     /**
      * This test method assert that viewMaintenanceActivity correctly raises MaintenanceException.
+     * @throws exception.MaintenanceActivityException
      */
     @Test(expected = MaintenanceActivityException.class)
     public void testviewMaintenanceActivityMaterialException() throws MaintenanceActivityException {

@@ -23,14 +23,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.table.DefaultTableModel;
-import persistence.maintenanceactivity.EmployeeAppointmentDAOImpl;
-import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
-import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
-import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
-import persistence.maintenanceactivity.SiteDaoImpl;
-import persistence.maintenanceactivity.TypologyDAOImpl;
-import persistence.user.MaintainerSkillDAOImpl;
-import persistence.user.UsersDAOImpl;
 import presentation.manager.MessageManager;
 
 /**
@@ -39,15 +31,15 @@ import presentation.manager.MessageManager;
  */
 public class ActivityAssignment extends javax.swing.JDialog {
 
-    private MaintenanceActivity activity;
-    private LocalDate newDate;
-    private MaintainerDTO maintainer;
-    private DefaultTableModel tableModel;
-    private MinuteCellRenderer renderer;
-    private List<Appointment> appointmentList;
+    private final MaintenanceActivity activity;
+    private final LocalDate newDate;
+    private final MaintainerDTO maintainer;
+    private final DefaultTableModel tableModel;
+    private final MinuteCellRenderer renderer;
+    private final List<Appointment> appointmentList;
     private int remainEstimatedInterventionTime;
-    private Planner planner;
-    private Frame parent;
+    private final Planner planner;
+    private final Frame parent;
     private static final int INDEX_FIRST_AVAIL_COL = 2;
     private static final int NUM_COL = 9; 
 

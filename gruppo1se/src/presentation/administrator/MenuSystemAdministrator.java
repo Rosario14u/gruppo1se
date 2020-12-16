@@ -16,13 +16,14 @@ import persistence.user.UsersDAOImpl;
  * @author gorra
  */
 public class MenuSystemAdministrator extends javax.swing.JFrame {
-    private SystemAdministrator administrator;
+    private final SystemAdministrator administrator;
 
     /**
      * Creates new form MenuSystemAdministrator
      */
     public MenuSystemAdministrator() {
-        administrator = new SystemAdministrator("admin","admin", new MaintenanceProcedureDAOImpl(),new UsersDAOImpl(),new TypologyDAOImpl(), new SiteDaoImpl());
+        administrator = new SystemAdministrator("admin","admin", new MaintenanceProcedureDAOImpl(),
+                new UsersDAOImpl(),new TypologyDAOImpl(), new SiteDaoImpl());
         initComponents();
         this.setLocationRelativeTo(null);
     }

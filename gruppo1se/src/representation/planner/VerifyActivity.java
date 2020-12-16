@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.temporal.WeekFields;
 import java.util.Locale;
 import javax.swing.JOptionPane;
+import presentation.manager.MessageManager;
 
 /**
  *
@@ -358,9 +359,9 @@ public class VerifyActivity extends javax.swing.JFrame {
                         activity.getMaintenanceProcedure().getSmp().concat(FILE_EXTENSION))));
                 Desktop.getDesktop().open(myFile);
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this,"There are no associated application to open a PDF file!","Error Message", JOptionPane.ERROR_MESSAGE);
+                MessageManager.errorMessage(this, "There are no associated application to open a PDF file!");
             } catch (IllegalArgumentException ex){
-                JOptionPane.showMessageDialog(this,"PDF file doesn't exist!","Error Message", JOptionPane.ERROR_MESSAGE);
+                MessageManager.errorMessage(this, "PDF file doesn't exist!");
             }
         }
     }//GEN-LAST:event_jPDFActionPerformed

@@ -92,13 +92,14 @@ public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
     }
     
     
-    /*Method developed by ROsario Gaeta*/
+    
     /**
      * Simulates the behaviour of retrieveMaintenanceActivityDao of MaintenanceActivityDAO.
      * @param activityId
      * @return
      * @throws MaintenanceActivityException if activity id is >=7
      */
+    /*Method developed by Rosario Gaeta*/
     @Override
     public MaintenanceActivity retrieveMaintenanceActivityDao(int activityId) throws  MaintenanceActivityException {
         switch (activityId) {
@@ -106,7 +107,7 @@ public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
                 return new PlannedMaintenanceActivity(activityId, new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes"),
                         "ProvaTypology", "ProvaDescription", 120, LocalDate.parse("2020-12-20"),
                         null, null,false);
-            case 2: /*Case in which an activity is returned (This two case are paired with the cases in 1 and 2 of 
+            case 2: /*Case in which an activity is returned (This two cases are paired with the cases in 1 and 2 of 
                 retrieveMaterialsByActivityId of RequiredMaterialForMaintenanceDAOStub).*/
                 return new PlannedMaintenanceActivity(activityId, new Site("ProvaBranchOffice", "ProvaArea", "ProvaWorkspaceNotes"),
                         "ProvaTypology", "ProvaDescription", 120, LocalDate.parse("2020-12-20"),
