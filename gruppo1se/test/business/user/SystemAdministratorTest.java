@@ -10,6 +10,7 @@ import dto.MaintainerDTO;
 import dto.PlannerDTO;
 import dto.SystemAdministratorDTO;
 import dto.UserDTO;
+import exception.AppointmentException;
 import exception.NotValidParameterException;
 import exception.ProcedureException;
 import exception.SiteException;
@@ -77,10 +78,8 @@ public class SystemAdministratorTest {
         try {
             boolean retResult = admin.saveSmpProcedure("ProvaSmp1","ProvaSmp1Rin");
             assertTrue("Procedure True", retResult);
-        } catch (ProcedureException ex) {
-            fail("Procedure Exception");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(ProcedureException | NotValidParameterException  ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -93,10 +92,8 @@ public class SystemAdministratorTest {
         try {
             boolean retResult = admin.saveSmpProcedure("ProvaSmp1"," ");
             assertTrue("Procedure True", retResult);
-        } catch (ProcedureException ex) {
-            fail("Procedure Exception");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(ProcedureException | NotValidParameterException  ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -109,10 +106,8 @@ public class SystemAdministratorTest {
         try {
             boolean retResult = admin.saveSmpProcedure("ProvaSmp1",null);
             assertTrue("Procedure True", retResult);
-        } catch (ProcedureException ex) {
-            fail("Procedure Exception");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(ProcedureException | NotValidParameterException  ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -125,10 +120,8 @@ public class SystemAdministratorTest {
         try {
             boolean retResult = admin.saveSmpProcedure("ProvaSmp2","ProvaSmp2Rin");
             assertTrue("Procedure True", retResult);
-        } catch (ProcedureException ex) {
-            fail("Procedure Exception");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(ProcedureException | NotValidParameterException  ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -141,8 +134,8 @@ public class SystemAdministratorTest {
     public void testSaveSmpUpdateThrowException() throws ProcedureException {
         try {
             boolean retResult = admin.saveSmpProcedure("ProvaSmp3", " ");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(NotValidParameterException  ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
         
     }
@@ -155,8 +148,8 @@ public class SystemAdministratorTest {
     public void testSaveSmpEmptyProcedure() throws ProcedureException {
         try {
             boolean retResult = admin.saveSmpProcedure(" ", " ");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(NotValidParameterException  ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
         
     }
@@ -169,8 +162,8 @@ public class SystemAdministratorTest {
     public void testSaveSmpNullProcedure() throws ProcedureException {
         try {
             boolean retResult = admin.saveSmpProcedure(null, " ");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(NotValidParameterException  ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -539,10 +532,8 @@ public class SystemAdministratorTest {
             
             int returnedNumberOfDeletedRow = admin.removeUsers(usernameList);
             assertEquals(returnedNumberOfDeletedRow,usernameList.size());
-        } catch (UsersException ex) {
-            fail("UsersException");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(UsersException | NotValidParameterException  ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -557,11 +548,9 @@ public class SystemAdministratorTest {
             }};
             int returnedNumberOfDeletedRow = admin.removeUsers(usernameList);
             assertEquals(returnedNumberOfDeletedRow,0);
-        } catch (UsersException ex) {
-            fail("UsersException");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }        
+        }catch(UsersException | NotValidParameterException  ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
+        }       
     }
     
     /**
@@ -573,11 +562,9 @@ public class SystemAdministratorTest {
             List<String> usernameList = new ArrayList<>();
             int returnedNumberOfDeletedRow = admin.removeUsers(usernameList);
             assertEquals(returnedNumberOfDeletedRow,usernameList.size());
-        } catch (UsersException ex) {
-            fail("UsersException");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        }catch(UsersException | NotValidParameterException  ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
+        } 
     }
     
     /**
@@ -588,11 +575,9 @@ public class SystemAdministratorTest {
         try {
             int returnedNumberOfDeletedRow = admin.removeUsers(null);
             assertEquals(returnedNumberOfDeletedRow,0);
-        } catch (UsersException ex) {
-            fail("UsersException");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        }catch(UsersException | NotValidParameterException  ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
+        } 
     }
     
     /**
@@ -607,9 +592,9 @@ public class SystemAdministratorTest {
                 add("username2");
             }};
             int returnedNumberOfDeletedRow = admin.removeUsers(usernameList);
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        }catch(NotValidParameterException  ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
+        } 
     }
     
 //=========================================================================================================================================

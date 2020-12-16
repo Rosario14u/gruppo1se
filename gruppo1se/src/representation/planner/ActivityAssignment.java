@@ -23,14 +23,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.table.DefaultTableModel;
-import persistence.maintenanceactivity.EmployeeAppointmentDAOImpl;
-import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
-import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
-import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
-import persistence.maintenanceactivity.SiteDaoImpl;
-import persistence.maintenanceactivity.TypologyDAOImpl;
-import persistence.user.MaintainerSkillDAOImpl;
-import persistence.user.UsersDAOImpl;
 import presentation.manager.MessageManager;
 
 /**
@@ -39,15 +31,17 @@ import presentation.manager.MessageManager;
  */
 public class ActivityAssignment extends javax.swing.JDialog {
 
-    private MaintenanceActivity activity;
-    private LocalDate newDate;
-    private MaintainerDTO maintainer;
-    private DefaultTableModel tableModel;
-    private MinuteCellRenderer renderer;
-    private List<Appointment> appointmentList;
+    private final MaintenanceActivity activity;
+    private final LocalDate newDate;
+    private final MaintainerDTO maintainer;
+    private final DefaultTableModel tableModel;
+    private final MinuteCellRenderer renderer;
+    private final List<Appointment> appointmentList;
     private int remainEstimatedInterventionTime;
-    private Planner planner;
-    private Frame parent;
+    private final Planner planner;
+    private final Frame parent;
+    private static final int INDEX_FIRST_AVAIL_COL = 2;
+    private static final int NUM_COL = 9; 
 
     /**
      * 
@@ -57,7 +51,8 @@ public class ActivityAssignment extends javax.swing.JDialog {
      * @param newDate
      * @param mantainer 
      */
-    public ActivityAssignment(java.awt.Frame parent, boolean modal, MaintenanceActivity activity, LocalDate newDate, MaintainerDTO mantainer) {
+    public ActivityAssignment(java.awt.Frame parent, boolean modal, MaintenanceActivity activity,
+            LocalDate newDate, MaintainerDTO mantainer, Planner planner) {
         super(parent, modal);
         this.activity = activity;
         this.newDate = newDate;
@@ -65,11 +60,9 @@ public class ActivityAssignment extends javax.swing.JDialog {
         this.appointmentList = new ArrayList<>();
         this.parent = parent;
         this.remainEstimatedInterventionTime = activity.getEstimatedInterventionTime();
-        this.planner = new Planner("planner", "planner", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
-                new RequiredMaterialForMaintenanceDAOImpl(), new UsersDAOImpl(), new EmployeeAppointmentDAOImpl(),
-                new RequiredSkillForMaintenanceDAOImpl(), new MaintainerSkillDAOImpl(), new TypologyDAOImpl());
+        this.planner = planner;
         initComponents();
-        this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(parent);
         tableModel = (DefaultTableModel) maintainerAvailabilityDayTable.getModel();
         renderer = new MinuteCellRenderer();
         maintainerAvailabilityDayTable.setDefaultRenderer(Object.class, renderer);
@@ -117,7 +110,6 @@ public class ActivityAssignment extends javax.swing.JDialog {
                 }
             }
         }
-        System.out.println(rowTable.toString());
         tableModel.addRow(rowTable);
     }
 
@@ -339,7 +331,7 @@ public class ActivityAssignment extends javax.swing.JDialog {
         //row and col indicate which cell was clicked
         int row = maintainerAvailabilityDayTable.rowAtPoint(evt.getPoint());
         int col = maintainerAvailabilityDayTable.columnAtPoint(evt.getPoint());
-        if (col >= 2 && col <= 8 && row != -1) {
+        if (col >= INDEX_FIRST_AVAIL_COL && col < NUM_COL && row != -1) {
             String availabilityValue = String.valueOf(maintainerAvailabilityDayTable.getValueAt(row, col)).split(" ")[0];
             int availableMinutes = Integer.valueOf(availabilityValue);
             if (availableMinutes == 0) {

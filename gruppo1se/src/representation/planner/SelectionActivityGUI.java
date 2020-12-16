@@ -24,7 +24,7 @@ import presentation.manager.MessageManager;
 public class SelectionActivityGUI extends javax.swing.JFrame {
     private List<MaintenanceActivity> list;
     private Planner planner = null;
-    private DefaultTableModel tableModel;
+    private final DefaultTableModel tableModel;
     
     
     /**
@@ -34,6 +34,7 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
     public SelectionActivityGUI(Planner planner) {
         this.planner = planner;
         initComponents();
+        this.setLocationRelativeTo(null);
         tableModel = (DefaultTableModel) maintenanceActivityTable.getModel();
         inizializeField();    
     }
@@ -64,7 +65,6 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
 
         weekComboBox.setModel(new javax.swing.DefaultComboBoxModel<>());
         int numberOfWeeks = WeekConverter.getNumberOfWeeksInYear(LocalDate.now());
-        System.out.println("--> " + numberOfWeeks);
         for(int i=1;i<=numberOfWeeks;i++){
             weekComboBox.addItem(i);
         }
@@ -224,7 +224,7 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
     
 
     /**
-     * This method initializes all fields of the GUI
+     * This method initializes all fields of the GUI.
      */
     private void inizializeField() {
         LocalDate date = LocalDate.now();
@@ -238,15 +238,15 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
     /**
      * This method populates the table based on
      * the week and the year for that week
-     * @param weekNumber
-     * @param year 
+     * @param weekNumber number of a week
+     * @param year year
      */
     public void populateTable(int weekNumber, int year){
         tableModel.setRowCount(0);
         try {
             list = planner.viewMaintenanceActivityByWeek(weekNumber, year);
             for (MaintenanceActivity ma : list) {
-               tableModel.addRow(new Object[]{ma.getActivityId(), ma.getSite().getArea(),
+                tableModel.addRow(new Object[]{ma.getActivityId(), ma.getSite().getArea(),
                    ma.getTypology(), ma.getEstimatedInterventionTime()});
             }
         } catch (MaintenanceActivityException | NotValidParameterException ex) {

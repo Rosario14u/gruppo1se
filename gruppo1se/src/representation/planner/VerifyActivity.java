@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.temporal.WeekFields;
 import java.util.Locale;
 import javax.swing.JOptionPane;
+import presentation.manager.MessageManager;
 
 /**
  *
@@ -22,7 +23,7 @@ import javax.swing.JOptionPane;
  */
 public class VerifyActivity extends javax.swing.JFrame {
     private final MaintenanceActivity activity;
-    private String oldWorkspaceNotes;
+    private final String oldWorkspaceNotes;
     private final Planner planner;
     private final static String PROJECT_PATH = System.getProperty("user.dir");
     private final static String RELATIVE_PROJECT_PATH = "/src/smp/";
@@ -35,6 +36,7 @@ public class VerifyActivity extends javax.swing.JFrame {
      */
     public VerifyActivity(MaintenanceActivity activity, Planner planner) {
         initComponents();
+        this.setLocationRelativeTo(null);
         this.planner = planner;
         this.activity = activity;
         this.oldWorkspaceNotes = activity.getSite().getWorkSpaceNotes();
@@ -357,9 +359,9 @@ public class VerifyActivity extends javax.swing.JFrame {
                         activity.getMaintenanceProcedure().getSmp().concat(FILE_EXTENSION))));
                 Desktop.getDesktop().open(myFile);
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this,"There are no associated application to open a PDF file!","Error Message", JOptionPane.ERROR_MESSAGE);
+                MessageManager.errorMessage(this, "There are no associated application to open a PDF file!");
             } catch (IllegalArgumentException ex){
-                JOptionPane.showMessageDialog(this,"PDF file doesn't exist!","Error Message", JOptionPane.ERROR_MESSAGE);
+                MessageManager.errorMessage(this, "PDF file doesn't exist!");
             }
         }
     }//GEN-LAST:event_jPDFActionPerformed

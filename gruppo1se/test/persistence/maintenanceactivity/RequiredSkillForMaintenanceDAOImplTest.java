@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import business.maintenanceactivity.Skill;
+import exception.MaterialException;
 import exception.NotValidParameterException;
 import exception.SkillException;
 import java.util.ArrayList;
@@ -77,7 +78,7 @@ public class RequiredSkillForMaintenanceDAOImplTest {
      * This method asserts that retrieveSkillsByActivityIdInDatabase correctly return List of skill
      */
     @Test
-    public void testRetrieveSkillsByActivityIdInDatabase() {
+    public void testRetrieveSkillsBySmpInDatabase() {
         try {
             List<Skill> expectedResult = new ArrayList<>() {{
                         add(new Skill("Java knowledge"));
@@ -100,10 +101,8 @@ public class RequiredSkillForMaintenanceDAOImplTest {
                 Collections.sort(expectedResult);
                 Collections.sort(result);
                 assertEquals("retrieveSkillsByActivityIdInDatabase error",expectedResult, result);
-        } catch (SQLException ex) {
-            fail("SQLException");
-        } catch (SkillException ex) {
-            fail("SkillException");
+        }catch(SQLException | SkillException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -112,17 +111,15 @@ public class RequiredSkillForMaintenanceDAOImplTest {
      * there aren't skill associated to activity
      */
     @Test
-    public void testRetrieveSkillsByActivityIdNotInDatabase() {
+    public void testRetrieveSkillsBySmpNotInDatabase() {
         try {
             PreparedStatement pstm = conn.prepareStatement(DELETE_ASSOCIATION_SKILL_BY_SMP);
             pstm.setString(1, "smp");
             pstm.executeUpdate();
             List<Skill> result = skillForMaintenanceDao.retrieveSkillsBySmp("smp");
             assertTrue("requiredSkill error", result.isEmpty());        
-        } catch (SQLException ex) {
-            fail("SQLException");
-        } catch (SkillException ex) {
-            fail("SkillException");
+        }catch(SQLException | SkillException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     

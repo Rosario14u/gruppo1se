@@ -180,7 +180,7 @@ public class PlannedMaintenanceActivityTest {
         String expResult = "PlannedMaintenanceActivity{activityId=1, site=Site{branchOffice=ProvaBranchOffice,"
                 + " area=ProvaArea, workSpaceNotes=ProvaWorkspaceNotes}, typology=ProvaTypology,"
                 + " activityDescription=ProvaActivityDescription, estimatedInterventionTime=30, date=2050-11-09,"
-                + " maintenanceProcedure=MaintenanceProcedure{smp=ProvaPDF skills=null}, materials=[material1], interruptibleActivity=true}";
+                + " maintenanceProcedure=MaintenanceProcedure{smp=ProvaPDF skills=[]}, materials=[material1], interruptibleActivity=true}";
         String result = instance.toString();
         assertEquals(expResult, result);
     }

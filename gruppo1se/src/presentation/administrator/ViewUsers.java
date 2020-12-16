@@ -83,7 +83,7 @@ public class ViewUsers extends javax.swing.JFrame {
     /**
      * Fills the jTable with the rows of the SQL table Users.
      */    
-    public void addRowsToTable() {
+    private void addRowsToTable() {
         try {
             list = systemAdministrator.viewUsers();
             Object[] rows = new Object[3];
@@ -106,7 +106,7 @@ public class ViewUsers extends javax.swing.JFrame {
     /**
      * Enables the TextField/ComboBox if the filter Username/Role is chosen. 
      */    
-    public void selectFilter(){
+    private void selectFilter(){
         if (jFilter.getSelectedItem().equals("Username")){
             jUsername.setEditable(true);
             jRole.setSelectedIndex(0);
@@ -128,7 +128,7 @@ public class ViewUsers extends javax.swing.JFrame {
     /**
      * Allows to choose a role to be used as a filter.
      */    
-    public void selectRole(){
+    private void selectRole(){
         String filter = jRole.getSelectedItem().toString();
         filterRole(filter);
     }
@@ -224,7 +224,7 @@ public class ViewUsers extends javax.swing.JFrame {
         jLabel3.setText("Select a Role:");
 
         jRole.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
-        jRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "Maintainer", "Planner", "System Administrator" }));
+        jRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "MAINTAINER", "PLANNER", "ADMINISTRATOR" }));
         jRole.setEnabled(false);
 
         deleteButton.setText("Delete");
@@ -312,22 +312,25 @@ public class ViewUsers extends javax.swing.JFrame {
  * This method allows to delete selected users from the jTable
  * @param evt 
  */
+/*Method developed by Rosario Gaeta*/
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         try {
             int[] selectedIndex = jTable.getSelectedRows();
             User user = null;
             List<String> usernameList = new ArrayList<>();
             for(int i : selectedIndex){
-                usernameList.add(String.valueOf(jTable.getValueAt(i, 0))); // get the username of selected maintainer
+                /*get the username of selected maintainer*/
+                usernameList.add(String.valueOf(jTable.getValueAt(i, 0))); 
             }
             if(!usernameList.isEmpty()){
                 int dialogResult = MessageManager.confirmMessage(this,"Are you sure you wish to delete these users");
                 if(dialogResult == JOptionPane.YES_OPTION){
-                    System.out.println(usernameList);
-                    int retVal = systemAdministrator.removeUsers(usernameList); // remove the users from the database
+                    /*remove the users from the database*/
+                    int retVal = systemAdministrator.removeUsers(usernameList); 
                     for(int i: selectedIndex){
-                        tableModel.removeRow(jTable.convertRowIndexToModel(i)); // remove the selected row from the model only if 
-                        // the row was deleted from the database (otherwise removeUsers throws an exception)
+                        /*remove the selected row from the model only if the row was deleted from the database
+                        (otherwise removeUsers throws an exception)*/
+                        tableModel.removeRow(jTable.convertRowIndexToModel(i));  
                     }
                 }
                 jTable.clearSelection();

@@ -5,6 +5,7 @@
  */
 package business.maintenanceactivity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,7 +24,7 @@ public class MaintenanceProcedure {
      */
     public MaintenanceProcedure(String smp){
         this.smp = smp;
-        skills = null;
+        skills = new ArrayList<>();
     }
 
     public List<Skill> getSkills() {

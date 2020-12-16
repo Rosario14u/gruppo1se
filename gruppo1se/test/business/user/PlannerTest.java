@@ -564,7 +564,7 @@ public class PlannerTest {
     //========================Test of viewMaintenanceActivity================================================
     /*Test methods of viewMaintenanceActivity developed by Rosario Gaeta*/
     /**
-     * This test method assert that viewMaintenanceActivity correctly return a planned activity
+     * This test method asserts that viewMaintenanceActivity correctly return a planned activity.
      */
     @Test
     public void testviewMaintenanceActivityReturnPlanned()  {
@@ -579,14 +579,12 @@ public class PlannerTest {
                     120, LocalDate.parse("2020-12-20"), new MaintenanceProcedure("ProvaSmp"), materials, true);
             MaintenanceActivity returnedActivity = planner.viewMaintenanceActivity(3);
             assertEquals(expectedActivity, returnedActivity);
-        }catch (MaintenanceActivityException ex) {
-            fail("MaintenanceActivityException");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(NotValidParameterException | MaintenanceActivityException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     /**
-     * This test method assert that viewMaintenanceActivity correctly return an Ewo activity
+     * This test method asserts that viewMaintenanceActivity correctly return an Ewo activity.
      */
     @Test
     public void testviewMaintenanceActivityReturnEwo() {
@@ -601,24 +599,12 @@ public class PlannerTest {
                     120, LocalDate.parse("2020-12-20"), new MaintenanceProcedure("ProvaSmp"), materials, true);
             MaintenanceActivity returnedActivity = planner.viewMaintenanceActivity(4);
             assertEquals(expectedActivity, returnedActivity);
-            /*
-            MaintenanceActivity activity = planner.viewMaintenanceActivity(2);
-            List<Material> materials= new ArrayList<>(){{
-                    add(new Material("Material4"));
-                    add(new Material("Material5"));
-                    add(new Material("Material6"));
-                }};
-            assertViewMaintenanceActivity(activity, 2, "ProvaDescription2", 122, "2020-12-22", false, "Unplanned", "EWO",
-                    "ProvaTypology2", "ProvaBranchOffice2", "ProvaArea2", "ProvaWorkspaceNotes2",materials,"ProvaSmp2");
-            */
-        } catch (MaintenanceActivityException ex) {
-            fail("MaintenanceActivityException");
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(NotValidParameterException | MaintenanceActivityException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     /**
-     * This test method assert that viewMaintenanceActivity correctly return a Extra activity
+     * This test method asserts that viewMaintenanceActivity correctly return a Extra activity.
      */
     @Test
     public void testviewMaintenanceActivityReturnExtra() {
@@ -633,48 +619,34 @@ public class PlannerTest {
                     120, LocalDate.parse("2020-12-20"), new MaintenanceProcedure("ProvaSmp"), materials, true);
             MaintenanceActivity returnedActivity = planner.viewMaintenanceActivity(5);
             assertEquals(expectedActivity, returnedActivity);
-            /*
-            MaintenanceActivity activity = planner.viewMaintenanceActivity(3);
-            List<Material> materials= new ArrayList<>(){{
-                    add(new Material("Material7"));
-                    add(new Material("Material8"));
-                    add(new Material("Material9"));
-                }};
-            assertViewMaintenanceActivity(activity, 3, "ProvaDescription3", 123, "2020-12-23", false, "Unplanned", "Extra",
-                    "ProvaTypology3", "ProvaBranchOffice3", "ProvaArea3", "ProvaWorkspaceNotes3",materials,"ProvaSmp3");
-            */
-        } catch (MaintenanceActivityException ex) {
-            fail("MaintenanceActivityException");
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(NotValidParameterException | MaintenanceActivityException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
     /**
-     * This test method assert that viewMaintenanceActivity correctly return null when activity is not present
+     * This test method asserts that viewMaintenanceActivity correctly return null when activity is not present.
      */
     @Test
     public void testviewMaintenanceActivityNull(){
         try {
             MaintenanceActivity activity = planner.viewMaintenanceActivity(6);
             assertNull("testviewMaintenanceActivityNull error", activity);
-        } catch (MaintenanceActivityException ex) {
-            fail("MaintenanceActivityException");
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(NotValidParameterException | MaintenanceActivityException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
     /**
-     * This test method assert that viewMaintenanceActivity correctly raises MaintenanceActivityException.
+     * This test method asserts that viewMaintenanceActivity correctly raises MaintenanceActivityException.
      * @throws exception.MaintenanceActivityException
      */
     @Test(expected = MaintenanceActivityException.class)
     public void testviewMaintenanceActivitySiteException() throws MaintenanceActivityException{
         try {
             MaintenanceActivity activity = planner.viewMaintenanceActivity(7);
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     /**
@@ -685,8 +657,8 @@ public class PlannerTest {
     public void testviewMaintenanceActivityMaintenanceActivityException() throws MaintenanceActivityException{
         try {
             MaintenanceActivity activity = planner.viewMaintenanceActivity(8);
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     /**
@@ -701,74 +673,23 @@ public class PlannerTest {
                     120, LocalDate.parse("2020-12-20"), null, materials, false);
             MaintenanceActivity returnedActivity = planner.viewMaintenanceActivity(1);
             assertEquals(expectedActivity, returnedActivity);
-            /*
-            MaintenanceActivity activity = planner.viewMaintenanceActivity(7);
-            List<Material> materials= new ArrayList<>();
-            assertViewMaintenanceActivity(activity, 7, "ProvaDescription7", 127, "2020-12-27", false, "Planned", null,
-                    "ProvaTypology7", "ProvaBranchOffice7", "ProvaArea7", "ProvaWorkspaceNotes7", materials, null);
-            */
-        }catch (MaintenanceActivityException ex) {
-            fail("MaintenanceActivityException");
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(NotValidParameterException | MaintenanceActivityException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     /**
      * This test method assert that viewMaintenanceActivity correctly raises MaintenanceException.
+     * @throws exception.MaintenanceActivityException
      */
     @Test(expected = MaintenanceActivityException.class)
     public void testviewMaintenanceActivityMaterialException() throws MaintenanceActivityException {
         try {
             MaintenanceActivity activity = planner.viewMaintenanceActivity(2);
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
-    /*
-    private void assertViewMaintenanceActivity(MaintenanceActivity activity, 
-    int activityId,String descrizione,int estimatedInterventionTime,
-    String date,boolean InterruptibleActivity, String typologyOfActivity,
-    String typologyOfUnplannedActivity, String typologyName,String branchOffice,
-    String area, String workSpaceNotes, List<Material> listMaterial,String smp){
-        Class activityClass = returnMaintenanceActivityClass(typologyOfActivity,typologyOfUnplannedActivity );
-        assertEquals("activityId error",activityId, activity.getActivityId());
-        assertEquals("activityDescription error",descrizione, activity.getActivityDescription());
-        assertEquals("estimatedInterventionTime error",estimatedInterventionTime, activity.getEstimatedInterventionTime());
-        assertEquals("dateActivity error",date,
-                activity.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        assertEquals("interruptibleActivity error",InterruptibleActivity, activity.isInterruptibleActivity());
-        assertTrue("typologyOfActivity error", activityClass.isInstance(activity));
-        assertEquals("typologyName error", typologyName, activity.getTypology());
-        assertEquals("branchOffice error", branchOffice, activity.getSite().getBranchOffice());
-        assertEquals("area error", area, activity.getSite().getArea());
-        assertEquals("workSpaceNotes error", workSpaceNotes, activity.getSite().getWorkSpaceNotes());
-        if (smp != null){
-            assertEquals("smp error", smp, activity.getMaintenanceProcedure().getSmp());
-        }else{
-            assertNull("smp error",activity.getMaintenanceProcedure());
-        }
-        assertMaterial(activity.getMaterials(), listMaterial);
-    }
-    
-    private Class returnMaintenanceActivityClass(String typologyOfActivity,String typologyOfUnplannedActivity){
-        Class activityClass = null;
-        if (typologyOfActivity.compareTo("Planned") == 0){
-            activityClass= PlannedMaintenanceActivity.class;
-        }else if(typologyOfUnplannedActivity.compareTo("EWO") == 0){
-            activityClass= Ewo.class;
-        }else{
-            activityClass= ExtraActivity.class;
-        }
-        return activityClass;
-    }
-    
-    private void assertMaterial(List<Material> materials, List<Material> expectedMaterials){
-        Collections.sort(materials);
-        Collections.sort(expectedMaterials);
-        assertEquals("Material error", materials, expectedMaterials);
-    }
-    */
     
     //===========================================================================================================================
     
@@ -874,7 +795,7 @@ public class PlannerTest {
     
     
     //=================================================testSaveAppointments================================================================
-    /*Test developed by Rosario Gaeta*/
+    /*Test developed by Rosario Gaeta.*/
     
     /**
      * This method assert that saveAppointments correctly return true when both dao returns true.
@@ -890,12 +811,8 @@ public class PlannerTest {
             }};
             boolean retVal = planner.saveAppointments(username, activity, listAppointment);
             assertTrue(retVal);
-        } catch (AppointmentException ex) {
-            fail("AppointmentException");
-        } catch (MaintenanceActivityException ex) {
-            fail("MaintenanceActivityException");
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(AppointmentException | NotValidParameterException | MaintenanceActivityException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -914,10 +831,8 @@ public class PlannerTest {
                 add(new Appointment(1, LocalDateTime.now(),50));
             }};
             boolean retVal = planner.saveAppointments(username, activity, listAppointment);
-        }catch (MaintenanceActivityException ex) {
-            fail("MaintenanceActivityException");
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(NotValidParameterException | MaintenanceActivityException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -936,10 +851,8 @@ public class PlannerTest {
                 add(new Appointment(1, LocalDateTime.now(),50));
             }};
             boolean retVal = planner.saveAppointments(username, activity, listAppointment);
-        } catch (MaintenanceActivityException ex) {
-            fail("MaintenanceActivityException");
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(NotValidParameterException | MaintenanceActivityException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -958,10 +871,8 @@ public class PlannerTest {
                 add(new Appointment(1, LocalDateTime.now(),50));
             }};
             boolean retVal = planner.saveAppointments(username, activity, listAppointment);
-        }catch (MaintenanceActivityException ex) {
-            fail("MaintenanceActivityException");
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(NotValidParameterException | MaintenanceActivityException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -979,10 +890,8 @@ public class PlannerTest {
                 add(new Appointment(1, LocalDateTime.now(),50));
             }};
             boolean retVal = planner.saveAppointments(username, activity, listAppointment);
-        } catch (AppointmentException ex) {
-            fail("AppointmentException");
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(NotValidParameterException | AppointmentException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -999,10 +908,8 @@ public class PlannerTest {
             String username = "username1";
             List<Appointment> listAppointment = null;
             boolean retVal = planner.saveAppointments(username, activity, listAppointment);
-        } catch (MaintenanceActivityException ex) {
-            fail("MaintenanceActivityException");
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(NotValidParameterException | MaintenanceActivityException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -1019,12 +926,8 @@ public class PlannerTest {
             List<Appointment> listAppointment = new ArrayList<>();
             boolean retVal = planner.saveAppointments(username, activity, listAppointment);
             assertFalse(retVal);
-        } catch (AppointmentException ex) {
-            fail("AppointmentException");
-        } catch (MaintenanceActivityException ex) {
-            fail("MaintenanceActivityException");
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(AppointmentException | NotValidParameterException | MaintenanceActivityException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -1043,12 +946,8 @@ public class PlannerTest {
             }};
             boolean retVal = planner.saveAppointments(username, activity, listAppointment);
             assertFalse(retVal);
-        } catch (AppointmentException ex) {
-            fail("AppointmentException");
-        } catch (MaintenanceActivityException ex) {
-            fail("MaintenanceActivityException");
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(AppointmentException | NotValidParameterException | MaintenanceActivityException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -1068,10 +967,8 @@ public class PlannerTest {
                 add(new Appointment(1, LocalDateTime.now(),50));
             }};
             boolean retVal = planner.saveAppointments(username, activity, listAppointment);
-        } catch (AppointmentException ex) {
-            fail("AppointmentException");
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(AppointmentException | NotValidParameterException  ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -1087,10 +984,8 @@ public class PlannerTest {
             int activityId = 1;
             boolean returnedResult = planner.verifyActivityAssignment(activityId, estimatedInterventionTime);
             assertTrue("verifyActivityAssignmentTrue", returnedResult);
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        } catch (AppointmentException ex) {
-            fail("AppointmentException");
+        }catch(AppointmentException | NotValidParameterException  ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -1105,10 +1000,8 @@ public class PlannerTest {
             int activityId = 1;
             boolean returnedResult = planner.verifyActivityAssignment(activityId, estimatedInterventionTime);
             assertFalse("verifyActivityAssignmentFalse", returnedResult);
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        } catch (AppointmentException ex) {
-            fail("AppointmentException");
+        }catch(AppointmentException | NotValidParameterException  ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -1122,8 +1015,8 @@ public class PlannerTest {
             int estimatedInterventionTime = 110;
             int activityId = 2;
             boolean returnedResult = planner.verifyActivityAssignment(activityId, estimatedInterventionTime);
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(NotValidParameterException  ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
 }

@@ -75,9 +75,7 @@ public class Planner extends User {
         this.typologyDao = typologyDao;
     }
 
-    public RequiredMaterialForMaintenanceDAO getRequiredMaterialsDao() {
-        return requiredMaterialsDao;
-    }
+
 
     /**
      * This method returns Maintenance Activity with the passed activityId if

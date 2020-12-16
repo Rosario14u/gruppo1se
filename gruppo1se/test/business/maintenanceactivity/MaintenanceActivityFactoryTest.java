@@ -113,7 +113,6 @@ public class MaintenanceActivityFactoryTest {
             String smp, boolean interruptibleActivity) {
         MaintenanceActivity activity = null;
         List<Material> listMaterial = createListMaterial("MaterialeProva1", "MaterialeProva2", "MaterialeProva3");
-        List<Skill> listSkill = createListSkill("SkillProva1", "SkillProva2", "SkillProva3");
         Site site = new Site(branchOffice, area, workspaceNotes);
         MaintenanceProcedure procedure = new MaintenanceProcedure(smp);
         LocalDate date = LocalDate.parse(dateString);
@@ -138,13 +137,6 @@ public class MaintenanceActivityFactoryTest {
         }};
     }
     
-    private List<Skill> createListSkill(String skillElement1, String skillElement2, String skillElement3) {
-        return new ArrayList<>() {{
-            add(new Skill(skillElement1));
-            add(new Skill(skillElement1));
-            add(new Skill(skillElement1));    
-        }};
-    }
     
     /**
      * Test of selectMaintenanceActivity method, of class MaintenanceActivityFactory.

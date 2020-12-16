@@ -24,7 +24,7 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
     private final static String FILE_EXTENSION = ".pdf";
     private File fileChoosen;
     
-    private SystemAdministrator administrator;
+    private final SystemAdministrator administrator;
     
     /**
      * Creates new form CreateProcedureGUI
@@ -33,6 +33,7 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
         this.administrator = administrator;
         fileChoosen = null;
         initComponents();
+        this.setLocationRelativeTo(null);
         setField(false);
     }
 
@@ -77,9 +78,9 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
             }
         });
 
-        RenameLabel.setText("Rinomina File:");
+        RenameLabel.setText("Rename file:");
 
-        chooseFileLabel.setText("Scegli il file");
+        chooseFileLabel.setText("Choose file");
 
         javax.swing.GroupLayout ProcedurePanelLayout = new javax.swing.GroupLayout(ProcedurePanel);
         ProcedurePanel.setLayout(ProcedurePanelLayout);
@@ -94,7 +95,7 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
                 .addGroup(ProcedurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(chooserButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(chooseFileLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ProcedurePanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(ProcedurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -146,10 +147,12 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
         String oldName = null;
         String inputFileName = procedureTextField.getText().trim().replaceAll("  +", " ");
         if (inputFileName.lastIndexOf('.')!=-1)
-            inputFileName = inputFileName.substring(0, inputFileName.lastIndexOf('.')); // getting the name of input file without extention
+            /*getting the name of input file without extention*/
+            inputFileName = inputFileName.substring(0, inputFileName.lastIndexOf('.')); 
         String oldFileName = fileChoosen.getName();
         if (oldFileName.lastIndexOf('.')!=-1)
-            oldFileName = oldFileName.substring(0, oldFileName.lastIndexOf('.'));       // getting the old name of file without extention
+            /*getting the old name of file without extention*/
+            oldFileName = oldFileName.substring(0, oldFileName.lastIndexOf('.'));       
         try {
             if (inputFileName.equals("") || inputFileName.equals(" ") || inputFileName.equals(oldFileName)){
                 newName = oldFileName;
@@ -158,14 +161,16 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
                 oldName = oldFileName;
             }
             builder.append(PROJECT_PATH).append(RELATIVE_PROJECT_PATH).append(newName).append(FILE_EXTENSION);
-            boolean choosen = fileChoosen.renameTo(new File(builder.toString()));       // renaming of file
+            /*renaming of file*/
+            boolean choosen = fileChoosen.renameTo(new File(builder.toString()));       
             if (choosen == true){
-                administrator.saveSmpProcedure(newName,oldName); // if the file is successfully renamed, the smp file is stored in the system 
-                MessageManager.infoMessage(this,"Procedura aggiunta con successo");
+                /*if the file is successfully renamed, the smp file is stored in the system*/
+                administrator.saveSmpProcedure(newName,oldName);  
+                MessageManager.infoMessage(this,"Successful addition of Procedure");
                 setField(false); 
                 procedureTextField.setText("");
             }else{
-                MessageManager.errorMessage(this,"Nome file già esistente");
+                MessageManager.errorMessage(this,"This file already exists");
             }
         } catch (ProcedureException | NotValidParameterException ex) {
             MessageManager.errorMessage(this, ex.getMessage());
@@ -181,7 +186,7 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
         filechooser.setAcceptAllFileFilterUsed(false);
         FileNameExtensionFilter filter = new FileNameExtensionFilter("PDF file","pdf");
         filechooser.setFileFilter(filter);
-        filechooser.setDialogTitle("Scegli un pdf come smp"); 
+        filechooser.setDialogTitle("Choose a PDF file as Smp"); 
         int result = filechooser.showOpenDialog(this); // get the file choosen with file chooser
         if (result == JFileChooser.APPROVE_OPTION){
             fileChoosen = filechooser.getSelectedFile();

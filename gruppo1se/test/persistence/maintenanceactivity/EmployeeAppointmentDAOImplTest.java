@@ -103,14 +103,8 @@ public class EmployeeAppointmentDAOImplTest {
             assertEquals("Appointment list not equal error",expectedList.size(),resultedList.size());
             Collections.sort(resultedList);
             assertEquals("getEmployeeAvailabilty error",expectedList,resultedList);
-        }catch(SQLException ex){
-            fail("SQLException");
-        } catch (AppointmentException ex) {
-            fail("AppointmentException");
-        } catch (DateException ex) {
-            fail("DateException");
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(SQLException | AppointmentException | DateException | NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -130,14 +124,8 @@ public class EmployeeAppointmentDAOImplTest {
             List<Appointment> resultedList = employeeAppointmentDAO.getEmployeeAvailability("username",
                     appointment1.getStartDateAndTime().toLocalDate(), appointment3.getStartDateAndTime().toLocalDate());
             assertTrue("getEmployeeAvailabiltyNotIncluded error", resultedList.isEmpty());
-        }catch(SQLException ex){
-            fail("SQLException");
-        } catch (AppointmentException ex) {
-            fail("AppointmentException");
-        } catch (DateException ex) {
-            fail("DateException");
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(SQLException | AppointmentException | DateException | NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -156,12 +144,8 @@ public class EmployeeAppointmentDAOImplTest {
             initializeDeleteInsert("username",expectedList);
             List<Appointment> resultedList = employeeAppointmentDAO.getEmployeeAvailability("username",
                     appointment3.getStartDateAndTime().toLocalDate(), appointment1.getStartDateAndTime().toLocalDate());
-        }catch(SQLException ex){
-            fail("SQLException");
-        } catch (AppointmentException ex) {
-            fail("AppointmentException");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(SQLException | AppointmentException | NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -180,12 +164,8 @@ public class EmployeeAppointmentDAOImplTest {
             initializeDeleteInsert("username",expectedList);
             List<Appointment> resultedList = employeeAppointmentDAO.getEmployeeAvailability(null,
                     appointment1.getStartDateAndTime().toLocalDate(), appointment3.getStartDateAndTime().toLocalDate());
-        }catch(SQLException ex){
-            fail("SQLException");
-        } catch (DateException ex) {
-            fail("DateException");
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(SQLException | DateException | NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -204,12 +184,8 @@ public class EmployeeAppointmentDAOImplTest {
             initializeDeleteInsert("username",expectedList);
             List<Appointment> resultedList = employeeAppointmentDAO.getEmployeeAvailability(" ",
                     appointment1.getStartDateAndTime().toLocalDate(), appointment3.getStartDateAndTime().toLocalDate());
-        }catch(SQLException ex){
-            fail("SQLException");
-        } catch (DateException ex) {
-            fail("DateException");
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        }catch(SQLException | DateException | NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -233,10 +209,8 @@ public class EmployeeAppointmentDAOImplTest {
                     appointment3.getStartDateAndTime());
             boolean retVal = employeeAppointmentDAO.addEmployeeAvailability("username", expectedList);
             assertAppointment("username", expectedList);
-        }catch(SQLException ex){
-           Logger.getLogger(EmployeeAppointmentDAOImplTest.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (AppointmentException ex) {
-            fail("AppointmentException");
+        }catch(SQLException | AppointmentException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -249,8 +223,8 @@ public class EmployeeAppointmentDAOImplTest {
         try{
             boolean retVal = employeeAppointmentDAO.addEmployeeAvailability("username", new ArrayList<>());
             assertFalse("Error SuccessfulEmpty",retVal);
-        }catch (AppointmentException ex) {
-            fail("AppointmentException");
+        }catch(AppointmentException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -269,7 +243,7 @@ public class EmployeeAppointmentDAOImplTest {
             initializeDeleteInsert("username",expectedList);
             boolean retVal = employeeAppointmentDAO.addEmployeeAvailability("username", expectedList);
         }catch(SQLException ex){
-            fail("SQLException");
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -300,7 +274,7 @@ public class EmployeeAppointmentDAOImplTest {
                     appointment3.getStartDateAndTime());
             employeeAppointmentDAO.addEmployeeAvailability(null,expectedList);
         }catch(SQLException ex){
-            fail("SQLException");
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -321,7 +295,7 @@ public class EmployeeAppointmentDAOImplTest {
             employeeAppointmentDAO.addEmployeeAvailability(" ",expectedList);
             
         }catch(SQLException ex){
-            fail("SQLException");
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -348,10 +322,8 @@ public class EmployeeAppointmentDAOImplTest {
             }
             int returnedSum = employeeAppointmentDAO.getDurationOfAssignedActivity(1);
             assertEquals("sum of duration not equal",returnedSum,expectedSum);
-        }catch(SQLException ex){
-           fail("SQLException");
-        } catch (AppointmentException ex) {
-           fail("AppointmentException");
+        }catch(SQLException | AppointmentException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -371,17 +343,22 @@ public class EmployeeAppointmentDAOImplTest {
             deleteAppointmentById(1);
             int returnedSum = employeeAppointmentDAO.getDurationOfAssignedActivity(1);
             assertEquals("sum of duration not equal",returnedSum,expectedSum);
-        }catch(SQLException ex){
-           fail("SQLException");
-        } catch (AppointmentException ex) {
-            fail("AppointmentException");
+        }catch(SQLException | AppointmentException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
     
     
-    //=============================================function of utility=================================================================
-    
+    /*=============================================function of utility=================================================================*/
+    /**
+     * This function allows to insert an appointment in database.
+     * @param activityId
+     * @param username
+     * @param startDateTime
+     * @param duration
+     * @throws SQLException  
+     */
     private void insertAppointment(int activityId, String username, LocalDateTime startDateTime,int duration) throws SQLException{
         PreparedStatement pstm = conn.prepareStatement(INSERT_APPOINTMENT);
         pstm.setInt(1, activityId);
@@ -391,6 +368,12 @@ public class EmployeeAppointmentDAOImplTest {
         pstm.executeUpdate();
     }
     
+    /**
+     * This function allows to delete an appointment in database.
+     * @param startDateTime
+     * @param endDateTime
+     * @throws SQLException 
+     */
     private void deleteAppointment(LocalDateTime startDateTime, LocalDateTime endDateTime)
             throws SQLException{
         PreparedStatement pstm = conn.prepareStatement(DELETE_APPOINTMENT);
@@ -399,6 +382,11 @@ public class EmployeeAppointmentDAOImplTest {
         pstm.executeUpdate();
     }
     
+    /**
+     * This method allows to delete the appointemnts associated to an activity id
+     * @param activityId
+     * @throws SQLException 
+     */
     private void deleteAppointmentById(int activityId)
             throws SQLException{
         PreparedStatement pstm = conn.prepareStatement(DELETE_APPOINTMENT_BY_ID);
@@ -406,7 +394,13 @@ public class EmployeeAppointmentDAOImplTest {
         pstm.executeUpdate();
     }
     
-    
+    /**
+     * This method allows to inizialize a list of appointments.
+     * @param appointment1
+     * @param appointment2
+     * @param appointment3
+     * @return 
+     */
     private List<Appointment> initializeList(Appointment appointment1, Appointment appointment2, Appointment appointment3){
         return new ArrayList<>() {{
                 add(appointment1);
@@ -415,6 +409,12 @@ public class EmployeeAppointmentDAOImplTest {
             }};  
     }
     
+    /**
+     * This method verify that expected list of appointments is present in database.
+     * @param username
+     * @param expectedList
+     * @throws SQLException 
+     */
     private void assertAppointment(String username, List<Appointment> expectedList) throws SQLException{
         PreparedStatement pstm = conn.prepareStatement(SELECT_APPOINTMENT);
         pstm.setString(1, username);
@@ -436,6 +436,12 @@ public class EmployeeAppointmentDAOImplTest {
         assertTrue("is after last",rs.isAfterLast());
     }
     
+    /**
+     * this method provide a series of delete and insert of appointemnts in database
+     * @param username
+     * @param expectedList
+     * @throws SQLException 
+     */
     private void initializeDeleteInsert(String username, List<Appointment> expectedList) throws SQLException{
         deleteAppointment(expectedList.get(0).getStartDateAndTime(),
                     expectedList.get(2).getStartDateAndTime());

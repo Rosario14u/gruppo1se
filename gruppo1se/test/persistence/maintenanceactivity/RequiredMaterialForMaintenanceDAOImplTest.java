@@ -20,6 +20,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import business.maintenanceactivity.Material;
 import exception.MaterialException;
+import exception.ProcedureException;
 import java.util.ArrayList;
 import java.util.Collections;
 import static org.junit.Assert.*;
@@ -105,10 +106,8 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
             List<Material> result= materialForMaintenanceDao.retrieveMaterialsByActivityId(1);
             assertTrue("retrieveMaterialsByActivityIdInDatabase error",(expectedResult.size() == result.size()) 
                     && (result.containsAll(expectedResult)));
-        } catch (SQLException ex) {
-            fail("SQLException");
-        } catch (MaterialException ex) {
-            fail("MaterialException");
+        }catch(SQLException | MaterialException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
@@ -124,10 +123,8 @@ public class RequiredMaterialForMaintenanceDAOImplTest {
             pstm.executeUpdate();
             List<Material> result = materialForMaintenanceDao.retrieveMaterialsByActivityId(1);
             assertTrue("requiredMaterial error", result.isEmpty());        
-        } catch (SQLException ex) {
-            fail("SQLException");
-        } catch (MaterialException ex) {
-            fail("MaterialException");
+        }catch(SQLException | MaterialException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
     
