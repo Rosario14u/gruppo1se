@@ -7,7 +7,6 @@ package persistence.maintenanceactivity;
 
 import business.maintenanceactivity.Material;
 import exception.MaterialException;
-import exception.NotValidParameterException;
 import java.util.List;
 
 /**

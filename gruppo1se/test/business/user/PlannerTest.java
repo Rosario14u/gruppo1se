@@ -107,14 +107,21 @@ public class PlannerTest {
     public void tearDown() {
     }
 
+    
+    //================================= modifyMaintenanceActivity ==========================================
+    //Developed by Antonio Gorrasi
+    
     /**
-     * Test of modifyMaintenanceActivity method, of class Planner.
+     * This test assert that the method
+     * modifyMaintenanceActivity
+     * correctly returns true in modifyng
+     * planned activity
      */
     @Test
     public void testSuccessfulModifyPlannedMaintenanceActivity(){
         try{
-            assertTrue(planner.modifyMaintenanceActivity(1, new Site("branchOffice1", "area1"), "typology1",
-                    "description1", 1, LocalDate.now(), true, Typology.PLANNED));
+            assertTrue(planner.modifyMaintenanceActivity(1, new Site("branchOffice1", "area1"), 
+                    "typology1", "description1", 1, LocalDate.now(), true, Typology.PLANNED));
         } catch (NotValidParameterException | MaintenanceActivityException  ex) {
             fail(ex.getClass().getName() + " - " + ex.getMessage());
         } 
@@ -122,13 +129,16 @@ public class PlannerTest {
     
     
     /**
-     * Test of modifyMaintenanceActivity method, of class Planner.
+     * This test assert that the method
+     * modifyMaintenanceActivity
+     * correctly returns false in modifyng
+     * planned activity
      */
     @Test
     public void testUnsuccessfulModifyPlannedMaintenanceActivity() {
         try{
-            assertFalse(planner.modifyMaintenanceActivity(2, new Site("branchOffice2", "area2"), "typology2",
-                    "description2", 2, LocalDate.now(), true, Typology.PLANNED));
+            assertFalse(planner.modifyMaintenanceActivity(2, new Site("branchOffice2", "area2"),
+                    "typology2", "description2", 2, LocalDate.now(), true, Typology.PLANNED));
         } catch (NotValidParameterException | MaintenanceActivityException  ex) {
             fail(ex.getClass().getName() + " - " + ex.getMessage());
         } 
@@ -136,14 +146,16 @@ public class PlannerTest {
     
     
     /**
-     * Test of modifyMaintenanceActivity method, of class Planner.
-     * @throws exception.MaintenanceActivityException
+     * This test assert that the method
+     * modifyMaintenanceActivity
+     * correctly throws exception in 
+     * modifyng planned activity
      */
     @Test(expected = MaintenanceActivityException.class)
     public void testExceptionModifyPlannedMaintenanceActivity() throws MaintenanceActivityException{
         try {
-            planner.modifyMaintenanceActivity(3,new Site ("branchOffice3", "area3"), "typology3",  
-                    "description3", 3, LocalDate.now(), true, Typology.PLANNED);
+            planner.modifyMaintenanceActivity(3, new Site ("branchOffice3", "area3"),
+                    "typology3", "description3", 3, LocalDate.now(), true, Typology.PLANNED);
         } catch (NotValidParameterException ex) {
             fail(ex.getClass().getName() + " - " + ex.getMessage());
         } 
@@ -151,13 +163,16 @@ public class PlannerTest {
   
     
     /**
-     * Test of modifyMaintenanceActivity method, of class Planner.
+     * This test assert that the method
+     * modifyMaintenanceActivity
+     * correctly returns true in modifyng
+     * EWO activity
      */
     @Test
     public void testSuccessfulModifyEwoMaintenanceActivity() {
         try{
-            assertTrue(planner.modifyMaintenanceActivity(4,new Site("branchOffice4", "area4"), "typology4",
-                    "description4", 4, LocalDate.now(), true, Typology.EWO));
+            assertTrue(planner.modifyMaintenanceActivity(4,new Site("branchOffice4", "area4"),
+                    "typology4", "description4", 4, LocalDate.now(), true, Typology.EWO));
         } catch (NotValidParameterException | MaintenanceActivityException  ex) {
             fail(ex.getClass().getName() + " - " + ex.getMessage());
         } 
@@ -165,13 +180,16 @@ public class PlannerTest {
     
     
     /**
-     * Test of modifyMaintenanceActivity method, of class Planner.
+     * This test assert that the method
+     * modifyMaintenanceActivity
+     * correctly returns false in modifyng
+     * EWO activity
      */
     @Test
     public void testUnsuccessfulModifyEwoMaintenanceActivity() {
         try{
-            assertFalse(planner.modifyMaintenanceActivity(5, new Site("branchOffice5", "area5"), "typology5",
-                    "description5", 5, LocalDate.now(), true, Typology.EWO));
+            assertFalse(planner.modifyMaintenanceActivity(5, new Site("branchOffice5", "area5"),
+                    "typology5", "description5", 5, LocalDate.now(), true, Typology.EWO));
         } catch (NotValidParameterException | MaintenanceActivityException  ex) {
             fail(ex.getClass().getName() + " - " + ex.getMessage());
         } 
@@ -179,27 +197,33 @@ public class PlannerTest {
     
     
     /**
-     * Test of modifyMaintenanceActivity method, of class Planner.
-     * @throws exception.MaintenanceActivityException
+     * This test assert that the method
+     * modifyMaintenanceActivity
+     * correctly throws exception in 
+     * modifyng EWO activity
      */
     @Test(expected = MaintenanceActivityException.class)
     public void testExceptionModifyEwoMaintenanceActivity() throws MaintenanceActivityException{
         try {
-            planner.modifyMaintenanceActivity(6, new Site("branchOffice6", "area6"), "typology6",
-                    "description6", 6, LocalDate.now(), true, Typology.EWO);
+            planner.modifyMaintenanceActivity(6, new Site("branchOffice6", "area6"),
+                    "typology6", "description6", 6, LocalDate.now(), true, Typology.EWO);
         } catch (NotValidParameterException ex) {
             fail(ex.getClass().getName() + " - " + ex.getMessage());
         } 
     }
     
+    
     /**
-     * Test of modifyMaintenanceActivity method, of class Planner.
+     * This test assert that the method
+     * modifyMaintenanceActivity
+     * correctly returns true in modifyng
+     * Extra activity
      */
     @Test
     public void testSuccessfulModifyExtraMaintenanceActivity() {
         try{
-            assertTrue(planner.modifyMaintenanceActivity(7, new Site("branchOffice7", "area7"), "typology7",
-                    "description7", 7, LocalDate.now(), true, Typology.EXTRA));
+            assertTrue(planner.modifyMaintenanceActivity(7, new Site("branchOffice7", "area7"), 
+                    "typology7", "description7", 7, LocalDate.now(), true, Typology.EXTRA));
         } catch (NotValidParameterException | MaintenanceActivityException  ex) {
             fail(ex.getClass().getName() + " - " + ex.getMessage());
         } 
@@ -207,13 +231,16 @@ public class PlannerTest {
     
     
     /**
-     * Test of modifyMaintenanceActivity method, of class Planner.
+     * This test assert that the method
+     * modifyMaintenanceActivity
+     * correctly returns false in modifyng
+     * Extra activity
      */
     @Test
     public void testUnsuccessfulModifyExtraMaintenanceActivity() {
         try{
-            assertFalse(planner.modifyMaintenanceActivity(8, new Site("branchOffice8", "area8"), "typology8",
-                    "description8", 8, LocalDate.now(), true, Typology.EXTRA));
+            assertFalse(planner.modifyMaintenanceActivity(8, new Site("branchOffice8", "area8"),
+                    "typology8", "description8", 8, LocalDate.now(), true, Typology.EXTRA));
         } catch (NotValidParameterException | MaintenanceActivityException  ex) {
             fail(ex.getClass().getName() + " - " + ex.getMessage());
         } 
@@ -221,14 +248,16 @@ public class PlannerTest {
     
     
     /**
-     * Test of modifyMaintenanceActivity method, of class Planner.
-     * @throws exception.MaintenanceActivityException
+     * This test assert that the method
+     * modifyMaintenanceActivity
+     * correctly throws exception in 
+     * modifyng Extra activity
      */
     @Test(expected = MaintenanceActivityException.class)
     public void testExceptionModifyExtraMaintenanceActivity() throws MaintenanceActivityException{
         try {
-            planner.modifyMaintenanceActivity(9, new Site("branchOffice9", "area9"), "typology9", 
-                    "description9", 9, LocalDate.now(), true, Typology.EXTRA);
+            planner.modifyMaintenanceActivity(9, new Site("branchOffice9", "area9"),
+                    "typology9", "description9", 9, LocalDate.now(), true, Typology.EXTRA);
         } catch (NotValidParameterException ex) {
             fail(ex.getClass().getName() + " - " + ex.getMessage());
         } 
@@ -237,10 +266,11 @@ public class PlannerTest {
    
     
     /*============================================================================================================================*/
+    //Developed by Antonio Gorrasi
     
     /**
      * This test assert that the method addRequiredMaterial
-     * correctly insert materials
+     * correctly return true in adding materials
      */
     @Test
     public void testSuccessfulAddRequiredMaterial(){
@@ -252,16 +282,26 @@ public class PlannerTest {
         }
     }
     
+    
+    /**
+     * This test assert that the method addRequiredMaterial
+     * correctly raises an exception in adding materials
+     */
     @Test(expected = MaterialException.class)
     public void testUnsuccessfulAddRequiredMaterial() throws MaterialException{
         try {
             List<Material> listMaterialToAdd = new ArrayList<>();
             planner.addRequiredMaterial(2, listMaterialToAdd);
-        } catch (MaterialException | NotValidParameterException ex){
+        } catch (NotValidParameterException ex){
             fail(ex.getClass().getName() + " - " + ex.getMessage());
         }
     }
     
+    
+    /**
+     * This test assert that the method removeRequiredMaterial
+     * correctly return true in removing materials
+     */
     @Test
     public void testSuccessfulRemoveRequiredMaterial(){
         try {
@@ -272,6 +312,11 @@ public class PlannerTest {
         }
     }
     
+    
+    /**
+     * This test assert that the method removeRequiredMaterial
+     * correctly return false in removing materials
+     */
     @Test
     public void testRemoveRequiredMaterialNotComplete(){
         try {
@@ -283,6 +328,10 @@ public class PlannerTest {
     }
     
     
+    /**
+     * This test assert that the method removeRequiredMaterial
+     * correctly raises exception in removing materials
+     */
     @Test(expected = MaterialException.class)
     public void testUnsuccessfulRemoveRequiredMaterial() throws MaterialException{
         try {
@@ -293,6 +342,11 @@ public class PlannerTest {
         }
     } 
     
+    
+    /**
+     * This test assert that the method retrieveAvaliableMaterialToAdd
+     * correctly returns a list of materials non associated yet
+     */
     @Test
     public void testRetrieveAvaliableMaterialToAdd(){
         try {
@@ -307,6 +361,11 @@ public class PlannerTest {
         }
     }
         
+    
+    /**
+     * This test assert that the method retrieveAvaliableMaterialToAdd
+     * correctly returns an empty list
+     */
     @Test
     public void testRetrieveAvaliableMaterialToAddEmpty(){
         try {
@@ -318,6 +377,11 @@ public class PlannerTest {
         }     
     }
     
+    
+    /**
+     * This test assert that the method retrieveAvaliableMaterialToAdd
+     * correctly raises an exception
+     */
     @Test(expected = MaterialException.class)
     public void testUnsuccessfulRetrieveAvaliableMaterialToAdd() throws MaterialException{
         try{
@@ -326,6 +390,7 @@ public class PlannerTest {
             fail(ex.getClass().getName() + " - " + ex.getMessage());
         }
     }
+    
     
     /*=================================================Test of makeMaintenanceActivity==========================================================================*/
     /*Test methods developed by Alessio Citro*/

@@ -48,6 +48,15 @@ public class RequiredMaterialForMaintenanceDAOStub implements RequiredMaterialFo
 
     /*============================================================================================================================*/
     
+    
+    /**
+     * Simulates the behaviour of addRequiredMaterial 
+     * of RequiredMaterialForMaintenanceDAO.
+     * @param activityId
+     * @param requiredMaterial
+     * @return {@code boolean}
+     * @throws MaterialException 
+     */
     @Override
     public boolean addRequiredMaterial(int activityId, List<Material> requiredMaterial) throws MaterialException {      
         switch(activityId){
@@ -59,6 +68,15 @@ public class RequiredMaterialForMaintenanceDAOStub implements RequiredMaterialFo
     }
 
     
+    
+    /**
+     * Simulates the behaviour of removeRequiredMaterial 
+     * of RequiredMaterialForMaintenanceDAO.
+     * @param activityId
+     * @param requiredMaterial
+     * @return {@code boolean}
+     * @throws MaterialException 
+     */
     @Override
     public boolean removeRequiredMaterial(int activityId, List<Material> requiredMaterial) throws MaterialException {
         switch (activityId){
@@ -72,6 +90,13 @@ public class RequiredMaterialForMaintenanceDAOStub implements RequiredMaterialFo
     }
 
     
+    /**
+     * Simulates the behaviour of retrieveAvailableMaterialToAdd 
+     * of RequiredMaterialForMaintenanceDAO.
+     * @param activityId
+     * @return
+     * @throws MaterialException 
+     */
     @Override
     public List<Material> retrieveAvailableMaterialToAdd(int activityId) throws MaterialException {
         switch (activityId){

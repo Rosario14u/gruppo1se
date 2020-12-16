@@ -249,6 +249,16 @@ public class Planner extends User {
         }
     }
     
+    
+    /**
+     * This method allows to retrieve a list of material associated
+     * with the maintenance activity
+     * @param activityId identifier of the activity
+     * @return a list of material
+     * @throws MaterialException if there are problems in retrieving materials
+     * @throws NotValidParameterException if the required DAO 
+     * (requiredMaterialsDao) object is not correctly initialized 
+     */
     public List<Material> viewRequiredMaterialsByActivityId(int activityId) throws MaterialException, NotValidParameterException {
         if (requiredMaterialsDao == null) {
             throw new NotValidParameterException("Failure to create data relating to maintenance activities");

@@ -5,8 +5,6 @@
  */
 package persistence.user;
 
-import business.user.Maintainer;
-import business.user.User;
 import dto.MaintainerDTO;
 import dto.UserDTO;
 import exception.NotValidParameterException;

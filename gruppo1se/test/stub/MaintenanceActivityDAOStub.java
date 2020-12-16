@@ -135,57 +135,30 @@ public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
 
     
     /**
-     * 
+     * This method simulates modifyMaintenaceActivity
      * @param newActivity
      * @return
      * @throws MaintenanceActivityException 
      */
     @Override
     public boolean modifyMaintenaceActivity(MaintenanceActivity newActivity) throws MaintenanceActivityException {
-        if(newActivity.getActivityId()==1 && newActivity.getSite().getBranchOffice().equals("branchOffice1")
-                && newActivity.getSite().getArea().equals("area1") && newActivity.getActivityDescription().equals("description1")
-                && newActivity.getDate().equals(LocalDate.now()) && newActivity.getEstimatedInterventionTime()==1 
-                && newActivity.getTypology().equals("typology1") && newActivity instanceof PlannedMaintenanceActivity){
+        if(newActivity.getActivityId()==1 && newActivity instanceof PlannedMaintenanceActivity){
             return true;
-        }else if(newActivity.getActivityId()==2 && newActivity.getSite().getBranchOffice().equals("branchOffice2")
-                && newActivity.getSite().getArea().equals("area2") && newActivity.getActivityDescription().equals("description2")
-                && newActivity.getDate().equals(LocalDate.now()) && newActivity.getEstimatedInterventionTime()==2 
-                && newActivity.getTypology().equals("typology2") && newActivity instanceof PlannedMaintenanceActivity){
+        }else if(newActivity.getActivityId()==2 && newActivity instanceof PlannedMaintenanceActivity){
             return false;
-        }else if(newActivity.getActivityId()==3 && newActivity.getSite().getBranchOffice().equals("branchOffice3")
-                && newActivity.getSite().getArea().equals("area3") && newActivity.getActivityDescription().equals("description3")
-                && newActivity.getDate().equals(LocalDate.now()) && newActivity.getEstimatedInterventionTime()==3
-                && newActivity.getTypology().equals("typology3") && newActivity instanceof PlannedMaintenanceActivity){
+        }else if(newActivity.getActivityId()==3 && newActivity instanceof PlannedMaintenanceActivity){
             throw new MaintenanceActivityException();
-        }else if(newActivity.getActivityId()==4 && newActivity.getSite().getBranchOffice().equals("branchOffice4")
-                && newActivity.getSite().getArea().equals("area4") && newActivity.getActivityDescription().equals("description4")
-                && newActivity.getDate().equals(LocalDate.now()) && newActivity.getEstimatedInterventionTime()==4 
-                && newActivity.getTypology().equals("typology4") && newActivity instanceof Ewo){
+        }else if(newActivity.getActivityId()==4 && newActivity instanceof Ewo){
             return true;
-        }else if(newActivity.getActivityId()==5 && newActivity.getSite().getBranchOffice().equals("branchOffice5")
-                && newActivity.getSite().getArea().equals("area5") && newActivity.getActivityDescription().equals("description5")
-                && newActivity.getDate().equals(LocalDate.now()) && newActivity.getEstimatedInterventionTime()==5 
-                && newActivity.getTypology().equals("typology5") && newActivity instanceof Ewo){
+        }else if(newActivity.getActivityId()==5 && newActivity instanceof Ewo){
             return false;
-        }else if(newActivity.getActivityId()==6 && newActivity.getSite().getBranchOffice().equals("branchOffice6")
-                && newActivity.getSite().getArea().equals("area6") && newActivity.getActivityDescription().equals("description6")
-                && newActivity.getDate().equals(LocalDate.now()) && newActivity.getEstimatedInterventionTime()==6 
-                && newActivity.getTypology().equals("typology6") && newActivity instanceof Ewo){
+        }else if(newActivity.getActivityId()==6 && newActivity instanceof Ewo){
             throw new MaintenanceActivityException();
-        }else if(newActivity.getActivityId()==7 && newActivity.getSite().getBranchOffice().equals("branchOffice7")
-                && newActivity.getSite().getArea().equals("area7") && newActivity.getActivityDescription().equals("description7")
-                && newActivity.getDate().equals(LocalDate.now()) && newActivity.getEstimatedInterventionTime()==7
-                && newActivity.getTypology().equals("typology7") && newActivity instanceof ExtraActivity){
+        }else if(newActivity.getActivityId()==7 && newActivity instanceof ExtraActivity){
             return true;
-        }else if(newActivity.getActivityId()==8 && newActivity.getSite().getBranchOffice().equals("branchOffice8")
-                && newActivity.getSite().getArea().equals("area8") && newActivity.getActivityDescription().equals("description8")
-                && newActivity.getDate().equals(LocalDate.now()) && newActivity.getEstimatedInterventionTime()==8 
-                && newActivity.getTypology().equals("typology8") && newActivity instanceof ExtraActivity){
+        }else if(newActivity.getActivityId()==8 && newActivity instanceof ExtraActivity){
             return false;
-        }else if(newActivity.getActivityId()==9 && newActivity.getSite().getBranchOffice().equals("branchOffice9")
-                && newActivity.getSite().getArea().equals("area9") && newActivity.getActivityDescription().equals("description9")
-                && newActivity.getDate().equals(LocalDate.now()) && newActivity.getEstimatedInterventionTime()==9 
-                && newActivity.getTypology().equals("typology9") && newActivity instanceof ExtraActivity){
+        }else if(newActivity.getActivityId()==9 && newActivity instanceof ExtraActivity){
             throw new MaintenanceActivityException();
         }else{
             throw new MaintenanceActivityException();

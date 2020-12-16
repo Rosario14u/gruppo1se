@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class UnplannedActivityFactory extends MaintenanceActivityFactory{
     /**
-     * This method returns the correct instance of unplanned maintenance activity based on typology parameter 
+     * This method returns the correct instance of unplanned maintenance activity based on type parameter 
      * @param type typology of unplanned maintenance activity
      * @param activityId ID of maintenance activity to instantiate
      * @param site site of maintenance activity to instantiate
