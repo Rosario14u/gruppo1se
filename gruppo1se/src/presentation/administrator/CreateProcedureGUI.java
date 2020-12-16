@@ -52,19 +52,22 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
         procedureTextField = new javax.swing.JTextField();
         procedureLabel = new javax.swing.JLabel();
         fileChooserButton = new javax.swing.JButton();
-        chooserButton = new javax.swing.JButton();
         RenameLabel = new javax.swing.JLabel();
         chooseFileLabel = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        chooserButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Create Procedure");
 
-        ProcedurePanel.setBackground(new java.awt.Color(187, 187, 100));
-        ProcedurePanel.setForeground(new java.awt.Color(187, 187, 100));
+        ProcedurePanel.setBackground(new java.awt.Color(255, 153, 0));
+        ProcedurePanel.setForeground(new java.awt.Color(255, 153, 0));
 
-        procedureLabel.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        procedureLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        procedureLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         procedureLabel.setText("Create Procedure GUI");
 
+        fileChooserButton.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         fileChooserButton.setText("Create");
         fileChooserButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -72,6 +75,13 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
             }
         });
 
+        RenameLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        RenameLabel.setText("Rename file:");
+
+        chooseFileLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        chooseFileLabel.setText("Choose file");
+
+        chooserButton.setBackground(new java.awt.Color(255, 255, 255));
         chooserButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/presentation/image/yellowfolder.png"))); // NOI18N
         chooserButton.setBorder(null);
         chooserButton.setContentAreaFilled(false);
@@ -81,48 +91,56 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
             }
         });
 
-        RenameLabel.setText("Rename file:");
-
-        chooseFileLabel.setText("Choose file");
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(chooserButton, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addComponent(chooserButton)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout ProcedurePanelLayout = new javax.swing.GroupLayout(ProcedurePanel);
         ProcedurePanel.setLayout(ProcedurePanelLayout);
         ProcedurePanelLayout.setHorizontalGroup(
             ProcedurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ProcedurePanelLayout.createSequentialGroup()
-                .addGap(98, 98, 98)
-                .addGroup(ProcedurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(procedureTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(RenameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(ProcedurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(chooserButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(chooseFileLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addGap(34, 34, 34)
+                .addGroup(ProcedurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(ProcedurePanelLayout.createSequentialGroup()
+                        .addGroup(ProcedurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(procedureTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(RenameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(28, 28, 28)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(34, 34, 34))
+                    .addGroup(ProcedurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(fileChooserButton)
+                        .addComponent(chooseFileLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ProcedurePanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(ProcedurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ProcedurePanelLayout.createSequentialGroup()
-                        .addComponent(procedureLabel)
-                        .addGap(62, 62, 62))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ProcedurePanelLayout.createSequentialGroup()
-                        .addComponent(fileChooserButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18))))
+                .addComponent(procedureLabel)
+                .addGap(64, 64, 64))
         );
         ProcedurePanelLayout.setVerticalGroup(
             ProcedurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ProcedurePanelLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(procedureLabel)
-                .addGap(52, 52, 52)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                 .addGroup(ProcedurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(RenameLabel)
+                    .addComponent(RenameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(chooseFileLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(ProcedurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(procedureTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(chooserButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(66, 66, 66)
                 .addComponent(fileChooserButton)
                 .addGap(24, 24, 24))
         );
@@ -218,6 +236,7 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
     private javax.swing.JLabel chooseFileLabel;
     private javax.swing.JButton chooserButton;
     private javax.swing.JButton fileChooserButton;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel procedureLabel;
     private javax.swing.JTextField procedureTextField;
     // End of variables declaration//GEN-END:variables

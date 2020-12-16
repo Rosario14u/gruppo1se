@@ -79,21 +79,22 @@ public class ModifyUser extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Modify User");
 
-        jPanel2.setBackground(new java.awt.Color(187, 187, 100));
+        jPanel2.setBackground(new java.awt.Color(255, 153, 0));
         jPanel2.setForeground(new java.awt.Color(187, 187, 100));
         jPanel2.setMinimumSize(new java.awt.Dimension(400, 400));
 
-        usernameLabel.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        usernameLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         usernameLabel.setText("Username:");
 
-        passwordLabel.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        passwordLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         passwordLabel.setText("Password:");
 
-        roleLabel.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        roleLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         roleLabel.setText("Role:");
 
         roleComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(UserRole.values()));
 
+        cancelButton.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         cancelButton.setText("Cancel");
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -101,6 +102,7 @@ public class ModifyUser extends javax.swing.JDialog {
             }
         });
 
+        confirmButton.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         confirmButton.setText("Confirm");
         confirmButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -122,15 +124,15 @@ public class ModifyUser extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(roleComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(roleComboBox, 0, 177, Short.MAX_VALUE)
                         .addGap(106, 106, 106))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(0, 95, Short.MAX_VALUE)
-                                .addComponent(confirmButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(confirmButton)
+                                .addGap(2, 2, 2)
+                                .addComponent(cancelButton))
                             .addComponent(passwordTextField, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(usernameTextField, javax.swing.GroupLayout.Alignment.LEADING))
                         .addGap(35, 35, 35))))
@@ -153,7 +155,7 @@ public class ModifyUser extends javax.swing.JDialog {
                 .addGap(40, 40, 40)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelButton)
-                    .addComponent(confirmButton))
+                    .addComponent(confirmButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
