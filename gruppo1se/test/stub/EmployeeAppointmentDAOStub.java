@@ -8,7 +8,6 @@ package stub;
 import business.maintenanceactivity.Appointment;
 import exception.AppointmentException;
 import exception.DateException;
-import exception.NotValidParameterException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,6 +21,18 @@ import persistence.maintenanceactivity.EmployeeAppointmentDAO;
  */
 public class EmployeeAppointmentDAOStub implements EmployeeAppointmentDAO {
 
+    /**
+     * Simulates the behaviour of getEmployeeAvailability
+     * of EmployeeAppointmentDAO.
+     * @param username username of the Maintainer
+     * @param startDate first day of the week
+     * @param endDate last day of the week
+     * @return a list of {@code Appointment}
+     * @throws AppointmentException if username is 
+     * {@code null} or empty string
+     * @throws DateException if startDate is after endDate
+     */
+    //Developed by Antonio Gorrasi
     @Override
     public List<Appointment> getEmployeeAvailability(String username, LocalDate startDate, LocalDate endDate)
             throws AppointmentException, DateException {
@@ -32,19 +43,15 @@ public class EmployeeAppointmentDAOStub implements EmployeeAppointmentDAO {
         else if(username.equals("username1")){
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             return new ArrayList<>(){{
-                add(new Appointment(1, LocalDateTime.parse("2020-12-28 00:00:00", formatter), 20));
-                add(new Appointment(2, LocalDateTime.parse("2020-12-29 00:00:00", formatter), 40));
+                add(new Appointment(1, LocalDateTime.parse("2020-01-05 00:00:00", formatter), 20));
+                add(new Appointment(2, LocalDateTime.parse("2020-01-05 00:00:00", formatter), 40));
             }};
-        }else if(username.equals("username2")){
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            return new ArrayList<>(){{
-                add(new Appointment(3, LocalDateTime.parse("2020-12-30 00:00:00", formatter), 60));
-                add(new Appointment(4, LocalDateTime.parse("2020-12-31 00:00:00", formatter), 80));
-            }};
-        }
-        else
+        }else{
             return new ArrayList<>();
+        }
     }
+    
+    
     /**
      * Simulates the behaviour of addEmployeeAvailability of EmployeeAppointmentDAO.
      * @param username
@@ -67,6 +74,8 @@ public class EmployeeAppointmentDAOStub implements EmployeeAppointmentDAO {
             return true; /*In the other cases the stub returns true*/
         }
     }
+    
+   
     /**
      * Simulates the behaviour of getDurationOfAssignedActivity of EmployeeAppointmentDAO.
      * @param activityId

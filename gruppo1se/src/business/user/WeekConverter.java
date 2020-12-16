@@ -31,7 +31,7 @@ public class WeekConverter {
      * @return List of {@code LocalDate} values. The first 
      * parameter is the firt day of the week and the last 
      * parameter is the last day of the given week. 
-     * @throws DateException 
+     * @throws DateException if the week number is wrong
      */
     public static List<LocalDate> getStartEndDate(int week, int year) throws DateException {
         Calendar calendar = Calendar.getInstance();

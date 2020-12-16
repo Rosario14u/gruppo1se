@@ -82,7 +82,7 @@ public class WeekConverterTest {
             assertEquals(LocalDate.of(2019, Month.DECEMBER, 30), actualDates.get(0));
             assertEquals(LocalDate.of(2020, Month.JANUARY, 5), actualDates.get(1));
         } catch (DateException ex) {
-            fail("DateException");
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
         }
     }
 
@@ -102,7 +102,7 @@ public class WeekConverterTest {
             assertEquals(LocalDate.of(2020, Month.DECEMBER, 28), actualDates.get(0));
             assertEquals(LocalDate.of(2021, Month.JANUARY, 3), actualDates.get(1));
         } catch (DateException ex) {
-            fail("DateException");
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
         }
     }
 

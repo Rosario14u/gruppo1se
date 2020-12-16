@@ -230,10 +230,10 @@ public class ModifyUser extends javax.swing.JDialog {
      * @return {@code UserDTO}
      */
     private UserDTO makeUser(String newUsername, String newPassword, String newRole){
-        if (newRole.equals("PLANNER")){
+        if (newRole.equals(UserRole.PLANNER.toString())){
             return new PlannerDTO(newUsername, newPassword);
         }
-        else if (newRole.equals("MAINTAINER")){
+        else if (newRole.equals(UserRole.MAINTAINER.toString())){
             return new MaintainerDTO(newUsername, newPassword);
         }
         else{ 

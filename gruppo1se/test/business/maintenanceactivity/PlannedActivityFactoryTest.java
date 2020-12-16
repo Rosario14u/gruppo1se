@@ -9,8 +9,6 @@ import exception.NotValidParameterException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -59,10 +57,14 @@ public class PlannedActivityFactoryTest {
             LocalDate date = LocalDate.parse("2020-11-30");
             MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("Smp");
             List<Material> listMaterial = createListMaterial("Materiale2","Materiale1","Materiale3");
-            List<Skill> listSkill = createListSkill("Skill2","Skill1","Skill3");
             boolean interruptibleActivity = false;
-            MaintenanceActivity expResult = new PlannedMaintenanceActivity(activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, listMaterial, interruptibleActivity);
-            MaintenanceActivity result = instance.selectMaintenanceActivity(type, activityId, site, typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, listMaterial, interruptibleActivity);
+            MaintenanceActivity expResult = new PlannedMaintenanceActivity(activityId, 
+                    site, typology, activityDescription, estimatedInterventionTime, 
+                    date, maintenanceProcedure, listMaterial, interruptibleActivity);
+            
+            MaintenanceActivity result = instance.selectMaintenanceActivity(type, 
+                    activityId, site, typology, activityDescription, estimatedInterventionTime,
+                    date, maintenanceProcedure, listMaterial, interruptibleActivity);
             assertEquals(expResult, result);
         } catch (NotValidParameterException ex) {
             fail("NotValidParameterException");
@@ -75,14 +77,5 @@ public class PlannedActivityFactoryTest {
             add(new Material(materialElement2));
             add(new Material(materialElement3));    
         }};
-    }
-    
-    private List<Skill> createListSkill(String skillElement1, String skillElement2, String skillElement3) throws NotValidParameterException{
-        return new ArrayList<>() {{
-            add(new Skill(skillElement1));
-            add(new Skill(skillElement1));
-            add(new Skill(skillElement1));    
-        }};
-    }
-    
+    }    
 }

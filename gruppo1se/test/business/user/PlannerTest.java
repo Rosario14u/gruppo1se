@@ -17,12 +17,9 @@ import business.maintenanceactivity.Site;
 import business.maintenanceactivity.Skill;
 import dto.MaintainerDTO;
 import exception.AppointmentException;
-import exception.DateException;
 import exception.MaintenanceActivityException;
 import exception.MaterialException;
 import exception.NotValidParameterException;
-import exception.SiteException;
-import exception.SkillException;
 import exception.UsersException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -43,7 +40,6 @@ import static org.junit.Assert.*;
 import persistence.database.ConnectionDB;
 import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
 import persistence.maintenanceactivity.SiteDaoImpl;
-import persistence.user.MaintainerSkillDAOImpl;
 import stub.EmployeeAppointmentDAOStub;
 import stub.MaintainerSkillDAOStub;
 import stub.MaintenanceActivityDAOStub;
@@ -66,21 +62,21 @@ public class PlannerTest {
     private final String activityDescription = "ProvaActivityDescription";
     private final int estimatedInterventionTime = 30;
     private LocalDate date = LocalDate.parse("2050-11-25");
-    private final MaintenanceProcedure maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");
-    private final ArrayList<Material> materials = new ArrayList<>();
-    private final ArrayList<Skill> skills = new ArrayList<>();
+    private final MaintenanceProcedure maintenanceProcedure;
+    private final ArrayList<Material> materials;
     private boolean interruptibleActivity = false;
-    private boolean plannedActivity = true;
-    private boolean extraActivity = false;
-    private boolean ewo = false;
-    private MaintenanceActivityDAOImpl instance = new MaintenanceActivityDAOImpl(new SiteDaoImpl());
-    private final Planner planner = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(),
-            new RequiredMaterialForMaintenanceDAOStub(), new UsersDAOStub(),
-            new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub(),new MaintainerSkillDAOStub(), new TypologyDAOStub());
-    private final Site site = new Site(branchOffice,area,workspaceNotes);
+    private MaintenanceActivityDAOImpl instance;
+    private final Planner planner;
     
     
     public PlannerTest() throws NotValidParameterException {
+        this.instance = new MaintenanceActivityDAOImpl(new SiteDaoImpl());
+        this.materials  = new ArrayList<>();
+        this.maintenanceProcedure = new MaintenanceProcedure("ProvaPDF");        
+        this.planner = new Planner("ProvaUser","ProvaPassword", new MaintenanceActivityDAOStub(),
+            new RequiredMaterialForMaintenanceDAOStub(), new UsersDAOStub(),
+            new EmployeeAppointmentDAOStub(), new RequiredSkillForMaintenanceDAOStub(), 
+            new MaintainerSkillDAOStub(), new TypologyDAOStub());
     }
     
     @BeforeClass
@@ -250,26 +246,7 @@ public class PlannerTest {
         }
     }
     
-    /**
-     * 
-     * @throws MaintenanceActivityException 
-     */
-    /*
-    @Test(expected = MaintenanceActivityException.class)
-    public void testExceptionInvalidTypologyOfActivity() throws MaintenanceActivityException{
-        planner.modifyMaintenanceActivity(10, "branchOffice10", "area10", "typology10", "description10", 10, LocalDate.now().toString(), true, "UNPLANNED", "INVALID_VALUE");
-    }
-    */
-    /**
-     * 
-     * @throws MaintenanceActivityException 
-     */
-    /*
-    @Test(expected = MaintenanceActivityException.class)
-    public void testExceptionInvalidTypologyOfActivity2() throws MaintenanceActivityException{
-        planner.modifyMaintenanceActivity(11, "branchOffice11", "area11", "typology11", "description11", 11, LocalDate.now().toString(), true, "INVALID_VALUE", "INVALID_VALUE");
-    }
-    */
+   
     
     /*============================================================================================================================*/
     @Test
@@ -420,8 +397,6 @@ public class PlannerTest {
     public void testMakeMaintenanceActivityExtraActivity() throws  MaintenanceActivityException{
         try {
             System.out.println("makeMaintenanceActivityExtraActivity");
-            extraActivity = true;
-            plannedActivity = false;
             //planner.removeMaintenanceActivity(activityId);
             boolean result = planner.makeMaintenanceActivity(activityId, new Site(branchOffice, area, workspaceNotes),
                     typology, activityDescription, estimatedInterventionTime, date, maintenanceProcedure, materials,
@@ -444,8 +419,6 @@ public class PlannerTest {
         try {
             System.out.println("makeMaintenanceActivityExtraActivityWrong");
             activityId = 2;
-            plannedActivity = false;
-            extraActivity = true;
             date = LocalDate.parse("2020-11-24");
             //planner.removeMaintenanceActivity(activityId);
             boolean result = planner.makeMaintenanceActivity(activityId, new Site(branchOffice, area, workspaceNotes),
@@ -467,8 +440,6 @@ public class PlannerTest {
     public void testMakeMaintenanceActivityEwo() throws  MaintenanceActivityException{
         try {
             System.out.println("makeMaintenanceActivityEwo");
-            plannedActivity = false;
-            ewo = true;
             //planner.removeMaintenanceActivity(activityId);
             boolean result = planner.makeMaintenanceActivity(activityId, new Site(branchOffice, area,
                     workspaceNotes), typology, activityDescription, estimatedInterventionTime, date,
@@ -491,8 +462,6 @@ public class PlannerTest {
         try {
             System.out.println("makeMaintenanceActivityEwoWrong");
             activityId = 2;
-            ewo = true;
-            plannedActivity = false;
             date = LocalDate.parse("2020-11-24");
             //planner.removeMaintenanceActivity(activityId);
             boolean result = planner.makeMaintenanceActivity(activityId, new Site (branchOffice, area, workspaceNotes),
@@ -564,7 +533,8 @@ public class PlannerTest {
     //========================Test of viewMaintenanceActivity================================================
     /*Test methods of viewMaintenanceActivity developed by Rosario Gaeta*/
     /**
-     * This test method asserts that viewMaintenanceActivity correctly return a planned activity.
+     * This test method asserts that viewMaintenanceActivity
+     * correctly return a planned activity.
      */
     @Test
     public void testviewMaintenanceActivityReturnPlanned()  {
@@ -584,7 +554,8 @@ public class PlannerTest {
         }
     }
     /**
-     * This test method asserts that viewMaintenanceActivity correctly return an Ewo activity.
+     * This test method asserts that viewMaintenanceActivity 
+     * correctly return an Ewo activity.
      */
     @Test
     public void testviewMaintenanceActivityReturnEwo() {
@@ -604,7 +575,8 @@ public class PlannerTest {
         }
     }
     /**
-     * This test method asserts that viewMaintenanceActivity correctly return a Extra activity.
+     * This test method asserts that viewMaintenanceActivity
+     * correctly return a Extra activity.
      */
     @Test
     public void testviewMaintenanceActivityReturnExtra() {
@@ -625,7 +597,8 @@ public class PlannerTest {
     }
     
     /**
-     * This test method asserts that viewMaintenanceActivity correctly return null when activity is not present.
+     * This test method asserts that viewMaintenanceActivity 
+     * correctly return null when activity is not present.
      */
     @Test
     public void testviewMaintenanceActivityNull(){
@@ -638,7 +611,8 @@ public class PlannerTest {
     }
     
     /**
-     * This test method asserts that viewMaintenanceActivity correctly raises MaintenanceActivityException.
+     * This test method asserts that viewMaintenanceActivity
+     * correctly raises MaintenanceActivityException.
      * @throws exception.MaintenanceActivityException
      */
     @Test(expected = MaintenanceActivityException.class)
@@ -650,7 +624,8 @@ public class PlannerTest {
         }
     }
     /**
-     * This test method assert that viewMaintenanceActivity correctly raises MaintenanceActivityException.
+     * This test method assert that viewMaintenanceActivity
+     * correctly raises MaintenanceActivityException.
      * @throws exception.MaintenanceActivityException
      */
     @Test(expected = MaintenanceActivityException.class)
@@ -662,7 +637,8 @@ public class PlannerTest {
         }
     }
     /**
-     * This test method assert that viewMaintenanceActivity correctly return a maintenance activity with no material associated.
+     * This test method assert that viewMaintenanceActivity correctly 
+     * return a maintenance activity with no material associated.
      */
     @Test
     public void testviewMaintenanceActivityMaterialEmpty() {
@@ -678,7 +654,8 @@ public class PlannerTest {
         }
     }
     /**
-     * This test method assert that viewMaintenanceActivity correctly raises MaintenanceException.
+     * This test method assert that viewMaintenanceActivity 
+     * correctly raises MaintenanceException.
      * @throws exception.MaintenanceActivityException
      */
     @Test(expected = MaintenanceActivityException.class)
@@ -689,12 +666,21 @@ public class PlannerTest {
             fail(ex.getClass().getName() + " - " + ex.getMessage());  
         }
     }
+
+
+
+    //====================================== test viewMaintenanceActivityByWeek ==================================
+    //Test developed by Antonio Gorrasi.
     
-    
-    //===========================================================================================================================
-    
+    /**
+     * This test asserts that viewMaintenanceActivityByWeek<br> 
+     * correctly raises MaintenanceActivityException <br>
+     * when wrong week number
+     * @throws MaintenanceActivityException 
+     */
     @Test(expected = MaintenanceActivityException.class)
-    public void viewMaintenanceActivityByWeekMaintenanceActivityException() throws MaintenanceActivityException, SiteException, DateException, SkillException{
+    public void viewMaintenanceActivityByWeekMaintenanceActivityException() 
+            throws MaintenanceActivityException{
         try {
             planner.viewMaintenanceActivityByWeek(0, 2020);
         } catch (NotValidParameterException ex) {
@@ -703,15 +689,21 @@ public class PlannerTest {
     } 
     
     
+    /**
+     * This test asserts that viewMaintenanceActivityByWeek<br> 
+     * correctly returns a list of MaintenanceActivity and<br>
+     * skills related to the procedure associate to the activity
+     * @throws exception.MaintenanceActivityException
+     */
     @Test
     public void viewMaintenanceActivityByWeekSiteException() throws MaintenanceActivityException{
         try {
             List<MaintenanceActivity> expectedList = new ArrayList<>(){{
                 add(new PlannedMaintenanceActivity(1, new Site("ProvaBranchOffice1", "ProvaArea1"),
-                        "ProvaTypology1", "ProvaDescription1", 1, LocalDate.of(2020, Month.JANUARY, 1),
+                        "ProvaTypology1", "ProvaDescription1", 1, LocalDate.of(2050, Month.JANUARY, 1),
                         new MaintenanceProcedure("smp1"), null, true));
-                add(new PlannedMaintenanceActivity(1, new Site("ProvaBranchOffice3", "ProvaArea3"),
-                        "ProvaTypology3", "ProvaDescription3", 3, LocalDate.of(2020, Month.JANUARY, 3),
+                add(new PlannedMaintenanceActivity(2, new Site("ProvaBranchOffice2", "ProvaArea2"),
+                        "ProvaTypology2", "ProvaDescription2", 2, LocalDate.of(2050, Month.JANUARY, 2),
                         new MaintenanceProcedure("smp7"), null, true));
             }};
             
@@ -722,17 +714,20 @@ public class PlannerTest {
                 }});
             
             List<MaintenanceActivity> list = planner.viewMaintenanceActivityByWeek(1, 2021);
-            
+
             assertEquals(expectedList.get(0), list.get(0));
-            
-            assertEquals(date, area);
+            assertEquals(expectedList.get(1), list.get(1));
+
         } catch (NotValidParameterException ex) {
             fail("NotValidParameterException");
         }
     }
     
     
-    
+    /**
+     * This test asserts that viewMaintenanceActivityByWeek<br> 
+     * correctly return an empty list of MaintenanceActivity 
+     */
     @Test
     public void viewMaintenanceActivityByWeekEmpty(){
         try{
@@ -743,13 +738,15 @@ public class PlannerTest {
         }
     }
     
-    //==================================================================================================================
+    
+    //====================================== test viewEmployeeAvailability ==================================
+    //Test developed by Antonio Gorrasi.
     
     /**
      * this test simulates a wrong week number
      * @throws UsersException 
      */
-    //@Test(expected = UsersException.class)
+    @Test(expected = UsersException.class)
     public void testViewEmployeeAvailabilityWrongDate() throws UsersException {
         try {
             List<MaintainerDTO> list = planner.viewEmployeeAvailability(0, 2020);
@@ -765,7 +762,7 @@ public class PlannerTest {
      * related skills and appointments
      * @throws UsersException 
      */
-    //@Test
+    @Test
     public void testViewEmployeeAvailability() throws UsersException {
         try {
             List<MaintainerDTO> list = planner.viewEmployeeAvailability(1, 2020);
@@ -974,8 +971,10 @@ public class PlannerTest {
     
     /*===============================================test verifyActivityAssignment============================================================*/
     /**
-     * This test assert that verifyActivityAssignment correctly returns true when total duration of<br>
-     * of appointments connected to the activity is equal to estimatedInterventionTime
+     * This test assert that verifyActivityAssignment 
+     * correctly returns true when total duration of<br>
+     * of appointments connected to the activity is 
+     * equal to estimatedInterventionTime
      */
     @Test
     public void testVerifyActivityAssignmentTrue()  {
@@ -990,8 +989,10 @@ public class PlannerTest {
     }
     
     /**
-     * This test assert that verifyActivityAssignment correctly returns false when total duration of<br>
-     * of appointments connected to the activity is not equal to estimatedInterventionTime
+     * This test assert that verifyActivityAssignment correctly 
+     * returns false when total duration of<br>
+     * of appointments connected to the activity 
+     * is not equal to estimatedInterventionTime
      */
     @Test
     public void testVerifyActivityAssignmentFalse()  {
@@ -1006,8 +1007,10 @@ public class PlannerTest {
     }
     
     /**
-     * This test assert that verifyActivityAssignment correctly returns false when total duration of<br>
-     * of appointments connected to the activity is not equal to estimatedInterventionTime
+     * This test assert that verifyActivityAssignment 
+     * correctly returns false when total duration of<br>
+     * of appointments connected to the activity is 
+     * not equal to estimatedInterventionTime
      */
     @Test(expected = AppointmentException.class)
     public void testVerifyActivityAssignmentAppointmentException() throws AppointmentException  {

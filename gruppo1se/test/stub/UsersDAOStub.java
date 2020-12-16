@@ -74,27 +74,44 @@ public class UsersDAOStub implements UsersDAO {
         }      
     }
     
+    
+    
+    /**
+     * Simulates the behaviour of updateUser of UsersDAO
+     * @param oldUsername old username of the user
+     * @param newUser containing the information
+     * about the new user 
+     * @return {@code true} or {@code false}
+     * @throws UsersException if oldUsername is null or<br>
+     * newUser is null or username or password of newUser<br>
+     * are null or oldUsername or the username of newUser <br>
+     * are empty string
+     */
+    //Developed by Antonio Gorrasi
     @Override
     public boolean updateUser(String oldUsername, UserDTO newUser) throws UsersException{
         if (oldUsername==null || newUser==null || newUser.getUsername()==null || newUser.getPassword()==null
                 || oldUsername.equals("") || newUser.getUsername().equals("")){
-            ////case where the passed parameters are not valid
             throw new UsersException();            
         } else if(oldUsername.equals("oldUsername1")){
-            //case where the passed parameters are valid and the method successfully updates a row
             return true;
         } else if(oldUsername.equals("oldUsername2")){
-            //case where the passed parameters are valid and the method does not update any rows
             return false;
         } else if(oldUsername.equals("oldUsername3")){
-            //case where the method throws a SQLException
             throw new UsersException();
-        }  else {
+        } else {
             throw new UsersException();
         }
     }
    
 
+    /**
+     * Simulates the behaviour of readMaintainers 
+     * of UsersDAO
+     * @return a list of Maintainer
+     * @throws UsersException 
+     */
+    //Developed by Antonio Gorrasi
     @Override
     public List<MaintainerDTO> readMaintainers() throws UsersException {
         return new ArrayList<>(){{

@@ -207,7 +207,7 @@ public class MaintenanceActivityDAOStub implements MaintenanceActivityDAO {
                 add(new PlannedMaintenanceActivity(1, new Site("ProvaBranchOffice1", "ProvaArea1"), "ProvaTypology1", 
                         "ProvaDescription1", 1, LocalDate.of(2050, Month.JANUARY, 1), new MaintenanceProcedure("smp1"), null, true));
                 add(new PlannedMaintenanceActivity(2, new Site("ProvaBranchOffice2", "ProvaArea2"), "ProvaTypology2",
-                        "ProvaDescription3", 2, LocalDate.of(2050, Month.JANUARY, 2), new MaintenanceProcedure("smp7"), null, true));
+                        "ProvaDescription2", 2, LocalDate.of(2050, Month.JANUARY, 2), new MaintenanceProcedure("smp7"), null, true));
             }};
         }else{
             return new ArrayList<>();

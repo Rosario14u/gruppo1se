@@ -97,10 +97,8 @@ public class MaintainerSkillDAOImplTest {
             List<Skill> actualSkills = maintainerSkill.getMaintainerSkills("maintainer");
             
             assertEquals(expectedSkills, actualSkills);
-        } catch (SQLException ex) {
-            fail("SQLException");
-        } catch (SkillException ex) {
-            fail("SkillException");
+        } catch (SQLException | SkillException ex) {
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
         }
     }
     
@@ -119,10 +117,8 @@ public class MaintainerSkillDAOImplTest {
             List<Skill> actualSkills = maintainerSkill.getMaintainerSkills("maintainer");
             
             assertTrue(actualSkills.isEmpty());
-        } catch (SQLException ex) {
-            fail("SQLException");
-        } catch (SkillException ex) {
-            fail("SkillException");
+        } catch (SQLException | SkillException ex) {
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
         }
     }
     
@@ -157,15 +153,4 @@ public class MaintainerSkillDAOImplTest {
         stm.executeUpdate();
     }    
     
-////    private List<Skill> selectSkillOfMaintainer(String username) throws SQLException, NotValidParameterException{
-////        List<Skill> listOfSkills = new ArrayList<>();
-////        PreparedStatement stm = conn.prepareStatement(SELECT_SKILL);
-////        stm.setString(1, username);
-////        ResultSet set = stm.executeQuery();
-////        
-////        while(set.next()){
-////            listOfSkills.add(new Skill(set.getString("skillname")));
-////        }
-////        return listOfSkills;
-////    }
 }
