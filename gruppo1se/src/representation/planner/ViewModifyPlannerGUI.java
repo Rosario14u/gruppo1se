@@ -23,7 +23,6 @@ import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import javax.swing.DefaultListModel;
@@ -53,6 +52,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         workspaceNoteTextArea.setEnabled(false);
     }
 
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -64,7 +64,6 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
 
         jScrollPane4 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
-        jSpinner1 = new javax.swing.JSpinner();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         branchOfficeTextField = new javax.swing.JTextField();
@@ -103,6 +102,7 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         jScrollPane4.setViewportView(jTextArea1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("View Modify Activity");
 
         jPanel1.setBackground(new java.awt.Color(255, 153, 0));
 
@@ -197,12 +197,6 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
 
             typologyLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
             typologyLabel.setText("Typology:");
-
-            interruptibleActivityCheckBox.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    interruptibleActivityCheckBoxActionPerformed(evt);
-                }
-            });
 
             estimatedInterventionTimeLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
             estimatedInterventionTimeLabel.setText("Estimated Intervention Time:");
@@ -368,10 +362,6 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
             pack();
         }// </editor-fold>//GEN-END:initComponents
 
-    
-    private void interruptibleActivityCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_interruptibleActivityCheckBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_interruptibleActivityCheckBoxActionPerformed
 
     /**
      * This method allows to visualize a maintenance activity in the GUI.
@@ -398,6 +388,8 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
             MessageManager.errorMessage(this,ex.getMessage());
         }
     }//GEN-LAST:event_viewButtonActionPerformed
+    
+    
     /**
      * This method allows to modify maintenance activity.
      * @param evt 
@@ -407,6 +399,8 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         clearField();
         initializeField(false);       
     }//GEN-LAST:event_modifyButtonActionPerformed
+    
+    
     /**
      * This method allows to associate a material to a maintenance activity.
      * @param evt 
@@ -427,8 +421,11 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         }else
             MessageManager.infoMessage(this,"No material selected");
     }//GEN-LAST:event_addButtonActionPerformed
+    
+    
     /**
-     * This method allows to delete the association of a material to a maintenance activity.
+     * This method allows to delete the association of a 
+     * material to a maintenance activity.
      * @param evt 
      */
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
@@ -451,17 +448,23 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
+   
+    
     /**
-     * This method allows to disable GUI fields when a key is pressed on activityId text field.
+     * This method allows to disable GUI fields when a 
+     * key is pressed on activityId text field.
      * @param evt 
      */
     private void activityIdTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_activityIdTextFieldKeyPressed
         initializeField(false);
     }//GEN-LAST:event_activityIdTextFieldKeyPressed
 
+    
     /**
-     * This method get the value in the GUI fields and passes them to modifyMaintenanceActivity.<br>
-     * modifyMaintenanceActivity method will update info of maintenance activity in the system.
+     * This method get the value in the GUI fields and 
+     * passes them to modifyMaintenanceActivity.<br>
+     * modifyMaintenanceActivity method will update info
+     * of maintenance activity in the system.
      */
     private void getField(){
         try {
@@ -484,12 +487,13 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
     }
          
     
-    //==================== VEDERE ================================  
     /**
-     * This method checks if the string can be converted in a positive int
+     * This method checks if the string can 
+     * be converted in a positive int
      * @param number
      * @return {@code int} number
-     * @throws NumberNotValidException if the parameter is not a positive number.
+     * @throws NumberNotValidException if the
+     * parameter is not a positive number.
      */
     private int getCheckedNumberParameter(String number) throws NumberNotValidException{
         number = number.trim().replaceAll("  +", " ");
@@ -503,6 +507,12 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         }
     }
     
+    
+    /**
+     * This method inizialize comboBox 
+     * with available materials to add
+     * @param id 
+     */
     private void setAvailableMaterialToAdd(int id){
         List<Material> list;
         try {
@@ -517,42 +527,8 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
     
     
     /**
-     * @param args the command line arguments
-     */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(ViewModifyPlannerGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(ViewModifyPlannerGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(ViewModifyPlannerGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(ViewModifyPlannerGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//        //</editor-fold>
-//
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                new ViewModifyPlannerGUI().setVisible(true);
-//            }
-//        });
-//    }
-    /**
-     * This method enables and disables editability of a series of field.
+     * This method enables and disables 
+     * editability of a series of field.
      * @param enabled 
      */
     private void initializeField(boolean enabled) {
@@ -571,8 +547,10 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         materialComboBox.setEnabled(enabled);
     }
     
+    
     /**
-     * This method sets the field of the GUI, filling them with the activity details.
+     * This method sets the field of the GUI,
+     * filling them with the activity details.
      * @param activity 
      */
     private void setField(MaintenanceActivity activity){
@@ -596,6 +574,8 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
             calendarDateChooser.setDate(Date.from(activity.getDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
         }
     }
+    
+    
     /**
      * This method cleans GUI fields.
      */
@@ -612,13 +592,9 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
         workspaceNoteTextArea.setText("");
         listModel.removeAllElements();
         activityComboBox.setSelectedIndex(-1);
-        
     }
     
-
     
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<Typology> activityComboBox;
     private javax.swing.JLabel activityDescriptionLabel;
@@ -643,7 +619,6 @@ public class ViewModifyPlannerGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JList<Material> listOfMaterialsJList;
     private javax.swing.JLabel listOfMaterialsLabel;

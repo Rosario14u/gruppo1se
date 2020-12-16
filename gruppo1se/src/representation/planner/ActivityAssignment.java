@@ -141,6 +141,7 @@ public class ActivityAssignment extends javax.swing.JDialog {
         clearButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Activity Assignment");
 
         jPanel1.setBackground(new java.awt.Color(255, 153, 0));
         jPanel1.setForeground(new java.awt.Color(255, 153, 0));
@@ -184,6 +185,7 @@ public class ActivityAssignment extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
+        maintainerAvailabilityDayTable.setSelectionForeground(new java.awt.Color(0, 0, 0));
         maintainerAvailabilityDayTable.getTableHeader().setReorderingAllowed(false);
         maintainerAvailabilityDayTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -191,6 +193,17 @@ public class ActivityAssignment extends javax.swing.JDialog {
             }
         });
         jScrollPane2.setViewportView(maintainerAvailabilityDayTable);
+        if (maintainerAvailabilityDayTable.getColumnModel().getColumnCount() > 0) {
+            maintainerAvailabilityDayTable.getColumnModel().getColumn(0).setResizable(false);
+            maintainerAvailabilityDayTable.getColumnModel().getColumn(1).setResizable(false);
+            maintainerAvailabilityDayTable.getColumnModel().getColumn(2).setResizable(false);
+            maintainerAvailabilityDayTable.getColumnModel().getColumn(3).setResizable(false);
+            maintainerAvailabilityDayTable.getColumnModel().getColumn(4).setResizable(false);
+            maintainerAvailabilityDayTable.getColumnModel().getColumn(5).setResizable(false);
+            maintainerAvailabilityDayTable.getColumnModel().getColumn(6).setResizable(false);
+            maintainerAvailabilityDayTable.getColumnModel().getColumn(7).setResizable(false);
+            maintainerAvailabilityDayTable.getColumnModel().getColumn(8).setResizable(false);
+        }
         int width = maintainerAvailabilityDayTable.getSize().width;
         maintainerAvailabilityDayTable.setFillsViewportHeight(true);
         maintainerAvailabilityDayTable.getTableHeader().setPreferredSize(new Dimension(width,40));
@@ -397,49 +410,7 @@ public class ActivityAssignment extends javax.swing.JDialog {
         populateTable();
     }//GEN-LAST:event_clearButtonActionPerformed
     
-    
-    
-    /**
-     * @param args the command line arguments
-     */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(ActivityAssignment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(ActivityAssignment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(ActivityAssignment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(ActivityAssignment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//
-//        /* Create and display the dialog */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                ActivityAssignment dialog = new ActivityAssignment(new javax.swing.JFrame(), true);
-//                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-//                    @Override
-//                    public void windowClosing(java.awt.event.WindowEvent e) {
-//                        System.exit(0);
-//                    }
-//                });
-//                dialog.setVisible(true);
-//            }
-//        });
-//    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel activityInfoLabelDialog;

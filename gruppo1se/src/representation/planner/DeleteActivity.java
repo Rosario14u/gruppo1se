@@ -13,14 +13,6 @@ import exception.NotValidParameterException;
 import java.util.List;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import persistence.maintenanceactivity.EmployeeAppointmentDAOImpl;
-import persistence.maintenanceactivity.MaintenanceActivityDAOImpl;
-import persistence.maintenanceactivity.RequiredMaterialForMaintenanceDAOImpl;
-import persistence.maintenanceactivity.RequiredSkillForMaintenanceDAOImpl;
-import persistence.maintenanceactivity.SiteDaoImpl;
-import persistence.maintenanceactivity.TypologyDAOImpl;
-import persistence.user.MaintainerSkillDAOImpl;
-import persistence.user.UsersDAOImpl;
 import presentation.manager.MessageManager;
 
 /**
@@ -61,6 +53,7 @@ public class DeleteActivity extends javax.swing.JFrame {
         jError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Delete Activity");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jPanel1.setBackground(new java.awt.Color(255, 153, 0));
@@ -170,10 +163,10 @@ public class DeleteActivity extends javax.swing.JFrame {
     private void jSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSearchActionPerformed
         try {
             int activityId = Integer.parseInt(jActivityID.getText());
-            MaintenanceActivity activity = planner.viewMaintenanceActivity(activityId); // Get the activity with the wanted ID
-            StringBuilder builder = new StringBuilder();
-            List<Material> materials = activity.getMaterials(); 
+            MaintenanceActivity activity = planner.viewMaintenanceActivity(activityId); // Get the activity with the wanted ID 
             if (activity!= null){ // if an activity is retrieved
+                StringBuilder builder = new StringBuilder();
+                List<Material> materials = activity.getMaterials();
                 jDelete.setEnabled(true); // enable jDelete
                 if (materials != null)
                     for(Material m : activity.getMaterials()){
@@ -209,7 +202,10 @@ public class DeleteActivity extends javax.swing.JFrame {
                 jMaintenanceActivity.setText("The activity with ActivityID: "+jActivityID.getText()+" isn't in the database!");
         } catch (MaintenanceActivityException | NotValidParameterException ex) {
             MessageManager.errorMessage(this,ex.getMessage());
-        }
+        } catch (NumberFormatException ex){
+            jActivityID.setText("");
+            MessageManager.errorMessage(this, "ID not valid");
+        }           
     }//GEN-LAST:event_jSearchActionPerformed
 
     private void jDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDeleteActionPerformed
@@ -258,21 +254,7 @@ public class DeleteActivity extends javax.swing.JFrame {
             jSearch.setEnabled(fieldHasText);
         }
     }    
-   
-
-    
-    public static void main(String args[]) {
-        Planner planner = new Planner("admin","admin", new MaintenanceActivityDAOImpl(new SiteDaoImpl()),
-                new RequiredMaterialForMaintenanceDAOImpl(), new UsersDAOImpl(), 
-                new EmployeeAppointmentDAOImpl(), new RequiredSkillForMaintenanceDAOImpl(),new MaintainerSkillDAOImpl(), new TypologyDAOImpl());
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new DeleteActivity(planner).setVisible(true);
-            }
-        });
-
-    }
+  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField jActivityID;

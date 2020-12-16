@@ -115,11 +115,9 @@ public class PlannerTest {
         try{
             assertTrue(planner.modifyMaintenanceActivity(1, new Site("branchOffice1", "area1"), "typology1",
                     "description1", 1, LocalDate.now(), true, Typology.PLANNED));
-        }catch(MaintenanceActivityException ex){
-            fail("MaintenanceActivityException");     
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }  
+        } catch (NotValidParameterException | MaintenanceActivityException  ex) {
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
+        } 
     }
     
     
@@ -131,11 +129,9 @@ public class PlannerTest {
         try{
             assertFalse(planner.modifyMaintenanceActivity(2, new Site("branchOffice2", "area2"), "typology2",
                     "description2", 2, LocalDate.now(), true, Typology.PLANNED));
-        }catch(MaintenanceActivityException ex){
-            fail("MaintenanceActivityException");     
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        } catch (NotValidParameterException | MaintenanceActivityException  ex) {
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
+        } 
     }
     
     
@@ -149,8 +145,8 @@ public class PlannerTest {
             planner.modifyMaintenanceActivity(3,new Site ("branchOffice3", "area3"), "typology3",  
                     "description3", 3, LocalDate.now(), true, Typology.PLANNED);
         } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
+        } 
     }
   
     
@@ -162,11 +158,9 @@ public class PlannerTest {
         try{
             assertTrue(planner.modifyMaintenanceActivity(4,new Site("branchOffice4", "area4"), "typology4",
                     "description4", 4, LocalDate.now(), true, Typology.EWO));
-        }catch(MaintenanceActivityException ex){
-            fail("MaintenanceActivityException");     
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }  
+        } catch (NotValidParameterException | MaintenanceActivityException  ex) {
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
+        } 
     }
     
     
@@ -178,11 +172,9 @@ public class PlannerTest {
         try{
             assertFalse(planner.modifyMaintenanceActivity(5, new Site("branchOffice5", "area5"), "typology5",
                     "description5", 5, LocalDate.now(), true, Typology.EWO));
-        }catch(MaintenanceActivityException ex){
-            fail("MaintenanceActivityException");     
-        }catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        } catch (NotValidParameterException | MaintenanceActivityException  ex) {
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
+        } 
     }
     
     
@@ -196,8 +188,8 @@ public class PlannerTest {
             planner.modifyMaintenanceActivity(6, new Site("branchOffice6", "area6"), "typology6",
                     "description6", 6, LocalDate.now(), true, Typology.EWO);
         } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
+        } 
     }
     
     /**
@@ -208,10 +200,8 @@ public class PlannerTest {
         try{
             assertTrue(planner.modifyMaintenanceActivity(7, new Site("branchOffice7", "area7"), "typology7",
                     "description7", 7, LocalDate.now(), true, Typology.EXTRA));
-        }catch(MaintenanceActivityException ex){
-            fail("MaintenanceActivityException");     
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        } catch (NotValidParameterException | MaintenanceActivityException  ex) {
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
         } 
     }
     
@@ -224,11 +214,9 @@ public class PlannerTest {
         try{
             assertFalse(planner.modifyMaintenanceActivity(8, new Site("branchOffice8", "area8"), "typology8",
                     "description8", 8, LocalDate.now(), true, Typology.EXTRA));
-        }catch(MaintenanceActivityException ex){
-            fail("MaintenanceActivityException");     
-        }  catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+        } catch (NotValidParameterException | MaintenanceActivityException  ex) {
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
+        } 
     }
     
     
@@ -242,22 +230,25 @@ public class PlannerTest {
             planner.modifyMaintenanceActivity(9, new Site("branchOffice9", "area9"), "typology9", 
                     "description9", 9, LocalDate.now(), true, Typology.EXTRA);
         } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
+        } 
     }
     
    
     
     /*============================================================================================================================*/
+    
+    /**
+     * This test assert that the method addRequiredMaterial
+     * correctly insert materials
+     */
     @Test
     public void testSuccessfulAddRequiredMaterial(){
         try{
             List<Material> listMaterialToAdd = new ArrayList<>();                       
             assertTrue(planner.addRequiredMaterial(1, listMaterialToAdd));
-        }catch (MaterialException ex){
-            fail("MaterialException");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        } catch (MaterialException | NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
         }
     }
     
@@ -266,8 +257,8 @@ public class PlannerTest {
         try {
             List<Material> listMaterialToAdd = new ArrayList<>();
             planner.addRequiredMaterial(2, listMaterialToAdd);
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        } catch (MaterialException | NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
         }
     }
     
@@ -276,10 +267,8 @@ public class PlannerTest {
         try {
             List<Material> listMaterialToAdd = new ArrayList<>();
             assertTrue(planner.removeRequiredMaterial(3, listMaterialToAdd));
-        } catch (MaterialException ex) {
-            fail("MaterialException");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        } catch (MaterialException | NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
         }
     }
     
@@ -288,10 +277,8 @@ public class PlannerTest {
         try {
             List<Material> listMaterialToAdd = new ArrayList<>();
             assertFalse(planner.removeRequiredMaterial(4, listMaterialToAdd));
-        } catch (MaterialException ex) {
-            fail("MaterialException");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        } catch (MaterialException | NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
         }
     }
     
@@ -302,7 +289,7 @@ public class PlannerTest {
             List<Material> listMaterialToAdd = new ArrayList<>();
             planner.removeRequiredMaterial(5, listMaterialToAdd);
         } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
         }
     } 
     
@@ -315,10 +302,8 @@ public class PlannerTest {
             }};
             List<Material> actualMaterialList = planner.retrieveAvaliableMaterialToAdd(6);
             assertEquals(expectedMaterialList, actualMaterialList);
-        } catch (MaterialException ex) {
-            fail("MaterialException");
-        } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+        } catch (MaterialException | NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
         }
     }
         
@@ -328,11 +313,9 @@ public class PlannerTest {
             List<Material> expectedMaterialList = new ArrayList<>();
             List<Material> actualMaterialList = planner.retrieveAvaliableMaterialToAdd(7);
             assertEquals(expectedMaterialList, actualMaterialList);
-        } catch (MaterialException ex) {
-            fail("MaterialException");
-        }  catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
-        }      
+        } catch (MaterialException | NotValidParameterException ex){
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
+        }     
     }
     
     @Test(expected = MaterialException.class)
@@ -340,7 +323,7 @@ public class PlannerTest {
         try{
             planner.retrieveAvaliableMaterialToAdd(8); 
         } catch (NotValidParameterException ex) {
-            fail("NotValidParameterException");
+            fail(ex.getClass().getName() + " - " + ex.getMessage());
         }
     }
     

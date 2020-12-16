@@ -13,6 +13,8 @@ import javax.swing.JFileChooser;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import presentation.manager.MessageManager;
+
+
 /**
  * GUI to create the mainteance activity procedure with an smp file
  * @author rosar
@@ -23,8 +25,8 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
     private final static String RELATIVE_PROJECT_PATH = "/src/smp/";
     private final static String FILE_EXTENSION = ".pdf";
     private File fileChoosen;
-    
     private final SystemAdministrator administrator;
+    
     
     /**
      * Creates new form CreateProcedureGUI
@@ -54,7 +56,8 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
         RenameLabel = new javax.swing.JLabel();
         chooseFileLabel = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Create Procedure");
 
         ProcedurePanel.setBackground(new java.awt.Color(187, 187, 100));
         ProcedurePanel.setForeground(new java.awt.Color(187, 187, 100));
@@ -176,10 +179,12 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
             MessageManager.errorMessage(this, ex.getMessage());
         }
     }//GEN-LAST:event_fileChooserButtonActionPerformed
-/**
- * This method allows to use a file chooser to select a smp file
- * @param evt 
- */
+   
+    
+    /**
+     * This method allows to use a file chooser to select a smp file
+     * @param evt 
+     */
     private void chooserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooserButtonActionPerformed
         UIManager.put("FileChooser.readOnly", Boolean.TRUE);
         JFileChooser filechooser = new JFileChooser(PROJECT_PATH.concat(RELATIVE_PROJECT_PATH));
@@ -196,40 +201,7 @@ public class CreateProcedureGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_chooserButtonActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(CreateProcedureGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(CreateProcedureGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(CreateProcedureGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(CreateProcedureGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                new CreateProcedureGUI().setVisible(true);
-//            }
-//        });
-//    }
+   
     /**
      * This method set procedure and rename label of the GUI
      * @param enable 

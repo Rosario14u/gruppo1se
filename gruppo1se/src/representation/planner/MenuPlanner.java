@@ -54,6 +54,7 @@ public class MenuPlanner extends javax.swing.JFrame {
         selectionActivityButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Menu Planner");
 
         jPanel1.setBackground(new java.awt.Color(255, 153, 0));
         jPanel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));

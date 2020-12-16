@@ -7,20 +7,15 @@ package representation.planner;
 
 import business.maintenanceactivity.Appointment;
 import business.maintenanceactivity.MaintenanceActivity;
-
 import business.maintenanceactivity.Skill;
-
 import business.user.Planner;
 import business.user.WeekConverter;
 import dto.MaintainerDTO;
 import exception.AppointmentException;
 import exception.MaintenanceActivityException;
-
 import exception.NotValidParameterException;
-
 import exception.UsersException;
 import java.awt.Color;
-
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -45,8 +40,12 @@ public class MaintainerAvailability extends javax.swing.JFrame {
     private static final int INDEX_FIRST_AVAIL_COL = 2;
     private static final int NUM_COL = 9; 
     private static final int WORKING_MINUTES_IN_A_DAY = 420;
+    
+    
     /**
      * Creates new form MaintainerAvailability
+     * @param activity 
+     * @param planner 
      */
     public MaintainerAvailability(MaintenanceActivity activity, Planner planner) {
         this.planner = planner;
@@ -59,6 +58,8 @@ public class MaintainerAvailability extends javax.swing.JFrame {
         PercentageCellRenderer renderer = new PercentageCellRenderer();  
         maintainerAvailabilityTable.setDefaultRenderer(Object.class, renderer);
     }
+    
+    
     /**
      * This method initializes the fields of the GUI.
      */
@@ -85,6 +86,7 @@ public class MaintainerAvailability extends javax.swing.JFrame {
             MessageManager.errorMessage(this, ex.getMessage());
         }
     }
+    
     
     /**
      * This method allows to fill the jTable with information about Maintainer <br> 
@@ -126,6 +128,7 @@ public class MaintainerAvailability extends javax.swing.JFrame {
         }
     }
 
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -148,7 +151,8 @@ public class MaintainerAvailability extends javax.swing.JFrame {
         weekLabel = new javax.swing.JLabel();
         assignedLabel = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Maintainers Availiability");
 
         jPanel1.setBackground(new java.awt.Color(255, 153, 0));
         jPanel1.setForeground(new java.awt.Color(255, 153, 0));
@@ -201,6 +205,17 @@ public class MaintainerAvailability extends javax.swing.JFrame {
             }
         });
         jScrollPane2.setViewportView(maintainerAvailabilityTable);
+        if (maintainerAvailabilityTable.getColumnModel().getColumnCount() > 0) {
+            maintainerAvailabilityTable.getColumnModel().getColumn(0).setResizable(false);
+            maintainerAvailabilityTable.getColumnModel().getColumn(1).setResizable(false);
+            maintainerAvailabilityTable.getColumnModel().getColumn(2).setResizable(false);
+            maintainerAvailabilityTable.getColumnModel().getColumn(3).setResizable(false);
+            maintainerAvailabilityTable.getColumnModel().getColumn(4).setResizable(false);
+            maintainerAvailabilityTable.getColumnModel().getColumn(5).setResizable(false);
+            maintainerAvailabilityTable.getColumnModel().getColumn(6).setResizable(false);
+            maintainerAvailabilityTable.getColumnModel().getColumn(7).setResizable(false);
+            maintainerAvailabilityTable.getColumnModel().getColumn(8).setResizable(false);
+        }
         int width = maintainerAvailabilityTable.getSize().width;
         maintainerAvailabilityTable.setFillsViewportHeight(true);
         maintainerAvailabilityTable.getTableHeader().setOpaque(false);
@@ -228,7 +243,6 @@ public class MaintainerAvailability extends javax.swing.JFrame {
         weekLabel.setOpaque(true);
 
         assignedLabel.setBackground(new java.awt.Color(0, 200, 0));
-        assignedLabel.setForeground(new java.awt.Color(0, 0, 0));
         assignedLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         assignedLabel.setText("ASSEGNATA");
         assignedLabel.setOpaque(true);
@@ -331,6 +345,7 @@ public class MaintainerAvailability extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_maintainerAvailabilityTableMouseClicked
 
+    
     /**
      * This method sets the label to "assigned" if the label is already assigned (using the method verifyActivityAssignmentMethod),
      * not assigned if otherwise.
@@ -348,51 +363,6 @@ public class MaintainerAvailability extends javax.swing.JFrame {
         }
     }
     
-    
-    /**
-     * @param args the command line arguments
-     */
-    
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(MaintainerAvailability.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(MaintainerAvailability.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(MaintainerAvailability.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(MaintainerAvailability.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//
-//        /* Create and display the form */
-//    
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                ArrayList<Skill> skills = new ArrayList<>();
-//                skills.add(new Skill("Java Knowledge"));
-//                skills.add(new Skill("English Knowledge"));
-//                skills.add(new Skill("SQL Knowledge"));
-//                MaintenanceActivity activity = new PlannedMaintenanceActivity(1, new Site("ProvaArea", "ProvaBranchOffice", "ProvaWorkspaceNotes"),
-//                        "ProvaTypology", "ProvaActivityDescription", 90, LocalDate.of(2020, 12, 22), new MaintenanceProcedure("FilePDF"), new ArrayList<Material>(), true);
-//                new MaintainerAvailability(activity).setVisible(true);
-//            }
-//        });
-//    }
-    
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel activityInfoLabel;

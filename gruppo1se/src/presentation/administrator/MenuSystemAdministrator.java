@@ -50,6 +50,7 @@ public class MenuSystemAdministrator extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Menu System Administrator");
 
         jPanel1.setBackground(new java.awt.Color(187, 187, 100));
         jPanel1.setForeground(new java.awt.Color(187, 187, 100));

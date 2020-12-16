@@ -157,7 +157,6 @@ public class RequiredMaterialForMaintenanceDAOImpl implements RequiredMaterialFo
         for(int i = 1; i < size; i++){
             builder.append(patter);
         }
-        System.out.println(builder.toString());
         
         return builder.toString();   
     }
