@@ -289,7 +289,7 @@ public class ManageTypologies extends javax.swing.JFrame {
     private void jDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDeleteActionPerformed
             int[] selectedIndex = jTable.getSelectedRows();
             if(selectedIndex.length == 1){
-                int dialogResult = MessageManager.confirmMessage(this,"Are you sure you wish to delete these users");
+                int dialogResult = MessageManager.confirmMessage(this,"Are you sure you wish to delete this typology?");
                 if(dialogResult == JOptionPane.YES_OPTION){
                     String typology = String.valueOf(tableModel.getValueAt(selectedIndex[0], 0)); // Get the selected typology
                     try {
