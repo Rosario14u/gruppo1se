@@ -102,7 +102,7 @@
         <Component class="javax.swing.JButton" name="addButton">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/representation/planner/image/add.png"/>
+              <Image iconType="3" name="/presentation/planner/image/add.png"/>
             </Property>
           </Properties>
           <Events>
@@ -112,7 +112,7 @@
         <Component class="javax.swing.JButton" name="deleteButton">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/representation/planner/image/delete.png"/>
+              <Image iconType="3" name="/presentation/planner/image/delete.png"/>
             </Property>
           </Properties>
           <Events>
@@ -122,7 +122,7 @@
         <Component class="javax.swing.JButton" name="viewModifyButton">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/representation/planner/image/manage.png"/>
+              <Image iconType="3" name="/presentation/planner/image/manage.png"/>
             </Property>
           </Properties>
           <Events>
@@ -132,7 +132,7 @@
         <Component class="javax.swing.JButton" name="selectionActivityButton">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/representation/planner/image/selection.png"/>
+              <Image iconType="3" name="/presentation/planner/image/selection.png"/>
             </Property>
           </Properties>
           <Events>

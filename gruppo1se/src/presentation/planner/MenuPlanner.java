@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package representation.planner;
+package presentation.planner;
 
 import business.user.Planner;
 import exception.NotValidParameterException;
@@ -62,28 +62,28 @@ public class MenuPlanner extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("MENU PLANNER");
 
-        addButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/representation/planner/image/add.png"))); // NOI18N
+        addButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/presentation/planner/image/add.png"))); // NOI18N
         addButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addButtonActionPerformed(evt);
             }
         });
 
-        deleteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/representation/planner/image/delete.png"))); // NOI18N
+        deleteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/presentation/planner/image/delete.png"))); // NOI18N
         deleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteButtonActionPerformed(evt);
             }
         });
 
-        viewModifyButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/representation/planner/image/manage.png"))); // NOI18N
+        viewModifyButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/presentation/planner/image/manage.png"))); // NOI18N
         viewModifyButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 viewModifyButtonActionPerformed(evt);
             }
         });
 
-        selectionActivityButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/representation/planner/image/selection.png"))); // NOI18N
+        selectionActivityButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/presentation/planner/image/selection.png"))); // NOI18N
         selectionActivityButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectionActivityButtonActionPerformed(evt);
