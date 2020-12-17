@@ -36,7 +36,7 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         tableModel = (DefaultTableModel) maintenanceActivityTable.getModel();
-        inizializeField();    
+        initializeField();    
     }
 
     
@@ -195,7 +195,7 @@ public class SelectionActivityGUI extends javax.swing.JFrame {
     /**
      * This method initializes all fields of the GUI.
      */
-    private void inizializeField() {
+    private void initializeField() {
         LocalDate date = LocalDate.now();
         int weekNumber = WeekConverter.getWeek(date);
         int year = WeekConverter.getYear(date);
