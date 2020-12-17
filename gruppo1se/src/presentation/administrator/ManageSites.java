@@ -87,7 +87,7 @@ public class ManageSites extends javax.swing.JFrame {
     /**
      * Fills the jTable with the rows of the SQL table Site.
      */    
-    public void addRowsToTable() {
+    private void addRowsToTable() {
         try {
             list = systemAdministrator.readSites();
             Object[] rows = new Object[3];
@@ -105,7 +105,7 @@ public class ManageSites extends javax.swing.JFrame {
     /**
      * Enables jBranchOffice/jArea if the filter Branch Office/Area is chosen. 
      */    
-    public void selectFilter(){
+    private void selectFilter(){
         if (jFilter.getSelectedItem().equals("Branch Office")){
             jBranchOffice.setEditable(true);
             jArea.setEditable(false);
@@ -426,19 +426,20 @@ public class ManageSites extends javax.swing.JFrame {
         if (result==EXIT_ON_CLOSE){
             try {
                 int[] indexOfSelectedRow = jTable.getSelectedRows();
-                String oldBranchOffice = String.valueOf(tableModel.getValueAt(indexOfSelectedRow[0], 0)); // Get the old branch office
+                int convertedIndex = jTable.convertRowIndexToModel(indexOfSelectedRow[0]);
+                String oldBranchOffice = String.valueOf(tableModel.getValueAt(convertedIndex, 0)); // Get the old branch office
                 String newBranchOffice = jNewBranchOffice.getText(); // Get the new branch office
-                String oldArea = String.valueOf(tableModel.getValueAt(indexOfSelectedRow[0], 1)); // Get the old area
+                String oldArea = String.valueOf(tableModel.getValueAt(convertedIndex, 1)); // Get the old area
                 String newArea = jNewArea.getText(); // Get the new area
-                String oldWorkspaceNotes = String.valueOf(tableModel.getValueAt(indexOfSelectedRow[0], 2)); // Get the old workspace notes
+                String oldWorkspaceNotes = String.valueOf(tableModel.getValueAt(convertedIndex, 2)); // Get the old workspace notes
                 String newWorkspaceNotes= jNewWorkspaceNotes.getText(); // Get the new workspace notes  
                 Site oldSite = new Site(oldBranchOffice,oldArea,oldWorkspaceNotes);
                 Site newSite = new Site(newBranchOffice,newArea,newWorkspaceNotes);
                 if(!(oldSite.equals(newSite))){
                     systemAdministrator.updateSite(oldSite, newSite); // Updates the old site with the new site
-                    tableModel.setValueAt(newBranchOffice, indexOfSelectedRow[0], 0); // Updates the jTable
-                    tableModel.setValueAt(newArea, indexOfSelectedRow[0], 1);
-                    tableModel.setValueAt(newWorkspaceNotes, indexOfSelectedRow[0], 2);
+                    tableModel.setValueAt(newBranchOffice, convertedIndex, 0); // Updates the jTable
+                    tableModel.setValueAt(newArea, convertedIndex, 1);
+                    tableModel.setValueAt(newWorkspaceNotes, convertedIndex, 2);
                 }       
             } catch (SiteException | NotValidParameterException ex) {
                 JOptionPane.showMessageDialog(this, "Error while trying to modify this site", "Error", JOptionPane.ERROR_MESSAGE);
@@ -453,9 +454,10 @@ public class ManageSites extends javax.swing.JFrame {
             if(selectedIndex.length == 1){
                 int dialogResult = MessageManager.confirmMessage(this,"Are you sure you wish to delete this site");
                 if(dialogResult == JOptionPane.YES_OPTION){
-                    String branchOffice = String.valueOf(tableModel.getValueAt(selectedIndex[0], 0)); // Get the selected branch office
-                    String area = String.valueOf(tableModel.getValueAt(selectedIndex[0], 1)); // Get the selected area
-                    String workspaceNotes = String.valueOf(tableModel.getValueAt(selectedIndex[0], 2)); // Get the selected workspace notes
+                    int convertedIndex = jTable.convertRowIndexToModel(selectedIndex[0]);
+                    String branchOffice = String.valueOf(tableModel.getValueAt(convertedIndex, 0)); // Get the selected branch office
+                    String area = String.valueOf(tableModel.getValueAt(convertedIndex, 1)); // Get the selected area
+                    String workspaceNotes = String.valueOf(tableModel.getValueAt(convertedIndex, 2)); // Get the selected workspace notes
                     Site site = new Site(branchOffice, area, workspaceNotes);
                     try {
                         systemAdministrator.removeSite(site); // Removes the selected site

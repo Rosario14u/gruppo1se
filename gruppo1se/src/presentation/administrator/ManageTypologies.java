@@ -257,7 +257,8 @@ public class ManageTypologies extends javax.swing.JFrame {
     private void jModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jModifyActionPerformed
         int[] indexOfSelectedRow = jTable.getSelectedRows();
         if(indexOfSelectedRow.length==1){
-            jTypology.setText(String.valueOf(tableModel.getValueAt(indexOfSelectedRow[0], 0))); 
+            int convertedIndex = jTable.convertRowIndexToModel(indexOfSelectedRow[0]);
+            jTypology.setText(String.valueOf(tableModel.getValueAt(convertedIndex, 0))); 
             jDialog1.setVisible(true);
         }else{
             MessageManager.infoMessage(this,indexOfSelectedRow.length < 1 ? "Select one row" : "Too many rows selected");
@@ -274,7 +275,8 @@ public class ManageTypologies extends javax.swing.JFrame {
                 String newTypology = jTypology.getText(); // Get the new typology
                 if(!(oldTypology.equals(newTypology))){
                     systemAdministrator.updateTypology(oldTypology, newTypology); // Updates the old typology with the new typology
-                    tableModel.setValueAt(newTypology, indexOfSelectedRow[0], 0); // Updates the jTable
+                    int convertedIndex = jTable.convertRowIndexToModel(indexOfSelectedRow[0]);
+                    tableModel.setValueAt(newTypology, convertedIndex, 0); // Updates the jTable
                 }       
             } catch (TypologyException | NotValidParameterException ex) {
                 JOptionPane.showMessageDialog(this, "Error while trying to modify this typology", "Error", JOptionPane.ERROR_MESSAGE);
